@@ -31,7 +31,11 @@ describe 'Point', ->
     describe 'with another point-like object', ->
       it 'should return a new point corresponding to the addition product', ->
         expect(new Point().add x: 10, y: 20).toBePoint(10, 20)
-        expect(new Point().add x: '10', y: '20').toBePoint(10, 20)
+
+      describe 'containing strings', ->
+        it 'should return a new point corresponding
+            to the addition product'.squeeze(), ->
+          expect(new Point().add x: '10', y: '20').toBePoint(10, 20)
 
     describe 'with two numbers as arguments', ->
       it 'should return a new point corresponding to the addition product', ->
@@ -63,7 +67,11 @@ describe 'Point', ->
       it 'should return a new point corresponding
           to the subtraction product'.squeeze(), ->
         expect(new Point().subtract x: 10, y: 20).toBePoint(-10, -20)
-        expect(new Point().subtract x: '10', y: '20').toBePoint(-10, -20)
+
+      describe 'containing strings', ->
+        it 'should return a new point corresponding
+            to the subtraction product'.squeeze(), ->
+          expect(new Point().subtract x: '10', y: '20').toBePoint(-10, -20)
 
     describe 'with two numbers as arguments', ->
       it 'should return a new point corresponding
