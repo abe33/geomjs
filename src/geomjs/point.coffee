@@ -4,17 +4,18 @@ class Point
 
   constructor: (x, y) ->
     [x,y] = @coordsFrom x, y
-    @x = if isNaN x then 0 else x
-    @y = if isNaN y then 0 else y
+    [@x,@y] = @defaultToZero x, y
 
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
   add: (x, y) ->
-    [x,y] = @coordsFrom x, y, true
+    [x,y] = @coordsFrom x, y
+    [x,y] = @defaultToZero x, y
     new Point @x + x, @y + y
 
   subtract: (x, y) ->
-    [x,y] = @coordsFrom x, y, true
+    [x,y] = @coordsFrom x, y
+    [x,y] = @defaultToZero x, y
     new Point @x - x, @y - y
 
   coordsFrom: (x, y, strict=false) ->
@@ -26,6 +27,11 @@ class Point
     x = parseInt x if typeof x is 'string'
     y = parseInt y if typeof y is 'string'
 
+    [x,y]
+
+  defaultToZero: (x,y) ->
+    x = if isNaN x then 0 else x
+    y = if isNaN y then 0 else y
     [x,y]
 
   isPoint: (o) -> Point.isPoint o
