@@ -1,0 +1,11 @@
+src
+node_modules
+spec
+test
+fixtures
+Cakefile
+Nemfile
+.gitkeep
+.gitignore
+*.sublime-project
+*.sublime-workspace
