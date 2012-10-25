@@ -7,6 +7,8 @@ class Point
     @x = if isNaN x then 0 else x
     @y = if isNaN y then 0 else y
 
+  length: -> Math.sqrt (@x * @x) + (@y * @y)
+
   add: (x, y) ->
     [x,y] = @coordsFrom x, y, true
     new Point @x + x, @y + y

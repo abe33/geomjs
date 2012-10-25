@@ -98,3 +98,27 @@ describe 'Point', ->
     describe 'with a null argument', ->
       it 'should throw an error', ->
         expect(-> new Point().subtract null).toThrow()
+
+  describe '::length called', ->
+    describe 'with a zero length point', ->
+      it 'should return 0', ->
+        pt = new Point
+        expect(pt.length()).toBe(0)
+
+    describe 'with a point such (0,5)', ->
+      it 'should return 5', ->
+        pt = new Point 0, 5
+        expect(pt.length()).toBe(5)
+
+    length = Math.sqrt 7*7 + 5*5
+
+    describe 'with a point such (7,5)', ->
+      it "should return #{length}", ->
+        pt = new Point 7, 5
+        expect(pt.length()).toBe(length)
+
+    describe 'with a point such (-7,-5)', ->
+      it "should return #{length}", ->
+        pt = new Point -7, -5
+        expect(pt.length()).toBe(length)
+
