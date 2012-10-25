@@ -43,5 +43,7 @@ class Point
   notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
   noPoint: (method) -> throw new Error "#{method} was called without arguments"
 
+  toString: -> "[object Point(#{@x},#{@y})]"
+
 
 module.exports = Point
