@@ -1,6 +1,6 @@
 
 class Point
-  @isPoint: (o) -> o? and o.x? and o.y?
+  @isPoint: (pt) -> pt? and pt.x? and pt.y?
 
   constructor: (x, y) ->
     [x,y] = @coordsFrom x, y
@@ -33,7 +33,7 @@ class Point
     y = if isNaN y then 0 else y
     [x,y]
 
-  isPoint: (o) -> Point.isPoint o
+  isPoint: (pt) -> Point.isPoint pt
 
   notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
 
