@@ -2,9 +2,6 @@ require '../../test_helper'
 
 Point = require '../../../lib/geomjs/point'
 
-point = (x,y) -> new Point x, y
-pointLike = (x,y) -> {x,y}
-
 describe 'Point', ->
   beforeEach -> addPointMatchers this
 

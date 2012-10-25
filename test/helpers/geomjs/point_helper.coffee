@@ -19,6 +19,8 @@ global.addPointMatchers = (scope) ->
 
       @actual.x is pt.x and @actual.y is pt.y
 
+global.point = (x,y) -> new Point x, y
+global.pointLike = (x,y) -> {x,y}
 
 global.pointOperator = (operator) ->
 
@@ -36,8 +38,6 @@ global.pointOperator = (operator) ->
       it 'should return nan', ->
         expect(expectation.call this).toBe(NaN)
 
-  point = (x,y) -> new Point x, y
-  pointLike = (x,y) -> {x,y}
 
   operatorOption = (value, actions={}, expectation=null) ->
     switch typeof value
