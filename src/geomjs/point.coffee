@@ -18,6 +18,11 @@ class Point
     [x,y] = @defaultToZero x, y
     new Point @x - x, @y - y
 
+  dot: (x, y) ->
+    @noPoint 'dot' if not x? and not y?
+    [x,y] = @coordsFrom x, y, true
+    @x * x + @y * y
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x
@@ -36,5 +41,7 @@ class Point
   isPoint: (pt) -> Point.isPoint pt
 
   notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
+  noPoint: (method) -> throw new Error "#{method} was called without arguments"
+
 
 module.exports = Point

@@ -70,3 +70,14 @@ describe 'Point', ->
              to the subtract product'.squeeze(), (result) ->
       expect(result).toBePoint(2,3)
 
+  pointOperator('dot')
+    .with(7,3).and(4,2)
+    .where
+      emptyArguments: 'throws'
+      emptyObject: 'throws'
+      partialObject: 'throws'
+      nullArgument: 'throws'
+    .should 'return the dot product of the current
+             point and the point argument'.squeeze(), (result) ->
+      expect(result).toBe(7*4 + 3*2)
+
