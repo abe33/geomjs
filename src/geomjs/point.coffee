@@ -20,9 +20,8 @@ class Point
 
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
-      if strict and not @isPoint x
-        throw new Error "#{x} isn't a point-like object"
-      {x,y} = x
+      @notAPoint x if strict and not @isPoint x
+      {x,y} = x if x?
 
     x = parseInt x if typeof x is 'string'
     y = parseInt y if typeof y is 'string'
@@ -36,5 +35,6 @@ class Point
 
   isPoint: (o) -> Point.isPoint o
 
+  notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
 
 module.exports = Point
