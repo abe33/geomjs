@@ -99,5 +99,3 @@ global.pointOperator = (operator) ->
           operatorOption options.nullArgument,
                          operatorActions,
                          -> @point[operator] null
-
-    this
