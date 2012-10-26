@@ -9,7 +9,7 @@ class Point
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
   normalize: (length=1) ->
-    @invalidLength length if isNaN parseInt length
+    @invalidLength length if isNaN parseFloat length
     l = @length()
     new Point @x / l * length, @y / l * length
 
@@ -38,8 +38,8 @@ class Point
       @notAPoint x if strict and not @isPoint x
       {x,y} = x if x?
 
-    x = parseInt x if typeof x is 'string'
-    y = parseInt y if typeof y is 'string'
+    x = parseFloat x if typeof x is 'string'
+    y = parseFloat y if typeof y is 'string'
 
     [x,y]
 
