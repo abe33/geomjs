@@ -54,6 +54,7 @@ class Point
   noPoint: (method) -> throw new Error "#{method} was called without arguments"
   invalidLength: (l) -> throw new Error "Invalid length #{l} provided"
 
+  clone: -> new Point this
   toString: -> "[object Point(#{@x},#{@y})]"
 
 

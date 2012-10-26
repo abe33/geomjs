@@ -156,4 +156,7 @@ describe 'Point', ->
       it 'should throw an error', ->
         expect(-> point(5,6).normalize({})).toThrow()
 
+  describe '::clone called', ->
+    it 'should return a copy of the point', ->
+      expect(point(4.56, 0.1).clone()).toBePoint(4.56, 0.1)
 
