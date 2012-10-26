@@ -4,6 +4,12 @@ global.addPointMatchers = (scope) ->
   scope.addMatchers
     notText: -> notText = if @isNot then " not" else ""
 
+    toBeClose: (value) ->
+      @message = ->
+        "Expected #{@actual} to be equal to #{value}
+         with a precision of 1e-10".squeeze()
+
+      Math.abs(@actual - value) < 1 / 10000000000
 
 
     toBePoint: (x=0, y=0) ->
