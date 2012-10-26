@@ -2,11 +2,13 @@ Point = require '../../../lib/geomjs/point'
 
 global.addPointMatchers = (scope) ->
   scope.addMatchers
-    notText: -> notText = if @isNot then " not" else ""
+    notText: -> if @isNot then " not" else ""
 
     toBeClose: (value) ->
       @message = ->
-        "Expected #{@actual} to be equal to #{value}
+        "Expected #{@actual}
+         #{if @isNot then " not" else ""}
+         to be equal to #{value}
          with a precision of 1e-10".squeeze()
 
       Math.abs(@actual - value) < 1 / 10000000000
@@ -14,13 +16,17 @@ global.addPointMatchers = (scope) ->
 
     toBePoint: (x=0, y=0) ->
       @message = ->
-        "Expected #{@actual}#{@notText()} to be a point with x=#{x} and y=#{y}"
+        "Expected #{@actual}
+         #{if @isNot then " not" else ""}
+         to be a point with x=#{x} and y=#{y}".squeeze()
 
       @actual.x is x and @actual.y is y
 
     toBeSamePoint: (pt) ->
       @message = ->
-        "Expected #{@actual}#{@notText()} to be a point equivalent to #{pt}"
+        "Expected #{@actual}
+         #{if @isNot then " not" else ""}
+         to be a point equivalent to #{pt}".squeeze()
 
       @actual.x is pt.x and @actual.y is pt.y
 
