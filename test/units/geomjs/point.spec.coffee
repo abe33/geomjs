@@ -78,6 +78,15 @@ describe 'Point', ->
              point and the point argument'.squeeze(), (result) ->
       expect(result).toBe(7*4 + 3*2)
 
+  pointOperator('distance')
+    .with(7,3).and(4,2)
+    .where
+      emptyArguments: 'throws'
+      emptyObject: 'throws'
+      partialObject: 'throws'
+      nullArgument: 'throws'
+    .should 'return the distance between the two points', (result) ->
+      expect(result).toBe(point(3,1).length())
 
   describe '::normalize called', ->
     describe 'on a point with a length of 0', ->
@@ -146,3 +155,5 @@ describe 'Point', ->
     describe 'with an object', ->
       it 'should throw an error', ->
         expect(-> point(5,6).normalize({})).toThrow()
+
+

@@ -28,6 +28,11 @@ class Point
     [x,y] = @coordsFrom x, y, true
     @x * x + @y * y
 
+  distance: (x, y) ->
+    @noPoint 'dot' if not x? and not y?
+    [x,y] = @coordsFrom x, y, true
+    @subtract(x,y).length()
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x
