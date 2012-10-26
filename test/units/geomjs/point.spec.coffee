@@ -78,3 +78,71 @@ describe 'Point', ->
              point and the point argument'.squeeze(), (result) ->
       expect(result).toBe(7*4 + 3*2)
 
+
+  describe '::normalize called', ->
+    describe 'on a point with a length of 0', ->
+      it 'should return a new point of length 0', ->
+        expect(point(0,0).normalize().length()).toBe(0)
+
+    describe 'without arguments', ->
+      beforeEach ->
+        @point1 = point(5,6)
+        @point2 = @point1.normalize()
+
+      it 'should return a new point of length 1', ->
+        expect(@point2.length()).toBe(1)
+
+      it 'should return a new point with the same direction', ->
+        expect(@point2.x / @point2.y).toBe(@point1.x / @point1.y)
+
+    describe 'with null', ->
+      it 'should return a new point of length 1', ->
+        expect(point(5,6).normalize(null).length()).toBe(1)
+
+
+    describe 'with a number', ->
+      describe 'that is positive', ->
+        beforeEach ->
+          @normalizedLength = 10
+          @point1 = point(5,6)
+          @point2 = @point1.normalize(@normalizedLength)
+
+        it 'should return a new point with length equal to the number', ->
+          expect(@point2.length()).toBe(@normalizedLength)
+
+        it 'should return a new point with the same direction', ->
+          expect(@point2.x / @point2.y).toBe(@point1.x / @point1.y)
+
+      describe 'that is negative', ->
+        beforeEach ->
+          @normalizedLength = -10
+          @point1 = point(5,6)
+          @point2 = @point1.normalize(@normalizedLength)
+
+        it 'should return a new point with length equal to the number', ->
+          expect(@point2.length()).toBe(Math.abs @normalizedLength)
+
+        it 'should return a new point with the same direction', ->
+          expect(@point2.x / @point2.y).toBe(@point1.x / @point1.y)
+
+      describe 'that is 0', ->
+        it 'should return a new point with length equal to 0', ->
+          expect(point(5,6).normalize(0).length()).toBe(0)
+
+    describe 'with a string', ->
+      describe 'containing a number', ->
+        beforeEach ->
+          @normalizedLength = '10'
+          @point1 = point(5,6)
+          @point2 = @point1.normalize(@normalizedLength)
+
+        it 'should return a new point with length equal to the number', ->
+          expect(@point2.length()).toBe(parseInt @normalizedLength)
+
+      describe 'containing anything but a number', ->
+        it 'should throw an error', ->
+          expect(-> point(5,6).normalize('foo')).toThrow()
+
+    describe 'with an object', ->
+      it 'should throw an error', ->
+        expect(-> point(5,6).normalize({})).toThrow()

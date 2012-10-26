@@ -8,6 +8,11 @@ class Point
 
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
+  normalize: (length=1) ->
+    @invalidLength length if isNaN parseInt length
+    l = @length()
+    new Point @x / l * length, @y / l * length
+
   add: (x, y) ->
     [x,y] = @coordsFrom x, y
     [x,y] = @defaultToZero x, y
@@ -42,6 +47,7 @@ class Point
 
   notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
   noPoint: (method) -> throw new Error "#{method} was called without arguments"
+  invalidLength: (l) -> throw new Error "Invalid length #{l} provided"
 
   toString: -> "[object Point(#{@x},#{@y})]"
 
