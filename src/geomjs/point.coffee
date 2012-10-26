@@ -35,6 +35,12 @@ class Point
     [x,y] = @coordsFrom x, y, true
     @subtract(x,y).length()
 
+  paste: (x, y) ->
+    [x,y] = @coordsFrom x, y
+    @x = x if typeof x is 'number'
+    @y = y if typeof y is 'number'
+    this
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x

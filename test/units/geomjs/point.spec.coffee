@@ -88,6 +88,21 @@ describe 'Point', ->
     .should 'return the distance between the two points', (result) ->
       expect(result).toBeClose(point(3,1).length())
 
+  leftUnchanged = (result) ->
+    expect(result).toBePoint(7, 3)
+    expect(result).toBe(@point)
+
+  pointOperator('paste')
+    .with(7,3).and(4,2)
+    .where
+      emptyArguments: leftUnchanged
+      emptyObject: leftUnchanged
+      partialObject: (result) -> expect(result).toBePoint(4,3)
+      nullArgument: leftUnchanged
+    .should 'copy the data into this point', (result) ->
+      expect(result).toBePoint(4,2)
+      expect(result).toBeSamePoint(@point)
+
   describe '::normalize called', ->
     describe 'on a point with a length of 0', ->
       it 'should return a new point of length 0', ->
@@ -179,5 +194,6 @@ describe 'Point', ->
         x = length * Math.sin angle
         y = length * Math.cos angle
         expect(pt).toBePoint(x, y)
+
 
 
