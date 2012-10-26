@@ -1,6 +1,8 @@
 
 class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
+  @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
+                                         Math.cos(angle) * length
 
   constructor: (x, y) ->
     [x,y] = @coordsFrom x, y

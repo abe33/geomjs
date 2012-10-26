@@ -160,3 +160,24 @@ describe 'Point', ->
     it 'should return a copy of the point', ->
       expect(point(4.56, 0.1).clone()).toBePoint(4.56, 0.1)
 
+  describe '.polar called', ->
+    describe 'with an angle and a length', ->
+      it 'should return a point corresponding to the cartesian projection', ->
+        angle = 32
+        length = 10
+        pt = Point.polar angle, length
+        x = length * Math.sin angle
+        y = length * Math.cos angle
+        expect(pt).toBePoint(x, y)
+
+    describe 'with only an angle', ->
+      it 'should return a point corresponding to the cartesian projection
+          with a length of 1', ->
+        angle = 32
+        length = 1
+        pt = Point.polar angle
+        x = length * Math.sin angle
+        y = length * Math.cos angle
+        expect(pt).toBePoint(x, y)
+
+
