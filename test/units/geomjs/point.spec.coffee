@@ -195,5 +195,98 @@ describe 'Point', ->
         y = length * Math.cos angle
         expect(pt).toBePoint(x, y)
 
+  describe '.interpolate called', ->
+    describe 'with two points and a float', ->
+      it 'should return a point between the two point arguments', ->
+        p1 = point(4.5, 3.0)
+        p2 = point(6.2, 0.1)
+        pos = 0.7
+        p3 = Point.interpolate p1, p2, pos
+        xdif = p2.x - p1.x
+        ydif = p2.y - p1.y
 
+        expect(p3.x).toBeClose(p1.x + xdif * pos)
+        expect(p3.y).toBeClose(p1.y + ydif * pos)
+
+    describe 'with five floats', ->
+      it 'should return a point between the two coordinates defined
+          by the first four floats'.squeeze(), ->
+        x1 = 4.5
+        y1 = 3.0
+        x2 = 6.2
+        y2 = 0.1
+        pos = 0.7
+        pt = Point.interpolate(x1, y1, x2, y2, pos)
+        xdif = x2 - x1
+        ydif = y2 - y1
+
+        expect(pt.x).toBeClose(x1 + xdif * pos)
+        expect(pt.y).toBeClose(y1 + ydif * pos)
+
+    describe 'with a point and three floats', ->
+      describe 'with the point as first argument', ->
+        it 'should return a point between the point argument
+            and the coordinates defined by the two first floats'.squeeze(), ->
+          p1 = point(4.5, 3.0)
+          x2 = 6.2
+          y2 = 0.1
+          pos = 0.7
+          pt = Point.interpolate(p1, x2, y2, pos)
+          xdif = x2 - p1.x
+          ydif = y2 - p1.y
+
+          expect(pt.x).toBeClose(p1.x + xdif * pos)
+          expect(pt.y).toBeClose(p1.y + ydif * pos)
+
+        describe 'with both coordinates and position containing strings', ->
+           it 'should return a point between the point argument
+            and the coordinates defined by the two first floats'.squeeze(), ->
+            p1 = point('4.5', '3.0')
+            x2 = '6.2'
+            y2 = '0.1'
+            pos = '0.7'
+            pt = Point.interpolate(p1, x2, y2, pos)
+            xdif = x2 - p1.x
+            ydif = y2 - p1.y
+
+            expect(pt.x).toBeClose(p1.x + xdif * pos)
+            expect(pt.y).toBeClose(p1.y + ydif * pos)
+
+      describe 'with the point as third argument', ->
+        it 'should return a point between the point argument
+            and the coordinates defined by the two first floats'.squeeze(), ->
+          x1 = 6.2
+          y1 = 0.1
+          p2 = point(4.5, 3.0)
+          pos = 0.7
+          pt = Point.interpolate(x1, y1, p2, pos)
+          xdif = p2.x - x1
+          ydif = p2.y - y1
+
+          expect(pt.x).toBeClose(x1 + xdif * pos)
+          expect(pt.y).toBeClose(y1 + ydif * pos)
+
+      describe 'with a float followed by a point', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate 1.1, point(), 2).toThrow()
+
+      describe 'with a point followed by only two floats', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate point(), 2, 4).toThrow()
+
+      describe 'with a point followed by only one float', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate point(), 2).toThrow()
+
+      describe 'with an invalid position', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate point(), 2, 4, 'foo').toThrow()
+
+      describe 'with an invalid first point', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate 'foo', 1, 2, 3, 0.7).toThrow()
+
+      describe 'with no arguments', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate()).toThrow()
 

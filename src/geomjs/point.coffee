@@ -1,8 +1,38 @@
 
+
 class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
+  @isFloat = (n) -> typeof n is 'number' or not isNaN parseFloat n
+
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
+
+  @interpolate: () ->
+    args = []; args[i] = v for v,i in arguments
+
+    if typeof args[0] is 'object' then pt1 = args.shift()
+    else if @isFloat(args[0]) and @isFloat(args[1])
+      pt1 = new Point args[0], args[1]
+      args.splice 0, 2
+    else @pointNotFound(args, 'first')
+
+    if typeof args[0] is 'object' then pt2 = args.shift()
+    else if @isFloat(args[0]) and @isFloat(args[1])
+      pt2 = new Point args[0], args[1]
+      args.splice 0, 2
+    else @pointNotFound(args, 'second')
+
+    pos = parseFloat args.shift()
+    @missingPosition pos if isNaN pos
+
+    dif = pt2.subtract(pt1)
+    new Point pt1.x + dif.x * pos,
+              pt1.y + dif.y * pos
+
+  @missingPosition: (pos) ->
+    throw new Error "Point.interpolate require a position but #{pos} was given"
+  @pointNotFound: (args, pos) ->
+    throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
 
   constructor: (x, y) ->
     [x,y] = @coordsFrom x, y
