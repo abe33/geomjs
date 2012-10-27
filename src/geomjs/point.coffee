@@ -88,9 +88,12 @@ class Point
 
   isPoint: (pt) -> Point.isPoint pt
 
-  notAPoint: (pt) -> throw new Error "#{pt} isn't a point-like object"
-  noPoint: (method) -> throw new Error "#{method} was called without arguments"
-  invalidLength: (l) -> throw new Error "Invalid length #{l} provided"
+  notAPoint: (pt) ->
+    throw new Error "#{pt} isn't a point-like object"
+  noPoint: (method) ->
+    throw new Error "#{method} was called without arguments"
+  invalidLength: (l) ->
+    throw new Error "Invalid length #{l} provided"
 
   clone: -> new Point this
   toString: -> "[object Point(#{@x},#{@y})]"
