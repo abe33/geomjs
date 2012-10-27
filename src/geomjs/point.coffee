@@ -1,5 +1,3 @@
-
-
 class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
   @isFloat = (n) -> typeof n is 'number' or not isNaN parseFloat n
@@ -10,13 +8,13 @@ class Point
   @interpolate: () ->
     args = []; args[i] = v for v,i in arguments
 
-    if typeof args[0] is 'object' then pt1 = args.shift()
+    if @isPoint args[0] then pt1 = args.shift()
     else if @isFloat(args[0]) and @isFloat(args[1])
       pt1 = new Point args[0], args[1]
       args.splice 0, 2
     else @pointNotFound(args, 'first')
 
-    if typeof args[0] is 'object' then pt2 = args.shift()
+    if @isPoint args[0] then pt2 = args.shift()
     else if @isFloat(args[0]) and @isFloat(args[1])
       pt2 = new Point args[0], args[1]
       args.splice 0, 2

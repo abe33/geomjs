@@ -286,6 +286,18 @@ describe 'Point', ->
         it 'should throw an error', ->
           expect(-> Point.interpolate 'foo', 1, 2, 3, 0.7).toThrow()
 
+      describe 'with an invalid second point', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate 0, 1, 'foo', 3, 0.7).toThrow()
+
+      describe 'with a partial first point', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate {x: 10}, 2, 3, 0.7).toThrow()
+
+      describe 'with a partial second point', ->
+        it 'should throw an error', ->
+          expect(-> Point.interpolate 0, 1, {x: 10}, 0.7).toThrow()
+
       describe 'with no arguments', ->
         it 'should throw an error', ->
           expect(-> Point.interpolate()).toThrow()
