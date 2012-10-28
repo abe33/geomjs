@@ -58,6 +58,19 @@ describe 'Point', ->
       it 'should return the angle in degrees of the current vector', ->
         expect(point(0,10).angle()).toBe(90)
 
+  describe '::angleWith called', ->
+    describe 'with a point', ->
+      it 'should return the angle in degrees formed by the two vectors', ->
+        pt1 = point 10, 0
+        pt2 = point 0, 10
+        expect(pt1.angleWith pt2).toBeClose(90)
+
+    describe 'with two numbers', ->
+      it 'should return the angle in degrees formed by the two vectors', ->
+        pt1 = point 10, 0
+        pt2 = point 0, 10
+        expect(pt1.angleWith(0, 10)).toBeClose(90)
+
   pointOperator('add')
     .with(2,3).and(4,5)
     .where
