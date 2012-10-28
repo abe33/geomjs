@@ -14,14 +14,15 @@ class Matrix
 
   inverse: ->
     n = @a * @d - @b * @c
-    new Matrix(
-      @d / n,
-      -@b / n,
-      -@c / n,
-      @a / n,
-      (@c*@ty - @d*@tx) / n,
+    [@a, @b, @c, @d, @tx, @ty] = [
+       @d / n
+      -@b / n
+      -@c / n
+       @a / n
+       (@c*@ty - @d*@tx) / n
       -(@a*@ty - @b*@tx) / n
-    )
+    ]
+    this
 
   asFloat: (floats...) ->
     floats[i] = parseFloat n for n,i in floats
