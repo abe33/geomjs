@@ -4,10 +4,11 @@ class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
   @isFloat = (n) -> not isNaN parseFloat n
 
-  @coordsFrom: (x, y, strict=false) ->
-    if typeof x is 'object'
-      @notAPoint x if strict and not @isPoint x
-      {x,y} = x if x?
+  @coordsFrom: (xOrPt, y, strict=false) ->
+    x = xOrPt
+    if typeof xOrPt is 'object'
+      @notAPoint xOrPt if strict and not @isPoint xOrPt
+      {x,y} = xOrPt if xOrPt?
 
     x = parseFloat x if typeof x is 'string'
     y = parseFloat y if typeof y is 'string'
@@ -47,8 +48,8 @@ class Point
   @notAPoint: (pt) ->
     throw new Error "#{pt} isn't a point-like object"
 
-  constructor: (x, y) ->
-    [x,y] = @coordsFrom x, y
+  constructor: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y
     [@x,@y] = @defaultToZero x, y
 
   length: -> Math.sqrt (@x * @x) + (@y * @y)
@@ -57,9 +58,9 @@ class Point
 
   equals: (o) -> o? and o.x is @x and o.y is @y
 
-  angleWith: (x, y) ->
-    @noPoint 'dot' if not x? and not y?
-    [x, y] = @coordsFrom x, y, true
+  angleWith: (xOrPt, y) ->
+    @noPoint 'dot' if not xOrPt? and not y?
+    [x, y] = @coordsFrom xOrPt, y, true
 
     d = @normalize().dot new Point(x,y).normalize()
 
@@ -70,28 +71,28 @@ class Point
     l = @length()
     new Point @x / l * length, @y / l * length
 
-  add: (x, y) ->
-    [x,y] = @coordsFrom x, y
+  add: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x + x, @y + y
 
-  subtract: (x, y) ->
-    [x,y] = @coordsFrom x, y
+  subtract: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x - x, @y - y
 
-  dot: (x, y) ->
-    @noPoint 'dot' if not x? and not y?
-    [x,y] = @coordsFrom x, y, true
+  dot: (xOrPt, y) ->
+    @noPoint 'dot' if not xOrPt? and not y?
+    [x,y] = @coordsFrom xOrPt, y, true
     @x * x + @y * y
 
-  distance: (x, y) ->
-    @noPoint 'dot' if not x? and not y?
-    [x,y] = @coordsFrom x, y, true
+  distance: (xOrPt, y) ->
+    @noPoint 'dot' if not xOrPt? and not y?
+    [x,y] = @coordsFrom xOrPt, y, true
     @subtract(x,y).length()
 
-  paste: (x, y) ->
-    [x,y] = @coordsFrom x, y
+  paste: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y
     @x = x if typeof x is 'number'
     @y = y if typeof y is 'number'
     this
@@ -108,15 +109,15 @@ class Point
     y = Math.sin(a) * l
     new Point x, y
 
-  rotateAround: (x, y, a) ->
-    a = y if @isPoint x
-    [x, y] = @coordsFrom x, y, true
+  rotateAround: (xOrPt, y, a) ->
+    a = y if @isPoint xOrPt
+    [x, y] = @coordsFrom xOrPt, y, true
 
     @subtract(x,y).rotate(a).add(x,y)
 
-  coordsFrom: (x, y, strict) -> Point.coordsFrom x, y, strict
+  coordsFrom: (xOrPt, y, strict) -> Point.coordsFrom xOrPt, y, strict
 
-  defaultToZero: (x,y) ->
+  defaultToZero: (x, y) ->
     x = if isNaN x then 0 else x
     y = if isNaN y then 0 else y
     [x,y]
