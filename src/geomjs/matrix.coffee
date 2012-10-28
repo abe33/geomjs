@@ -12,7 +12,11 @@ class Matrix
     else
       @invalidMatrixArguments [a, b, c, d, tx, ty]
 
-  translate: (x=0, y=0) -> @tx += x; @ty += y; this
+  translate: (x=0, y=0) ->
+    @tx += x
+    @ty += y
+    this
+
 
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 
