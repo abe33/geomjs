@@ -73,7 +73,8 @@ class Point
     @invalidScale n unless @isFloat n
     new Point @x * n, @y * n
 
-  rotate: (n)->
+  rotate: (n) ->
+    @invalidRotation n unless @isFloat n
     l = @length()
     a = Math.atan2(@y, @x) + n / 180 * Math.PI
     x = Math.cos(a) * l
@@ -106,6 +107,9 @@ class Point
     throw new Error "Invalid length #{l} provided"
   invalidScale: (s) ->
     throw new Error "Invalid scale #{s} provided"
+  invalidRotation: (a) ->
+    throw new Error "Invalid rotation #{a} provided"
+
 
 
   clone: -> new Point this

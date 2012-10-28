@@ -110,6 +110,24 @@ describe 'Point', ->
         pt2 = pt.rotate 90
         expect(pt2).toBePoint(0, 10)
 
+    describe 'with a string', ->
+      describe 'containing a number', ->
+        it 'should return a new point rotated around the origin', ->
+          pt = point 10, 0
+          pt2 = pt.rotate '90'
+          expect(pt2).toBePoint(0, 10)
+
+      describe 'not containing a number', ->
+        it 'should throw an error', ->
+          expect(-> point(10,0).rotate('foo')).toThrow()
+
+    describe 'without argument', ->
+      it 'should throw an error', ->
+        expect(-> point(10,0).rotate()).toThrow()
+
+    describe 'with null', ->
+      it 'should throw an error', ->
+        expect(-> point(10,0).rotate(null)).toThrow()
   describe '::scale called', ->
     describe 'with a number', ->
       describe 'that is positive', ->
