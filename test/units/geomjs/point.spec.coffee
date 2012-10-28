@@ -58,19 +58,6 @@ describe 'Point', ->
       it 'should return the angle in degrees of the current vector', ->
         expect(point(0,10).angle()).toBe(90)
 
-  describe '::angleWith called', ->
-    describe 'with a point', ->
-      it 'should return the angle in degrees formed by the two vectors', ->
-        pt1 = point 10, 0
-        pt2 = point 0, 10
-        expect(pt1.angleWith pt2).toBeClose(90)
-
-    describe 'with two numbers', ->
-      it 'should return the angle in degrees formed by the two vectors', ->
-        pt1 = point 10, 0
-        pt2 = point 0, 10
-        expect(pt1.angleWith(0, 10)).toBeClose(90)
-
   pointOperator('add')
     .with(2,3).and(4,5)
     .where
@@ -113,6 +100,17 @@ describe 'Point', ->
       nullArgument: 'throws'
     .should 'return the distance between the two points', (result) ->
       expect(result).toBeClose(point(3,1).length())
+
+  pointOperator('angleWith')
+    .with(10,0).and(0,10)
+    .where
+      emptyArguments: 'throws'
+      emptyObject: 'throws'
+      partialObject: 'throws'
+      nullArgument: 'throws'
+    .should 'return the angle formed by the two points', (result) ->
+      expect(result).toBeClose(90)
+
 
   leftUnchanged = (result) ->
     expect(result).toBePoint(7, 3)

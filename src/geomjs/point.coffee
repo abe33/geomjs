@@ -41,14 +41,12 @@ class Point
   angle: -> Math.atan2(@y, @x) * 180 / Math.PI
 
   angleWith: (x, y) ->
+    @noPoint 'dot' if not x? and not y?
     [x, y] = @coordsFrom x, y, true
 
-    v1 = @normalize()
-    v2 = new Point(x,y).normalize()
-    d = v1.dot v2
-    neg = d < 0
+    d = @normalize().dot new Point(x,y).normalize()
 
-    Math.acos(Math.abs(d)) * (if neg then -1 else 1) * 180 / Math.PI
+    Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1) * 180 / Math.PI
 
   normalize: (length=1) ->
     @invalidLength length if isNaN parseFloat length
