@@ -1,8 +1,8 @@
 name: 'geomjs'
 package: 'geomjs'
 includes: [
-  'src/geomjs/point'
   'src/geomjs/matrix'
+  'src/geomjs/point'
 ]
 operators: [
   'strip:requires'
