@@ -63,4 +63,20 @@ describe 'Matrix', ->
       it 'should not modify the matrix', ->
         expect(matrix.identity().translate()).toBeIdentity()
 
+  describe '::scale called', ->
+    beforeEach ->
+      @m1 = matrix.transformed()
+      @m2 = @m1.scale(0.5, 2)
+      @m3 = matrix.scaled()
+
+    it 'should scale the matrix', ->
+      expect(@m1).toBeSameMatrix(@m3)
+    it 'should return this instance', ->
+      expect(@m1).toBe(@m2)
+
+    describe 'without arguments', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.identity().scale()).toBeIdentity()
+
+
 

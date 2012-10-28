@@ -17,6 +17,12 @@ class Matrix
     @ty += y
     this
 
+  scale: (x=1, y=1) ->
+    @a *= x
+    @d *= y
+    @tx *= x
+    @ty *= y
+    this
 
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 
