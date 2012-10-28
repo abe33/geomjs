@@ -53,7 +53,7 @@ class Point
     Math.radToDeg Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
 
   normalize: (length=1) ->
-    @invalidLength length if isNaN parseFloat length
+    @invalidLength length unless @isFloat length
     l = @length()
     new Point @x / l * length, @y / l * length
 
