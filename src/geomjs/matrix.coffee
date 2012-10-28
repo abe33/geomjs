@@ -37,6 +37,6 @@ class Matrix
     throw new Error "Invalid arguments #{args} for a Matrix"
 
   clone: -> new Matrix this
-  toString: -> "[object Matrix(#{@a},#{@b},#{@c},#{@d},#{@tx},#{ty})]"
+  toString: -> "[object Matrix(#{@a},#{@b},#{@c},#{@d},#{@tx},#{@ty})]"
 
 module.exports = Matrix
