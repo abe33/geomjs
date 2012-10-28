@@ -1,6 +1,6 @@
 class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
-  @isFloat = (n) -> typeof n is 'number' or not isNaN parseFloat n
+  @isFloat = (n) -> not isNaN parseFloat n
 
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
