@@ -45,6 +45,19 @@ describe 'Point', ->
       it "should return #{length}", ->
         expect(point(-7, -5).length()).toBeClose(length)
 
+  describe '::angle called', ->
+    describe 'for a point with coordinates (10,0)', ->
+      it 'should return the angle in degrees of the current vector', ->
+        expect(point(10,0).angle()).toBe(0)
+
+    describe 'for a point with coordinates (5,5)', ->
+      it 'should return the angle in degrees of the current vector', ->
+        expect(point(5,5).angle()).toBe(45)
+
+    describe 'for a point with coordinates (0,10)', ->
+      it 'should return the angle in degrees of the current vector', ->
+        expect(point(0,10).angle()).toBe(90)
+
   pointOperator('add')
     .with(2,3).and(4,5)
     .where

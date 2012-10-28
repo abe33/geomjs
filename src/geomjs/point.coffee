@@ -38,6 +38,8 @@ class Point
 
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
+  angle: -> Math.atan2(@y, @x) * 180 / Math.PI
+
   normalize: (length=1) ->
     @invalidLength length if isNaN parseFloat length
     l = @length()
