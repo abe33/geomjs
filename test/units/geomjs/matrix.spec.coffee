@@ -40,5 +40,14 @@ describe 'Matrix', ->
     it 'should return this instance', ->
       expect(@m1).toBe(@m2)
 
+  describe '::identity', ->
+    beforeEach ->
+      @m1 = matrix.transformed()
+      @m2 = @m1.identity()
+    it 'should reset the matrix to an identity matrix', ->
+      expect(@m1).toBeIdentity()
+    it 'should return this instance', ->
+      expect(@m1).toBe(@m2)
+
 
 
