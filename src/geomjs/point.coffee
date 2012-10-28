@@ -14,13 +14,13 @@ class Point
     else if @isFloat(args[0]) and @isFloat(args[1])
       pt1 = new Point args[0], args[1]
       args.splice 0, 2
-    else @pointNotFound(args, 'first')
+    else @missingPoint(args, 'first')
 
     if @isPoint args[0] then pt2 = args.shift()
     else if @isFloat(args[0]) and @isFloat(args[1])
       pt2 = new Point args[0], args[1]
       args.splice 0, 2
-    else @pointNotFound(args, 'second')
+    else @missingPoint(args, 'second')
 
     pos = parseFloat args.shift()
     @missingPosition pos if isNaN pos
@@ -31,7 +31,7 @@ class Point
 
   @missingPosition: (pos) ->
     throw new Error "Point.interpolate require a position but #{pos} was given"
-  @pointNotFound: (args, pos) ->
+  @missingPoint: (args, pos) ->
     throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
 
   constructor: (x, y) ->
