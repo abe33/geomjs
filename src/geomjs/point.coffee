@@ -7,7 +7,7 @@ class Point
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
 
-  @interpolate: () ->
+  @interpolate: (pt1, pt2, pos) ->
     args = []; args[i] = v for v,i in arguments
 
     if @isPoint args[0] then pt1 = args.shift()
