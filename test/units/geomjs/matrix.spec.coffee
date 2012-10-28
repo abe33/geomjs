@@ -49,5 +49,18 @@ describe 'Matrix', ->
     it 'should return this instance', ->
       expect(@m1).toBe(@m2)
 
+  describe '::translate called', ->
+    beforeEach ->
+      @m1 = matrix.transformed()
+      @m2 = @m1.translate(-2, 2)
+      @m3 = matrix.translated()
+    it 'should translate the matrix', ->
+      expect(@m1).toBeSameMatrix(@m3)
+    it 'should return this instance', ->
+      expect(@m1).toBe(@m2)
+
+    describe 'without arguments', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.identity().translate()).toBeIdentity()
 
 
