@@ -7,6 +7,15 @@ matrix.transformed = -> new Matrix 1, 2, 3, 4, 5, 6
 matrix.inverted = -> new Matrix -2, 1, 1.5, -0.5, 1, -2
 matrix.translated = -> new Matrix 1, 2, 3, 4, 3, 8
 matrix.scaled = -> new Matrix 0.5, 2, 3, 8, 2.5, 12
+matrix.rotated = ->
+  new Matrix(
+    -1.474897313797955,
+    -1.6806778137857286,
+    -3.917045215869792,
+    -3.107532264809421,
+    -6.35919311794163,
+    -4.534386715833113
+  )
 
 global.addMatrixMatchers = (scope) ->
   scope.addMatchers

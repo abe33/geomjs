@@ -24,6 +24,20 @@ class Matrix
     @ty *= y
     this
 
+  rotate: (angle=0) ->
+    cos = Math.cos angle
+    sin = Math.sin angle
+    [@a, @b, @c, @d, @tx, @ty] = [
+      @a * cos - @b * sin
+      @a * sin + @b * cos
+      @c * cos - @d * sin
+      @c * sin + @d * cos
+      @tx * cos - @ty * sin
+      @tx * sin + @ty * cos
+    ]
+    this
+
+
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 
   inverse: ->
