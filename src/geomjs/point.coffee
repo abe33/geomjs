@@ -21,18 +21,19 @@ class Point
   @interpolate: (pt1, pt2, pos) ->
     args = []; args[i] = v for v,i in arguments
 
-    if @isPoint args[0] then pt1 = args.shift()
-    else if @isFloat(args[0]) and @isFloat(args[1])
-      pt1 = new Point args[0], args[1]
-      args.splice 0, 2
-    else @missingPoint(args, 'first')
+    # Utility function that extract a point from `args`
+    # and removes the values it used from it.
+    extract = (args, name) =>
+      pt = null
+      if @isPoint args[0] then pt = args.shift()
+      else if @isFloat(args[0]) and @isFloat(args[1])
+        pt = new Point args[0], args[1]
+        args.splice 0, 2
+      else @missingPoint args, name
+      pt
 
-    if @isPoint args[0] then pt2 = args.shift()
-    else if @isFloat(args[0]) and @isFloat(args[1])
-      pt2 = new Point args[0], args[1]
-      args.splice 0, 2
-    else @missingPoint(args, 'second')
-
+    pt1 = extract args, 'first'
+    pt2 = extract args, 'second'
     pos = parseFloat args.shift()
     @missingPosition pos if isNaN pos
 
