@@ -33,7 +33,7 @@ class Matrix
     ]
     this
 
-  skew: (x, y) ->
+  skew: (x=0, y=0) ->
     [x, y] = [x*Matrix.DEG_TO_RAD, y*Matrix.DEG_TO_RAD]
     @append Math.cos(y),
             Math.sin(y),

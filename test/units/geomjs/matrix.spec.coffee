@@ -149,4 +149,14 @@ describe 'Matrix', ->
     it 'should return this instance', ->
       expect(@m1).toBe(@m2)
 
+    describe 'with a matrix', ->
+      it 'should prepend the matrix', ->
+        expect(matrix.transformed().skew(-2, 2))
+          .toBeSameMatrix(matrix.skewed())
+
+    describe 'without arguments', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.transformed().skew())
+          .toBeSameMatrix(matrix.transformed())
+
 
