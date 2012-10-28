@@ -24,4 +24,6 @@ class Matrix
   invalidMatrixArguments: (args) ->
     throw new Error "Invalid arguments #{args} for a Matrix"
 
+  clone: -> new Matrix this
+
 module.exports = Matrix

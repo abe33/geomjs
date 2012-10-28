@@ -27,3 +27,7 @@ describe 'Matrix', ->
       it 'should initialize an identity matrix', ->
         expect(matrix null).toBeIdentity()
 
+  describe '::clone called', ->
+    it 'should return a copy of the matrix', ->
+      expect(@matrix.clone()).toBeSameMatrix(@matrix)
+
