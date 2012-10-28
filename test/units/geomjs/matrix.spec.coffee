@@ -30,4 +30,12 @@ describe 'Matrix', ->
     it 'should return a copy of the matrix', ->
       expect(matrix.transformed().clone()).toBeSameMatrix(matrix.transformed())
 
+  describe '::inverse', ->
+    it 'should return the inverse of the matrix', ->
+      m1 = matrix.transformed().inverse()
+      m2 = matrix.inverted()
+
+      expect(m1).toBeSameMatrix(m2)
+
+
 

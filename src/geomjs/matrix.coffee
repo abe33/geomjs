@@ -12,6 +12,17 @@ class Matrix
     else
       @invalidMatrixArguments [a, b, c, d, tx, ty]
 
+  inverse: ->
+    n = @a * @d - @b * @c
+    new Matrix(
+      @d / n,
+      -@b / n,
+      -@c / n,
+      @a / n,
+      (@c*@ty - @d*@tx) / n,
+      -(@a*@ty - @b*@tx) / n
+    )
+
   asFloat: (floats...) ->
     floats[i] = parseFloat n for n,i in floats
     floats
