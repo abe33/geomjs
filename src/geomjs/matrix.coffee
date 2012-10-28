@@ -5,12 +5,7 @@ class Matrix
     true
 
   constructor: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
-    if @isMatrix a
-      {@a, @b, @c, @d, @tx, @ty} = a
-    else if @isFloat a, b, c, d, tx, ty
-      [@a, @b, @c, @d, @tx, @ty] = @asFloat a, b, c, d, tx, ty
-    else
-      @invalidMatrixArguments [a, b, c, d, tx, ty]
+    [@a, @b, @c, @d, @tx, @ty] = @matrixFrom a, b, c, d, tx, ty
 
   translate: (x=0, y=0) ->
     @tx += x
@@ -38,6 +33,7 @@ class Matrix
     this
 
   append: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
+    [a, b, c, d, tx, ty] = @matrixFrom a, b, c, d, tx, ty
     [@a, @b, @c, @d, @tx, @ty] = [
        a*@a + b*@c
        a*@b + b*@d
@@ -65,6 +61,14 @@ class Matrix
   asFloat: (floats...) ->
     floats[i] = parseFloat n for n,i in floats
     floats
+
+  matrixFrom: (a, b, c, d, tx, ty) ->
+    if @isMatrix a
+      {a, b, c, d, tx, ty} = a
+    else unless @isFloat a, b, c, d, tx, ty
+      @invalidMatrixArguments [a, b, c, d, tx, ty]
+
+    @asFloat a, b, c, d, tx, ty
 
   isMatrix: (m) -> Matrix.isMatrix m
   isFloat: (floats...) ->

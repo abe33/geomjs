@@ -108,4 +108,8 @@ describe 'Matrix', ->
       it 'should not modify the matrix', ->
         expect(matrix.identity().append()).toBeIdentity()
 
+    describe 'with a matrix', ->
+      it 'should append the matrix', ->
+        expect(matrix.transformed().append(matrix 6, 5, 4, 3, 2, 1))
+          .toBeSameMatrix(matrix.appended())
 
