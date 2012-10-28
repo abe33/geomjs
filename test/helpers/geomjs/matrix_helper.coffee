@@ -2,6 +2,10 @@ Matrix = require '../../../lib/geomjs/matrix'
 
 global.matrix = (a, b, c, d, tx, ty) -> new Matrix a, b, c, d, tx, ty
 
+matrix.identity = -> new Matrix
+matrix.transformed = -> new Matrix 1, 2, 3, 4, 5, 6
+matrix.inverted = -> new Matrix -2, 1, 1.5, -0.5, 1, -2
+
 global.addMatrixMatchers = (scope) ->
   scope.addMatchers
     toBeSameMatrix: (m) ->
