@@ -42,6 +42,8 @@ class Point
 
   angle: -> Math.radToDeg Math.atan2 @y, @x
 
+  equals: (o) -> o? and o.x is @x and o.y is @y
+
   angleWith: (x, y) ->
     @noPoint 'dot' if not x? and not y?
     [x, y] = @coordsFrom x, y, true

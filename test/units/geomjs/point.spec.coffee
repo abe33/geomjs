@@ -58,6 +58,16 @@ describe 'Point', ->
       it 'should return the angle in degrees of the current vector', ->
         expect(point(0,10).angle()).toBe(90)
 
+  describe '::equals called', ->
+    describe 'with a point-like object', ->
+      describe 'that is equal to the current point', ->
+        it 'should return true', ->
+          expect(point().equals(pointLike(0,0))).toBeTruthy()
+      describe 'that is not equal to the current point', ->
+        it 'should return false', ->
+          expect(point().equals(pointLike(1,1))).toBeFalsy()
+
+
   pointOperator('add')
     .with(2,3).and(4,5)
     .where
