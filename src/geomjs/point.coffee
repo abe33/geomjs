@@ -69,6 +69,10 @@ class Point
     @y = y if typeof y is 'number'
     this
 
+  scale: (n) ->
+    @invalidScale n unless @isFloat n
+    new Point @x * n, @y * n
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x
@@ -85,6 +89,7 @@ class Point
     [x,y]
 
   isPoint: (pt) -> Point.isPoint pt
+  isFloat: (n) -> Point.isFloat n
 
   notAPoint: (pt) ->
     throw new Error "#{pt} isn't a point-like object"
@@ -92,6 +97,9 @@ class Point
     throw new Error "#{method} was called without arguments"
   invalidLength: (l) ->
     throw new Error "Invalid length #{l} provided"
+  invalidScale: (s) ->
+    throw new Error "Invalid scale #{s} provided"
+
 
   clone: -> new Point this
   toString: -> "[object Point(#{@x},#{@y})]"

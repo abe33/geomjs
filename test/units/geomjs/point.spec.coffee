@@ -103,6 +103,30 @@ describe 'Point', ->
       expect(result).toBePoint(4,2)
       expect(result).toBeSamePoint(@point)
 
+
+  describe '::scale called', ->
+    describe 'with a number', ->
+      describe 'that is positive', ->
+        it 'should return a new scaled point', ->
+          expect(point(1,2).scale(2)).toBePoint(2,4)
+
+      describe 'that is negative', ->
+        it 'should return a new scaled point with negative coordinates', ->
+          expect(point(1,2).scale(-2)).toBePoint(-2,-4)
+
+    describe 'with a string', ->
+      describe 'that contains a number', ->
+        it 'should return a new scaled point', ->
+          expect(point(1,2).scale('2')).toBePoint(2,4)
+
+      describe 'that not contains a number', ->
+        it 'should throw an error', ->
+          expect(-> point(1,2).scale('foo')).toThrow()
+
+    describe 'without arguments', ->
+      it 'should throw an error', ->
+        expect(-> point(1,2).scale()).toThrow()
+
   describe '::normalize called', ->
     describe 'on a point with a length of 0', ->
       it 'should return a new point of length 0', ->
@@ -301,4 +325,3 @@ describe 'Point', ->
       describe 'with no arguments', ->
         it 'should throw an error', ->
           expect(-> Point.interpolate()).toThrow()
-
