@@ -103,6 +103,12 @@ describe 'Point', ->
       expect(result).toBePoint(4,2)
       expect(result).toBeSamePoint(@point)
 
+  describe '::rotate called', ->
+    describe 'with a number', ->
+      it 'should return a new point rotated around the origin', ->
+        pt = point 10, 0
+        pt2 = pt.rotate 90
+        expect(pt2).toBePoint(0, 10)
 
   describe '::scale called', ->
     describe 'with a number', ->

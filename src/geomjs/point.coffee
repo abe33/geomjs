@@ -73,6 +73,13 @@ class Point
     @invalidScale n unless @isFloat n
     new Point @x * n, @y * n
 
+  rotate: (n)->
+    l = @length()
+    a = Math.atan2(@y, @x) + n / 180 * Math.PI
+    x = Math.cos(a) * l
+    y = Math.sin(a) * l
+    new Point x, y
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x
