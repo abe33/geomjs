@@ -13,8 +13,8 @@ describe 'Matrix', ->
         expect(@matrix).toBeIdentity()
 
     describe 'with another matrix', ->
-      it 'should initialize the matrix in the same state as the argument', ->
-        m1 = matrix 0.1, 0.2, 0.3, 0.4, 0.5, 0.6
+      it 'should initialize the matrix in the same state as the arguments', ->
+        m1 = matrix 1, 2, 3, 4, 5, 6
         m2 = matrix m1
 
         expect(m2).toBeSameMatrix(m1)
