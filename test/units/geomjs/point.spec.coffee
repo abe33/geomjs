@@ -128,6 +128,37 @@ describe 'Point', ->
     describe 'with null', ->
       it 'should throw an error', ->
         expect(-> point(10,0).rotate(null)).toThrow()
+
+  describe '::rotateAround called', ->
+    describe 'with a point and a number', ->
+      it 'should return a new point rotated around the given point', ->
+        pt1 = point 10, 0
+        pt2 = point 20, 0
+        pt3 = pt1.rotateAround pt2, 90
+        expect(pt3).toBePoint(20, -10)
+
+    describe 'with three numbers', ->
+      it 'should return a new point rotated around the given coordinates', ->
+        pt1 = point 10, 0
+        pt2 = pt1.rotateAround 20, 0, 90
+        expect(pt2).toBePoint(20, -10)
+
+    describe 'with a point and a string', ->
+      describe 'containing a number', ->
+        it 'should return a new point rotated around the given point', ->
+          pt1 = point 10, 0
+          pt2 = point 20, 0
+          pt3 = pt1.rotateAround pt2, '90'
+          expect(pt3).toBePoint(20, -10)
+
+    describe 'with two numbers', ->
+      it 'should throw an error', ->
+        expect(-> point(1,2).rotateAround(10,1)).toThrow()
+
+    describe 'with only a point', ->
+      it 'should throw an error', ->
+        expect(-> point(1,2).rotateAround(point())).toThrow()
+
   describe '::scale called', ->
     describe 'with a number', ->
       describe 'that is positive', ->

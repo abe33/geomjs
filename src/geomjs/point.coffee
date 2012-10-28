@@ -81,6 +81,12 @@ class Point
     y = Math.sin(a) * l
     new Point x, y
 
+  rotateAround: (x, y, a) ->
+    a = y if @isPoint x
+    [x, y] = @coordsFrom x, y, true
+
+    @subtract(x,y).rotate(a).add(x,y)
+
   coordsFrom: (x, y, strict=false) ->
     if typeof x is 'object'
       @notAPoint x if strict and not @isPoint x
@@ -109,8 +115,6 @@ class Point
     throw new Error "Invalid scale #{s} provided"
   invalidRotation: (a) ->
     throw new Error "Invalid rotation #{a} provided"
-
-
 
   clone: -> new Point this
   toString: -> "[object Point(#{@x},#{@y})]"
