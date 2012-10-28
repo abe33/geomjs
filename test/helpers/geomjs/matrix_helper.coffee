@@ -27,6 +27,16 @@ matrix.appended = ->
     2*2 + 1*4 + 6,
   )
 
+matrix.prepended = ->
+  new Matrix(
+    1*6 + 2*4
+    1*5 + 2*3
+    3*6 + 4*4
+    3*5 + 4*3
+    5*6 + 6*4 + 2
+    5*5 + 6*3 + 1
+  )
+
 global.addMatrixMatchers = (scope) ->
   scope.addMatchers
     toBeSameMatrix: (m) ->

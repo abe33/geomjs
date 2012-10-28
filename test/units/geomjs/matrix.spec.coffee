@@ -113,3 +113,29 @@ describe 'Matrix', ->
         expect(matrix.transformed().append(matrix 6, 5, 4, 3, 2, 1))
           .toBeSameMatrix(matrix.appended())
 
+  describe '::prepend called', ->
+    beforeEach ->
+      @m1 = matrix.transformed()
+      @m2 = @m1.prepend(6, 5, 4, 3, 2, 1)
+      @m3 = matrix.prepended()
+
+    it 'should prepend the matrix', ->
+      expect(@m1).toBeSameMatrix(@m3)
+    it 'should return this instance', ->
+      expect(@m1).toBe(@m2)
+
+    describe 'without arguments', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.identity().prepend()).toBeIdentity()
+
+    describe 'with a matrix', ->
+      it 'should prepend the matrix', ->
+        expect(matrix.transformed().prepend(matrix 6, 5, 4, 3, 2, 1))
+          .toBeSameMatrix(matrix.prepended())
+
+    describe 'with an identity matrix', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.transformed().prepend(matrix.identity()))
+          .toBeSameMatrix(matrix.transformed())
+
+
