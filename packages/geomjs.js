@@ -4,18 +4,25 @@
 
   this.geomjs || (this.geomjs = {});
 
+  /* src/geomjs/math.coffee */;
+
+
+  Math.degToRad = function(n) {
+    return n * Math.PI / 180;
+  };
+
+  Math.radToDeg = function(n) {
+    return n * 180 / Math.PI;
+  };
+
   /* src/geomjs/matrix.coffee */;
 
 
-  /* src/geomjs/matrix.coffee<Matrix> line:1 */;
+  /* src/geomjs/matrix.coffee<Matrix> line:2 */;
 
 
   Matrix = (function() {
-
-    Matrix.DEG_TO_RAD = Math.PI / 180;
-
     /* src/geomjs/matrix.coffee<Matrix.isMatrix> line:3 */;
-
 
     Matrix.isMatrix = function(m) {
       var k, _i, _len, _ref;
@@ -115,7 +122,7 @@
       if (y == null) {
         y = 0;
       }
-      _ref = [x * Matrix.DEG_TO_RAD, y * Matrix.DEG_TO_RAD], x = _ref[0], y = _ref[1];
+      _ref = [Math.degToRad(x), Math.degToRad(y)], x = _ref[0], y = _ref[1];
       return this.append(Math.cos(y), Math.sin(y), -Math.sin(x), Math.cos(x));
     };
 
@@ -273,11 +280,11 @@
   /* src/geomjs/point.coffee */;
 
 
-  /* src/geomjs/point.coffee<Point> line:1 */;
+  /* src/geomjs/point.coffee<Point> line:2 */;
 
 
   Point = (function() {
-    /* src/geomjs/point.coffee<Point.isPoint> line:2 */;
+    /* src/geomjs/point.coffee<Point.isPoint> line:3 */;
 
     Point.isPoint = function(pt) {
       return (pt != null) && (pt.x != null) && (pt.y != null);
@@ -287,7 +294,7 @@
       return !isNaN(parseFloat(n));
     };
 
-    /* src/geomjs/point.coffee<Point.polar> line:5 */;
+    /* src/geomjs/point.coffee<Point.polar> line:6 */;
 
 
     Point.polar = function(angle, length) {
@@ -328,21 +335,21 @@
       return new Point(pt1.x + dif.x * pos, pt1.y + dif.y * pos);
     };
 
-    /* src/geomjs/point.coffee<Point.missingPosition> line:30 */;
+    /* src/geomjs/point.coffee<Point.missingPosition> line:31 */;
 
 
     Point.missingPosition = function(pos) {
       throw new Error("Point.interpolate require a position but " + pos + " was given");
     };
 
-    /* src/geomjs/point.coffee<Point.pointNotFound> line:32 */;
+    /* src/geomjs/point.coffee<Point.pointNotFound> line:33 */;
 
 
     Point.pointNotFound = function(args, pos) {
       throw new Error("Can't find the " + pos + " point in Point.interpolate arguments " + args);
     };
 
-    /* src/geomjs/point.coffee<Point::constructor> line:35 */;
+    /* src/geomjs/point.coffee<Point::constructor> line:36 */;
 
 
     function Point(x, y) {
@@ -351,14 +358,34 @@
       _ref1 = this.defaultToZero(x, y), this.x = _ref1[0], this.y = _ref1[1];
     }
 
-    /* src/geomjs/point.coffee<Point::length> line:39 */;
+    /* src/geomjs/point.coffee<Point::length> line:40 */;
 
 
     Point.prototype.length = function() {
       return Math.sqrt((this.x * this.x) + (this.y * this.y));
     };
 
-    /* src/geomjs/point.coffee<Point::normalize> line:41 */;
+    /* src/geomjs/point.coffee<Point::angle> line:42 */;
+
+
+    Point.prototype.angle = function() {
+      return Math.radToDeg(Math.atan2(this.y, this.x));
+    };
+
+    /* src/geomjs/point.coffee<Point::angleWith> line:44 */;
+
+
+    Point.prototype.angleWith = function(x, y) {
+      var d, _ref;
+      if (!(x != null) && !(y != null)) {
+        this.noPoint('dot');
+      }
+      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
+      d = this.normalize().dot(new Point(x, y).normalize());
+      return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
+    };
+
+    /* src/geomjs/point.coffee<Point::normalize> line:52 */;
 
 
     Point.prototype.normalize = function(length) {
@@ -373,7 +400,7 @@
       return new Point(this.x / l * length, this.y / l * length);
     };
 
-    /* src/geomjs/point.coffee<Point::add> line:46 */;
+    /* src/geomjs/point.coffee<Point::add> line:57 */;
 
 
     Point.prototype.add = function(x, y) {
@@ -383,7 +410,7 @@
       return new Point(this.x + x, this.y + y);
     };
 
-    /* src/geomjs/point.coffee<Point::subtract> line:51 */;
+    /* src/geomjs/point.coffee<Point::subtract> line:62 */;
 
 
     Point.prototype.subtract = function(x, y) {
@@ -393,7 +420,7 @@
       return new Point(this.x - x, this.y - y);
     };
 
-    /* src/geomjs/point.coffee<Point::dot> line:56 */;
+    /* src/geomjs/point.coffee<Point::dot> line:67 */;
 
 
     Point.prototype.dot = function(x, y) {
@@ -405,7 +432,7 @@
       return this.x * x + this.y * y;
     };
 
-    /* src/geomjs/point.coffee<Point::distance> line:61 */;
+    /* src/geomjs/point.coffee<Point::distance> line:72 */;
 
 
     Point.prototype.distance = function(x, y) {
@@ -417,7 +444,7 @@
       return this.subtract(x, y).length();
     };
 
-    /* src/geomjs/point.coffee<Point::paste> line:66 */;
+    /* src/geomjs/point.coffee<Point::paste> line:77 */;
 
 
     Point.prototype.paste = function(x, y) {
@@ -432,7 +459,7 @@
       return this;
     };
 
-    /* src/geomjs/point.coffee<Point::scale> line:72 */;
+    /* src/geomjs/point.coffee<Point::scale> line:83 */;
 
 
     Point.prototype.scale = function(n) {
@@ -442,7 +469,34 @@
       return new Point(this.x * n, this.y * n);
     };
 
-    /* src/geomjs/point.coffee<Point::coordsFrom> line:76 */;
+    /* src/geomjs/point.coffee<Point::rotate> line:87 */;
+
+
+    Point.prototype.rotate = function(n) {
+      var a, l, x, y;
+      if (!this.isFloat(n)) {
+        this.invalidRotation(n);
+      }
+      l = this.length();
+      a = Math.atan2(this.y, this.x) + Math.degToRad(n);
+      x = Math.cos(a) * l;
+      y = Math.sin(a) * l;
+      return new Point(x, y);
+    };
+
+    /* src/geomjs/point.coffee<Point::rotateAround> line:95 */;
+
+
+    Point.prototype.rotateAround = function(x, y, a) {
+      var _ref;
+      if (this.isPoint(x)) {
+        a = y;
+      }
+      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
+      return this.subtract(x, y).rotate(a).add(x, y);
+    };
+
+    /* src/geomjs/point.coffee<Point::coordsFrom> line:101 */;
 
 
     Point.prototype.coordsFrom = function(x, y, strict) {
@@ -467,7 +521,7 @@
       return [x, y];
     };
 
-    /* src/geomjs/point.coffee<Point::defaultToZero> line:86 */;
+    /* src/geomjs/point.coffee<Point::defaultToZero> line:111 */;
 
 
     Point.prototype.defaultToZero = function(x, y) {
@@ -476,56 +530,63 @@
       return [x, y];
     };
 
-    /* src/geomjs/point.coffee<Point::isPoint> line:91 */;
+    /* src/geomjs/point.coffee<Point::isPoint> line:116 */;
 
 
     Point.prototype.isPoint = function(pt) {
       return Point.isPoint(pt);
     };
 
-    /* src/geomjs/point.coffee<Point::isFloat> line:92 */;
+    /* src/geomjs/point.coffee<Point::isFloat> line:117 */;
 
 
     Point.prototype.isFloat = function(n) {
       return Point.isFloat(n);
     };
 
-    /* src/geomjs/point.coffee<Point::notAPoint> line:94 */;
+    /* src/geomjs/point.coffee<Point::notAPoint> line:119 */;
 
 
     Point.prototype.notAPoint = function(pt) {
       throw new Error("" + pt + " isn't a point-like object");
     };
 
-    /* src/geomjs/point.coffee<Point::noPoint> line:96 */;
+    /* src/geomjs/point.coffee<Point::noPoint> line:121 */;
 
 
     Point.prototype.noPoint = function(method) {
       throw new Error("" + method + " was called without arguments");
     };
 
-    /* src/geomjs/point.coffee<Point::invalidLength> line:98 */;
+    /* src/geomjs/point.coffee<Point::invalidLength> line:123 */;
 
 
     Point.prototype.invalidLength = function(l) {
       throw new Error("Invalid length " + l + " provided");
     };
 
-    /* src/geomjs/point.coffee<Point::invalidScale> line:100 */;
+    /* src/geomjs/point.coffee<Point::invalidScale> line:125 */;
 
 
     Point.prototype.invalidScale = function(s) {
       throw new Error("Invalid scale " + s + " provided");
     };
 
-    /* src/geomjs/point.coffee<Point::clone> line:104 */;
+    /* src/geomjs/point.coffee<Point::invalidRotation> line:127 */;
+
+
+    Point.prototype.invalidRotation = function(a) {
+      throw new Error("Invalid rotation " + a + " provided");
+    };
+
+    /* src/geomjs/point.coffee<Point::clone> line:130 */;
 
 
     Point.prototype.clone = function() {
       return new Point(this);
     };
 
-    /* src/geomjs/point.coffee<Point::toString> line:105 */;
+    /* src/geomjs/point.coffee<Point::toString> line:131 */;
 
 
     Point.prototype.toString = function() {
