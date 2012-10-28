@@ -116,6 +116,8 @@ class Point
 
     @subtract(x,y).rotate(a).add(x,y)
 
+  isPoint: (pt) -> Point.isPoint pt
+  isFloat: (n) -> Point.isFloat n
   coordsFrom: (xOrPt, y, strict) -> Point.coordsFrom xOrPt, y, strict
 
   defaultToZero: (x, y) ->
@@ -123,9 +125,9 @@ class Point
     y = if isNaN y then 0 else y
     [x,y]
 
-  isPoint: (pt) -> Point.isPoint pt
-  isFloat: (n) -> Point.isFloat n
+  clone: -> new Point this
 
+  toString: -> "[object Point(#{@x},#{@y})]"
   noPoint: (method) ->
     throw new Error "#{method} was called without arguments"
   invalidLength: (l) ->
@@ -134,9 +136,5 @@ class Point
     throw new Error "Invalid scale #{s} provided"
   invalidRotation: (a) ->
     throw new Error "Invalid rotation #{a} provided"
-
-  clone: -> new Point this
-  toString: -> "[object Point(#{@x},#{@y})]"
-
 
 module.exports = Point
