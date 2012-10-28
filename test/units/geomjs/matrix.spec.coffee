@@ -30,7 +30,7 @@ describe 'Matrix', ->
     it 'should return a copy of the matrix', ->
       expect(matrix.transformed().clone()).toBeSameMatrix(matrix.transformed())
 
-  describe '::inverse', ->
+  describe '::inverse called', ->
     beforeEach ->
       @m1 = matrix.transformed()
       @m2 = @m1.inverse()
@@ -40,7 +40,7 @@ describe 'Matrix', ->
     it 'should return this instance', ->
       expect(@m1).toBe(@m2)
 
-  describe '::identity', ->
+  describe '::identity called', ->
     beforeEach ->
       @m1 = matrix.transformed()
       @m2 = @m1.identity()
