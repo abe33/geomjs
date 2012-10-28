@@ -4,6 +4,16 @@ class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
   @isFloat = (n) -> not isNaN parseFloat n
 
+  @coordsFrom: (x, y, strict=false) ->
+    if typeof x is 'object'
+      @notAPoint x if strict and not @isPoint x
+      {x,y} = x if x?
+
+    x = parseFloat x if typeof x is 'string'
+    y = parseFloat y if typeof y is 'string'
+
+    [x,y]
+
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
 
@@ -33,6 +43,9 @@ class Point
     throw new Error "Point.interpolate require a position but #{pos} was given"
   @missingPoint: (args, pos) ->
     throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
+
+  @notAPoint: (pt) ->
+    throw new Error "#{pt} isn't a point-like object"
 
   constructor: (x, y) ->
     [x,y] = @coordsFrom x, y
@@ -101,15 +114,7 @@ class Point
 
     @subtract(x,y).rotate(a).add(x,y)
 
-  coordsFrom: (x, y, strict=false) ->
-    if typeof x is 'object'
-      @notAPoint x if strict and not @isPoint x
-      {x,y} = x if x?
-
-    x = parseFloat x if typeof x is 'string'
-    y = parseFloat y if typeof y is 'string'
-
-    [x,y]
+  coordsFrom: (x, y, strict) -> Point.coordsFrom x, y, strict
 
   defaultToZero: (x,y) ->
     x = if isNaN x then 0 else x
@@ -119,8 +124,6 @@ class Point
   isPoint: (pt) -> Point.isPoint pt
   isFloat: (n) -> Point.isFloat n
 
-  notAPoint: (pt) ->
-    throw new Error "#{pt} isn't a point-like object"
   noPoint: (method) ->
     throw new Error "#{method} was called without arguments"
   invalidLength: (l) ->
