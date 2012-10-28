@@ -37,6 +37,16 @@ class Matrix
     ]
     this
 
+  append: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
+    [@a, @b, @c, @d, @tx, @ty] = [
+       a*@a + b*@c
+       a*@b + b*@d
+       c*@a + d*@c
+       c*@b + d*@d
+      tx*@a + ty*@c + @tx
+      tx*@b + ty*@d + @ty
+    ]
+    this
 
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 

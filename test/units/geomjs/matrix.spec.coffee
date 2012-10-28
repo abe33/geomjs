@@ -93,5 +93,19 @@ describe 'Matrix', ->
       it 'should not modify the matrix', ->
         expect(matrix.identity().rotate()).toBeIdentity()
 
+  describe '::append called', ->
+    beforeEach ->
+      @m1 = matrix.transformed()
+      @m2 = @m1.append(6, 5, 4, 3, 2, 1)
+      @m3 = matrix.appended()
+
+    it 'should append the matrix', ->
+      expect(@m1).toBeSameMatrix(@m3)
+    it 'should return this instance', ->
+      expect(@m1).toBe(@m2)
+
+    describe 'without arguments', ->
+      it 'should not modify the matrix', ->
+        expect(matrix.identity().append()).toBeIdentity()
 
 

@@ -17,6 +17,16 @@ matrix.rotated = ->
     -4.534386715833113
   )
 
+matrix.appended = ->
+  new Matrix(
+    6*1 + 5*3,
+    6*2 + 5*4,
+    4*1 + 3*3,
+    4*2 + 3*4,
+    2*1 + 1*3 + 5,
+    2*2 + 1*4 + 6,
+  )
+
 global.addMatrixMatchers = (scope) ->
   scope.addMatchers
     toBeSameMatrix: (m) ->
