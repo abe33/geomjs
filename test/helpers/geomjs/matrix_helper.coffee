@@ -1,5 +1,7 @@
 Matrix = require '../../../lib/geomjs/matrix'
 
+DEG_TO_RAD = Math.PI / 180
+
 global.matrix = (a, b, c, d, tx, ty) -> new Matrix a, b, c, d, tx, ty
 
 matrix.identity = -> new Matrix
@@ -35,6 +37,22 @@ matrix.prepended = ->
     3*5 + 4*3
     5*6 + 6*4 + 2
     5*5 + 6*3 + 1
+  )
+
+matrix.skewed = ->
+  [a,b,c,d] = [
+    Math.cos 2 * DEG_TO_RAD
+    Math.sin 2 * DEG_TO_RAD
+    -Math.sin -2 * DEG_TO_RAD
+    Math.cos -2 * DEG_TO_RAD
+  ]
+  new Matrix(
+    a*1 + b*3,
+    a*2 + b*4,
+    c*1 + d*3,
+    c*2 + d*4,
+    5,
+    6,
   )
 
 global.addMatrixMatchers = (scope) ->

@@ -1,4 +1,5 @@
 class Matrix
+  @DEG_TO_RAD: Math.PI / 180
   @isMatrix: (m) ->
     return false unless m?
     return false for k in ['a', 'b', 'c', 'd', 'tx', 'ty'] when not m[k]?
@@ -32,6 +33,13 @@ class Matrix
     ]
     this
 
+  skew: (x, y) ->
+    [x, y] = [x*Matrix.DEG_TO_RAD, y*Matrix.DEG_TO_RAD]
+    @append Math.cos(y),
+            Math.sin(y),
+            -Math.sin(x),
+            Math.cos(x)
+
   append: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
     [a, b, c, d, tx, ty] = @matrixFrom a, b, c, d, tx, ty
     [@a, @b, @c, @d, @tx, @ty] = [
@@ -59,7 +67,6 @@ class Matrix
       @tx*b + @ty*d + ty
     ]
     this
-
 
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 
