@@ -1,13 +1,21 @@
 require './math'
 
+PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
+
 class Matrix
+
   @isMatrix: (m) ->
     return false unless m?
-    return false for k in ['a', 'b', 'c', 'd', 'tx', 'ty'] when not m[k]?
+    return false for k in PROPERTIES when not m[k]?
     true
 
   constructor: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
     [@a, @b, @c, @d, @tx, @ty] = @matrixFrom a, b, c, d, tx, ty
+
+  equals: (o) ->
+    return false unless o?
+    return false for k in PROPERTIES when o[k] isnt @[k]
+    true
 
   translate: (x=0, y=0) ->
     @tx += x

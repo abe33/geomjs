@@ -30,6 +30,17 @@ describe 'Matrix', ->
     it 'should return a copy of the matrix', ->
       expect(matrix.transformed().clone()).toBeSameMatrix(matrix.transformed())
 
+  describe '::equals called', ->
+    describe 'with a matrix', ->
+      describe 'equal to the current matrix', ->
+        it 'should return true', ->
+          expect(matrix().equals(matrix())).toBeTruthy()
+
+      describe 'not equal to the current matrix', ->
+        it 'should return false', ->
+          expect(matrix().equals(matrix.transformed())).toBeFalsy()
+
+
   describe '::inverse called', ->
     beforeEach ->
       @m1 = matrix.transformed()
