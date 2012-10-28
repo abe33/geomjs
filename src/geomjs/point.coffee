@@ -10,8 +10,8 @@ class Point
       @notAPoint xOrPt if strict and not @isPoint xOrPt
       {x,y} = xOrPt if xOrPt?
 
-    x = parseFloat x if typeof x is 'string'
-    y = parseFloat y if typeof y is 'string'
+    x = parseFloat x
+    y = parseFloat y
 
     [x,y]
 
@@ -93,8 +93,8 @@ class Point
 
   paste: (xOrPt, y) ->
     [x,y] = @coordsFrom xOrPt, y
-    @x = x if typeof x is 'number'
-    @y = y if typeof y is 'number'
+    @x = x unless isNaN x
+    @y = y unless isNaN y
     this
 
   scale: (n) ->
