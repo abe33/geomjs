@@ -5,16 +5,15 @@ Matrix = require '../../../lib/geomjs/matrix'
 describe 'Matrix', ->
   beforeEach ->
     addMatrixMatchers this
-    @matrix = matrix()
 
   describe 'when instanciated', ->
     describe 'without arguments', ->
       it 'should initialize an identity matrix', ->
-        expect(@matrix).toBeIdentity()
+        expect(matrix.identity()).toBeIdentity()
 
     describe 'with another matrix', ->
       it 'should initialize the matrix in the same state as the arguments', ->
-        m1 = matrix 1, 2, 3, 4, 5, 6
+        m1 = matrix.transformed()
         m2 = matrix m1
 
         expect(m2).toBeSameMatrix(m1)
@@ -29,5 +28,6 @@ describe 'Matrix', ->
 
   describe '::clone called', ->
     it 'should return a copy of the matrix', ->
-      expect(@matrix.clone()).toBeSameMatrix(@matrix)
+      expect(matrix.transformed().clone()).toBeSameMatrix(matrix.transformed())
+
 
