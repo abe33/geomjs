@@ -21,7 +21,7 @@ global.addPointMatchers = (scope) ->
          #{if @isNot then " not" else ""}
          to be a point with x=#{x} and y=#{y}".squeeze()
 
-      @actual.x is x and @actual.y is y
+      equalEnough(@actual.x, x) and equalEnough(@actual.y, y)
 
     toBeSamePoint: (pt) ->
       @message = ->
