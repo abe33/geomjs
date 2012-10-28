@@ -1,3 +1,5 @@
+require './math'
+
 class Point
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
   @isFloat = (n) -> not isNaN parseFloat n
@@ -38,7 +40,7 @@ class Point
 
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
-  angle: -> Math.atan2(@y, @x) * 180 / Math.PI
+  angle: -> Math.radToDeg Math.atan2 @y, @x
 
   angleWith: (x, y) ->
     @noPoint 'dot' if not x? and not y?
@@ -46,7 +48,7 @@ class Point
 
     d = @normalize().dot new Point(x,y).normalize()
 
-    Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1) * 180 / Math.PI
+    Math.radToDeg Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
 
   normalize: (length=1) ->
     @invalidLength length if isNaN parseFloat length
@@ -86,7 +88,7 @@ class Point
   rotate: (n) ->
     @invalidRotation n unless @isFloat n
     l = @length()
-    a = Math.atan2(@y, @x) + n / 180 * Math.PI
+    a = Math.atan2(@y, @x) + Math.degToRad(n)
     x = Math.cos(a) * l
     y = Math.sin(a) * l
     new Point x, y

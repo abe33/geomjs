@@ -1,5 +1,6 @@
+require './math'
+
 class Matrix
-  @DEG_TO_RAD: Math.PI / 180
   @isMatrix: (m) ->
     return false unless m?
     return false for k in ['a', 'b', 'c', 'd', 'tx', 'ty'] when not m[k]?
@@ -34,7 +35,7 @@ class Matrix
     this
 
   skew: (x=0, y=0) ->
-    [x, y] = [x*Matrix.DEG_TO_RAD, y*Matrix.DEG_TO_RAD]
+    [x, y] = [Math.degToRad(x), Math.degToRad(y)]
     @append Math.cos(y),
             Math.sin(y),
             -Math.sin(x),
