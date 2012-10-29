@@ -1,5 +1,5 @@
 (function() {
-  var Matrix, Point,
+  var Matrix, Point, Rectangle,
     __slice = [].slice;
 
   this.geomjs || (this.geomjs = {});
@@ -15,31 +15,382 @@
     return n * 180 / Math.PI;
   };
 
+  /* src/geomjs/point.coffee */;
+
+
+  /* src/geomjs/point.coffee<Point> line:18 */;
+
+
+  Point = (function() {
+    /* src/geomjs/point.coffee<Point.isPoint> line:30 */;
+
+    Point.isPoint = function(pt) {
+      return (pt != null) && (pt.x != null) && (pt.y != null);
+    };
+
+    Point.isFloat = function(n) {
+      return !isNaN(parseFloat(n));
+    };
+
+    /* src/geomjs/point.coffee<Point.coordsFrom> line:73 */;
+
+
+    Point.coordsFrom = function(xOrPt, y, strict) {
+      var x;
+      if (strict == null) {
+        strict = false;
+      }
+      x = xOrPt;
+      if ((xOrPt != null) && typeof xOrPt === 'object') {
+        x = xOrPt.x, y = xOrPt.y;
+      }
+      x = parseFloat(x);
+      y = parseFloat(y);
+      if (strict && (isNaN(x) || isNaN(y))) {
+        this.notAPoint([x, y]);
+      }
+      return [x, y];
+    };
+
+    /* src/geomjs/point.coffee<Point.polar> line:89 */;
+
+
+    Point.polar = function(angle, length) {
+      if (length == null) {
+        length = 1;
+      }
+      return new Point(Math.sin(angle) * length, Math.cos(angle) * length);
+    };
+
+    /* src/geomjs/point.coffee<Point.interpolate> line:102 */;
+
+
+    Point.interpolate = function(pt1, pt2, pos) {
+      var args, dif, extract, i, v, _i, _len,
+        _this = this;
+      args = [];
+      for (i = _i = 0, _len = arguments.length; _i < _len; i = ++_i) {
+        v = arguments[i];
+        args[i] = v;
+      }
+      extract = function(args, name) {
+        var pt;
+        pt = null;
+        if (_this.isPoint(args[0])) {
+          pt = args.shift();
+        } else if (_this.isFloat(args[0]) && _this.isFloat(args[1])) {
+          pt = new Point(args[0], args[1]);
+          args.splice(0, 2);
+        } else {
+          _this.missingPoint(args, name);
+        }
+        return pt;
+      };
+      pt1 = extract(args, 'first');
+      pt2 = extract(args, 'second');
+      pos = parseFloat(args.shift());
+      if (isNaN(pos)) {
+        this.missingPosition(pos);
+      }
+      dif = pt2.subtract(pt1);
+      return new Point(pt1.x + dif.x * pos, pt1.y + dif.y * pos);
+    };
+
+    /* src/geomjs/point.coffee<Point.missingPosition> line:130 */;
+
+
+    Point.missingPosition = function(pos) {
+      throw new Error("Point.interpolate require a position but " + pos + " was given");
+    };
+
+    /* src/geomjs/point.coffee<Point.missingPoint> line:136 */;
+
+
+    Point.missingPoint = function(args, pos) {
+      throw new Error("Can't find the " + pos + " point in Point.interpolate arguments " + args);
+    };
+
+    /* src/geomjs/point.coffee<Point.notAPoint> line:143 */;
+
+
+    Point.notAPoint = function(pt) {
+      throw new Error("" + pt + " isn't a point-like object");
+    };
+
+    /* src/geomjs/point.coffee<Point::constructor> line:158 */;
+
+
+    function Point(xOrPt, y) {
+      var x, _ref, _ref1;
+      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref1 = this.defaultToZero(x, y), this.x = _ref1[0], this.y = _ref1[1];
+    }
+
+    /* src/geomjs/point.coffee<Point::length> line:167 */;
+
+
+    Point.prototype.length = function() {
+      return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    };
+
+    /* src/geomjs/point.coffee<Point::angle> line:174 */;
+
+
+    Point.prototype.angle = function() {
+      return Math.radToDeg(Math.atan2(this.y, this.x));
+    };
+
+    /* src/geomjs/point.coffee<Point::equals> line:183 */;
+
+
+    Point.prototype.equals = function(o) {
+      return (o != null) && o.x === this.x && o.y === this.y;
+    };
+
+    /* src/geomjs/point.coffee<Point::angleWith> line:196 */;
+
+
+    Point.prototype.angleWith = function(xOrPt, y) {
+      var d, x, _ref;
+      if (!(xOrPt != null) && !(y != null)) {
+        this.noPoint('dot');
+      }
+      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      d = this.normalize().dot(new Point(x, y).normalize());
+      return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
+    };
+
+    /* src/geomjs/point.coffee<Point::normalize> line:213 */;
+
+
+    Point.prototype.normalize = function(length) {
+      var l;
+      if (length == null) {
+        length = 1;
+      }
+      if (!this.isFloat(length)) {
+        this.invalidLength(length);
+      }
+      l = this.length();
+      return new Point(this.x / l * length, this.y / l * length);
+    };
+
+    /* src/geomjs/point.coffee<Point::add> line:228 */;
+
+
+    Point.prototype.add = function(xOrPt, y) {
+      var x, _ref, _ref1;
+      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
+      return new Point(this.x + x, this.y + y);
+    };
+
+    /* src/geomjs/point.coffee<Point::subtract> line:243 */;
+
+
+    Point.prototype.subtract = function(xOrPt, y) {
+      var x, _ref, _ref1;
+      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
+      return new Point(this.x - x, this.y - y);
+    };
+
+    /* src/geomjs/point.coffee<Point::dot> line:254 */;
+
+
+    Point.prototype.dot = function(xOrPt, y) {
+      var x, _ref;
+      if (!(xOrPt != null) && !(y != null)) {
+        this.noPoint('dot');
+      }
+      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      return this.x * x + this.y * y;
+    };
+
+    /* src/geomjs/point.coffee<Point::distance> line:265 */;
+
+
+    Point.prototype.distance = function(xOrPt, y) {
+      var x, _ref;
+      if (!(xOrPt != null) && !(y != null)) {
+        this.noPoint('dot');
+      }
+      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      return this.subtract(x, y).length();
+    };
+
+    /* src/geomjs/point.coffee<Point::paste> line:280 */;
+
+
+    Point.prototype.paste = function(xOrPt, y) {
+      var x, _ref;
+      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      if (!isNaN(x)) {
+        this.x = x;
+      }
+      if (!isNaN(y)) {
+        this.y = y;
+      }
+      return this;
+    };
+
+    /* src/geomjs/point.coffee<Point::scale> line:293 */;
+
+
+    Point.prototype.scale = function(n) {
+      if (!this.isFloat(n)) {
+        this.invalidScale(n);
+      }
+      return new Point(this.x * n, this.y * n);
+    };
+
+    /* src/geomjs/point.coffee<Point::rotate> line:305 */;
+
+
+    Point.prototype.rotate = function(n) {
+      var a, l, x, y;
+      if (!this.isFloat(n)) {
+        this.invalidRotation(n);
+      }
+      l = this.length();
+      a = Math.atan2(this.y, this.x) + Math.degToRad(n);
+      x = Math.cos(a) * l;
+      y = Math.sin(a) * l;
+      return new Point(x, y);
+    };
+
+    /* src/geomjs/point.coffee<Point::rotateAround> line:322 */;
+
+
+    Point.prototype.rotateAround = function(xOrPt, y, a) {
+      var x, _ref;
+      if (this.isPoint(xOrPt)) {
+        a = y;
+      }
+      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      return this.subtract(x, y).rotate(a).add(x, y);
+    };
+
+    /* src/geomjs/point.coffee<Point::isPoint> line:331 */;
+
+
+    Point.prototype.isPoint = function(pt) {
+      return Point.isPoint(pt);
+    };
+
+    /* src/geomjs/point.coffee<Point::isFloat> line:336 */;
+
+
+    Point.prototype.isFloat = function(n) {
+      return Point.isFloat(n);
+    };
+
+    /* src/geomjs/point.coffee<Point::coordsFrom> line:341 */;
+
+
+    Point.prototype.coordsFrom = function(xOrPt, y, strict) {
+      return Point.coordsFrom(xOrPt, y, strict);
+    };
+
+    /* src/geomjs/point.coffee<Point::defaultToZero> line:347 */;
+
+
+    Point.prototype.defaultToZero = function(x, y) {
+      x = isNaN(x) ? 0 : x;
+      y = isNaN(y) ? 0 : y;
+      return [x, y];
+    };
+
+    /* src/geomjs/point.coffee<Point::clone> line:355 */;
+
+
+    Point.prototype.clone = function() {
+      return new Point(this);
+    };
+
+    /* src/geomjs/point.coffee<Point::toString> line:360 */;
+
+
+    Point.prototype.toString = function() {
+      return "[object Point(" + this.x + "," + this.y + ")]";
+    };
+
+    /* src/geomjs/point.coffee<Point::noPoint> line:368 */;
+
+
+    Point.prototype.noPoint = function(method) {
+      throw new Error("" + method + " was called without arguments");
+    };
+
+    /* src/geomjs/point.coffee<Point::invalidLength> line:374 */;
+
+
+    Point.prototype.invalidLength = function(l) {
+      throw new Error("Invalid length " + l + " provided");
+    };
+
+    /* src/geomjs/point.coffee<Point::invalidScale> line:380 */;
+
+
+    Point.prototype.invalidScale = function(s) {
+      throw new Error("Invalid scale " + s + " provided");
+    };
+
+    /* src/geomjs/point.coffee<Point::invalidRotation> line:387 */;
+
+
+    Point.prototype.invalidRotation = function(a) {
+      throw new Error("Invalid rotation " + a + " provided");
+    };
+
+    return Point;
+
+  })();
+
   /* src/geomjs/matrix.coffee */;
 
 
-  /* src/geomjs/matrix.coffee<Matrix> line:2 */;
+  /* src/geomjs/matrix.coffee<Matrix> line:20 */;
 
 
   Matrix = (function() {
-    /* src/geomjs/matrix.coffee<Matrix.isMatrix> line:3 */;
+    var PROPERTIES;
+
+    PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty'];
+
+    /* src/geomjs/matrix.coffee<Matrix.isMatrix> line:46 */;
+
 
     Matrix.isMatrix = function(m) {
-      var k, _i, _len, _ref;
+      var k, _i, _len;
       if (m == null) {
         return false;
       }
-      _ref = ['a', 'b', 'c', 'd', 'tx', 'ty'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        k = _ref[_i];
-        if (!(m[k] != null)) {
+      for (_i = 0, _len = PROPERTIES.length; _i < _len; _i++) {
+        k = PROPERTIES[_i];
+        if (!this.isFloat(m[k])) {
           return false;
         }
       }
       return true;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::constructor> line:8 */;
+    /* src/geomjs/matrix.coffee<Matrix.isFloat> line:56 */;
+
+
+    Matrix.isFloat = function() {
+      var float, floats, _i, _len;
+      floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      for (_i = 0, _len = floats.length; _i < _len; _i++) {
+        float = floats[_i];
+        if (isNaN(parseFloat(float))) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    /* src/geomjs/matrix.coffee<Matrix::constructor> line:75 */;
 
 
     function Matrix(a, b, c, d, tx, ty) {
@@ -65,31 +416,54 @@
       _ref = this.matrixFrom(a, b, c, d, tx, ty), this.a = _ref[0], this.b = _ref[1], this.c = _ref[2], this.d = _ref[3], this.tx = _ref[4], this.ty = _ref[5];
     }
 
-    /* src/geomjs/matrix.coffee<Matrix::translate> line:11 */;
+    /* src/geomjs/matrix.coffee<Matrix::equals> line:91 */;
 
 
-    Matrix.prototype.translate = function(x, y) {
-      if (x == null) {
-        x = 0;
+    Matrix.prototype.equals = function(o) {
+      var k, _i, _len;
+      if (o == null) {
+        return false;
       }
-      if (y == null) {
-        y = 0;
+      for (_i = 0, _len = PROPERTIES.length; _i < _len; _i++) {
+        k = PROPERTIES[_i];
+        if (o[k] !== this[k]) {
+          return false;
+        }
       }
+      return true;
+    };
+
+    /* src/geomjs/matrix.coffee<Matrix::transformPoint> line:107 */;
+
+
+    Matrix.prototype.transformPoint = function(xOrPt, y) {
+      var x, x2, y2, _ref;
+      if (!(xOrPt != null) && !(y != null)) {
+        throw new Error("transformPoint was called without arguments");
+      }
+      _ref = Point.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      x2 = x * this.a + y * this.c + this.tx;
+      y2 = x * this.b + y * this.d + this.ty;
+      return new Point(x2, y2);
+    };
+
+    /* src/geomjs/matrix.coffee<Matrix::translate> line:119 */;
+
+
+    Matrix.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = this.coordsFrom(xOrPt, y, 0), x = _ref[0], y = _ref[1];
       this.tx += x;
       this.ty += y;
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::scale> line:16 */;
+    /* src/geomjs/matrix.coffee<Matrix::scale> line:129 */;
 
 
-    Matrix.prototype.scale = function(x, y) {
-      if (x == null) {
-        x = 1;
-      }
-      if (y == null) {
-        y = 1;
-      }
+    Matrix.prototype.scale = function(xOrPt, y) {
+      var x, _ref;
+      _ref = this.coordsFrom(xOrPt, y, 1), x = _ref[0], y = _ref[1];
       this.a *= x;
       this.d *= y;
       this.tx *= x;
@@ -97,7 +471,7 @@
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::rotate> line:23 */;
+    /* src/geomjs/matrix.coffee<Matrix::rotate> line:141 */;
 
 
     Matrix.prototype.rotate = function(angle) {
@@ -105,28 +479,23 @@
       if (angle == null) {
         angle = 0;
       }
-      cos = Math.cos(angle);
-      sin = Math.sin(angle);
+      cos = Math.cos(Math.degToRad(angle));
+      sin = Math.sin(Math.degToRad(angle));
       _ref = [this.a * cos - this.b * sin, this.a * sin + this.b * cos, this.c * cos - this.d * sin, this.c * sin + this.d * cos, this.tx * cos - this.ty * sin, this.tx * sin + this.ty * cos], this.a = _ref[0], this.b = _ref[1], this.c = _ref[2], this.d = _ref[3], this.tx = _ref[4], this.ty = _ref[5];
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::skew> line:36 */;
+    /* src/geomjs/matrix.coffee<Matrix::skew> line:157 */;
 
 
-    Matrix.prototype.skew = function(x, y) {
-      var _ref;
-      if (x == null) {
-        x = 0;
-      }
-      if (y == null) {
-        y = 0;
-      }
-      _ref = [Math.degToRad(x), Math.degToRad(y)], x = _ref[0], y = _ref[1];
+    Matrix.prototype.skew = function(xOrPt, y) {
+      var x, _ref, _ref1;
+      _ref = this.coordsFrom(xOrPt, y, 0), x = _ref[0], y = _ref[1];
+      _ref1 = [Math.degToRad(x), Math.degToRad(y)], x = _ref1[0], y = _ref1[1];
       return this.append(Math.cos(y), Math.sin(y), -Math.sin(x), Math.cos(x));
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::append> line:43 */;
+    /* src/geomjs/matrix.coffee<Matrix::append> line:168 */;
 
 
     Matrix.prototype.append = function(a, b, c, d, tx, ty) {
@@ -154,7 +523,7 @@
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::prepend> line:55 */;
+    /* src/geomjs/matrix.coffee<Matrix::prepend> line:183 */;
 
 
     Matrix.prototype.prepend = function(a, b, c, d, tx, ty) {
@@ -185,7 +554,7 @@
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::identity> line:71 */;
+    /* src/geomjs/matrix.coffee<Matrix::identity> line:202 */;
 
 
     Matrix.prototype.identity = function() {
@@ -194,7 +563,7 @@
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::inverse> line:73 */;
+    /* src/geomjs/matrix.coffee<Matrix::inverse> line:207 */;
 
 
     Matrix.prototype.inverse = function() {
@@ -204,7 +573,7 @@
       return this;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::asFloat> line:85 */;
+    /* src/geomjs/matrix.coffee<Matrix::asFloat> line:222 */;
 
 
     Matrix.prototype.asFloat = function() {
@@ -217,7 +586,7 @@
       return floats;
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::matrixFrom> line:89 */;
+    /* src/geomjs/matrix.coffee<Matrix::matrixFrom> line:233 */;
 
 
     Matrix.prototype.matrixFrom = function(a, b, c, d, tx, ty) {
@@ -230,375 +599,86 @@
       return this.asFloat(a, b, c, d, tx, ty);
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::isMatrix> line:97 */;
+    /* src/geomjs/matrix.coffee<Matrix::coordsFrom> line:245 */;
+
+
+    Matrix.prototype.coordsFrom = function(xOrPt, y, def) {
+      var x, _ref;
+      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      if (isNaN(x)) {
+        x = def;
+      }
+      if (isNaN(y)) {
+        y = def;
+      }
+      return [x, y];
+    };
+
+    /* src/geomjs/matrix.coffee<Matrix::isMatrix> line:254 */;
 
 
     Matrix.prototype.isMatrix = function(m) {
       return Matrix.isMatrix(m);
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::isFloat> line:98 */;
+    /* src/geomjs/matrix.coffee<Matrix::isFloat> line:259 */;
 
 
     Matrix.prototype.isFloat = function() {
-      var float, floats, _i, _len;
+      var floats;
       floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      for (_i = 0, _len = floats.length; _i < _len; _i++) {
-        float = floats[_i];
-        if (isNaN(parseFloat(float))) {
-          return false;
-        }
-      }
-      return true;
+      return Matrix.isFloat.apply(Matrix, floats);
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::invalidMatrixArguments> line:102 */;
-
-
-    Matrix.prototype.invalidMatrixArguments = function(args) {
-      throw new Error("Invalid arguments " + args + " for a Matrix");
-    };
-
-    /* src/geomjs/matrix.coffee<Matrix::clone> line:105 */;
+    /* src/geomjs/matrix.coffee<Matrix::clone> line:264 */;
 
 
     Matrix.prototype.clone = function() {
       return new Matrix(this);
     };
 
-    /* src/geomjs/matrix.coffee<Matrix::toString> line:106 */;
+    /* src/geomjs/matrix.coffee<Matrix::toString> line:269 */;
 
 
     Matrix.prototype.toString = function() {
       return "[object Matrix(" + this.a + "," + this.b + "," + this.c + "," + this.d + "," + this.tx + "," + this.ty + ")]";
     };
 
+    /* src/geomjs/matrix.coffee<Matrix::invalidMatrixArguments> line:276 */;
+
+
+    Matrix.prototype.invalidMatrixArguments = function(args) {
+      throw new Error("Invalid arguments " + args + " for a Matrix");
+    };
+
     return Matrix;
 
   })();
 
-  /* src/geomjs/point.coffee */;
+  /* src/geomjs/rectangle.coffee */;
 
 
-  /* src/geomjs/point.coffee<Point> line:2 */;
+  /* src/geomjs/rectangle.coffee<Rectangle> line:1 */;
 
 
-  Point = (function() {
-    /* src/geomjs/point.coffee<Point.isPoint> line:3 */;
+  Rectangle = (function() {
+    /* src/geomjs/rectangle.coffee<Rectangle::constructor> line:2 */;
 
-    Point.isPoint = function(pt) {
-      return (pt != null) && (pt.x != null) && (pt.y != null);
-    };
-
-    Point.isFloat = function(n) {
-      return !isNaN(parseFloat(n));
-    };
-
-    /* src/geomjs/point.coffee<Point.polar> line:6 */;
-
-
-    Point.polar = function(angle, length) {
-      if (length == null) {
-        length = 1;
-      }
-      return new Point(Math.sin(angle) * length, Math.cos(angle) * length);
-    };
-
-    Point.interpolate = function() {
-      var args, dif, i, pos, pt1, pt2, v, _i, _len;
-      args = [];
-      for (i = _i = 0, _len = arguments.length; _i < _len; i = ++_i) {
-        v = arguments[i];
-        args[i] = v;
-      }
-      if (this.isPoint(args[0])) {
-        pt1 = args.shift();
-      } else if (this.isFloat(args[0]) && this.isFloat(args[1])) {
-        pt1 = new Point(args[0], args[1]);
-        args.splice(0, 2);
-      } else {
-        this.pointNotFound(args, 'first');
-      }
-      if (this.isPoint(args[0])) {
-        pt2 = args.shift();
-      } else if (this.isFloat(args[0]) && this.isFloat(args[1])) {
-        pt2 = new Point(args[0], args[1]);
-        args.splice(0, 2);
-      } else {
-        this.pointNotFound(args, 'second');
-      }
-      pos = parseFloat(args.shift());
-      if (isNaN(pos)) {
-        this.missingPosition(pos);
-      }
-      dif = pt2.subtract(pt1);
-      return new Point(pt1.x + dif.x * pos, pt1.y + dif.y * pos);
-    };
-
-    /* src/geomjs/point.coffee<Point.missingPosition> line:31 */;
-
-
-    Point.missingPosition = function(pos) {
-      throw new Error("Point.interpolate require a position but " + pos + " was given");
-    };
-
-    /* src/geomjs/point.coffee<Point.pointNotFound> line:33 */;
-
-
-    Point.pointNotFound = function(args, pos) {
-      throw new Error("Can't find the " + pos + " point in Point.interpolate arguments " + args);
-    };
-
-    /* src/geomjs/point.coffee<Point::constructor> line:36 */;
-
-
-    function Point(x, y) {
-      var _ref, _ref1;
-      _ref = this.coordsFrom(x, y), x = _ref[0], y = _ref[1];
-      _ref1 = this.defaultToZero(x, y), this.x = _ref1[0], this.y = _ref1[1];
+    function Rectangle(x, y, width, height) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
     }
 
-    /* src/geomjs/point.coffee<Point::length> line:40 */;
-
-
-    Point.prototype.length = function() {
-      return Math.sqrt((this.x * this.x) + (this.y * this.y));
-    };
-
-    /* src/geomjs/point.coffee<Point::angle> line:42 */;
-
-
-    Point.prototype.angle = function() {
-      return Math.radToDeg(Math.atan2(this.y, this.x));
-    };
-
-    /* src/geomjs/point.coffee<Point::angleWith> line:44 */;
-
-
-    Point.prototype.angleWith = function(x, y) {
-      var d, _ref;
-      if (!(x != null) && !(y != null)) {
-        this.noPoint('dot');
-      }
-      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
-      d = this.normalize().dot(new Point(x, y).normalize());
-      return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
-    };
-
-    /* src/geomjs/point.coffee<Point::normalize> line:52 */;
-
-
-    Point.prototype.normalize = function(length) {
-      var l;
-      if (length == null) {
-        length = 1;
-      }
-      if (isNaN(parseFloat(length))) {
-        this.invalidLength(length);
-      }
-      l = this.length();
-      return new Point(this.x / l * length, this.y / l * length);
-    };
-
-    /* src/geomjs/point.coffee<Point::add> line:57 */;
-
-
-    Point.prototype.add = function(x, y) {
-      var _ref, _ref1;
-      _ref = this.coordsFrom(x, y), x = _ref[0], y = _ref[1];
-      _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
-      return new Point(this.x + x, this.y + y);
-    };
-
-    /* src/geomjs/point.coffee<Point::subtract> line:62 */;
-
-
-    Point.prototype.subtract = function(x, y) {
-      var _ref, _ref1;
-      _ref = this.coordsFrom(x, y), x = _ref[0], y = _ref[1];
-      _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
-      return new Point(this.x - x, this.y - y);
-    };
-
-    /* src/geomjs/point.coffee<Point::dot> line:67 */;
-
-
-    Point.prototype.dot = function(x, y) {
-      var _ref;
-      if (!(x != null) && !(y != null)) {
-        this.noPoint('dot');
-      }
-      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
-      return this.x * x + this.y * y;
-    };
-
-    /* src/geomjs/point.coffee<Point::distance> line:72 */;
-
-
-    Point.prototype.distance = function(x, y) {
-      var _ref;
-      if (!(x != null) && !(y != null)) {
-        this.noPoint('dot');
-      }
-      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
-      return this.subtract(x, y).length();
-    };
-
-    /* src/geomjs/point.coffee<Point::paste> line:77 */;
-
-
-    Point.prototype.paste = function(x, y) {
-      var _ref;
-      _ref = this.coordsFrom(x, y), x = _ref[0], y = _ref[1];
-      if (typeof x === 'number') {
-        this.x = x;
-      }
-      if (typeof y === 'number') {
-        this.y = y;
-      }
-      return this;
-    };
-
-    /* src/geomjs/point.coffee<Point::scale> line:83 */;
-
-
-    Point.prototype.scale = function(n) {
-      if (!this.isFloat(n)) {
-        this.invalidScale(n);
-      }
-      return new Point(this.x * n, this.y * n);
-    };
-
-    /* src/geomjs/point.coffee<Point::rotate> line:87 */;
-
-
-    Point.prototype.rotate = function(n) {
-      var a, l, x, y;
-      if (!this.isFloat(n)) {
-        this.invalidRotation(n);
-      }
-      l = this.length();
-      a = Math.atan2(this.y, this.x) + Math.degToRad(n);
-      x = Math.cos(a) * l;
-      y = Math.sin(a) * l;
-      return new Point(x, y);
-    };
-
-    /* src/geomjs/point.coffee<Point::rotateAround> line:95 */;
-
-
-    Point.prototype.rotateAround = function(x, y, a) {
-      var _ref;
-      if (this.isPoint(x)) {
-        a = y;
-      }
-      _ref = this.coordsFrom(x, y, true), x = _ref[0], y = _ref[1];
-      return this.subtract(x, y).rotate(a).add(x, y);
-    };
-
-    /* src/geomjs/point.coffee<Point::coordsFrom> line:101 */;
-
-
-    Point.prototype.coordsFrom = function(x, y, strict) {
-      var _ref;
-      if (strict == null) {
-        strict = false;
-      }
-      if (typeof x === 'object') {
-        if (strict && !this.isPoint(x)) {
-          this.notAPoint(x);
-        }
-        if (x != null) {
-          _ref = x, x = _ref.x, y = _ref.y;
-        }
-      }
-      if (typeof x === 'string') {
-        x = parseFloat(x);
-      }
-      if (typeof y === 'string') {
-        y = parseFloat(y);
-      }
-      return [x, y];
-    };
-
-    /* src/geomjs/point.coffee<Point::defaultToZero> line:111 */;
-
-
-    Point.prototype.defaultToZero = function(x, y) {
-      x = isNaN(x) ? 0 : x;
-      y = isNaN(y) ? 0 : y;
-      return [x, y];
-    };
-
-    /* src/geomjs/point.coffee<Point::isPoint> line:116 */;
-
-
-    Point.prototype.isPoint = function(pt) {
-      return Point.isPoint(pt);
-    };
-
-    /* src/geomjs/point.coffee<Point::isFloat> line:117 */;
-
-
-    Point.prototype.isFloat = function(n) {
-      return Point.isFloat(n);
-    };
-
-    /* src/geomjs/point.coffee<Point::notAPoint> line:119 */;
-
-
-    Point.prototype.notAPoint = function(pt) {
-      throw new Error("" + pt + " isn't a point-like object");
-    };
-
-    /* src/geomjs/point.coffee<Point::noPoint> line:121 */;
-
-
-    Point.prototype.noPoint = function(method) {
-      throw new Error("" + method + " was called without arguments");
-    };
-
-    /* src/geomjs/point.coffee<Point::invalidLength> line:123 */;
-
-
-    Point.prototype.invalidLength = function(l) {
-      throw new Error("Invalid length " + l + " provided");
-    };
-
-    /* src/geomjs/point.coffee<Point::invalidScale> line:125 */;
-
-
-    Point.prototype.invalidScale = function(s) {
-      throw new Error("Invalid scale " + s + " provided");
-    };
-
-    /* src/geomjs/point.coffee<Point::invalidRotation> line:127 */;
-
-
-    Point.prototype.invalidRotation = function(a) {
-      throw new Error("Invalid rotation " + a + " provided");
-    };
-
-    /* src/geomjs/point.coffee<Point::clone> line:130 */;
-
-
-    Point.prototype.clone = function() {
-      return new Point(this);
-    };
-
-    /* src/geomjs/point.coffee<Point::toString> line:131 */;
-
-
-    Point.prototype.toString = function() {
-      return "[object Point(" + this.x + "," + this.y + ")]";
-    };
-
-    return Point;
+    return Rectangle;
 
   })();
 
+  this.geomjs.Point = Point;
+
   this.geomjs.Matrix = Matrix;
 
-  this.geomjs.Point = Point;
+  this.geomjs.Rectangle = Rectangle;
 
 }).call(this);
