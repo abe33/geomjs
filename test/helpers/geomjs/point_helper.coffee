@@ -50,7 +50,6 @@ global.pointOperator = (operator) ->
       it 'should return nan', ->
         expect(expectation.call this).toBe(NaN)
 
-
   operatorOption = (value, actions={}, expectation=null) ->
     switch typeof value
       when 'function'
@@ -117,3 +116,29 @@ global.pointOperator = (operator) ->
           operatorOption options.nullArgument,
                          operatorActions,
                          -> @point[operator] null
+
+global.calledWithPoint = (x,y) ->
+  where: (@options) -> this
+  should: (message, block) ->
+    {options} = this
+
+    describe "called with point (#{x},#{y})", ->
+      it "should #{message}", ->
+        block.call this, @[options.source][options.method] point x, y
+
+    describe 'called with a point-like object', ->
+      it "should #{message}", ->
+        block.call this, @[options.source][options.method] pointLike x, y
+
+      describe "containing strings '#{x}' and '#{y}'", ->
+        it "should #{message}", ->
+          block.call this, @[options.source][options.method] pointLike "#{x}",
+                                                                       "#{y}"
+
+    describe "called with numbers #{x} and #{y}", ->
+      it "should #{message}", ->
+        block.call this, @[options.source][options.method] x, y
+
+    describe "called with strings '#{x}' and '#{y}'", ->
+      it "should #{message}", ->
+        block.call this, @[options.source][options.method] "#{x}", "#{y}"
