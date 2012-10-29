@@ -60,8 +60,9 @@ class Matrix
     ]
     this
 
-  skew: (x=0, y=0) ->
-    [x, y] = [Math.degToRad(x), Math.degToRad(y)]
+  skew: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y, 0
+    [x,y] = [Math.degToRad(x), Math.degToRad(y)]
     @append Math.cos(y),
             Math.sin(y),
             -Math.sin(x),

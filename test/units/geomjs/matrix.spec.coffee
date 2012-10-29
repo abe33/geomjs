@@ -156,19 +156,15 @@ describe 'Matrix', ->
 
   describe '::skew called', ->
     beforeEach ->
-      @m1 = matrix.transformed()
-      @m2 = @m1.skew(-2, 2)
-      @m3 = matrix.skewed()
+      @matrix = matrix.transformed()
+      @skewed = matrix.skewed()
 
-    it 'should skew the matrix', ->
-      expect(@m1).toBeSameMatrix(@m3)
-    it 'should return this instance', ->
-      expect(@m1).toBe(@m2)
-
-    describe 'with a matrix', ->
-      it 'should prepend the matrix', ->
-        expect(matrix.transformed().skew(-2, 2))
-          .toBeSameMatrix(matrix.skewed())
+    calledWithPoint(-2,2)
+      .where
+        source: 'matrix'
+        method: 'skew'
+      .should 'skew the matrix', (result) ->
+        expect(result).toBeSameMatrix(@skewed)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->
