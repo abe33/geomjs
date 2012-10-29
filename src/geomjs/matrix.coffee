@@ -144,12 +144,12 @@ class Matrix
     cos = Math.cos Math.degToRad angle
     sin = Math.sin Math.degToRad angle
     [@a, @b, @c, @d, @tx, @ty] = [
-      @a * cos - @b * sin
-      @a * sin + @b * cos
-      @c * cos - @d * sin
-      @c * sin + @d * cos
-      @tx * cos - @ty * sin
-      @tx * sin + @ty * cos
+       @a*cos - @b*sin
+       @a*sin + @b*cos
+       @c*cos - @d*sin
+       @c*sin + @d*cos
+      @tx*cos - @ty*sin
+      @tx*sin + @ty*cos
     ]
     this
 
