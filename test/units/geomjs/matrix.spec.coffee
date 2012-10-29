@@ -62,15 +62,17 @@ describe 'Matrix', ->
     it 'should return this instance', ->
       expect(@m1).toBe(@m2)
 
-  describe '::translate called', ->
+  describe '::translate', ->
     beforeEach ->
-      @m1 = matrix.transformed()
-      @m2 = @m1.translate(-2, 2)
-      @m3 = matrix.translated()
-    it 'should translate the matrix', ->
-      expect(@m1).toBeSameMatrix(@m3)
-    it 'should return this instance', ->
-      expect(@m1).toBe(@m2)
+      @matrix = matrix.transformed()
+      @translated = matrix.translated()
+
+    calledWithPoint(-2,2)
+      .where
+        source: 'matrix'
+        method: 'translate'
+      .should 'translate the matrix', (result) ->
+        expect(result).toBeSameMatrix(@translated)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->
@@ -78,14 +80,15 @@ describe 'Matrix', ->
 
   describe '::scale called', ->
     beforeEach ->
-      @m1 = matrix.transformed()
-      @m2 = @m1.scale(0.5, 2)
-      @m3 = matrix.scaled()
+      @matrix = matrix.transformed()
+      @scaled = matrix.scaled()
 
-    it 'should scale the matrix', ->
-      expect(@m1).toBeSameMatrix(@m3)
-    it 'should return this instance', ->
-      expect(@m1).toBe(@m2)
+    calledWithPoint(0.5,2)
+      .where
+        source: 'matrix'
+        method: 'scale'
+      .should 'scale the matrix', (result) ->
+        expect(result).toBeSameMatrix(@scaled)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->

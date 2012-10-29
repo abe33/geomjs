@@ -31,12 +31,16 @@ class Matrix
     y2 = x*@b + y*@d + @ty
     new Point x2, y2
 
-  translate: (x=0, y=0) ->
+  translate: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y, 0
+
     @tx += x
     @ty += y
     this
 
-  scale: (x=1, y=1) ->
+  scale: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y, 1
+
     @a *= x
     @d *= y
     @tx *= x
@@ -116,6 +120,12 @@ class Matrix
       @invalidMatrixArguments [a, b, c, d, tx, ty]
 
     @asFloat a, b, c, d, tx, ty
+
+  coordsFrom: (xOrPt, y, def) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    x = def if isNaN x
+    y = def if isNaN y
+    [x,y]
 
   isMatrix: (m) -> Matrix.isMatrix m
 
