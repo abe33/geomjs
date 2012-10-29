@@ -1,8 +1,8 @@
 require './math'
 
-PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
 
 class Matrix
+  PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
 
   @isMatrix: (m) ->
     return false unless m?
