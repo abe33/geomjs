@@ -14,3 +14,5 @@ describe 'Rectangle', ->
       it 'should create an instance with the provided values', ->
         expect(@rectangle).toBeRectangle(1,2,3,4)
 
+      acreageOf('rectangle').shouldBe(12)
+
