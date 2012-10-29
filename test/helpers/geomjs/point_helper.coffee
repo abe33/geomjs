@@ -142,3 +142,11 @@ global.calledWithPoint = (x,y) ->
     describe "called with strings '#{x}' and '#{y}'", ->
       it "should #{message}", ->
         block.call this, @[options.source][options.method] "#{x}", "#{y}"
+
+global.pointOf = (source, method, args...) ->
+  shouldBe: (x, y) ->
+    beforeEach -> addPointMatchers this
+
+    it "should return a point equal to (#{x},#{y})", ->
+      source = @[source]
+      expect(source[method].apply source, args).toBePoint(x, y)
