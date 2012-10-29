@@ -30,8 +30,8 @@ class Matrix
     this
 
   rotate: (angle=0) ->
-    cos = Math.cos angle
-    sin = Math.sin angle
+    cos = Math.cos Math.degToRad angle
+    sin = Math.sin Math.degToRad angle
     [@a, @b, @c, @d, @tx, @ty] = [
       @a * cos - @b * sin
       @a * sin + @b * cos

@@ -10,13 +10,17 @@ matrix.inverted = -> new Matrix -2, 1, 1.5, -0.5, 1, -2
 matrix.translated = -> new Matrix 1, 2, 3, 4, 3, 8
 matrix.scaled = -> new Matrix 0.5, 2, 3, 8, 2.5, 12
 matrix.rotated = ->
+  [a,b,c,d,tx,ty] = [1,2,3,4,5,6]
+  angle = 72
+  cos = Math.cos angle * DEG_TO_RAD
+  sin = Math.sin angle * DEG_TO_RAD
   new Matrix(
-    -1.474897313797955,
-    -1.6806778137857286,
-    -3.917045215869792,
-    -3.107532264809421,
-    -6.35919311794163,
-    -4.534386715833113
+    a*cos - b*sin,
+    a*sin + b*cos,
+    c*cos - d*sin,
+    c*sin + d*cos,
+    tx*cos - ty*sin,
+    tx*sin + ty*cos,
   )
 
 matrix.appended = ->
