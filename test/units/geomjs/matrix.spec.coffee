@@ -1,10 +1,12 @@
 require '../../test_helper'
 
 Matrix = require '../../../lib/geomjs/matrix'
+Point = require '../../../lib/geomjs/point'
 
 describe 'Matrix', ->
   beforeEach ->
     addMatrixMatchers this
+    addPointMatchers this
 
   describe 'when instanciated', ->
     describe 'without arguments', ->
@@ -170,4 +172,33 @@ describe 'Matrix', ->
         expect(matrix.transformed().skew())
           .toBeSameMatrix(matrix.transformed())
 
+  describe '::transformPoint called', ->
+    beforeEach ->
+      @matrix = matrix()
+      @matrix.scale(2,2)
+      @matrix.rotate(90)
 
+    describe 'with a point', ->
+      it 'should return a new point resulting
+          of the matrix transformations'.squeeze(), ->
+        origin = point 10, 0
+        transformed = @matrix.transformPoint origin
+        expect(transformed).toBePoint(0, 20)
+
+    describe 'with two numbers', ->
+       it 'should return a new point resulting
+          of the matrix transformations'.squeeze(), ->
+        transformed = @matrix.transformPoint 10, 0
+        expect(transformed).toBePoint(0, 20)
+
+    describe 'with one number', ->
+       it 'should throw an error', ->
+        expect(=> @matrix.transformPoint 10).toThrow()
+
+    describe 'without arguments', ->
+      it 'should throw an error', ->
+        expect(=> @matrix.transformPoint()).toThrow()
+
+    describe 'with an incomplete point', ->
+      it 'should throw an error', ->
+        expect(=> @matrix.transformPoint x: 0).toThrow()

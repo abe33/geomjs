@@ -1,4 +1,5 @@
 require './math'
+Point = require './point'
 
 
 class Matrix
@@ -16,6 +17,15 @@ class Matrix
     return false unless o?
     return false for k in PROPERTIES when o[k] isnt @[k]
     true
+
+  transformPoint: (xOrPt, y) ->
+    if not xOrPt? and not y?
+      throw new Error "transformPoint was called without arguments"
+
+    [x,y] = Point.coordsFrom xOrPt, y, true
+    x2 = x*@a + y*@c + @tx
+    y2 = x*@b + y*@d + @ty
+    new Point x2, y2
 
   translate: (x=0, y=0) ->
     @tx += x
