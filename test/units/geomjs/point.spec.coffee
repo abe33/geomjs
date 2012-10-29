@@ -75,6 +75,7 @@ describe 'Point', ->
       emptyObject: 'copy'
       partialObject: (result) -> expect(result).toBePoint(6,3)
       nullArgument: 'copy'
+      singleNumber: (result) -> expect(result).toBePoint(6,3)
     .should 'return a new point corresponding
              to the addition product'.squeeze(), (result) ->
       expect(result).toBePoint(6,8)
@@ -86,6 +87,7 @@ describe 'Point', ->
       emptyObject: 'copy'
       partialObject: (result) -> expect(result).toBePoint(2,8)
       nullArgument: 'copy'
+      singleNumber: (result) -> expect(result).toBePoint(2,8)
     .should 'return a new point corresponding
              to the subtract product'.squeeze(), (result) ->
       expect(result).toBePoint(2,3)
@@ -97,6 +99,7 @@ describe 'Point', ->
       emptyObject: 'throws'
       partialObject: 'throws'
       nullArgument: 'throws'
+      singleNumber: 'throws'
     .should 'return the dot product of the current
              point and the point argument'.squeeze(), (result) ->
       expect(result).toBeClose(7*4 + 3*2)
@@ -108,6 +111,7 @@ describe 'Point', ->
       emptyObject: 'throws'
       partialObject: 'throws'
       nullArgument: 'throws'
+      singleNumber: 'throws'
     .should 'return the distance between the two points', (result) ->
       expect(result).toBeClose(point(3,1).length())
 
@@ -118,6 +122,7 @@ describe 'Point', ->
       emptyObject: 'throws'
       partialObject: 'throws'
       nullArgument: 'throws'
+      singleNumber: 'throws'
     .should 'return the angle formed by the two points', (result) ->
       expect(result).toBeClose(90)
 
@@ -133,6 +138,7 @@ describe 'Point', ->
       emptyObject: leftUnchanged
       partialObject: (result) -> expect(result).toBePoint(4,3)
       nullArgument: leftUnchanged
+      singleNumber: (result) -> expect(result).toBePoint(4,3)
     .should 'copy the data into this point', (result) ->
       expect(result).toBePoint(4,2)
       expect(result).toBeSamePoint(@point)

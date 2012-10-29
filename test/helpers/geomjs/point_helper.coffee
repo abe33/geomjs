@@ -106,6 +106,12 @@ global.pointOperator = (operator) ->
                          operatorActions,
                          -> @point[operator] x: x2
 
+      if options.singleNumber?
+        describe 'with only one number', ->
+          operatorOption options.singleNumber,
+                         operatorActions,
+                         -> @point[operator] x2
+
       if options.nullArgument?
         describe 'with null', ->
           operatorOption options.nullArgument,

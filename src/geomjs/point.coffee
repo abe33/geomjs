@@ -52,7 +52,7 @@ class Point
   # In the case the argument is an object, the function will
   # extract the x and y values from it. However, if the `strict`
   # argument is `true`, the function will throw an error if
-  # the object does not have neither x nor y property:
+  # the object does not have either x or y property:
   #
   #     Point.coordsFrom x: 10            # will not throw
   #     Point.coordsFrom x: 10, 0, true   # will throw
@@ -73,12 +73,12 @@ class Point
   # methods of the `Point` class.
   @coordsFrom: (xOrPt, y, strict=false) ->
     x = xOrPt
-    if typeof xOrPt is 'object'
-      @notAPoint xOrPt if strict and not @isPoint xOrPt
-      {x,y} = xOrPt if xOrPt?
+    {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
 
     x = parseFloat x
     y = parseFloat y
+
+    @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
 
     [x,y]
 
