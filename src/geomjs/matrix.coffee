@@ -7,7 +7,11 @@ class Matrix
 
   @isMatrix: (m) ->
     return false unless m?
-    return false for k in PROPERTIES when not m[k]?
+    return false for k in PROPERTIES when not @isFloat m[k]
+    true
+
+  @isFloat: (floats...) ->
+    return false for float in floats when isNaN parseFloat float
     true
 
   constructor: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
@@ -114,9 +118,8 @@ class Matrix
     @asFloat a, b, c, d, tx, ty
 
   isMatrix: (m) -> Matrix.isMatrix m
-  isFloat: (floats...) ->
-    return false for float in floats when isNaN parseFloat float
-    true
+
+  isFloat: (floats...) -> Matrix.isFloat.apply Matrix, floats
 
   clone: -> new Matrix this
   toString: -> "[object Matrix(#{@a},#{@b},#{@c},#{@d},#{@tx},#{@ty})]"
