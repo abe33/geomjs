@@ -4,6 +4,7 @@ includes: [
   'src/geomjs/math'
   'src/geomjs/point'
   'src/geomjs/matrix'
+  'src/geomjs/rectangle'
 ]
 operators: [
   'strip:requires'
