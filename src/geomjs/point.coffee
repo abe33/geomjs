@@ -1,9 +1,76 @@
+# This file define the `Point` primitive used by various entites of geomjs.
+#@toc
 require './math'
 
+## Point
+
+# A `Point` represent a location in a two-dimensional space.
+#
+# A point with coordinates (0,0) can be constructed with:
+#
+#     new Point
+#     new Point 0, 0
+#     new Point x: 0, y: 0
+#
+# **Note:** Any functions in geomjs that accept a `Point` object also allow
+# to use numbers instead, this is obviously also the case in the `Point`
+# class. For more details about how to achieve the same behavior in your own
+# functions please refer to the [`Point.coordsFrom`](#pointcoordsfrom) method.
 class Point
+  #### Class Methods
+
+  ##### Point.isPoint
+  #
+  # Returns `true` if the passed-in object pass the requirments
+  # to be a point. Valid points are objects that possess a x and
+  # a y property.
+  #
+  #     Point.isPoint new Point  # true
+  #     Point.isPoint x: 0, y: 0 # true
+  #     Point.isPoint x: 0       # false
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
+
+  ##### Point.isFloat
+  #
+  # Returns true if the passed-in argument can be casted to a number.
+  #
+  #     Point.isFloat 0.245 # true
+  #     Point.isFloat '12'  # true
+  #     Point.isFloat 'foo' # false
   @isFloat = (n) -> not isNaN parseFloat n
 
+  ##### Point.coordsFrom
+  #
+  # Returns an array containing the x and y of a point according
+  # to the provided arguments:
+  #
+  #     translate = (xOrPt, y) ->
+  #       [x,y] = Point.coordsFrom xOrPt, y
+  #       # ...
+  #
+  # The first argument can be either an object or a number.
+  # In the case the argument is an object, the function will
+  # extract the x and y values from it. However, if the `strict`
+  # argument is `true`, the function will throw an error if
+  # the object does not have neither x nor y property:
+  #
+  #     Point.coordsFrom x: 10            # will not throw
+  #     Point.coordsFrom x: 10, 0, true   # will throw
+  #
+  # In the case the object is incomplete or empty, and with
+  # the strict mode disabled, the missing property will end
+  # being set to `NaN`.
+  #
+  #     [x,y] = Point.coordsFrom x: 10 # [10, NaN]
+  #
+  # Strings are allowed as arguments as well as values for
+  # the x and y properties of the passed-in object:
+  #
+  #     [x,y] = Point.coordsFrom '2.6', '5.4'
+  #     [x,y] = Point.coordsFrom x: '2.6', y: '5.4'
+  #
+  # For further examples, feel free to take a look at the
+  # methods of the `Point` class.
   @coordsFrom: (xOrPt, y, strict=false) ->
     x = xOrPt
     if typeof xOrPt is 'object'
@@ -15,9 +82,24 @@ class Point
 
     [x,y]
 
+  ##### Point.polar
+  #
+  # Converts polar coordinates in cartesian coordinates.
+  #
+  #     Point.polar 90, 10 # [object Point(0,10)]
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
 
+  ##### Point.interpolate
+  #
+  # Returns a point between `pt1` and `pt2` at a ratio corresponding to `pos`.
+  #
+  # The `Point.interpolate` method supports all the following forms:
+  #
+  #     Point.interpolate pt1, pt2, pos
+  #     Point.interpolate x1, y1, pt2, pos
+  #     Point.interpolate pt1, x2, y2, pos
+  #     Point.interpolate x1, x2, x2, y2, pos
   @interpolate: (pt1, pt2, pos) ->
     args = []; args[i] = v for v,i in arguments
 
@@ -41,24 +123,77 @@ class Point
     new Point pt1.x + dif.x * pos,
               pt1.y + dif.y * pos
 
+  #### Class Error Methods
+
+  ##### Point.missingPosition
+  #
+  # Throws an error for a missing position in `Point.interpolate`.
   @missingPosition: (pos) ->
     throw new Error "Point.interpolate require a position but #{pos} was given"
+
+  ##### Point.missingPoint
+  #
+  # Throws an error for a missing point in `Point.interpolate`.
   @missingPoint: (args, pos) ->
     throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
 
+  ##### Point.notAPoint
+  #
+  # Throws an error for an invalid point in `Point.coordsFrom` with
+  # strict mode enabled.
   @notAPoint: (pt) ->
     throw new Error "#{pt} isn't a point-like object"
 
+  #### Instances Methods
+
+  ##### Point::constructor
+  #
+  # Whatever is passed to the `Point` constructor, a valid point
+  # is always returned. All invalid properties will be default to `0`.
+  #
+  # A point be constructed with the following forms:
+  #
+  #     new Point
+  #     new Point 0, 0
+  #     new Point x: 0, y: 0
   constructor: (xOrPt, y) ->
     [x,y] = @coordsFrom xOrPt, y
     [@x,@y] = @defaultToZero x, y
 
+  ##### Point::length
+  #
+  # Returns the length of the current vector represented by this point.
+  #
+  #     length = point.length()
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
+  ##### Point::angle
+  #
+  # Returns the angle in degrees formed by the vector.
+  #
+  #     angle = point.angle()
   angle: -> Math.radToDeg Math.atan2 @y, @x
 
+  ##### Point::equals
+  #
+  # Returns `true` if the passed-in object represent the same location.
+  #
+  #     point = new Point 10, 22
+  #     point.equals x: 10, y: 22 # true
+  #     point.equals x: 5,  y: 7  # false
   equals: (o) -> o? and o.x is @x and o.y is @y
 
+  ##### Point::angleWith
+  #
+  # Given a triangle formed by this point, the passed-in point
+  # and the origin (0,0), the `Point::angleWith` method will
+  # return the angle in degrees formed by the two vectors at
+  # the origin.
+  #
+  #     point1 = new Point 10, 0
+  #     point2 = new Point 10, 10
+  #     angle = point1.angleWith point2
+  #     # angle = 45
   angleWith: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
     [x, y] = @coordsFrom xOrPt, y, true
@@ -67,41 +202,107 @@ class Point
 
     Math.radToDeg Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
 
+  ##### Point::normalize
+  #
+  # Returns a new point of length `length`.
+  #
+  #     normalized = point.normalize()
+  #     normalized.length() # 1
+  #
+  #     normalized = point.normalize(6)
+  #     normalized.length() # 6
   normalize: (length=1) ->
     @invalidLength length unless @isFloat length
     l = @length()
     new Point @x / l * length, @y / l * length
 
+  ##### Point::add
+  #
+  # Returns a new point resulting of the addition of the
+  # passed-in point to this point.
+  #
+  #     point = new Point 4, 4
+  #     inc = point.add 1, 5
+  #     inc = point.add x: 0.2
+  #     inc = point.add new Point 1.8, 8
+  #     # inc = [object Point(7,17)]
   add: (xOrPt, y) ->
     [x,y] = @coordsFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x + x, @y + y
 
+  ##### Point::subtract
+  #
+  # Returns a new point resulting of the subtraction of the
+  # passed-in point to this point.
+  #
+  #     point = new Point 4, 4
+  #     inc = point.subtract 1, 5
+  #     inc = point.subtract x: 0.2
+  #     inc = point.subtract new Point 1.8, 8
+  #     # inc = [object Point(2,-9)]
   subtract: (xOrPt, y) ->
     [x,y] = @coordsFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x - x, @y - y
 
+  ##### Point::dot
+  #
+  # Returns the dot product of this point and the passed-in point.
+  #
+  #     dot = new Point(5,6).dot(7,8)
+  #     # dot = 83
   dot: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
     [x,y] = @coordsFrom xOrPt, y, true
     @x * x + @y * y
 
+  ##### Point::distance
+  #
+  # Returns the distance between this point and the passed-in point.
+  #
+  #     distance = new Point(0,2).distance(2,2)
+  #     # distance = 2
   distance: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
     [x,y] = @coordsFrom xOrPt, y, true
     @subtract(x,y).length()
 
+  ##### Point::paste
+  #
+  # Copy the values of the passed-in point into this point.
+  #
+  #     point = new Point
+  #     point.paste 1, 7
+  #     # point = [object Point(5,7)]
+  #
+  #     point.paste new Point 4, 4
+  #     # point = [object Point(4,4)]
   paste: (xOrPt, y) ->
     [x,y] = @coordsFrom xOrPt, y
     @x = x unless isNaN x
     @y = y unless isNaN y
     this
 
+  ##### Point::scale
+  #
+  # Returns a new point which is a scaled copy of the current point.
+  #
+  #     point = new Point 1, 1
+  #     scaled = point.scale 2
+  #     # scaled = [object Point(2,2)]
   scale: (n) ->
     @invalidScale n unless @isFloat n
     new Point @x * n, @y * n
 
+  ##### Point::rotate
+  #
+  # Returns a new point which is the result of rotating the
+  # current point around the origin (0,0).
+  #
+  #     point = new Point 10, 0
+  #     rotated = point.rotate 90
+  #     # rotated = [object Point(0,10)]
   rotate: (n) ->
     @invalidRotation n unless @isFloat n
     l = @length()
@@ -110,30 +311,80 @@ class Point
     y = Math.sin(a) * l
     new Point x, y
 
+  ##### Point::rotateAround
+  #
+  # Returns a new point which is the result of rotating the
+  # current point around the passed-in point.
+  #
+  #     point = new Point 10, 0
+  #     origin = new Point 20, 0
+  #     rotated = point.rotateAround origin, 90
+  #     # rotated = [object Point(20, -10)]
   rotateAround: (xOrPt, y, a) ->
     a = y if @isPoint xOrPt
     [x, y] = @coordsFrom xOrPt, y, true
 
     @subtract(x,y).rotate(a).add(x,y)
 
+  ##### Point::isPoint
+  #
+  # Alias the `Point.isPoint` method in instances.
   isPoint: (pt) -> Point.isPoint pt
+
+  ##### Point::isFloat
+  #
+  # Alias the `Point.isFloat` method in instances.
   isFloat: (n) -> Point.isFloat n
+
+  ##### Point::coordsFrom
+  #
+  # Alias the `Point.coordsFrom` method in instances.
   coordsFrom: (xOrPt, y, strict) -> Point.coordsFrom xOrPt, y, strict
 
+  ##### Point::defaultToZero
+  #
+  # Returns the two arguments x and y in an array where arguments
+  # that were `NaN` are replaced by `0`.
   defaultToZero: (x, y) ->
     x = if isNaN x then 0 else x
     y = if isNaN y then 0 else y
     [x,y]
 
+  ##### Point::clone
+  #
+  # Returns a copy of the current point.
   clone: -> new Point this
 
+  ##### Point::toString
+  #
+  # Returns the string representation of the current point.
   toString: -> "[object Point(#{@x},#{@y})]"
+
+  #### Instances Error Methods
+
+  ##### Point::noPoint
+  #
+  # A generic error helper used by methods that require a point argument
+  # and was called without it.
   noPoint: (method) ->
     throw new Error "#{method} was called without arguments"
+
+  ##### Point::invalidLength
+  #
+  # Throws an error for an invalid length in `Point::normalize` method.
   invalidLength: (l) ->
     throw new Error "Invalid length #{l} provided"
+
+  ##### Point::invalidScale
+  #
+  # Throws an error for an invalid scale in `Point::scale` method.
   invalidScale: (s) ->
     throw new Error "Invalid scale #{s} provided"
+
+  ##### Point::invalidRotation
+  #
+  # Throws an error for an invalid rotation in `Point::rotate`
+  # and `Point::rotateAround` method.
   invalidRotation: (a) ->
     throw new Error "Invalid rotation #{a} provided"
 
