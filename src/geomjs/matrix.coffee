@@ -102,7 +102,7 @@ class Matrix
   #
   #     point = new Point, 10, 0
   #
-  #     matrix = new Matrix().scale(2).rotate(90)
+  #     matrix = new Matrix().scale(2,2).rotate(90)
   #
   #     projected = matrix.transformPoint point
   #     # projected = [object Point(0,20)]
