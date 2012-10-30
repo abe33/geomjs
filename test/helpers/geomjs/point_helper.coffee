@@ -147,6 +147,7 @@ global.pointOf = (source, method, args...) ->
   shouldBe: (x, y) ->
     beforeEach -> addPointMatchers this
 
-    it "should return a point equal to (#{x},#{y})", ->
-      source = @[source]
-      expect(source[method].apply source, args).toBePoint(x, y)
+    describe "the #{source} #{method} method", ->
+      it "should return a point equal to (#{x},#{y})", ->
+        source = @[source]
+        expect(source[method].apply source, args).toBePoint(x, y)
