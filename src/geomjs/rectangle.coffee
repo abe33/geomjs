@@ -34,4 +34,29 @@ class Rectangle
   #### Path API
   length: -> @width * 2 + @height * 2
 
+  #### Drawing API
+  stroke: (context, color='#ff0000') ->
+    return unless context?
+
+    context.strokeStyle = color
+    @drawPath context
+    context.stroke()
+
+  fill: (context, color='#ff0000') ->
+    return unless context?
+
+    context.fillStyle = color
+    @drawPath context
+    context.fill()
+
+  drawPath: (context) ->
+    context.beginPath()
+    context.moveTo(@x, @y)
+    context.lineTo(@topRight().x, @topRight().y)
+    context.lineTo(@bottomRight().x, @bottomRight().y)
+    context.lineTo(@bottomLeft().x, @bottomLeft().y)
+    context.lineTo(@x, @y)
+    context.closePath()
+
+
 module.exports = Rectangle

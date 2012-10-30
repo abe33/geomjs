@@ -43,4 +43,6 @@ describe 'Rectangle', ->
         # Path API
         lengthOf('rectangle').shouldBe(length)
 
+        # Drawing API
+        testDrawingOf('rectangle')
 
