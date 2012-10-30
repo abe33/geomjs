@@ -17,6 +17,11 @@ class Rectangle
   bottomEdge: -> @topEdge()
   rightEdge: -> @leftEdge()
 
+  top: -> Math.min @y, @topRight().y, @bottomRight().y, @bottomLeft().y
+  bottom: -> Math.max @y, @topRight().y, @bottomRight().y, @bottomLeft().y
+  left: -> Math.min @x, @topRight().x, @bottomRight().x, @bottomLeft().x
+  right: -> Math.max @x, @topRight().x, @bottomRight().x, @bottomLeft().x
+
   #### Surface API
   acreage: -> @width * @height
 

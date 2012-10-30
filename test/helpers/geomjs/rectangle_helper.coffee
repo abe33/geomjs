@@ -20,16 +20,29 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
   xTopEdge = width * Math.cos Math.degToRad rotation
   yTopEdge = width * Math.sin Math.degToRad rotation
 
-  xleftEdge = height * Math.cos Math.degToRad(rotation) + Math.PI / 2
-  yleftEdge = height * Math.sin Math.degToRad(rotation) + Math.PI / 2
+  xLeftEdge = height * Math.cos Math.degToRad(rotation) + Math.PI / 2
+  yLeftEdge = height * Math.sin Math.degToRad(rotation) + Math.PI / 2
 
-  pointOf('rectangle', 'topLeft').shouldBe(x,y)
-  pointOf('rectangle', 'topRight').shouldBe(x + xTopEdge, y + yTopEdge)
-  pointOf('rectangle', 'bottomLeft').shouldBe(x + xleftEdge, y + yleftEdge)
-  pointOf('rectangle', 'bottomRight').shouldBe(x + xTopEdge + xleftEdge,
-                                               y + yTopEdge + yleftEdge)
+  bounds =
+    top: Math.min y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
+    bottom: Math.max y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
+    left: Math.min x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
+    right: Math.max x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
 
-  pointOf('rectangle', 'topEdge').shouldBe(xTopEdge, yTopEdge)
-  pointOf('rectangle', 'bottomEdge').shouldBe(xTopEdge, yTopEdge)
-  pointOf('rectangle', 'leftEdge').shouldBe(xleftEdge, yleftEdge)
-  pointOf('rectangle', 'rightEdge').shouldBe(xleftEdge, yleftEdge)
+  pointOf(source, 'topLeft').shouldBe(x,y)
+  pointOf(source, 'topRight').shouldBe(x + xTopEdge, y + yTopEdge)
+  pointOf(source, 'bottomLeft').shouldBe(x + xLeftEdge, y + yLeftEdge)
+  pointOf(source, 'bottomRight').shouldBe(x + xTopEdge + xLeftEdge,
+                                               y + yTopEdge + yLeftEdge)
+
+  pointOf(source, 'topEdge').shouldBe(xTopEdge, yTopEdge)
+  pointOf(source, 'bottomEdge').shouldBe(xTopEdge, yTopEdge)
+  pointOf(source, 'leftEdge').shouldBe(xLeftEdge, yLeftEdge)
+  pointOf(source, 'rightEdge').shouldBe(xLeftEdge, yLeftEdge)
+
+  bounds.map (k,v) ->
+    describe "the #{source} #{k} method", ->
+      it "should return #{v}", ->
+        expect(@[source][k]()).toBeClose(v)
+
+
