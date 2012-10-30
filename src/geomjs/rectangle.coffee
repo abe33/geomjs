@@ -25,4 +25,7 @@ class Rectangle
   #### Surface API
   acreage: -> @width * @height
 
+  #### Path API
+  length: -> @width * 2 + @height * 2
+
 module.exports = Rectangle
