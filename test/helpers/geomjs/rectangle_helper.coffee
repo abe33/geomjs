@@ -33,7 +33,7 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
   pointOf(source, 'topRight').shouldBe(x + xTopEdge, y + yTopEdge)
   pointOf(source, 'bottomLeft').shouldBe(x + xLeftEdge, y + yLeftEdge)
   pointOf(source, 'bottomRight').shouldBe(x + xTopEdge + xLeftEdge,
-                                               y + yTopEdge + yLeftEdge)
+                                          y + yTopEdge + yLeftEdge)
 
   pointOf(source, 'topEdge').shouldBe(xTopEdge, yTopEdge)
   pointOf(source, 'bottomEdge').shouldBe(xTopEdge, yTopEdge)
