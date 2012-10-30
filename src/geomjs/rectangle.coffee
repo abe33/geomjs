@@ -3,8 +3,6 @@ Point = require './point'
 class Rectangle
   constructor: (@x=0, @y=0, @width=0, @height=0, @rotation=0) ->
 
-  acreage: -> @width * @height
-
   topLeft: -> new Point(@x, @y)
   topRight: -> new Point(@x, @y).add(@topEdge())
   bottomLeft: -> new Point(@x, @y).add(@leftEdge())
@@ -18,5 +16,8 @@ class Rectangle
 
   bottomEdge: -> @topEdge()
   rightEdge: -> @leftEdge()
+
+  #### Surface API
+  acreage: -> @width * @height
 
 module.exports = Rectangle
