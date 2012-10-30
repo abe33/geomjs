@@ -8,6 +8,12 @@ class Rectangle
   bottomLeft: -> new Point(@x, @y).add(@leftEdge())
   bottomRight: -> new Point(@x, @y).add(@topEdge()).add(@leftEdge())
 
+  center: -> @topLeft().add(@topEdge().scale(0.5)).add(@leftEdge().scale(0.5))
+  topEdgeCenter: -> @topLeft().add(@topEdge().scale(0.5))
+  bottomEdgeCenter: -> @bottomLeft().add(@topEdge().scale(0.5))
+  leftEdgeCenter: -> @topLeft().add(@leftEdge().scale(0.5))
+  rightEdgeCenter: -> @topRight().add(@leftEdge().scale(0.5))
+
   topEdge: -> new Point @width * Math.cos(Math.degToRad(@rotation)),
                         @width * Math.sin(Math.degToRad(@rotation))
   leftEdge: ->

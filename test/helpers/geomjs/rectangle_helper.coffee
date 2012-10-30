@@ -40,6 +40,25 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
   pointOf(source, 'leftEdge').shouldBe(xLeftEdge, yLeftEdge)
   pointOf(source, 'rightEdge').shouldBe(xLeftEdge, yLeftEdge)
 
+  pointOf(source, 'center').shouldBe(x + xTopEdge / 2 + xLeftEdge / 2,
+                                     y + yTopEdge / 2 + yLeftEdge / 2 )
+
+  pointOf(source, 'topEdgeCenter')
+    .shouldBe(x + xTopEdge / 2,
+              y + yTopEdge / 2)
+
+  pointOf(source, 'bottomEdgeCenter')
+    .shouldBe(x + xTopEdge / 2 + xLeftEdge,
+              y + yTopEdge / 2 + yLeftEdge)
+
+  pointOf(source, 'leftEdgeCenter')
+    .shouldBe(x + xLeftEdge / 2,
+              y + yLeftEdge / 2)
+
+  pointOf(source, 'rightEdgeCenter')
+    .shouldBe(x + xLeftEdge / 2 + xTopEdge,
+              y + yLeftEdge / 2 + yTopEdge)
+
   bounds.map (k,v) ->
     describe "the #{source} #{k} method", ->
       it "should return #{v}", ->
