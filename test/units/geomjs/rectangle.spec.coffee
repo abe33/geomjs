@@ -32,17 +32,20 @@ describe 'Rectangle', ->
         beforeEach ->
           @rectangle = rectangle.apply global, args
 
+        source = 'rectangle'
+
         it 'should create an instance with the provided values', ->
           expect(@rectangle).toBeRectangle(x, y, width, height, rotation)
 
-        testRotatedRectangle 'rectangle', x, y, width, height, rotation
+        # Rectangle API
+        testRotatedRectangle source, x, y, width, height, rotation
 
         # Surface API
-        acreageOf('rectangle').shouldBe(acreage)
+        acreageOf(source).shouldBe(acreage)
 
         # Path API
-        lengthOf('rectangle').shouldBe(length)
+        lengthOf(source).shouldBe(length)
 
         # Drawing API
-        testDrawingOf('rectangle')
+        testDrawingOf(source)
 
