@@ -32,5 +32,7 @@ describe 'Rectangle', ->
         it 'should create an instance with the provided values', ->
           expect(@rectangle).toBeRectangle(x, y, width, height)
 
-        acreageOf('rectangle').shouldBe(acreage)
         testRotatedRectangle 'rectangle', x, y, width, height, rotation
+
+        # Surface API
+        acreageOf('rectangle').shouldBe(acreage)
