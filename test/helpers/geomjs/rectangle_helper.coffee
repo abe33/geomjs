@@ -6,15 +6,16 @@ global.rectangle = (x, y, width, height, rotation) ->
 
 global.addRectangleMatchers = (scope) ->
   scope.addMatchers
-    toBeRectangle: (x, y, width, height) ->
+    toBeRectangle: (x=0, y=0, width=0, height=0, rotation=0) ->
       @message = ->
         "Expect #{@actual}#{if @isNot then ' not' else ''} to be a rectangle
-         equals to (#{x},#{y},#{width},#{height})".squeeze()
+         equals to (#{x},#{y},#{width},#{height},#{rotation})".squeeze()
 
       @actual.x is x and
       @actual.y is y and
       @actual.width is width and
-      @actual.height is height
+      @actual.height is height and
+      @actual.rotation is rotation
 
 global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
   xTopEdge = width * Math.cos Math.degToRad rotation

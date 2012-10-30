@@ -33,7 +33,7 @@ describe 'Rectangle', ->
           @rectangle = rectangle.apply global, args
 
         it 'should create an instance with the provided values', ->
-          expect(@rectangle).toBeRectangle(x, y, width, height)
+          expect(@rectangle).toBeRectangle(x, y, width, height, rotation)
 
         testRotatedRectangle 'rectangle', x, y, width, height, rotation
 
