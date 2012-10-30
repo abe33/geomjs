@@ -4,9 +4,9 @@ class Rectangle
   constructor: (@x=0, @y=0, @width=0, @height=0, @rotation=0) ->
 
   topLeft: -> new Point(@x, @y)
-  topRight: -> new Point(@x, @y).add(@topEdge())
-  bottomLeft: -> new Point(@x, @y).add(@leftEdge())
-  bottomRight: -> new Point(@x, @y).add(@topEdge()).add(@leftEdge())
+  topRight: -> @topLeft().add(@topEdge())
+  bottomLeft: -> @topLeft().add(@leftEdge())
+  bottomRight: -> @topLeft().add(@topEdge()).add(@leftEdge())
 
   center: -> @topLeft().add(@topEdge().scale(0.5)).add(@leftEdge().scale(0.5))
   topEdgeCenter: -> @topLeft().add(@topEdge().scale(0.5))
