@@ -58,5 +58,6 @@ class Rectangle
     context.lineTo(@x, @y)
     context.closePath()
 
+  toString: -> "[object Rectangle(#{x},#{y},#{width},#{height},#{rotation})]"
 
 module.exports = Rectangle
