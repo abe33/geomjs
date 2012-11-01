@@ -56,7 +56,7 @@ describe 'Rectangle', ->
               ]
               expect(@rectangle.topLeft()).toBePoint(x,y)
 
-        describe 'its rotateAroundCenter', ->
+        describe 'its rotateAroundCenter method', ->
           beforeEach ->
             @rotation = 10
             @rectangle.rotateAroundCenter @rotation
@@ -68,7 +68,7 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
-        describe 'its scaleAroundCenter', ->
+        describe 'its scaleAroundCenter method', ->
           beforeEach ->
             @scale = 2
             @rectangle.scaleAroundCenter @scale
@@ -84,7 +84,7 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
-        describe 'its inflateAroundCenter', ->
+        describe 'its inflateAroundCenter method', ->
           beforeEach ->
             @inflate = 2
             @rectangle.inflateAroundCenter @inflate
