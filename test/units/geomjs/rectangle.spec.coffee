@@ -68,6 +68,22 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
+        describe 'its scaleAroundCenter', ->
+          beforeEach ->
+            @scale = 2
+            @rectangle.scaleAroundCenter @scale
+
+          it 'should scale the rectangle around its center', ->
+            dif = point(@data.topLeft).subtract(@data.center)
+            dif = dif.scale(@scale)
+            target = point(@data.topLeft).add(dif.scale(0.5))
+            expect(@rectangle.topLeft()).toBeSamePoint(target)
+            expect(@rectangle.width).toBe(width * @scale)
+            expect(@rectangle.height).toBe(height * @scale)
+
+          it 'should preserve the rectangle center', ->
+            expect(@rectangle.center()).toBeSamePoint(@data.center)
+
         # Surface API
         acreageOf(source).shouldBe(acreage)
 

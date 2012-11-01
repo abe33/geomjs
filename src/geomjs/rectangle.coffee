@@ -104,6 +104,15 @@ class Rectangle
     {@x,@y} = @topLeft().rotateAround(@center(), rotation)
     @rotation += rotation
 
+  ##### Rectangle::scaleAroundCenter
+  #
+  scaleAroundCenter: (scale) ->
+    topLeft = @topLeft()
+    dif = topLeft.subtract(@center()).scale(scale)
+    {@x,@y} = topLeft.add(dif.scale(1 / 2))
+    @width *= scale
+    @height *= scale
+
   #### Surface API
 
   ##### Rectangle::acreage
