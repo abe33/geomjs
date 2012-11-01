@@ -10,7 +10,7 @@
     "node": "~0.8.0"
   },
   "scripts": {
-    "test": "cake compile; jasmine-node --coffee test"
+    "test": "jasmine-node --coffee test"
   },
   "dependencies": {
     "neat": "0.0.70",
