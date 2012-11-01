@@ -115,10 +115,11 @@ class Rectangle
 
   ##### Rectangle::inflateAroundCenter
   #
-  inflateAroundCenter: (inflate) ->
+  inflateAroundCenter: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
     center = @center()
-    @width += inflate
-    @height += inflate
+    @width += x
+    @height += y
     @setCenter center
 
 
