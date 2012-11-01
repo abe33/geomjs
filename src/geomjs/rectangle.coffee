@@ -98,6 +98,12 @@ class Rectangle
     @x += x - c.x
     @y += y - c.y
 
+  ##### Rectangle::rotateAroundCenter
+  #
+  rotateAroundCenter: (rotation) ->
+    {@x,@y} = @topLeft().rotateAround(@center(), rotation)
+    @rotation += rotation
+
   #### Surface API
 
   ##### Rectangle::acreage

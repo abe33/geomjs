@@ -56,6 +56,18 @@ describe 'Rectangle', ->
               ]
               expect(@rectangle.topLeft()).toBePoint(x,y)
 
+        describe 'its rotateAroundCenter', ->
+          beforeEach ->
+            @rotation = 10
+            @rectangle.rotateAroundCenter @rotation
+
+          it 'should rotate the rectangle around its center', ->
+            target = point(@data.topLeft).rotateAround(@data.center, @rotation)
+            expect(@rectangle.topLeft()).toBeSamePoint(target)
+
+          it 'should preserve the rectangle center', ->
+            expect(@rectangle.center()).toBeSamePoint(@data.center)
+
         # Surface API
         acreageOf(source).shouldBe(acreage)
 
