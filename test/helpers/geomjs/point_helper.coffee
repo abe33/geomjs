@@ -145,6 +145,8 @@ global.calledWithPoint = (x,y) ->
 
 global.pointOf = (source, method, args...) ->
   shouldBe: (x, y) ->
+    {x,y} = x if typeof x is 'object'
+
     beforeEach -> addPointMatchers this
 
     describe "the #{source} #{method} method", ->
