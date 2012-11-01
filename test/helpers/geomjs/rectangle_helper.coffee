@@ -50,7 +50,7 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
       it "should return #{data[k]}", ->
         expect(@[source][k]()).toBeClose(data[k])
 
-global.rectangleData = (x, y, width, height, rotation) ->
+global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
   xTopEdge = width * Math.cos Math.degToRad rotation
   yTopEdge = width * Math.sin Math.degToRad rotation
 
