@@ -18,49 +18,98 @@ global.addRectangleMatchers = (scope) ->
       @actual.rotation is rotation
 
 global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
+  data = rectangleData x, y, width, height, rotation
+
+  methods = [
+    'topLeft'
+    'topRight'
+    'bottomLeft'
+    'bottomRight'
+    'topEdge'
+    'bottomEdge'
+    'leftEdge'
+    'rightEdge'
+    'center'
+    'topEdgeCenter'
+    'bottomEdgeCenter'
+    'leftEdgeCenter'
+    'rightEdgeCenter'
+  ]
+  bounds = [
+    'top'
+    'bottom'
+    'left'
+    'right'
+  ]
+
+  methods.forEach (m) ->
+    pointOf(source, m).shouldBe(data[m])
+
+  bounds.forEach (k) ->
+    describe "the #{source} #{k} method", ->
+      it "should return #{data[k]}", ->
+        expect(@[source][k]()).toBeClose(data[k])
+
+global.rectangleData = (x, y, width, height, rotation) ->
   xTopEdge = width * Math.cos Math.degToRad rotation
   yTopEdge = width * Math.sin Math.degToRad rotation
 
   xLeftEdge = height * Math.cos Math.degToRad(rotation) + Math.PI / 2
   yLeftEdge = height * Math.sin Math.degToRad(rotation) + Math.PI / 2
 
-  # Corners
-  pointOf(source, 'topLeft').shouldBe(x,y)
-  pointOf(source, 'topRight').shouldBe(x + xTopEdge, y + yTopEdge)
-  pointOf(source, 'bottomLeft').shouldBe(x + xLeftEdge, y + yLeftEdge)
-  pointOf(source, 'bottomRight').shouldBe(x + xTopEdge + xLeftEdge,
-                                          y + yTopEdge + yLeftEdge)
-  # Edges
-  pointOf(source, 'topEdge').shouldBe(xTopEdge, yTopEdge)
-  pointOf(source, 'bottomEdge').shouldBe(xTopEdge, yTopEdge)
-  pointOf(source, 'leftEdge').shouldBe(xLeftEdge, yLeftEdge)
-  pointOf(source, 'rightEdge').shouldBe(xLeftEdge, yLeftEdge)
-
-  # Centers
-  pointOf(source, 'center').shouldBe(x + xTopEdge / 2 + xLeftEdge / 2,
-                                     y + yTopEdge / 2 + yLeftEdge / 2 )
-  pointOf(source, 'topEdgeCenter')
-    .shouldBe(x + xTopEdge / 2,
-              y + yTopEdge / 2)
-  pointOf(source, 'bottomEdgeCenter')
-    .shouldBe(x + xTopEdge / 2 + xLeftEdge,
-              y + yTopEdge / 2 + yLeftEdge)
-  pointOf(source, 'leftEdgeCenter')
-    .shouldBe(x + xLeftEdge / 2,
-              y + yLeftEdge / 2)
-  pointOf(source, 'rightEdgeCenter')
-    .shouldBe(x + xLeftEdge / 2 + xTopEdge,
-              y + yLeftEdge / 2 + yTopEdge)
-
-  # Bounds
-  bounds =
-    top: Math.min y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
-    bottom: Math.max y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
-    left: Math.min x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
-    right: Math.max x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
-
-  bounds.map (k,v) ->
-    describe "the #{source} #{k} method", ->
-      it "should return #{v}", ->
-        expect(@[source][k]()).toBeClose(v)
-
+  topEdge:
+    x: xTopEdge
+    y: yTopEdge
+  leftEdge:
+    x: xLeftEdge
+    y: yLeftEdge
+  bottomEdge:
+    x: xTopEdge
+    y: yTopEdge
+  rightEdge:
+    x: xLeftEdge
+    y: yLeftEdge
+  topLeft:
+    x: x
+    y: y
+  topRight:
+    x: x + xTopEdge
+    y: y + yTopEdge
+  bottomRight:
+    x: x + xTopEdge + xLeftEdge
+    y: y + yTopEdge + yLeftEdge
+  bottomLeft:
+    x: x + xLeftEdge
+    y: y + yLeftEdge
+  topEdgeCenter:
+    x: x + xTopEdge / 2
+    y: y + yTopEdge / 2
+  bottomEdgeCenter:
+    x: x + xLeftEdge + xTopEdge / 2
+    y: y + yLeftEdge + yTopEdge / 2
+  leftEdgeCenter:
+    x: x + xLeftEdge / 2
+    y: y + yLeftEdge / 2
+  rightEdgeCenter:
+    x: x + xTopEdge + xLeftEdge / 2
+    y: y + yTopEdge + yLeftEdge / 2
+    # Centers
+  center:
+    x: x + xTopEdge / 2 + xLeftEdge / 2
+    y: y + yTopEdge / 2 + yLeftEdge / 2
+  topEdgeCenter:
+    x: x + xTopEdge / 2
+    y: y + yTopEdge / 2
+  bottomEdgeCenter:
+    x: x + xTopEdge / 2 + xLeftEdge
+    y: y + yTopEdge / 2 + yLeftEdge
+  leftEdgeCenter:
+    x: x + xLeftEdge / 2
+    y: y + yLeftEdge / 2
+  rightEdgeCenter:
+    x: x + xLeftEdge / 2 + xTopEdge
+    y: y + yLeftEdge / 2 + yTopEdge
+  top: Math.min y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
+  bottom: Math.max y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
+  left: Math.min x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
+  right: Math.max x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
