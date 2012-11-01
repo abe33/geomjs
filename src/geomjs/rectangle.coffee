@@ -116,11 +116,16 @@ class Rectangle
   ##### Rectangle::inflateAroundCenter
   #
   inflateAroundCenter: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
     center = @center()
+    @inflate xOrPt, y
+    @setCenter center
+
+  ##### Rectangle::inflate
+  #
+  inflate: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
     @width += x
     @height += y
-    @setCenter center
 
 
   #### Surface API

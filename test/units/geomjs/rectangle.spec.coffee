@@ -94,6 +94,16 @@ describe 'Rectangle', ->
               expect(@rectangle.height).toBe(height + 4)
               expect(@rectangle.center()).toBeSamePoint(@data.center)
 
+        describe 'its inflate method', ->
+          calledWithPoint(2, 4)
+            .where
+              source: source
+              method: 'inflate'
+            .should 'have inflate the rectangle', ->
+              expect(@rectangle.width).toBe(width + 2)
+              expect(@rectangle.height).toBe(height + 4)
+              expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+
 
         # Surface API
         acreageOf(source).shouldBe(acreage)
