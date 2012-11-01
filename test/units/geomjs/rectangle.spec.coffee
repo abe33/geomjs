@@ -34,7 +34,7 @@ describe 'Rectangle', ->
 
         source = 'rectangle'
 
-        it 'should create an instance with the provided values', ->
+        it 'should have been set with the provided values', ->
           expect(@rectangle).toBeRectangle(x, y, width, height, rotation)
 
         # Rectangle API
