@@ -13,7 +13,7 @@
     "test": "cake compile; jasmine-node --coffee test"
   },
   "dependencies": {
-    "neat": "0.0.69",
+    "neat": "0.0.70",
     "chancejs": "*"
   },
   "devDependencies": {
