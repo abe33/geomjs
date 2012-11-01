@@ -5,3 +5,5 @@ description: "TODO: Description goes here"
 keywords: ["TODO: Module keywords goes here"]
 engine:
   node: '~0.8.0'
+scripts:
+  test: 'cake compile; jasmine-node --coffee test'

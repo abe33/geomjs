@@ -1,2 +1,5 @@
 npm 'neat', '0.0.69'
 npm 'chancejs'
+
+group 'test', ->
+  npm 'jasmine-node'

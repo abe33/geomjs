@@ -9,9 +9,14 @@
   "engine": {
     "node": "~0.8.0"
   },
+  "scripts": {
+    "test": "cake compile; jasmine-node --coffee test"
+  },
   "dependencies": {
     "neat": "0.0.69",
     "chancejs": "*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jasmine-node": "*"
+  }
 }
