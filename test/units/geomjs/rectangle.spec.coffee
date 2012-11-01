@@ -84,6 +84,18 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
+        describe 'its inflateAroundCenter', ->
+          beforeEach ->
+            @inflate = 2
+            @rectangle.inflateAroundCenter @inflate
+
+          it 'should inflate the rectangle around its center', ->
+            expect(@rectangle.width).toBe(width + @inflate)
+            expect(@rectangle.height).toBe(height + @inflate)
+
+          it 'should preserve the rectangle center', ->
+            expect(@rectangle.center()).toBeSamePoint(@data.center)
+
         # Surface API
         acreageOf(source).shouldBe(acreage)
 

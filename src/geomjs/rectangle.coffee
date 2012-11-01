@@ -113,6 +113,15 @@ class Rectangle
     @width *= scale
     @height *= scale
 
+  ##### Rectangle::inflateAroundCenter
+  #
+  inflateAroundCenter: (inflate) ->
+    center = @center()
+    @width += inflate
+    @height += inflate
+    @setCenter center
+
+
   #### Surface API
 
   ##### Rectangle::acreage
