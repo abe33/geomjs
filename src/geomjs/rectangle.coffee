@@ -87,6 +87,17 @@ class Rectangle
   #
   right: -> Math.max @x, @topRight().x, @bottomRight().x, @bottomLeft().x
 
+  #### Rectangle Manipulation
+
+  ##### Rectangle::setCenter
+  #
+  setCenter: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    c = @center()
+
+    @x += x - c.x
+    @y += y - c.y
+
   #### Surface API
 
   ##### Rectangle::acreage

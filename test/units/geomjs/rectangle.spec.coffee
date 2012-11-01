@@ -5,6 +5,7 @@ Rectangle = require '../../../lib/geomjs/rectangle'
 describe 'Rectangle', ->
   beforeEach ->
     addRectangleMatchers this
+    addPointMatchers this
 
   describe 'when instanciated', ->
     tests =
@@ -31,6 +32,7 @@ describe 'Rectangle', ->
       describe "#{msg} #{args}", ->
         beforeEach ->
           @rectangle = rectangle.apply global, args
+          @data = rectangleData.apply global, args
 
         source = 'rectangle'
 
@@ -39,6 +41,20 @@ describe 'Rectangle', ->
 
         # Rectangle API
         testRotatedRectangle source, x, y, width, height, rotation
+
+        describe 'its setCenter method', ->
+          calledWithPoint(10, 20)
+            .where
+              source: source
+              method: 'setCenter'
+            .should 'have moved the rectangle', ->
+              {x,y} = @data.topLeft
+              center = @data.center
+              [x,y] = [
+                x + (10 - center.x)
+                y + (20 - center.y)
+              ]
+              expect(@rectangle.topLeft()).toBePoint(x,y)
 
         # Surface API
         acreageOf(source).shouldBe(acreage)
