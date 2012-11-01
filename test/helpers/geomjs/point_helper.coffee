@@ -27,9 +27,9 @@ global.addPointMatchers = (scope) ->
       @message = ->
         "Expected #{@actual}
          #{if @isNot then " not" else ""}
-         to be a point equivalent to #{pt}".squeeze()
+         to be a point equivalent to (#{pt.x},#{pt.y})".squeeze()
 
-      @actual.x is pt.x and @actual.y is pt.y
+      equalEnough(@actual.x, pt.x) and equalEnough(@actual.y, pt.y)
 
 global.point = (x,y) -> new Point x, y
 global.pointLike = (x,y) -> {x,y}
