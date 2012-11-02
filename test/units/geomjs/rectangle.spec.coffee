@@ -113,6 +113,22 @@ describe 'Rectangle', ->
               expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
               expect(res).toBe(@rectangle)
 
+        describe 'its inflateTopLeft method', ->
+          calledWithPoints(1,3,-5,2,5,-8,0,0)
+            .where
+              source: source
+              method: 'inflateTopLeft'
+            .should 'have inflate the rectangle and returned it', (res,x,y) ->
+              topEdge = point(@rectangle.topEdge()).normalize(-x)
+              leftEdge = point(@rectangle.leftEdge()).normalize(-y)
+
+              expect(@rectangle.width).toBe(width + x)
+              expect(@rectangle.height).toBe(height + y)
+              expect(@rectangle.topLeft())
+                .toBeSamePoint(point(@data.topLeft).add(topEdge).add(leftEdge))
+              expect(res).toBe(@rectangle)
+
+
         describe 'its inflateLeft method called', ->
           beforeEach ->
             @inflate = 2
