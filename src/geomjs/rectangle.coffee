@@ -178,11 +178,7 @@ class Rectangle
 
   ##### Rectangle::inflateBottomRight
   #
-  inflateBottomRight: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
-    @inflateRight x
-    @inflateBottom y
-    this
+  inflateBottomRight: (xOrPt, y) -> @inflate xOrPt, y
 
   ##### Rectangle::inflateBottomLeft
   #
