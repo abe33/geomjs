@@ -47,7 +47,7 @@ describe 'Rectangle', ->
             .where
               source: source
               method: 'setCenter'
-            .should 'have moved the rectangle', ->
+            .should 'have moved the rectangle and returned it', (res) ->
               {x,y} = @data.topLeft
               center = @data.center
               [x,y] = [
@@ -55,11 +55,12 @@ describe 'Rectangle', ->
                 y + (20 - center.y)
               ]
               expect(@rectangle.topLeft()).toBePoint(x,y)
+              expect(res).toBe(@rectangle)
 
         describe 'its rotateAroundCenter method', ->
           beforeEach ->
             @rotation = 10
-            @rectangle.rotateAroundCenter @rotation
+            @result = @rectangle.rotateAroundCenter @rotation
 
           it 'should rotate the rectangle around its center', ->
             target = point(@data.topLeft).rotateAround(@data.center, @rotation)
@@ -68,10 +69,13 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
+
         describe 'its scaleAroundCenter method', ->
           beforeEach ->
             @scale = 2
-            @rectangle.scaleAroundCenter @scale
+            @result = @rectangle.scaleAroundCenter @scale
 
           it 'should scale the rectangle around its center', ->
             dif = point(@data.topLeft).subtract(@data.center)
@@ -84,25 +88,30 @@ describe 'Rectangle', ->
           it 'should preserve the rectangle center', ->
             expect(@rectangle.center()).toBeSamePoint(@data.center)
 
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
+
         describe 'its inflateAroundCenter method', ->
           calledWithPoint(2, 4)
             .where
               source: source
               method: 'inflateAroundCenter'
-            .should 'have inflate the rectangle', ->
+            .should 'have inflate the rectangle and returned it', (res) ->
               expect(@rectangle.width).toBe(width + 2)
               expect(@rectangle.height).toBe(height + 4)
               expect(@rectangle.center()).toBeSamePoint(@data.center)
+              expect(res).toBe(@rectangle)
 
         describe 'its inflate method', ->
           calledWithPoint(2, 4)
             .where
               source: source
               method: 'inflate'
-            .should 'have inflate the rectangle', ->
+            .should 'have inflate the rectangle and returned it', (res) ->
               expect(@rectangle.width).toBe(width + 2)
               expect(@rectangle.height).toBe(height + 4)
               expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+              expect(res).toBe(@rectangle)
 
 
         # Surface API

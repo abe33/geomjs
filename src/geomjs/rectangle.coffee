@@ -97,12 +97,14 @@ class Rectangle
 
     @x += x - c.x
     @y += y - c.y
+    this
 
   ##### Rectangle::rotateAroundCenter
   #
   rotateAroundCenter: (rotation) ->
     {@x,@y} = @topLeft().rotateAround(@center(), rotation)
     @rotation += rotation
+    this
 
   ##### Rectangle::scaleAroundCenter
   #
@@ -112,6 +114,7 @@ class Rectangle
     {@x,@y} = topLeft.add(dif.scale(1 / 2))
     @width *= scale
     @height *= scale
+    this
 
   ##### Rectangle::inflateAroundCenter
   #
@@ -119,6 +122,7 @@ class Rectangle
     center = @center()
     @inflate xOrPt, y
     @setCenter center
+    this
 
   ##### Rectangle::inflate
   #
@@ -126,6 +130,7 @@ class Rectangle
     [x,y] = Point.coordsFrom xOrPt, y
     @width += x
     @height += y
+    this
 
 
   #### Surface API
