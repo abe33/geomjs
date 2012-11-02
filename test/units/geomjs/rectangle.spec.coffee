@@ -43,16 +43,16 @@ describe 'Rectangle', ->
         testRotatedRectangle source, x, y, width, height, rotation
 
         describe 'its setCenter method', ->
-          calledWithPoint(10, 20)
+          calledWithPoints(1,3,-5,2,5,-8,0,0)
             .where
               source: source
               method: 'setCenter'
-            .should 'have moved the rectangle and returned it', (res) ->
+            .should 'have moved the rectangle and returned it', (res, tx,ty) ->
               {x,y} = @data.topLeft
               center = @data.center
               [x,y] = [
-                x + (10 - center.x)
-                y + (20 - center.y)
+                x + (tx - center.x)
+                y + (ty - center.y)
               ]
               expect(@rectangle.topLeft()).toBePoint(x,y)
               expect(res).toBe(@rectangle)
@@ -92,24 +92,24 @@ describe 'Rectangle', ->
             expect(@result).toBe(@rectangle)
 
         describe 'its inflateAroundCenter method', ->
-          calledWithPoint(2, 4)
+          calledWithPoints(1,3,-5,2,5,-8,0,0)
             .where
               source: source
               method: 'inflateAroundCenter'
-            .should 'have inflate the rectangle and returned it', (res) ->
-              expect(@rectangle.width).toBe(width + 2)
-              expect(@rectangle.height).toBe(height + 4)
+            .should 'have inflate the rectangle and returned it', (res,x,y)->
+              expect(@rectangle.width).toBe(width + x)
+              expect(@rectangle.height).toBe(height + y)
               expect(@rectangle.center()).toBeSamePoint(@data.center)
               expect(res).toBe(@rectangle)
 
         describe 'its inflate method', ->
-          calledWithPoint(2, 4)
+          calledWithPoints(1,3,-5,2,5,-8,0,0)
             .where
               source: source
               method: 'inflate'
-            .should 'have inflate the rectangle and returned it', (res) ->
-              expect(@rectangle.width).toBe(width + 2)
-              expect(@rectangle.height).toBe(height + 4)
+            .should 'have inflate the rectangle and returned it', (res,x,y) ->
+              expect(@rectangle.width).toBe(width + x)
+              expect(@rectangle.height).toBe(height + y)
               expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
               expect(res).toBe(@rectangle)
 

@@ -117,31 +117,40 @@ global.pointOperator = (operator) ->
                          operatorActions,
                          -> @point[operator] null
 
-global.calledWithPoint = (x,y) ->
+global.calledWithPoints = (coordinates...) ->
+  throw new Error "coordinates must be even" if coordinates.length.odd()
+
   where: (@options) -> this
   should: (message, block) ->
-    {options} = this
+    coordinates.step 2, (x, y) =>
+      {options} = this
 
-    describe "called with point (#{x},#{y})", ->
-      it "should #{message}", ->
-        block.call this, @[options.source][options.method] point x, y
-
-    describe 'called with a point-like object', ->
-      it "should #{message}", ->
-        block.call this, @[options.source][options.method] pointLike x, y
-
-      describe "containing strings '#{x}' and '#{y}'", ->
+      describe "called with point (#{x},#{y})", ->
         it "should #{message}", ->
-          block.call this, @[options.source][options.method] pointLike "#{x}",
-                                                                       "#{y}"
+          block.call this, @[options.source][options.method](point x, y), x, y
 
-    describe "called with numbers #{x} and #{y}", ->
-      it "should #{message}", ->
-        block.call this, @[options.source][options.method] x, y
+      describe 'called with a point-like object', ->
+        it "should #{message}", ->
+          block.call this,
+                     @[options.source][options.method](pointLike x, y),
+                     x, y
 
-    describe "called with strings '#{x}' and '#{y}'", ->
-      it "should #{message}", ->
-        block.call this, @[options.source][options.method] "#{x}", "#{y}"
+        describe "containing strings '#{x}' and '#{y}'", ->
+          it "should #{message}", ->
+            block.call this,
+                       @[options.source][options.method](pointLike("#{x}",
+                                                                   "#{y}")),
+                       x, y
+
+      describe "called with numbers #{x} and #{y}", ->
+        it "should #{message}", ->
+          block.call this, @[options.source][options.method](x, y), x, y
+
+      describe "called with strings '#{x}' and '#{y}'", ->
+        it "should #{message}", ->
+          block.call this,
+                     @[options.source][options.method]("#{x}", "#{y}"),
+                     x, y
 
 global.pointOf = (source, method, args...) ->
   shouldBe: (x, y) ->

@@ -67,7 +67,7 @@ describe 'Matrix', ->
       @matrix = matrix.transformed()
       @translated = matrix.translated()
 
-    calledWithPoint(-2,2)
+    calledWithPoints(-2,2)
       .where
         source: 'matrix'
         method: 'translate'
@@ -83,7 +83,7 @@ describe 'Matrix', ->
       @matrix = matrix.transformed()
       @scaled = matrix.scaled()
 
-    calledWithPoint(0.5,2)
+    calledWithPoints(0.5,2)
       .where
         source: 'matrix'
         method: 'scale'
@@ -159,7 +159,7 @@ describe 'Matrix', ->
       @matrix = matrix.transformed()
       @skewed = matrix.skewed()
 
-    calledWithPoint(-2,2)
+    calledWithPoints(-2,2)
       .where
         source: 'matrix'
         method: 'skew'
