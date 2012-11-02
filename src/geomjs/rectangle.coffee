@@ -132,6 +132,33 @@ class Rectangle
     @height += y
     this
 
+  ##### Rectangle::inflateLeft
+  #
+  inflateLeft: (inflate) ->
+    @width += inflate
+    offset = @topEdge().normalize(-2)
+    {@x,@y} = @topLeft().add(offset)
+    this
+
+  ##### Rectangle::inflateRight
+  #
+  inflateRight: (inflate) ->
+    @width += inflate
+    this
+
+  ##### Rectangle::inflateTop
+  #
+  inflateTop: (inflate) ->
+    @height += inflate
+    offset = @leftEdge().normalize(-2)
+    {@x,@y} = @topLeft().add(offset)
+    this
+
+  ##### Rectangle::inflateBottom
+  #
+  inflateBottom: (inflate) ->
+    @height += inflate
+    this
 
   #### Surface API
 

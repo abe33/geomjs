@@ -113,6 +113,61 @@ describe 'Rectangle', ->
               expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
               expect(res).toBe(@rectangle)
 
+        describe 'its inflateLeft method called', ->
+          beforeEach ->
+            @inflate = 2
+            @result = @rectangle.inflateLeft @inflate
+
+          it 'should inflate the rectangle to the left', ->
+            @expect(@rectangle.width).toBe(width + @inflate)
+            @expect(@rectangle.height).toBe(height)
+            topEdge = point(@rectangle.topEdge()).normalize(-@inflate)
+            @expect(@rectangle.topLeft())
+              .toBeSamePoint(point(@data.topLeft).add(topEdge))
+
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
+
+        describe 'its inflateRight method called', ->
+          beforeEach ->
+            @inflate = 2
+            @result = @rectangle.inflateRight @inflate
+
+          it 'should inflate the rectangle to the right', ->
+            @expect(@rectangle.width).toBe(width + @inflate)
+            @expect(@rectangle.height).toBe(height)
+            @expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
+
+        describe 'its inflateTop method called', ->
+          beforeEach ->
+            @inflate = 2
+            @result = @rectangle.inflateTop @inflate
+
+          it 'should inflate the rectangle to the top', ->
+            @expect(@rectangle.width).toBe(width)
+            @expect(@rectangle.height).toBe(height + @inflate)
+            leftEdge = point(@rectangle.leftEdge()).normalize(-@inflate)
+            @expect(@rectangle.topLeft())
+              .toBeSamePoint(point(@data.topLeft).add(leftEdge))
+
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
+
+        describe 'its inflateBottom method called', ->
+          beforeEach ->
+            @inflate = 2
+            @result = @rectangle.inflateBottom @inflate
+
+          it 'should inflate the rectangle to the bottom', ->
+            @expect(@rectangle.width).toBe(width)
+            @expect(@rectangle.height).toBe(height + @inflate)
+            @expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+
+          it 'should return the rectangle', ->
+            expect(@result).toBe(@rectangle)
 
         # Surface API
         acreageOf(source).shouldBe(acreage)
