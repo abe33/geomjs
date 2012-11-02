@@ -176,10 +176,6 @@ class Rectangle
     @inflateTop y
     this
 
-  ##### Rectangle::inflateBottomRight
-  #
-  inflateBottomRight: (xOrPt, y) -> @inflate xOrPt, y
-
   ##### Rectangle::inflateBottomLeft
   #
   inflateBottomLeft: (xOrPt, y) ->
@@ -187,6 +183,10 @@ class Rectangle
     @inflateLeft x
     @inflateBottom y
     this
+
+  ##### Rectangle::inflateBottomRight
+  #
+  inflateBottomRight: (xOrPt, y) -> @inflate xOrPt, y
 
   #### Surface API
 
