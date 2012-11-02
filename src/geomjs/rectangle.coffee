@@ -136,7 +136,7 @@ class Rectangle
   #
   inflateLeft: (inflate) ->
     @width += inflate
-    offset = @topEdge().normalize(-2)
+    offset = @topEdge().normalize(-inflate)
     {@x,@y} = @topLeft().add(offset)
     this
 
@@ -150,7 +150,7 @@ class Rectangle
   #
   inflateTop: (inflate) ->
     @height += inflate
-    offset = @leftEdge().normalize(-2)
+    offset = @leftEdge().normalize(-inflate)
     {@x,@y} = @topLeft().add(offset)
     this
 
