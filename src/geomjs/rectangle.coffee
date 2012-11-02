@@ -168,6 +168,30 @@ class Rectangle
     @inflateTop y
     this
 
+  ##### Rectangle::inflateTopRight
+  #
+  inflateTopRight: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    @inflateRight x
+    @inflateTop y
+    this
+
+  ##### Rectangle::inflateBottomRight
+  #
+  inflateBottomRight: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    @inflateRight x
+    @inflateBottom y
+    this
+
+  ##### Rectangle::inflateBottomLeft
+  #
+  inflateBottomLeft: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    @inflateLeft x
+    @inflateBottom y
+    this
+
   #### Surface API
 
   ##### Rectangle::acreage
