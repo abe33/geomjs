@@ -268,9 +268,8 @@ describe 'Rectangle', ->
           expect(rect1.equals rect2).toBeFalsy()
 
         it 'should return false when passed null', ->
-          rect1 = rectangle.apply global, args
-          expect(rect1.equals null).toBeFalsy()
-
+          rect = rectangle.apply global, args
+          expect(rect.equals null).toBeFalsy()
 
       describe '::points called', ->
         it 'should returns an array with the corners of the rectangle', ->
