@@ -9,9 +9,8 @@ class Rectangle
   ##### Rectangle::constructor
   #
   constructor: (x, y, width, height, rotation) ->
-    [x,y,width,height,rotation] = @rectangleFrom x, y, width, height, rotation
-    [x,y,width,height,rotation] = @defaultToZero x, y, width, height, rotation
-    [@x,@y,@width,@height,@rotation] = [x,y,width,height,rotation]
+    args = @defaultToZero.apply this, @rectangleFrom.apply this, arguments
+    [@x,@y,@width,@height,@rotation] = args
 
   #### Corners
 
