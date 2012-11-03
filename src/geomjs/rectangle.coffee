@@ -99,6 +99,16 @@ class Rectangle
     right: @right()
     bottom: @bottom()
 
+  ##### Rectangle::boundingBox
+  #
+  boundingBox: ->
+    new Rectangle(
+      @left(),
+      @top(),
+      @right() - @left(),
+      @bottom() - @top()
+    )
+
   #### Rectangle Manipulation
 
   ##### Rectangle::setCenter

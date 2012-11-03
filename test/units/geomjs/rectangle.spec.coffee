@@ -274,6 +274,16 @@ describe 'Rectangle', ->
                 bottom: @rectangle.bottom()
                 right: @rectangle.right()
 
+        describe 'its boundingBox method', ->
+          it 'should return a rectangle representing its bounds', ->
+            expect(@rectangle.boundingBox())
+              .toBeRectangle(
+                @rectangle.left(),
+                @rectangle.top(),
+                @rectangle.right() - @rectangle.left(),
+                @rectangle.bottom() - @rectangle.top()
+              )
+
         # Drawing API
         testDrawingOf(source)
 
