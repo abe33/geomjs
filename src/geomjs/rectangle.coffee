@@ -91,6 +91,14 @@ class Rectangle
   #
   right: -> Math.max @x, @topRight().x, @bottomRight().x, @bottomLeft().x
 
+  ##### Rectangle::bounds
+  #
+  bounds: ->
+    top: @top()
+    left: @left()
+    right: @right()
+    bottom: @bottom()
+
   #### Rectangle Manipulation
 
   ##### Rectangle::setCenter
@@ -197,14 +205,6 @@ class Rectangle
   ##### Rectangle::closedGeometry
   #
   closedGeometry: -> true
-
-  ##### Rectangle::bounds
-  #
-  bounds: ->
-    top: @top()
-    left: @left()
-    right: @right()
-    bottom: @bottom()
 
   ##### Rectangle::points
   #
