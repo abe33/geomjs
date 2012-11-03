@@ -291,3 +291,37 @@ describe 'Rectangle', ->
   describe '::clone called', ->
     it 'should the copy of the rectangle', ->
       expect(rectangle(4,5,6,7,8).clone()).toBeRectangle(4,5,6,7,8)
+
+  describe 'path API', ->
+    beforeEach ->
+      @rectangle = rectangle 0, 0, 20, 10
+      @data = rectangleData 0, 0, 20, 10
+
+    describe '::pathPointAt method called', ->
+      describe 'with 0', ->
+        it 'should return the top left corner', ->
+          expect(@rectangle.pathPointAt 0).toBeSamePoint(@data.topLeft)
+
+      describe 'with 1', ->
+        it 'should return the top left corner', ->
+          expect(@rectangle.pathPointAt 1).toBeSamePoint(@data.topLeft)
+
+      describe 'with 0.5', ->
+        it 'should return the bottom right corner', ->
+          expect(@rectangle.pathPointAt 0.5).toBeSamePoint(@data.bottomRight)
+
+      describe 'with 0 and false', ->
+        it 'should return the top left corner', ->
+          expect(@rectangle.pathPointAt 0, false)
+            .toBeSamePoint(@data.topLeft)
+
+      describe 'with 1 and false', ->
+        it 'should return the top left corner', ->
+          expect(@rectangle.pathPointAt 1, false)
+            .toBeSamePoint(@data.topLeft)
+
+      describe 'with 0.5 and false', ->
+        it 'should return the bottom right corner', ->
+          expect(@rectangle.pathPointAt 0.5, false)
+            .toBeSamePoint(@data.bottomRight)
+

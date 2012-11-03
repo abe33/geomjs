@@ -216,6 +216,28 @@ class Rectangle
   #
   length: -> @width * 2 + @height * 2
 
+  ##### Rectangle::pathPointAt
+  #
+  pathPointAt: (n, pathBasedOnLength=true) ->
+    if pathBasedOnLength
+      l = @length()
+      p1 = @width / l
+      p2 = (@width + @height) / l
+      p3 = p1 + p2
+    else
+      p1 = 1 / 4
+      p2 = 1 / 2
+      p3 = 3 / 4
+
+    if n < p1
+      @topLeft().add @topEdge().scale Math.map n, 0, p1, 0, 1
+    else if n < p2
+      @topRight().add @rightEdge().scale Math.map n, p1, p2, 0, 1
+    else if n < p3
+      @bottomRight().add @bottomEdge().scale Math.map(n, p2, p3, 0, 1) * -1
+    else
+      @bottomLeft().add @leftEdge().scale Math.map(n, p3, 1, 0, 1) * -1
+
   #### Drawing API
 
   ##### Rectangle::stroke
