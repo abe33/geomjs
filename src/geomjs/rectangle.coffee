@@ -199,6 +199,14 @@ class Rectangle
   #
   closedGeometry: -> true
 
+  ##### Rectangle::bounds
+  #
+  bounds: ->
+    top: @top()
+    left: @left()
+    right: @right()
+    bottom: @bottom()
+
   ##### Rectangle::points
   #
   points: ->

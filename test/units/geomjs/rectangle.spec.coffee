@@ -265,6 +265,15 @@ describe 'Rectangle', ->
         # Geometry API
         shouldBeClosedGeometry(source)
 
+        describe 'its bounds method', ->
+          it 'should return the bounds of the rectangle', ->
+            expect(@rectangle.bounds())
+              .toEqual
+                top: @rectangle.top()
+                left: @rectangle.left()
+                bottom: @rectangle.bottom()
+                right: @rectangle.right()
+
         # Drawing API
         testDrawingOf(source)
 
