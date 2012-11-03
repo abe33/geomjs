@@ -245,6 +245,13 @@ class Rectangle
   #
   clone: -> new Rectangle @x, @y, @width, @height, @rotation
 
+  ##### Rectangle::paste
+  #
+  paste: (x, y, width, height, rotation) ->
+    values = @rectangleFrom x, y, width, height, rotation
+    ['x','y','width','height','rotation'].forEach (k,i) =>
+      @[k] = parseFloat values[i] if Point.isFloat values[i]
+
   ##### Rectangle::rectangleFrom
   #
   rectangleFrom: (xOrRect,y,width,height,rotation) ->
@@ -255,7 +262,7 @@ class Rectangle
   ##### Rectangle::defaultToZero
   #
   defaultToZero: (values...) ->
-    values[i] = 0 for n,i in values when isNaN parseFloat n
+    values[i] = 0 for n,i in values when not Point.isFloat n
     values
 
 module.exports = Rectangle
