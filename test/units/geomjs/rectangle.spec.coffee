@@ -243,3 +243,6 @@ describe 'Rectangle', ->
         # Drawing API
         testDrawingOf(source)
 
+  describe '::clone called', ->
+    it 'should the copy of the rectangle', ->
+      expect(rectangle(4,5,6,7,8).clone()).toBeRectangle(4,5,6,7,8)

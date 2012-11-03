@@ -239,6 +239,9 @@ class Rectangle
   ##### Rectangle::toString
   #
   toString: -> "[object Rectangle(#{x},#{y},#{width},#{height},#{rotation})]"
+  ##### Rectangle::clone
+  #
+  clone: -> new Rectangle @x, @y, @width, @height, @rotation
   ##### Rectangle::rectangleFrom
   #
   rectangleFrom: (xOrRect,y,width,height,rotation) ->
