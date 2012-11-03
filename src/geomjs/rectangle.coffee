@@ -1,8 +1,10 @@
 # @toc
 Point = require './point'
 
+
 ## Rectangle
 class Rectangle
+  PROPERTIES = ['x','y','width','height','rotation']
 
   ##### Rectangle::constructor
   #
@@ -245,11 +247,18 @@ class Rectangle
   #
   clone: -> new Rectangle @x, @y, @width, @height, @rotation
 
+  ##### Rectangle::equals
+  #
+  equals: (rectangle) ->
+    return false unless rectangle?
+    return false for p in PROPERTIES when rectangle[p] isnt @[p]
+    true
+
   ##### Rectangle::paste
   #
   paste: (x, y, width, height, rotation) ->
     values = @rectangleFrom x, y, width, height, rotation
-    ['x','y','width','height','rotation'].forEach (k,i) =>
+    PROPERTIES.forEach (k,i) =>
       @[k] = parseFloat values[i] if Point.isFloat values[i]
 
   ##### Rectangle::rectangleFrom

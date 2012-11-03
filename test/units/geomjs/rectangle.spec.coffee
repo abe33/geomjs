@@ -252,6 +252,22 @@ describe 'Rectangle', ->
           rect.paste.apply rect, args
           expect(rect).toBeRectangle(x,y,width,height,rotation)
 
+      describe "::equals called", ->
+        it 'should return true when rectangles are equals', ->
+          rect1 = rectangle.apply global, args
+          rect2 = rectangle.apply global, args
+          expect(rect1.equals rect2).toBeTruthy()
+
+        it 'should return false when rectangles are different', ->
+          rect1 = rectangle.apply global, args
+          rect2 = rectangle -1, -1, 10, 10, 100
+          expect(rect1.equals rect2).toBeFalsy()
+
+        it 'should return false when passed null', ->
+          rect1 = rectangle.apply global, args
+          expect(rect1.equals null).toBeFalsy()
+
+
   describe '::clone called', ->
     it 'should the copy of the rectangle', ->
       expect(rectangle(4,5,6,7,8).clone()).toBeRectangle(4,5,6,7,8)
