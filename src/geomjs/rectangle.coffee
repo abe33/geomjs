@@ -199,6 +199,11 @@ class Rectangle
   #
   closedGeometry: -> true
 
+  ##### Rectangle::points
+  #
+  points: ->
+    [@topLeft(), @topRight(), @bottomRight(), @bottomLeft(), @topLeft()]
+
   #### Surface API
 
   ##### Rectangle::acreage

@@ -247,7 +247,8 @@ describe 'Rectangle', ->
         testDrawingOf(source)
 
     tests.map (msg, o) ->
-      {args, test:[x,y,width,height,rotation]} = o
+      {args, test} = o
+      [x,y,width,height,rotation] = test
 
       describe "::paste called with #{msg} #{args}", ->
         it 'should copy the passed-in data in the rectangle', ->
@@ -270,6 +271,23 @@ describe 'Rectangle', ->
           rect1 = rectangle.apply global, args
           expect(rect1.equals null).toBeFalsy()
 
+
+      describe '::points called', ->
+        it 'should returns an array with the corners of the rectangle', ->
+          rect = rectangle.apply global, args
+          data = rectangleData.apply global, test
+
+          points = rect.points()
+          testPoints = [
+            data.topLeft
+            data.topRight
+            data.bottomRight
+            data.bottomLeft
+            data.topLeft
+          ]
+
+          expect(points.length).toBe(5)
+          points.forEach (pt, i) -> expect(pt).toBeSamePoint(testPoints[i])
 
   describe '::clone called', ->
     it 'should the copy of the rectangle', ->
