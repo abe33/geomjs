@@ -210,6 +210,13 @@ class Rectangle
   #
   acreage: -> @width * @height
 
+  ##### Rectangle::contains
+  #
+  contains: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = new Point(x,y).rotateAround(@topLeft(), -@rotation)
+    (@x <= x <= @x + @width) and (@y <= y <= @y + @height)
+
   #### Path API
 
   ##### Rectangle::length

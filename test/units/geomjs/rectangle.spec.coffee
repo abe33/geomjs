@@ -177,7 +177,6 @@ describe 'Rectangle', ->
               expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
               expect(res).toBe(@rectangle)
 
-
         describe 'its inflateLeft method called', ->
           beforeEach ->
             @inflate = 2
@@ -236,6 +235,29 @@ describe 'Rectangle', ->
 
         # Surface API
         acreageOf(source).shouldBe(acreage)
+
+        describe 'its contains method', ->
+          data = rectangleData.apply global, test
+          a = []
+          5.times (n) ->
+            a.push data.topLeft.x + (n / 5) * data.topEdge.x +
+                                    (n / 5) * data.leftEdge.x
+            a.push data.topLeft.y + (n / 5) * data.topEdge.y +
+                                    (n / 5) * data.leftEdge.y
+
+          calledWithPoints.apply(global, a)
+            .where
+              source: source
+              method: 'contains'
+            .should 'return true for points inside the rectangle', (res) ->
+              expect(res).toBeTruthy()
+
+          calledWithPoints(-10,-10)
+            .where
+              source: source
+              method: 'contains'
+            .should 'return false for points outside the rectangle', (res) ->
+              expect(res).toBeFalsy()
 
         # Path API
         lengthOf(source).shouldBe(length)
