@@ -246,6 +246,13 @@ class Rectangle
 
     Math.atan2 p.y, p.x
 
+  ##### Rectangle::pathTangentAt
+  #
+  pathTangentAt: (n, accuracy=1 / 100, pathBasedOnLength=true) ->
+    @pathPointAt((n + accuracy) % 1)
+      .subtract(@pathPointAt((1 + n - accuracy) % 1))
+      .normalize(1)
+
   ##### Rectangle::pathSteps
   #
   pathSteps: (pathBasedOnLength=true) ->
