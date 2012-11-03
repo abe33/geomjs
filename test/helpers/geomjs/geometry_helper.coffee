@@ -1,4 +1,12 @@
 
+global.shouldBeClosedGeometry= (source) ->
+  it 'should be a closed geometry', ->
+    expect(@[source].closedGeometry()).toBeTruthy()
+
+global.shouldBeOpenGeometry= (source) ->
+  it 'should be an open geometry', ->
+    expect(@[source].closedGeometry()).toBeFalsy()
+
 global.testDrawingOf = (source) ->
   describe "with drawing api", ->
     beforeEach ->
