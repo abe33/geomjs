@@ -6,7 +6,10 @@ class Rectangle
 
   ##### Rectangle::constructor
   #
-  constructor: (@x=0, @y=0, @width=0, @height=0, @rotation=0) ->
+  constructor: (x, y, width, height, rotation) ->
+    [x,y,width,height,rotation] = @rectangleFrom x, y, width, height, rotation
+    [x,y,width,height,rotation] = @defaultToZero x, y, width, height, rotation
+    [@x,@y,@width,@height,@rotation] = [x,y,width,height,rotation]
 
   #### Corners
 
@@ -236,5 +239,17 @@ class Rectangle
   ##### Rectangle::toString
   #
   toString: -> "[object Rectangle(#{x},#{y},#{width},#{height},#{rotation})]"
+  ##### Rectangle::rectangleFrom
+  #
+  rectangleFrom: (xOrRect,y,width,height,rotation) ->
+    x = xOrRect
+    {x,y,width,height,rotation} = xOrRect if typeof xOrRect is 'object'
+    [x,y,width,height,rotation]
+
+  ##### Rectangle::defaultToZero
+  #
+  defaultToZero: (values...) ->
+    values[i] = 0 for n,i in values when isNaN parseFloat n
+    values
 
 module.exports = Rectangle

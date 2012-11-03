@@ -24,6 +24,16 @@ describe 'Rectangle', ->
         acreage: 0
         length: 0
         test: [0,0,0,0,0]
+      'with another rectangle':
+        args: [rectangle(1,2,3,4,5)]
+        acreage: 12
+        length: 14
+        test: [1,2,3,4,5]
+      'with a partial rectangle like object':
+        args: [x:1,width:3,height:4]
+        acreage: 12
+        length: 14
+        test: [1,0,3,4,0]
 
     tests.map (msg, o) ->
       {args, acreage, test, length} = o
@@ -32,7 +42,7 @@ describe 'Rectangle', ->
       describe "#{msg} #{args}", ->
         beforeEach ->
           @rectangle = rectangle.apply global, args
-          @data = rectangleData.apply global, args
+          @data = rectangleData.apply global, test
 
         source = 'rectangle'
 

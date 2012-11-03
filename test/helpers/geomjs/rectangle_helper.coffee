@@ -51,6 +51,8 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
         expect(@[source][k]()).toBeClose(data[k])
 
 global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
+  {x,y,width,height,rotation} = x if typeof x is 'object'
+
   xTopEdge = width * Math.cos Math.degToRad rotation
   yTopEdge = width * Math.sin Math.degToRad rotation
 
