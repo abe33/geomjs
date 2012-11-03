@@ -325,3 +325,28 @@ describe 'Rectangle', ->
           expect(@rectangle.pathPointAt 0.5, false)
             .toBeSamePoint(@data.bottomRight)
 
+    describe '::pathOrientationAt method called', ->
+      describe 'with 0', ->
+        it 'should return 0', ->
+          expect(@rectangle.pathOrientationAt 0).toBeClose(0)
+
+      describe 'with 1', ->
+        it 'should return -Math.PI/2', ->
+          expect(@rectangle.pathOrientationAt 1).toBeClose(-Math.PI / 2)
+
+      describe 'with 0.5', ->
+        it 'should return Math.PI', ->
+          expect(@rectangle.pathOrientationAt 0.5).toBeClose(Math.PI)
+
+      describe 'with 0 and false', ->
+        it 'should return 0', ->
+          expect(@rectangle.pathOrientationAt 0, false).toBeClose(0)
+
+      describe 'with 1 and false', ->
+        it 'should return -Math.PI/2', ->
+          expect(@rectangle.pathOrientationAt 1, false).toBeClose(-Math.PI / 2)
+
+      describe 'with 0.5 and false', ->
+        it 'should return Math.PI', ->
+          expect(@rectangle.pathOrientationAt 0.5, false).toBeClose(Math.PI)
+

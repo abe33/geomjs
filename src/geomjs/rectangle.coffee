@@ -219,6 +219,36 @@ class Rectangle
   ##### Rectangle::pathPointAt
   #
   pathPointAt: (n, pathBasedOnLength=true) ->
+    [p1,p2,p3] = @pathSteps pathBasedOnLength
+
+    if n < p1
+      @topLeft().add @topEdge().scale Math.map n, 0, p1, 0, 1
+    else if n < p2
+      @topRight().add @rightEdge().scale Math.map n, p1, p2, 0, 1
+    else if n < p3
+      @bottomRight().add @bottomEdge().scale Math.map(n, p2, p3, 0, 1) * -1
+    else
+      @bottomLeft().add @leftEdge().scale Math.map(n, p3, 1, 0, 1) * -1
+
+  ##### Rectangle::pathOrientationAt
+  #
+  pathOrientationAt: (n, pathBasedOnLength=true) ->
+    [p1,p2,p3] = @pathSteps pathBasedOnLength
+
+    if n < p1
+      p = @topEdge()
+    else if n < p2
+      p = @rightEdge()
+    else if n < p3
+      p = @bottomEdge().scale -1
+    else
+      p = @leftEdge().scale -1
+
+    Math.atan2 p.y, p.x
+
+  ##### Rectangle::pathSteps
+  #
+  pathSteps: (pathBasedOnLength=true) ->
     if pathBasedOnLength
       l = @length()
       p1 = @width / l
@@ -229,14 +259,7 @@ class Rectangle
       p2 = 1 / 2
       p3 = 3 / 4
 
-    if n < p1
-      @topLeft().add @topEdge().scale Math.map n, 0, p1, 0, 1
-    else if n < p2
-      @topRight().add @rightEdge().scale Math.map n, p1, p2, 0, 1
-    else if n < p3
-      @bottomRight().add @bottomEdge().scale Math.map(n, p2, p3, 0, 1) * -1
-    else
-      @bottomLeft().add @leftEdge().scale Math.map(n, p3, 1, 0, 1) * -1
+    [p1, p2, p3]
 
   #### Drawing API
 
