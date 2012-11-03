@@ -193,6 +193,12 @@ class Rectangle
   #
   inflateBottomRight: (xOrPt, y) -> @inflate xOrPt, y
 
+  #### Geometry API
+
+  ##### Rectangle::closedGeometry
+  #
+  closedGeometry: -> true
+
   #### Surface API
 
   ##### Rectangle::acreage

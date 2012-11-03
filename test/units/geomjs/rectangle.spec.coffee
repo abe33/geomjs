@@ -240,6 +240,9 @@ describe 'Rectangle', ->
         # Path API
         lengthOf(source).shouldBe(length)
 
+        # Geometry API
+        shouldBeClosedGeometry(source)
+
         # Drawing API
         testDrawingOf(source)
 
