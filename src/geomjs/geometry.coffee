@@ -3,10 +3,28 @@ Point = require './point'
 class Geometry
   @attachTo: (klass) -> klass::[k] = v for k,v of this when k isnt 'attachTo'
   @intersects: (geometry) ->
+    output = false
+
+    @eachIntersections geometry, (intersection) ->
+      output = true
+
+    output
+
+  @intersections: (geometry) ->
+    output = []
+
+    @eachIntersections geometry, (intersection) ->
+      output.push intersection
+      false
+
+    if output.length > 0 then output else null
+
+  @eachIntersections: (geometry, block) ->
     points1 = @points()
     points2 = geometry.points()
     length1 = points1.length
     length2 = points2.length
+    output = []
 
     for i in [0..length1-2]
       sv1 = points1[i]
@@ -28,9 +46,8 @@ class Geometry
            d2.length() <= dif1.length() and
            d3.length() <= dif2.length() and
            d4.length() <= dif2.length()
-          return true
+          return if block.call this, cross
 
-    return false
 
   @perCrossing: (start1, dir1, start2, dir2) ->
     v3bx = start2.x - start1.x

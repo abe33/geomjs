@@ -428,3 +428,22 @@ describe 'Rectangle', ->
 
           expect(rect1.intersects rect2).toBeFalsy()
 
+    describe '::intersections called', ->
+      describe 'with a geometry that intersects the rectagle', ->
+        it 'should return an array with the 2 intersections', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 4, 4
+          res = rect1.intersections rect2
+
+          expect(res.length).toBe(2)
+          expect(res[0]).toBePoint(2,0)
+          expect(res[1]).toBePoint(0,2)
+
+      describe 'with a geometry that does not intersects the rectagle', ->
+        it 'should return null', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 1, 1
+          res = rect1.intersections rect2
+
+          expect(res).toBeNull()
+
