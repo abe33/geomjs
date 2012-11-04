@@ -3,6 +3,7 @@ require '../../test_helper'
 describe 'Triangle', ->
   beforeEach ->
     addPointMatchers this
+    addRectangleMatchers this
 
   factories = [
     triangle
@@ -45,11 +46,40 @@ describe 'Triangle', ->
           it "should return #{data[k]}", ->
             expect(@triangle[k]()).toBeClose(data[k])
 
+      # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      # Path API
       lengthOf(source).shouldBe(data.length)
 
+      describe 'its points method', ->
+        it 'should return four points', ->
+          points = @triangle.points()
+          expect(points.length).toBe(4)
+          expect(points[0]).toBeSamePoint(data.a)
+          expect(points[1]).toBeSamePoint(data.b)
+          expect(points[2]).toBeSamePoint(data.c)
+          expect(points[3]).toBeSamePoint(data.a)
+
+      # Geometry API
       shouldBeClosedGeometry(source)
+
+      ['top', 'left', 'bottom', 'right'].forEach (k) ->
+        describe "its #{k} method", ->
+          it "should return #{data[k]}", ->
+            expect(@triangle[k]()).toBe(data[k])
+
+      describe 'its bounds method', ->
+        it 'should return the bounds of the triangle', ->
+          expect(@triangle.bounds()).toEqual(data.bounds)
+
+      describe 'its boundingBox method', ->
+        it 'should return the bounds of the triangle', ->
+          expect(@triangle.boundingBox())
+            .toBeRectangle(data.left,
+                           data.top,
+                           data.right - data.left
+                           data.bottom - data.top)
 
       # Drawing API
       testDrawingOf(source)
