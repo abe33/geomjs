@@ -1,7 +1,14 @@
+# @toc
 Point = require './point'
 
+## Geometry
 class Geometry
+  ##### Geometry.attachTo
+  #
   @attachTo: (klass) -> klass::[k] = v for k,v of this when k isnt 'attachTo'
+
+  ##### Geometry.intersects
+  #
   @intersects: (geometry) ->
     output = false
 
@@ -10,6 +17,8 @@ class Geometry
 
     output
 
+  ##### Geometry.intersections
+  #
   @intersections: (geometry) ->
     output = []
 
@@ -19,6 +28,8 @@ class Geometry
 
     if output.length > 0 then output else null
 
+  ##### Geometry.eachIntersections
+  #
   @eachIntersections: (geometry, block) ->
     points1 = @points()
     points2 = geometry.points()
@@ -48,7 +59,8 @@ class Geometry
            d4.length() <= dif2.length()
           return if block.call this, cross
 
-
+  ##### Geometry.perCrossing
+  #
   @perCrossing: (start1, dir1, start2, dir2) ->
     v3bx = start2.x - start1.x
     v3by = start2.y - start1.y

@@ -226,6 +226,16 @@ class Rectangle
   points: ->
     [@topLeft(), @topRight(), @bottomRight(), @bottomLeft(), @topLeft()]
 
+  ##### Rectangle::intersects
+  #
+  # See
+  # [Geometry.intersects](src_geomjs_geometry.html#geometryintersects)
+
+  ##### Rectangle::intersections
+  #
+  # See
+  # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
+
   #### Surface API
 
   ##### Rectangle::acreage
@@ -238,6 +248,11 @@ class Rectangle
     [x,y] = Point.coordsFrom xOrPt, y
     {x,y} = new Point(x,y).rotateAround(@topLeft(), -@rotation)
     (@x <= x <= @x + @width) and (@y <= y <= @y + @height)
+
+  ##### Rectangle::containsGeometry
+  #
+  # See
+  # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
 
   ##### Rectangle::randomPointInSurface
   #
