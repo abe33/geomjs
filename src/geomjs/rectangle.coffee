@@ -1,10 +1,12 @@
 # @toc
 Point = require './point'
 Surface = require './surface'
+Geometry = require './geometry'
 chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle
+  Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
 
   PROPERTIES = ['x','y','width','height','rotation']

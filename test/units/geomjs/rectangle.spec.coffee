@@ -413,4 +413,18 @@ describe 'Rectangle', ->
 
           expect(rect1.containsGeometry rect2).toBeFalsy()
 
+    describe '::intersects called', ->
+      describe 'with a geometry that intersects the rectagle', ->
+        it 'should return true', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 4, 4
+
+          expect(rect1.intersects rect2).toBeTruthy()
+
+      describe 'with a geometry that does not intersects the rectagle', ->
+        it 'should return false', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 1, 1
+
+          expect(rect1.intersects rect2).toBeFalsy()
 
