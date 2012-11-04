@@ -1,9 +1,12 @@
 # @toc
 Point = require './point'
+Surface = require './surface'
 chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle
+  Surface.attach Rectangle
+
   PROPERTIES = ['x','y','width','height','rotation']
 
   ##### Rectangle::constructor

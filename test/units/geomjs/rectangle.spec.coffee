@@ -391,3 +391,26 @@ describe 'Rectangle', ->
         it 'should return Math.PI', ->
           expect(@rectangle.pathOrientationAt 0.5, false).toBeClose(Math.PI)
 
+    describe '::containsGeometry called', ->
+      describe 'with a geometry inside the rectangle', ->
+        it 'should return true', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle 2, 2, 2, 2
+
+          expect(rect1.containsGeometry rect2).toBeTruthy()
+
+      describe 'with a geometry overlapping the rectangle', ->
+        it 'should return false', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 4, 4
+
+          expect(rect1.containsGeometry rect2).toBeFalsy()
+
+      describe 'with a geometry outside the rectangle', ->
+        it 'should return false', ->
+          rect1 = rectangle 0, 0, 10, 10
+          rect2 = rectangle -2, -2, 1, 1
+
+          expect(rect1.containsGeometry rect2).toBeFalsy()
+
+
