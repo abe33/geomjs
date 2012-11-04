@@ -1,6 +1,6 @@
 # @toc
 Point = require './point'
-
+chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle
@@ -233,6 +233,15 @@ class Rectangle
     [x,y] = Point.coordsFrom xOrPt, y
     {x,y} = new Point(x,y).rotateAround(@topLeft(), -@rotation)
     (@x <= x <= @x + @width) and (@y <= y <= @y + @height)
+
+  ##### Rectangle::randomPointInSurface
+  #
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+    @topLeft()
+      .add(@topEdge().scale random.get())
+      .add(@leftEdge().scale random.get())
 
   #### Path API
 
