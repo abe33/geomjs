@@ -5,7 +5,7 @@ chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle
-  Surface.attach Rectangle
+  Surface.attachTo Rectangle
 
   PROPERTIES = ['x','y','width','height','rotation']
 

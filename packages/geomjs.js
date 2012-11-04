@@ -37,15 +37,15 @@
 
     function Surface() {}
 
-    /* src/geomjs/surface.coffee<Surface.attach> line:3 */;
+    /* src/geomjs/surface.coffee<Surface.attachTo> line:3 */;
 
 
-    Surface.attach = function(klass) {
+    Surface.attachTo = function(klass) {
       var k, v, _results;
       _results = [];
       for (k in this) {
         v = this[k];
-        if (k !== 'attach') {
+        if (k !== 'attachTo') {
           _results.push(klass.prototype[k] = v);
         }
       }
@@ -715,7 +715,7 @@
   Rectangle = (function() {
     var PROPERTIES;
 
-    Surface.attach(Rectangle);
+    Surface.attachTo(Rectangle);
 
     PROPERTIES = ['x', 'y', 'width', 'height', 'rotation'];
 
