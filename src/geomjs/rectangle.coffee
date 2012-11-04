@@ -333,21 +333,13 @@ class Rectangle
 
   ##### Rectangle::stroke
   #
-  stroke: (context, color='#ff0000') ->
-    return unless context?
-
-    context.strokeStyle = color
-    @drawPath context
-    context.stroke()
+  # See
+  # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
 
   ##### Rectangle::fill
   #
-  fill: (context, color='#ff0000') ->
-    return unless context?
-
-    context.fillStyle = color
-    @drawPath context
-    context.fill()
+  # See
+  # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
 
   ##### Rectangle::drawPath
   #

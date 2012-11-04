@@ -74,4 +74,24 @@ class Geometry
 
     new Point cx, cy
 
+  #### Drawing API
+
+  ##### Geometry.stroke
+  #
+  @stroke: (context, color='#ff0000') ->
+    return unless context?
+
+    context.strokeStyle = color
+    @drawPath context
+    context.stroke()
+
+  ##### Geometry.fill
+  #
+  @fill: (context, color='#ff0000') ->
+    return unless context?
+
+    context.fillStyle = color
+    @drawPath context
+    context.fill()
+
 module.exports = Geometry
