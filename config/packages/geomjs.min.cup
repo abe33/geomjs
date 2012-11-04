@@ -2,6 +2,7 @@ name: 'geomjs.min'
 package: 'geomjs'
 includes: [
   'src/geomjs/math'
+  'src/geomjs/geometry'
   'src/geomjs/surface'
   'src/geomjs/point'
   'src/geomjs/matrix'
