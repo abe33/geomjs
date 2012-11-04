@@ -1,5 +1,5 @@
 (function() {
-  var Geometry, Matrix, Point, Rectangle, Surface,
+  var Geometry, Matrix, Point, Rectangle, Surface, Triangle,
     __slice = [].slice;
 
   this.geomjs || (this.geomjs = {});
@@ -126,6 +126,36 @@
       cx = start1.x + dir1.x * t;
       cy = start1.y + dir1.y * t;
       return new Point(cx, cy);
+    };
+
+    /* src/geomjs/geometry.coffee<Geometry.stroke> line:80 */;
+
+
+    Geometry.stroke = function(context, color) {
+      if (color == null) {
+        color = '#ff0000';
+      }
+      if (context == null) {
+        return;
+      }
+      context.strokeStyle = color;
+      this.drawPath(context);
+      return context.stroke();
+    };
+
+    /* src/geomjs/geometry.coffee<Geometry.fill> line:89 */;
+
+
+    Geometry.fill = function(context, color) {
+      if (color == null) {
+        color = '#ff0000';
+      }
+      if (context == null) {
+        return;
+      }
+      context.fillStyle = color;
+      this.drawPath(context);
+      return context.fill();
     };
 
     return Geometry;
@@ -1245,37 +1275,7 @@
       return [p1, p2, p3];
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::stroke> line:332 */;
-
-
-    Rectangle.prototype.stroke = function(context, color) {
-      if (color == null) {
-        color = '#ff0000';
-      }
-      if (context == null) {
-        return;
-      }
-      context.strokeStyle = color;
-      this.drawPath(context);
-      return context.stroke();
-    };
-
-    /* src/geomjs/rectangle.coffee<Rectangle::fill> line:341 */;
-
-
-    Rectangle.prototype.fill = function(context, color) {
-      if (color == null) {
-        color = '#ff0000';
-      }
-      if (context == null) {
-        return;
-      }
-      context.fillStyle = color;
-      this.drawPath(context);
-      return context.fill();
-    };
-
-    /* src/geomjs/rectangle.coffee<Rectangle::drawPath> line:350 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::drawPath> line:342 */;
 
 
     Rectangle.prototype.drawPath = function(context) {
@@ -1288,21 +1288,21 @@
       return context.closePath();
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::toString> line:363 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::toString> line:355 */;
 
 
     Rectangle.prototype.toString = function() {
       return "[object Rectangle(" + this.x + "," + this.y + "," + this.width + "," + this.height + "," + this.rotation + ")]";
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::clone> line:368 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::clone> line:360 */;
 
 
     Rectangle.prototype.clone = function() {
       return new Rectangle(this.x, this.y, this.width, this.height, this.rotation);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::equals> line:372 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::equals> line:364 */;
 
 
     Rectangle.prototype.equals = function(rectangle) {
@@ -1319,7 +1319,7 @@
       return true;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::paste> line:379 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::paste> line:371 */;
 
 
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {
@@ -1333,7 +1333,7 @@
       });
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::rectangleFrom> line:386 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::rectangleFrom> line:378 */;
 
 
     Rectangle.prototype.rectangleFrom = function(xOrRect, y, width, height, rotation) {
@@ -1345,7 +1345,7 @@
       return [x, y, width, height, rotation];
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::defaultToZero> line:393 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::defaultToZero> line:385 */;
 
 
     Rectangle.prototype.defaultToZero = function() {
@@ -1364,6 +1364,103 @@
 
   })();
 
+  /* src/geomjs/triangle.coffee */;
+
+
+  /* src/geomjs/triangle.coffee<Triangle> line:2 */;
+
+
+  Triangle = (function() {
+
+    Geometry.attachTo(Triangle);
+
+    Surface.attachTo(Triangle);
+
+    /* src/geomjs/triangle.coffee<Triangle::constructor> line:6 */;
+
+
+    function Triangle(a, b, c) {
+      this.initialize(a, b, c);
+    }
+
+    /* src/geomjs/triangle.coffee<Triangle::initialize> line:8 */;
+
+
+    Triangle.prototype.initialize = function(a, b, c) {
+      if (!Point.isPoint(a)) {
+        this.invalidPoint('a', a);
+      }
+      if (!Point.isPoint(b)) {
+        this.invalidPoint('b', b);
+      }
+      if (!Point.isPoint(c)) {
+        this.invalidPoint('c', c);
+      }
+      this.a = new Point(a);
+      this.b = new Point(b);
+      return this.c = new Point(c);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::length> line:17 */;
+
+
+    Triangle.prototype.length = function() {
+      return this.ab().length() + this.bc().length() + this.ca().length();
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::acreage> line:18 */;
+
+
+    Triangle.prototype.acreage = function() {
+      return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:19 */;
+
+
+    Triangle.prototype.closedGeometry = function() {
+      return true;
+    };
+
+    ['ab', 'ac', 'ba', 'bc', 'ca', 'cb'].forEach(function(k) {
+      var p1, p2, _ref;
+      _ref = k.split(''), p1 = _ref[0], p2 = _ref[1];
+      return Triangle.prototype[k] = function() {
+        return this[p2].subtract(this[p1]);
+      };
+    });
+
+    ['abc', 'bac', 'acb'].forEach(function(k) {
+      var p1, p2, p3, _ref;
+      _ref = k.split(''), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+      return Triangle.prototype[k] = function() {
+        return this["" + p2 + p1]().angleWith(this["" + p2 + p3]());
+      };
+    });
+
+    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:29 */;
+
+
+    Triangle.prototype.drawPath = function(context) {
+      context.beginPath();
+      context.moveTo(this.a.x, this.a.y);
+      context.lineTo(this.b.x, this.b.y);
+      context.lineTo(this.c.x, this.c.y);
+      context.lineTo(this.a.x, this.a.y);
+      return context.closePath();
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:37 */;
+
+
+    Triangle.prototype.invalidPoint = function(k, v) {
+      throw new Error("Invalid point " + v + " for vertex " + k);
+    };
+
+    return Triangle;
+
+  })();
+
   this.geomjs.Geometry = Geometry;
 
   this.geomjs.Surface = Surface;
@@ -1373,5 +1470,7 @@
   this.geomjs.Matrix = Matrix;
 
   this.geomjs.Rectangle = Rectangle;
+
+  this.geomjs.Triangle = Triangle;
 
 }).call(this);
