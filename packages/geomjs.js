@@ -1367,7 +1367,7 @@
   /* src/geomjs/triangle.coffee */;
 
 
-  /* src/geomjs/triangle.coffee<Triangle> line:2 */;
+  /* src/geomjs/triangle.coffee<Triangle> line:4 */;
 
 
   Triangle = (function() {
@@ -1376,17 +1376,10 @@
 
     Surface.attachTo(Triangle);
 
-    /* src/geomjs/triangle.coffee<Triangle::constructor> line:6 */;
+    /* src/geomjs/triangle.coffee<Triangle::constructor> line:10 */;
 
 
     function Triangle(a, b, c) {
-      this.initialize(a, b, c);
-    }
-
-    /* src/geomjs/triangle.coffee<Triangle::initialize> line:8 */;
-
-
-    Triangle.prototype.initialize = function(a, b, c) {
       if (!Point.isPoint(a)) {
         this.invalidPoint('a', a);
       }
@@ -1398,29 +1391,8 @@
       }
       this.a = new Point(a);
       this.b = new Point(b);
-      return this.c = new Point(c);
-    };
-
-    /* src/geomjs/triangle.coffee<Triangle::length> line:17 */;
-
-
-    Triangle.prototype.length = function() {
-      return this.ab().length() + this.bc().length() + this.ca().length();
-    };
-
-    /* src/geomjs/triangle.coffee<Triangle::acreage> line:18 */;
-
-
-    Triangle.prototype.acreage = function() {
-      return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
-    };
-
-    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:19 */;
-
-
-    Triangle.prototype.closedGeometry = function() {
-      return true;
-    };
+      this.c = new Point(c);
+    }
 
     ['ab', 'ac', 'ba', 'bc', 'ca', 'cb'].forEach(function(k) {
       var p1, p2, _ref;
@@ -1438,7 +1410,82 @@
       };
     });
 
-    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:29 */;
+    /* src/geomjs/triangle.coffee<Triangle::top> line:44 */;
+
+
+    Triangle.prototype.top = function() {
+      return Math.min(this.a.y, this.b.y, this.c.y);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::bottom> line:48 */;
+
+
+    Triangle.prototype.bottom = function() {
+      return Math.max(this.a.y, this.b.y, this.c.y);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::left> line:52 */;
+
+
+    Triangle.prototype.left = function() {
+      return Math.min(this.a.x, this.b.x, this.c.x);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::right> line:56 */;
+
+
+    Triangle.prototype.right = function() {
+      return Math.max(this.a.x, this.b.x, this.c.x);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::bounds> line:60 */;
+
+
+    Triangle.prototype.bounds = function() {
+      return {
+        top: this.top(),
+        left: this.left(),
+        right: this.right(),
+        bottom: this.bottom()
+      };
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::boundingBox> line:68 */;
+
+
+    Triangle.prototype.boundingBox = function() {
+      return new Rectangle(this.left(), this.top(), this.right() - this.left(), this.bottom() - this.top());
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:80 */;
+
+
+    Triangle.prototype.closedGeometry = function() {
+      return true;
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::points> line:84 */;
+
+
+    Triangle.prototype.points = function() {
+      return [this.a.clone(), this.b.clone(), this.c.clone(), this.a.clone()];
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::acreage> line:100 */;
+
+
+    Triangle.prototype.acreage = function() {
+      return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::length> line:110 */;
+
+
+    Triangle.prototype.length = function() {
+      return this.ab().length() + this.bc().length() + this.ca().length();
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:126 */;
 
 
     Triangle.prototype.drawPath = function(context) {
@@ -1450,7 +1497,7 @@
       return context.closePath();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:37 */;
+    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:136 */;
 
 
     Triangle.prototype.invalidPoint = function(k, v) {
