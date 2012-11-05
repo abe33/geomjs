@@ -3,7 +3,9 @@ Neat = require 'neat'
 
 module.exports = (config) ->
 
-  dirs = ['src']
+  dirs = [
+    'src/geomjs'
+  ]
 
   sources = []
   sources = sources.concat findSync('coffee', d)?.sort() for d in dirs
