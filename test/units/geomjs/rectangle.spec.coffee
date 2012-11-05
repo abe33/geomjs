@@ -373,11 +373,13 @@ describe 'Rectangle', ->
 
       describe 'with 1', ->
         it 'should return -Math.PI/2', ->
-          expect(@rectangle.pathOrientationAt 1).toBeClose(-Math.PI / 2)
+          expect(@rectangle.pathOrientationAt 1)
+            .toBeClose(Math.radToDeg -Math.PI / 2)
 
       describe 'with 0.5', ->
         it 'should return Math.PI', ->
-          expect(@rectangle.pathOrientationAt 0.5).toBeClose(Math.PI)
+          expect(@rectangle.pathOrientationAt 0.5)
+            .toBeClose(Math.radToDeg Math.PI)
 
       describe 'with 0 and false', ->
         it 'should return 0', ->
@@ -385,11 +387,13 @@ describe 'Rectangle', ->
 
       describe 'with 1 and false', ->
         it 'should return -Math.PI/2', ->
-          expect(@rectangle.pathOrientationAt 1, false).toBeClose(-Math.PI / 2)
+          expect(@rectangle.pathOrientationAt 1, false)
+            .toBeClose(Math.radToDeg -Math.PI / 2)
 
       describe 'with 0.5 and false', ->
         it 'should return Math.PI', ->
-          expect(@rectangle.pathOrientationAt 0.5, false).toBeClose(Math.PI)
+          expect(@rectangle.pathOrientationAt 0.5, false)
+            .toBeClose(Math.radToDeg Math.PI)
 
     describe '::containsGeometry called', ->
       describe 'with a geometry inside the rectangle', ->

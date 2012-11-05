@@ -305,7 +305,7 @@ class Rectangle
     else
       p = @leftEdge().scale -1
 
-    Math.atan2 p.y, p.x
+    p.angle()
 
   ##### Rectangle::pathTangentAt
   #
