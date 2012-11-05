@@ -1,6 +1,6 @@
 Point = require '../../../lib/geomjs/point'
 
-equalEnough = (a, b) -> Math.abs(a - b) < 1 / 10000000000
+equalEnough = Math.deltaBelowRatio
 
 global.addPointMatchers = (scope) ->
   scope.addMatchers

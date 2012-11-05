@@ -191,3 +191,12 @@ describe 'Triangle', ->
   describe 'when instanciated with at least an invalid point', ->
     it 'should throw an error', ->
       expect(-> triangle point(4,5), point(5,7), 'notAPoint').toThrow()
+
+  describe '::equilateral called', ->
+    describe 'on a triangle which is equilateral', ->
+      it 'should return true', ->
+        expect(triangle.equilateral().equilateral()).toBeTruthy()
+
+    describe 'on a triangle which is not equilateral', ->
+      it 'should return false', ->
+        expect(triangle().equilateral()).toBeFalsy()

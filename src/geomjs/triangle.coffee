@@ -93,6 +93,14 @@ class Triangle
       @bottom() - @top()
     )
 
+  #### Shape Properties
+
+  ##### Triangle::equilateral
+  #
+  equilateral: ->
+    Math.deltaBelowRatio(@ab().length(), @bc().length()) and
+    Math.deltaBelowRatio(@ab().length(), @ac().length())
+
   #### Triangle Manipulation
 
   ##### Triangle::rotateAroundCenter

@@ -2,37 +2,46 @@
 Point = require '../../../lib/geomjs/point'
 Triangle = require '../../../lib/geomjs/triangle'
 
+pt = point(1,0)
+v = point(4,0)
+v2 = v.rotate(60)
+
+factories =
+  default: ->
+    [
+      new Point 1,2
+      new Point 3,4
+      new Point 1,5
+    ]
+  isosceles: ->
+    [
+      new Point 1,1
+      new Point 3,1
+      new Point 2,4
+    ]
+  rectangle: ->
+    [
+      new Point 1,1
+      new Point 3,1
+      new Point 2,4
+    ]
+  equilateral: ->
+    [
+      pt
+      pt.add(v)
+      pt.add(v2)
+    ]
+
 global.triangle = (a,b,c) ->
-  a = new Point 1,2 unless a?
-  b = new Point 3,4 unless b?
-  c = new Point 1,5 unless c?
+  a = factories.default()[0] unless a?
+  c = factories.default()[2] unless c?
+  b = factories.default()[1] unless b?
   new Triangle a, b, c
 
-triangle.isosceles = ->
-  triangle new Point(1,1),
-           new Point(3,1),
-           new Point(2,4)
-
-triangle.rectangle = ->
-  triangle new Point(1,1),
-           new Point(3,1),
-           new Point(2,4)
-
-triangle.equilateral = ->
-  triangle new Point( 4, 0),
-           new Point(-6, 0),
-           new Point(-1, 3*Math.sqrt(5))
-
-triangle.withPointLike = (a,b,c) ->
-  a = x: 1, y: 2 unless a?
-  b = x: 3, y: 4 unless b?
-  c = x: 1, y: 5 unless c?
-  triangle a, b, c
-
 global.triangleData = (a,b,c) ->
-  a = new Point 1,2 unless a?
-  b = new Point 3,4 unless b?
-  c = new Point 1,5 unless c?
+  a = factories.default()[0] unless a?
+  c = factories.default()[2] unless c?
+  b = factories.default()[1] unless b?
   data =
     a: a
     b: b
@@ -80,18 +89,13 @@ global.triangleData = (a,b,c) ->
 
   data
 
-triangleData.isosceles = ->
-  triangleData new Point(1,1),
-               new Point(3,1),
-               new Point(2,4)
+['isosceles', 'rectangle', 'equilateral'].forEach (k) ->
+  triangle[k] = -> triangle.apply global, factories[k]()
+  triangleData[k] = -> triangleData.apply global, factories[k]()
 
-triangleData.rectangle = ->
-  triangleData new Point(1,1),
-               new Point(3,1),
-               new Point(2,4)
-
-triangleData.equilateral = ->
-  triangleData new Point( 4, 0),
-               new Point(-6, 0),
-               new Point(-1, 3*Math.sqrt(5))
+triangle.withPointLike = (a,b,c) ->
+  a = x: 1, y: 2 unless a?
+  b = x: 3, y: 4 unless b?
+  c = x: 1, y: 5 unless c?
+  triangle a, b, c
 
