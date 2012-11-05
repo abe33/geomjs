@@ -4,6 +4,7 @@ includes: [
   'src/geomjs/math'
   'src/geomjs/geometry'
   'src/geomjs/surface'
+  'src/geomjs/path'
   'src/geomjs/point'
   'src/geomjs/matrix'
   'src/geomjs/rectangle'
