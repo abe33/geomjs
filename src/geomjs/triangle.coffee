@@ -1,5 +1,6 @@
 # @toc
 Point = require './point'
+Path = require './path'
 Surface = require './surface'
 Geometry = require './geometry'
 Rectangle = require './rectangle'
@@ -8,6 +9,7 @@ Rectangle = require './rectangle'
 class Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
+  Path.attachTo Triangle
 
   ##### Triangle::constructor
   #
@@ -160,10 +162,53 @@ class Triangle
     else
       p.add @bcCenter().subtract(p).scale(2)
 
+  #### Path API
 
   ##### Triangle::length
   #
   length: -> @ab().length() + @bc().length() + @ca().length()
+
+  ##### Triangle::pathPointAt
+  #
+  pathPointAt: (n, pathBasedOnLength=true) ->
+    [l1, l2] = @pathSteps pathBasedOnLength
+
+    if n < l1
+      @a.add @ab().scale Math.map n, 0, l1, 0, 1
+    else if n < l2
+      @b.add @bc().scale Math.map n, l1, l2, 0, 1
+    else
+      @c.add @ca().scale Math.map n, l2, 1, 0, 1
+
+  ##### Triangle::pathOrientationAt
+  #
+  pathOrientationAt: (n, pathBasedOnLength=true) ->
+    [l1, l2] = @pathSteps pathBasedOnLength
+
+    if n < l1
+      @ab().angle()
+    else if n < l2
+      @bc().angle()
+    else
+      @ca().angle()
+
+  ##### Triangle::pathTangentAt
+  #
+  # See
+  # [Path.pathTangentAt](src_geomjs_path.html#pathpathtangentat)
+
+  ##### Triangle::pathSteps
+  #
+  pathSteps: (pathBasedOnLength) ->
+    if pathBasedOnLength
+      l = @length()
+      l1 = @ab().length() / l
+      l2 = l1 + @bc().length() / l
+    else
+      l1 = 1 / 3
+      l2 = 2 / 3
+
+    [l1,l2]
 
   #### Drawing API
 

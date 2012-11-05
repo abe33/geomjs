@@ -73,6 +73,47 @@ describe 'Triangle', ->
       # Path API
       lengthOf(source).shouldBe(data.length)
 
+      describe 'its pathPointAt method', ->
+        describe 'called with 0', ->
+          it 'should return a', ->
+            expect(@triangle.pathPointAt 0).toBeSamePoint(@triangle.a)
+
+        describe 'called with 1', ->
+          it 'should return a', ->
+            expect(@triangle.pathPointAt 1).toBeSamePoint(@triangle.a)
+
+        describe 'called with 1/3 and false', ->
+          it 'should return b', ->
+            expect(@triangle.pathPointAt 1 / 3, false)
+              .toBeSamePoint(@triangle.b)
+
+        describe 'called with 2/3 and false', ->
+          it 'should return c', ->
+            expect(@triangle.pathPointAt 2 / 3, false)
+              .toBeSamePoint(@triangle.c)
+
+      describe 'its pathOrientationAt method', ->
+        describe 'called with 0', ->
+          it 'should return ab angle', ->
+            expect(@triangle.pathOrientationAt 0)
+              .toBeClose(data.ab.angle())
+
+        describe 'called with 1', ->
+          it 'should return ca angle', ->
+            expect(@triangle.pathOrientationAt 1)
+              .toBeClose(data.ca.angle())
+
+        describe 'called with 1/3 and false', ->
+          it 'should return bc angle', ->
+            expect(@triangle.pathOrientationAt 1 / 3, false)
+              .toBeClose(data.bc.angle())
+
+        describe 'called with 2/3 and false', ->
+          it 'should return ca angle', ->
+            expect(@triangle.pathOrientationAt 2 / 3, false)
+              .toBeClose(data.ca.angle())
+
+      # Geometry API
       describe 'its points method', ->
         it 'should return four points', ->
           points = @triangle.points()
