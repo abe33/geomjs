@@ -107,8 +107,11 @@
     /* src/geomjs/geometry.coffee<Geometry.eachIntersections> line:47 */;
 
 
-    Geometry.eachIntersections = function(geometry, block) {
-      var cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
+    Geometry.eachIntersections = function(geometry, block, providesDataInCallback) {
+      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
+      if (providesDataInCallback == null) {
+        providesDataInCallback = false;
+      }
       points1 = this.points();
       points2 = geometry.points();
       length1 = points1.length;
@@ -128,7 +131,19 @@
           d3 = cross.subtract(ev2);
           d4 = cross.subtract(sv2);
           if (d1.length() <= dif1.length() && d2.length() <= dif1.length() && d3.length() <= dif2.length() && d4.length() <= dif2.length()) {
-            if (block.call(this, cross)) {
+            if (providesDataInCallback) {
+              context = {
+                segment1: dif1,
+                segmentIndex1: i,
+                segmentStart1: sv1,
+                segmentEnd1: ev1,
+                segment2: dif2,
+                segmentIndex2: j,
+                segmentStart2: sv2,
+                segmentEnd2: ev2
+              };
+            }
+            if (block.call(this, cross, context)) {
               return;
             }
           }
@@ -136,7 +151,7 @@
       }
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.perCrossing> line:78 */;
+    /* src/geomjs/geometry.coffee<Geometry.perCrossing> line:90 */;
 
 
     Geometry.perCrossing = function(start1, dir1, start2, dir2) {
@@ -151,7 +166,7 @@
       return new Point(cx, cy);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.stroke> line:95 */;
+    /* src/geomjs/geometry.coffee<Geometry.stroke> line:107 */;
 
 
     Geometry.stroke = function(context, color) {
@@ -166,7 +181,7 @@
       return context.stroke();
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.fill> line:104 */;
+    /* src/geomjs/geometry.coffee<Geometry.fill> line:116 */;
 
 
     Geometry.fill = function(context, color) {

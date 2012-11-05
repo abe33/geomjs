@@ -45,7 +45,7 @@ class Geometry
 
   ##### Geometry.eachIntersections
   #
-  @eachIntersections: (geometry, block) ->
+  @eachIntersections: (geometry, block, providesDataInCallback=false) ->
     points1 = @points()
     points2 = geometry.points()
     length1 = points1.length
@@ -72,7 +72,19 @@ class Geometry
            d2.length() <= dif1.length() and
            d3.length() <= dif2.length() and
            d4.length() <= dif2.length()
-          return if block.call this, cross
+
+          if providesDataInCallback
+            context =
+              segment1: dif1
+              segmentIndex1: i
+              segmentStart1: sv1
+              segmentEnd1: ev1
+              segment2: dif2
+              segmentIndex2: j
+              segmentStart2: sv2
+              segmentEnd2: ev2
+
+          return if block.call this, cross, context
 
   ##### Geometry.perCrossing
   #
