@@ -1,5 +1,5 @@
 (function() {
-  var Geometry, Matrix, Point, Rectangle, Surface, Triangle,
+  var Geometry, Matrix, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice;
 
   this.geomjs || (this.geomjs = {});
@@ -198,6 +198,48 @@
     };
 
     return Surface;
+
+  })();
+
+  /* src/geomjs/path.coffee */;
+
+
+  /* src/geomjs/path.coffee<Path> line:1 */;
+
+
+  Path = (function() {
+
+    function Path() {}
+
+    /* src/geomjs/path.coffee<Path.attachTo> line:4 */;
+
+
+    Path.attachTo = function(klass) {
+      var k, v, _results;
+      _results = [];
+      for (k in this) {
+        v = this[k];
+        if (k !== 'attachTo') {
+          _results.push(klass.prototype[k] = v);
+        }
+      }
+      return _results;
+    };
+
+    /* src/geomjs/path.coffee<Path.pathTangentAt> line:8 */;
+
+
+    Path.pathTangentAt = function(n, accuracy, pathBasedOnLength) {
+      if (accuracy == null) {
+        accuracy = 1 / 100;
+      }
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      return this.pathPointAt((n + accuracy) % 1).subtract(this.pathPointAt((1 + n - accuracy) % 1)).normalize(1);
+    };
+
+    return Path;
 
   })();
 
@@ -854,9 +896,11 @@
 
     Surface.attachTo(Rectangle);
 
+    Path.attachTo(Rectangle);
+
     PROPERTIES = ['x', 'y', 'width', 'height', 'rotation'];
 
-    /* src/geomjs/rectangle.coffee<Rectangle::constructor> line:12 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::constructor> line:13 */;
 
 
     function Rectangle(x, y, width, height, rotation) {
@@ -865,126 +909,126 @@
       this.x = args[0], this.y = args[1], this.width = args[2], this.height = args[3], this.rotation = args[4];
     }
 
-    /* src/geomjs/rectangle.coffee<Rectangle::topLeft> line:20 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::topLeft> line:21 */;
 
 
     Rectangle.prototype.topLeft = function() {
       return new Point(this.x, this.y);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::topRight> line:24 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::topRight> line:25 */;
 
 
     Rectangle.prototype.topRight = function() {
       return this.topLeft().add(this.topEdge());
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bottomLeft> line:28 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bottomLeft> line:29 */;
 
 
     Rectangle.prototype.bottomLeft = function() {
       return this.topLeft().add(this.leftEdge());
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bottomRight> line:32 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bottomRight> line:33 */;
 
 
     Rectangle.prototype.bottomRight = function() {
       return this.topLeft().add(this.topEdge()).add(this.leftEdge());
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::center> line:38 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::center> line:39 */;
 
 
     Rectangle.prototype.center = function() {
       return this.topLeft().add(this.topEdge().scale(0.5)).add(this.leftEdge().scale(0.5));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::topEdgeCenter> line:42 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::topEdgeCenter> line:43 */;
 
 
     Rectangle.prototype.topEdgeCenter = function() {
       return this.topLeft().add(this.topEdge().scale(0.5));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bottomEdgeCenter> line:46 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bottomEdgeCenter> line:47 */;
 
 
     Rectangle.prototype.bottomEdgeCenter = function() {
       return this.bottomLeft().add(this.topEdge().scale(0.5));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::leftEdgeCenter> line:50 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::leftEdgeCenter> line:51 */;
 
 
     Rectangle.prototype.leftEdgeCenter = function() {
       return this.topLeft().add(this.leftEdge().scale(0.5));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::rightEdgeCenter> line:54 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::rightEdgeCenter> line:55 */;
 
 
     Rectangle.prototype.rightEdgeCenter = function() {
       return this.topRight().add(this.leftEdge().scale(0.5));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::topEdge> line:60 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::topEdge> line:61 */;
 
 
     Rectangle.prototype.topEdge = function() {
       return new Point(this.width * Math.cos(Math.degToRad(this.rotation)), this.width * Math.sin(Math.degToRad(this.rotation)));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::leftEdge> line:65 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::leftEdge> line:66 */;
 
 
     Rectangle.prototype.leftEdge = function() {
       return new Point(this.height * Math.cos(Math.degToRad(this.rotation) + Math.PI / 2), this.height * Math.sin(Math.degToRad(this.rotation) + Math.PI / 2));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bottomEdge> line:71 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bottomEdge> line:72 */;
 
 
     Rectangle.prototype.bottomEdge = function() {
       return this.topEdge();
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::rightEdge> line:75 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::rightEdge> line:76 */;
 
 
     Rectangle.prototype.rightEdge = function() {
       return this.leftEdge();
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::top> line:81 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::top> line:82 */;
 
 
     Rectangle.prototype.top = function() {
       return Math.min(this.y, this.topRight().y, this.bottomRight().y, this.bottomLeft().y);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bottom> line:85 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bottom> line:86 */;
 
 
     Rectangle.prototype.bottom = function() {
       return Math.max(this.y, this.topRight().y, this.bottomRight().y, this.bottomLeft().y);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::left> line:89 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::left> line:90 */;
 
 
     Rectangle.prototype.left = function() {
       return Math.min(this.x, this.topRight().x, this.bottomRight().x, this.bottomLeft().x);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::right> line:93 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::right> line:94 */;
 
 
     Rectangle.prototype.right = function() {
       return Math.max(this.x, this.topRight().x, this.bottomRight().x, this.bottomLeft().x);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::bounds> line:97 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::bounds> line:98 */;
 
 
     Rectangle.prototype.bounds = function() {
@@ -996,14 +1040,14 @@
       };
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::boundingBox> line:105 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::boundingBox> line:106 */;
 
 
     Rectangle.prototype.boundingBox = function() {
       return new Rectangle(this.left(), this.top(), this.right() - this.left(), this.bottom() - this.top());
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::setCenter> line:117 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::setCenter> line:118 */;
 
 
     Rectangle.prototype.setCenter = function(xOrPt, y) {
@@ -1015,7 +1059,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::rotateAroundCenter> line:127 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::rotateAroundCenter> line:128 */;
 
 
     Rectangle.prototype.rotateAroundCenter = function(rotation) {
@@ -1025,7 +1069,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::scaleAroundCenter> line:134 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::scaleAroundCenter> line:135 */;
 
 
     Rectangle.prototype.scaleAroundCenter = function(scale) {
@@ -1038,7 +1082,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateAroundCenter> line:144 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateAroundCenter> line:145 */;
 
 
     Rectangle.prototype.inflateAroundCenter = function(xOrPt, y) {
@@ -1049,7 +1093,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflate> line:152 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflate> line:153 */;
 
 
     Rectangle.prototype.inflate = function(xOrPt, y) {
@@ -1060,7 +1104,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateLeft> line:160 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateLeft> line:161 */;
 
 
     Rectangle.prototype.inflateLeft = function(inflate) {
@@ -1071,7 +1115,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateRight> line:168 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateRight> line:169 */;
 
 
     Rectangle.prototype.inflateRight = function(inflate) {
@@ -1079,7 +1123,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateTop> line:174 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateTop> line:175 */;
 
 
     Rectangle.prototype.inflateTop = function(inflate) {
@@ -1090,7 +1134,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottom> line:182 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottom> line:183 */;
 
 
     Rectangle.prototype.inflateBottom = function(inflate) {
@@ -1098,7 +1142,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateTopLeft> line:188 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateTopLeft> line:189 */;
 
 
     Rectangle.prototype.inflateTopLeft = function(xOrPt, y) {
@@ -1109,7 +1153,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateTopRight> line:196 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateTopRight> line:197 */;
 
 
     Rectangle.prototype.inflateTopRight = function(xOrPt, y) {
@@ -1120,7 +1164,7 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottomLeft> line:204 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottomLeft> line:205 */;
 
 
     Rectangle.prototype.inflateBottomLeft = function(xOrPt, y) {
@@ -1131,28 +1175,28 @@
       return this;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottomRight> line:212 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::inflateBottomRight> line:213 */;
 
 
     Rectangle.prototype.inflateBottomRight = function(xOrPt, y) {
       return this.inflate(xOrPt, y);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::closedGeometry> line:218 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::closedGeometry> line:219 */;
 
 
     Rectangle.prototype.closedGeometry = function() {
       return true;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::points> line:222 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::points> line:223 */;
 
 
     Rectangle.prototype.points = function() {
       return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft(), this.topLeft()];
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::pointAtAngle> line:237 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::pointAtAngle> line:238 */;
 
 
     Rectangle.prototype.pointAtAngle = function(angle) {
@@ -1166,14 +1210,14 @@
       })) != null ? _ref[0] : void 0;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::acreage> line:247 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::acreage> line:248 */;
 
 
     Rectangle.prototype.acreage = function() {
       return this.width * this.height;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::contains> line:251 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::contains> line:252 */;
 
 
     Rectangle.prototype.contains = function(xOrPt, y) {
@@ -1183,7 +1227,7 @@
       return ((this.x <= x && x <= this.x + this.width)) && ((this.y <= y && y <= this.y + this.height));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::randomPointInSurface> line:263 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::randomPointInSurface> line:264 */;
 
 
     Rectangle.prototype.randomPointInSurface = function(random) {
@@ -1193,14 +1237,14 @@
       return this.topLeft().add(this.topEdge().scale(random.get())).add(this.leftEdge().scale(random.get()));
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::length> line:274 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::length> line:275 */;
 
 
     Rectangle.prototype.length = function() {
       return this.width * 2 + this.height * 2;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::pathPointAt> line:278 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::pathPointAt> line:279 */;
 
 
     Rectangle.prototype.pathPointAt = function(n, pathBasedOnLength) {
@@ -1220,7 +1264,7 @@
       }
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::pathOrientationAt> line:292 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::pathOrientationAt> line:293 */;
 
 
     Rectangle.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
@@ -1238,23 +1282,10 @@
       } else {
         p = this.leftEdge().scale(-1);
       }
-      return Math.atan2(p.y, p.x);
+      return p.angle();
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::pathTangentAt> line:308 */;
-
-
-    Rectangle.prototype.pathTangentAt = function(n, accuracy, pathBasedOnLength) {
-      if (accuracy == null) {
-        accuracy = 1 / 100;
-      }
-      if (pathBasedOnLength == null) {
-        pathBasedOnLength = true;
-      }
-      return this.pathPointAt((n + accuracy) % 1).subtract(this.pathPointAt((1 + n - accuracy) % 1)).normalize(1);
-    };
-
-    /* src/geomjs/rectangle.coffee<Rectangle::pathSteps> line:315 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::pathSteps> line:314 */;
 
 
     Rectangle.prototype.pathSteps = function(pathBasedOnLength) {
@@ -1275,7 +1306,7 @@
       return [p1, p2, p3];
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::drawPath> line:342 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::drawPath> line:341 */;
 
 
     Rectangle.prototype.drawPath = function(context) {
@@ -1288,21 +1319,21 @@
       return context.closePath();
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::toString> line:355 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::toString> line:354 */;
 
 
     Rectangle.prototype.toString = function() {
       return "[object Rectangle(" + this.x + "," + this.y + "," + this.width + "," + this.height + "," + this.rotation + ")]";
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::clone> line:360 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::clone> line:359 */;
 
 
     Rectangle.prototype.clone = function() {
       return new Rectangle(this.x, this.y, this.width, this.height, this.rotation);
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::equals> line:364 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::equals> line:363 */;
 
 
     Rectangle.prototype.equals = function(rectangle) {
@@ -1319,7 +1350,7 @@
       return true;
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::paste> line:371 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::paste> line:370 */;
 
 
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {
@@ -1333,7 +1364,7 @@
       });
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::rectangleFrom> line:378 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::rectangleFrom> line:377 */;
 
 
     Rectangle.prototype.rectangleFrom = function(xOrRect, y, width, height, rotation) {
@@ -1345,7 +1376,7 @@
       return [x, y, width, height, rotation];
     };
 
-    /* src/geomjs/rectangle.coffee<Rectangle::defaultToZero> line:385 */;
+    /* src/geomjs/rectangle.coffee<Rectangle::defaultToZero> line:384 */;
 
 
     Rectangle.prototype.defaultToZero = function() {
@@ -1376,7 +1407,9 @@
 
     Surface.attachTo(Triangle);
 
-    /* src/geomjs/triangle.coffee<Triangle::constructor> line:10 */;
+    Path.attachTo(Triangle);
+
+    /* src/geomjs/triangle.coffee<Triangle::constructor> line:11 */;
 
 
     function Triangle(a, b, c) {
@@ -1394,7 +1427,7 @@
       this.c = new Point(c);
     }
 
-    /* src/geomjs/triangle.coffee<Triangle::center> line:23 */;
+    /* src/geomjs/triangle.coffee<Triangle::center> line:24 */;
 
 
     Triangle.prototype.center = function() {
@@ -1425,35 +1458,35 @@
       };
     });
 
-    /* src/geomjs/triangle.coffee<Triangle::top> line:58 */;
+    /* src/geomjs/triangle.coffee<Triangle::top> line:59 */;
 
 
     Triangle.prototype.top = function() {
       return Math.min(this.a.y, this.b.y, this.c.y);
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::bottom> line:62 */;
+    /* src/geomjs/triangle.coffee<Triangle::bottom> line:63 */;
 
 
     Triangle.prototype.bottom = function() {
       return Math.max(this.a.y, this.b.y, this.c.y);
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::left> line:66 */;
+    /* src/geomjs/triangle.coffee<Triangle::left> line:67 */;
 
 
     Triangle.prototype.left = function() {
       return Math.min(this.a.x, this.b.x, this.c.x);
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::right> line:70 */;
+    /* src/geomjs/triangle.coffee<Triangle::right> line:71 */;
 
 
     Triangle.prototype.right = function() {
       return Math.max(this.a.x, this.b.x, this.c.x);
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::bounds> line:74 */;
+    /* src/geomjs/triangle.coffee<Triangle::bounds> line:75 */;
 
 
     Triangle.prototype.bounds = function() {
@@ -1465,35 +1498,49 @@
       };
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::boundingBox> line:82 */;
+    /* src/geomjs/triangle.coffee<Triangle::boundingBox> line:83 */;
 
 
     Triangle.prototype.boundingBox = function() {
       return new Rectangle(this.left(), this.top(), this.right() - this.left(), this.bottom() - this.top());
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:94 */;
+    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:95 */;
 
 
     Triangle.prototype.closedGeometry = function() {
       return true;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::points> line:98 */;
+    /* src/geomjs/triangle.coffee<Triangle::points> line:99 */;
 
 
     Triangle.prototype.points = function() {
       return [this.a.clone(), this.b.clone(), this.c.clone(), this.a.clone()];
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::acreage> line:114 */;
+    /* src/geomjs/triangle.coffee<Triangle::pointAtAngle> line:113 */;
+
+
+    Triangle.prototype.pointAtAngle = function(angle) {
+      var center, vec, _ref;
+      center = this.center();
+      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      return (_ref = this.intersections({
+        points: function() {
+          return [center, vec];
+        }
+      })) != null ? _ref[0] : void 0;
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::acreage> line:123 */;
 
 
     Triangle.prototype.acreage = function() {
       return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::contains> line:118 */;
+    /* src/geomjs/triangle.coffee<Triangle::contains> line:127 */;
 
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -1514,7 +1561,7 @@
       return v > 0 && v > 0 && u + v < 1;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::randomPointInSurface> line:145 */;
+    /* src/geomjs/triangle.coffee<Triangle::randomPointInSurface> line:154 */;
 
 
     Triangle.prototype.randomPointInSurface = function(random) {
@@ -1532,14 +1579,66 @@
       }
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::length> line:162 */;
+    /* src/geomjs/triangle.coffee<Triangle::length> line:172 */;
 
 
     Triangle.prototype.length = function() {
       return this.ab().length() + this.bc().length() + this.ca().length();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:178 */;
+    /* src/geomjs/triangle.coffee<Triangle::pathPointAt> line:176 */;
+
+
+    Triangle.prototype.pathPointAt = function(n, pathBasedOnLength) {
+      var l1, l2, _ref;
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      _ref = this.pathSteps(pathBasedOnLength), l1 = _ref[0], l2 = _ref[1];
+      if (n < l1) {
+        return this.a.add(this.ab().scale(Math.map(n, 0, l1, 0, 1)));
+      } else if (n < l2) {
+        return this.b.add(this.bc().scale(Math.map(n, l1, l2, 0, 1)));
+      } else {
+        return this.c.add(this.ca().scale(Math.map(n, l2, 1, 0, 1)));
+      }
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::pathOrientationAt> line:188 */;
+
+
+    Triangle.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
+      var l1, l2, _ref;
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      _ref = this.pathSteps(pathBasedOnLength), l1 = _ref[0], l2 = _ref[1];
+      if (n < l1) {
+        return this.ab().angle();
+      } else if (n < l2) {
+        return this.bc().angle();
+      } else {
+        return this.ca().angle();
+      }
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::pathSteps> line:205 */;
+
+
+    Triangle.prototype.pathSteps = function(pathBasedOnLength) {
+      var l, l1, l2;
+      if (pathBasedOnLength) {
+        l = this.length();
+        l1 = this.ab().length() / l;
+        l2 = l1 + this.bc().length() / l;
+      } else {
+        l1 = 1 / 3;
+        l2 = 2 / 3;
+      }
+      return [l1, l2];
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:230 */;
 
 
     Triangle.prototype.drawPath = function(context) {
@@ -1551,7 +1650,7 @@
       return context.closePath();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:188 */;
+    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:240 */;
 
 
     Triangle.prototype.invalidPoint = function(k, v) {
@@ -1565,6 +1664,8 @@
   this.geomjs.Geometry = Geometry;
 
   this.geomjs.Surface = Surface;
+
+  this.geomjs.Path = Path;
 
   this.geomjs.Point = Point;
 
