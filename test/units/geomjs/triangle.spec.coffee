@@ -56,6 +56,20 @@ describe 'Triangle', ->
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      calledWithPoints(data.center.x, data.center.y)
+        .where
+          source: source
+          method: 'contains'
+        .should 'return true for points inside the triangle', (res) ->
+          expect(res).toBeTruthy()
+
+      calledWithPoints(100,100)
+        .where
+          source: source
+          method: 'contains'
+        .should 'return false for points outside the triangle', (res) ->
+          expect(res).toBeFalsy()
+
       # Path API
       lengthOf(source).shouldBe(data.length)
 
@@ -75,6 +89,7 @@ describe 'Triangle', ->
         describe "its #{k} method", ->
           it "should return #{data[k]}", ->
             expect(@triangle[k]()).toBe(data[k])
+
 
       describe 'its bounds method', ->
         it 'should return the bounds of the triangle', ->

@@ -117,11 +117,49 @@ class Triangle
   #
   acreage: -> @ab().length() * @bc().length() * Math.abs(Math.sin(@abc())) / 2
 
+  ##### Triangle::contains
+  #
+  contains: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    p = new Point x,y
+
+    v0 = @ac()
+    v1 = @ab()
+    v2 = p.subtract(@a)
+
+    dot00 = v0.dot v0
+    dot01 = v0.dot v1
+    dot02 = v0.dot v2
+    dot11 = v1.dot v1
+    dot12 = v1.dot v2
+
+    invDenom = 1 / (dot00 * dot11 - dot01 * dot01)
+    u = (dot11 * dot02 - dot01 * dot12) * invDenom
+    v = (dot00 * dot12 - dot01 * dot02) * invDenom
+
+    v > 0 and v > 0 and u + v < 1
 
   ##### Triangle::containsGeometry
   #
   # See
   # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
+
+  ##### Triangle::randomPointInSurface
+  #
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+
+    a1 = random.get()
+    a2 = random.get()
+    p = @a.add(@ab().scale(a1))
+          .add(@ca().scale(a2 * -1))
+
+    if @contains p
+      p
+    else
+      p.add @bcCenter().subtract(p).scale(2)
+
 
   ##### Triangle::length
   #
@@ -129,12 +167,12 @@ class Triangle
 
   #### Drawing API
 
-  ##### Rectangle::stroke
+  ##### Triangle::stroke
   #
   # See
   # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
 
-  ##### Rectangle::fill
+  ##### Triangle::fill
   #
   # See
   # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
