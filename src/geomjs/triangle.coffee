@@ -113,6 +113,14 @@ class Triangle
   # See
   # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
 
+  ##### Triangle::pointAtAngle
+  #
+  pointAtAngle: (angle) ->
+    center = @center()
+    vec = center.add Math.cos(Math.degToRad(angle))*10000,
+                     Math.sin(Math.degToRad(angle))*10000
+    @intersections(points: -> [center, vec])?[0]
+
   #### Surface API
 
   ##### Triangle::acreage
