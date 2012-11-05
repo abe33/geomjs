@@ -36,7 +36,10 @@ describe 'Triangle', ->
           it "should have been filled with #{data[k]}", ->
             expect(@triangle[k]).toBeSamePoint(data[k])
 
-      ['ab','ac','ba', 'bc', 'ca', 'cb'].forEach (k) ->
+      [
+        'ab','ac','ba', 'bc', 'ca', 'cb',
+        'abCenter', 'acCenter', 'bcCenter'
+      ].forEach (k) ->
         describe "its '#{k}' method", ->
           it "should return #{data[k]}", ->
             expect(@triangle[k]()).toBeSamePoint(data[k])
@@ -45,6 +48,10 @@ describe 'Triangle', ->
         describe "its '#{k}' method", ->
           it "should return #{data[k]}", ->
             expect(@triangle[k]()).toBeClose(data[k])
+
+      describe 'its center method', ->
+        it 'should return the triangle center', ->
+          expect(@triangle.center()).toBeSamePoint(data.center)
 
       # Surface API
       acreageOf(source).shouldBe(data.acreage)

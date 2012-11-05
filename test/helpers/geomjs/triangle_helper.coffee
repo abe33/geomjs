@@ -37,12 +37,16 @@ global.triangleData = (a,b,c) ->
     a: a
     b: b
     c: c
+
+  data.merge
     ab: b.subtract a
     ac: c.subtract a
     ba: a.subtract b
     bc: c.subtract b
     ca: a.subtract c
     cb: b.subtract c
+
+  data.merge
     top: Math.min a.y, b.y, c.y
     bottom: Math.max a.y, b.y, c.y
     left: Math.min a.x, b.x, c.x
@@ -52,11 +56,21 @@ global.triangleData = (a,b,c) ->
     abc: data.ba.angleWith data.bc
     bac: data.ab.angleWith data.ac
     acb: data.ca.angleWith data.cb
+
+  data.merge
     bounds:
       top: data.top
       bottom: data.bottom
       left: data.left
       right: data.right
+
+  data.merge
+    center:
+      x: (a.x + b.x + c.x) / 3
+      y: (a.y + b.y + c.y) / 3
+    abCenter: a.add data.ab.scale(0.5)
+    acCenter: a.add data.ac.scale(0.5)
+    bcCenter: b.add data.bc.scale(0.5)
 
   data.merge
     length: data.ab.length() + data.bc.length() + data.ca.length()

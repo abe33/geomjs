@@ -20,6 +20,20 @@ class Triangle
     @b = new Point b
     @c = new Point c
 
+  #### Centers
+
+  ##### Triangle::center
+  #
+  center: -> new Point (@a.x + @b.x + @c.x) / 3,
+                       (@a.y + @b.y + @c.y) / 3
+
+  ##### Triangle::abCenter
+  ##### Triangle::acCenter
+  ##### Triangle::bcCenter
+  ['abCenter', 'acCenter', 'bcCenter'].forEach (k) ->
+    [p1,p2] = k.split ''
+    Triangle::[k] = -> @[p1].add @["#{p1}#{p2}"]().scale(0.5)
+
   #### Edges
 
   ##### Triangle::ab
