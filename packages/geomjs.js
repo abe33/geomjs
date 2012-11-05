@@ -1535,7 +1535,23 @@
       return Math.deltaBelowRatio(this.ab().length(), this.bc().length()) && Math.deltaBelowRatio(this.ab().length(), this.ac().length());
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::rotateAroundCenter> line:103 */;
+    /* src/geomjs/triangle.coffee<Triangle::isosceles> line:101 */;
+
+
+    Triangle.prototype.isosceles = function() {
+      return Math.deltaBelowRatio(this.ab().length(), this.bc().length()) || Math.deltaBelowRatio(this.ab().length(), this.ac().length()) || Math.deltaBelowRatio(this.bc().length(), this.ac().length());
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::rectangle> line:108 */;
+
+
+    Triangle.prototype.rectangle = function() {
+      var sqr;
+      sqr = 90;
+      return Math.deltaBelowRatio(Math.abs(this.abc()), sqr) || Math.deltaBelowRatio(Math.abs(this.bac()), sqr) || Math.deltaBelowRatio(Math.abs(this.acb()), sqr);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::rotateAroundCenter> line:118 */;
 
 
     Triangle.prototype.rotateAroundCenter = function(rotation) {
@@ -1547,7 +1563,7 @@
       return this;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::scaleAroundCenter> line:112 */;
+    /* src/geomjs/triangle.coffee<Triangle::scaleAroundCenter> line:127 */;
 
 
     Triangle.prototype.scaleAroundCenter = function(scale) {
@@ -1559,21 +1575,21 @@
       return this;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:123 */;
+    /* src/geomjs/triangle.coffee<Triangle::closedGeometry> line:138 */;
 
 
     Triangle.prototype.closedGeometry = function() {
       return true;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::points> line:127 */;
+    /* src/geomjs/triangle.coffee<Triangle::points> line:142 */;
 
 
     Triangle.prototype.points = function() {
       return [this.a.clone(), this.b.clone(), this.c.clone(), this.a.clone()];
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::pointAtAngle> line:141 */;
+    /* src/geomjs/triangle.coffee<Triangle::pointAtAngle> line:156 */;
 
 
     Triangle.prototype.pointAtAngle = function(angle) {
@@ -1587,14 +1603,14 @@
       })) != null ? _ref[0] : void 0;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::acreage> line:151 */;
+    /* src/geomjs/triangle.coffee<Triangle::acreage> line:166 */;
 
 
     Triangle.prototype.acreage = function() {
       return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::contains> line:155 */;
+    /* src/geomjs/triangle.coffee<Triangle::contains> line:170 */;
 
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -1615,7 +1631,7 @@
       return v > 0 && v > 0 && u + v < 1;
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::randomPointInSurface> line:182 */;
+    /* src/geomjs/triangle.coffee<Triangle::randomPointInSurface> line:197 */;
 
 
     Triangle.prototype.randomPointInSurface = function(random) {
@@ -1633,14 +1649,14 @@
       }
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::length> line:200 */;
+    /* src/geomjs/triangle.coffee<Triangle::length> line:215 */;
 
 
     Triangle.prototype.length = function() {
       return this.ab().length() + this.bc().length() + this.ca().length();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::pathPointAt> line:204 */;
+    /* src/geomjs/triangle.coffee<Triangle::pathPointAt> line:219 */;
 
 
     Triangle.prototype.pathPointAt = function(n, pathBasedOnLength) {
@@ -1658,7 +1674,7 @@
       }
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::pathOrientationAt> line:216 */;
+    /* src/geomjs/triangle.coffee<Triangle::pathOrientationAt> line:231 */;
 
 
     Triangle.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
@@ -1676,7 +1692,7 @@
       }
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::pathSteps> line:233 */;
+    /* src/geomjs/triangle.coffee<Triangle::pathSteps> line:248 */;
 
 
     Triangle.prototype.pathSteps = function(pathBasedOnLength) {
@@ -1692,7 +1708,7 @@
       return [l1, l2];
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:258 */;
+    /* src/geomjs/triangle.coffee<Triangle::drawPath> line:273 */;
 
 
     Triangle.prototype.drawPath = function(context) {
@@ -1704,7 +1720,7 @@
       return context.closePath();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:268 */;
+    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:283 */;
 
 
     Triangle.prototype.invalidPoint = function(k, v) {

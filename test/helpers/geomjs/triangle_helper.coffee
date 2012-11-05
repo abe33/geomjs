@@ -23,7 +23,7 @@ factories =
     [
       new Point 1,1
       new Point 3,1
-      new Point 2,4
+      new Point 3,4
     ]
   equilateral: ->
     [

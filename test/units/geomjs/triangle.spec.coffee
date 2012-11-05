@@ -200,3 +200,21 @@ describe 'Triangle', ->
     describe 'on a triangle which is not equilateral', ->
       it 'should return false', ->
         expect(triangle().equilateral()).toBeFalsy()
+
+  describe '::isosceles called', ->
+    describe 'on a triangle which is isosceles', ->
+      it 'should return true', ->
+        expect(triangle.isosceles().isosceles()).toBeTruthy()
+
+    describe 'on a triangle which is not isosceles', ->
+      it 'should return false', ->
+        expect(triangle().isosceles()).toBeFalsy()
+
+  describe '::rectangle called', ->
+    describe 'on a triangle which is rectangle', ->
+      it 'should return true', ->
+        expect(triangle.rectangle().rectangle()).toBeTruthy()
+
+    describe 'on a triangle which is not rectangle', ->
+      it 'should return false', ->
+        expect(triangle().rectangle()).toBeFalsy()

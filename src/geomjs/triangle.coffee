@@ -101,6 +101,21 @@ class Triangle
     Math.deltaBelowRatio(@ab().length(), @bc().length()) and
     Math.deltaBelowRatio(@ab().length(), @ac().length())
 
+  ##### Triangle::isosceles
+  #
+  isosceles: ->
+    Math.deltaBelowRatio(@ab().length(), @bc().length()) or
+    Math.deltaBelowRatio(@ab().length(), @ac().length()) or
+    Math.deltaBelowRatio(@bc().length(), @ac().length())
+
+  ##### Triangle::rectangle
+  #
+  rectangle: ->
+    sqr = 90
+    Math.deltaBelowRatio(Math.abs(@abc()), sqr) or
+    Math.deltaBelowRatio(Math.abs(@bac()), sqr) or
+    Math.deltaBelowRatio(Math.abs(@acb()), sqr)
+
   #### Triangle Manipulation
 
   ##### Triangle::rotateAroundCenter
