@@ -93,6 +93,26 @@ class Triangle
       @bottom() - @top()
     )
 
+  #### Triangle Manipulation
+
+  ##### Triangle::rotateAroundCenter
+  #
+  rotateAroundCenter: (rotation) ->
+    center = @center()
+    @a = @a.rotateAround center, rotation
+    @b = @b.rotateAround center, rotation
+    @c = @c.rotateAround center, rotation
+    this
+
+  ##### Triangle::scaleAroundCenter
+  #
+  scaleAroundCenter: (scale) ->
+    center = @center()
+    @a = center.add @a.subtract(center).scale(scale)
+    @b = center.add @b.subtract(center).scale(scale)
+    @c = center.add @c.subtract(center).scale(scale)
+    this
+
   #### Geometry API
 
   ##### Triangle::closedGeometry

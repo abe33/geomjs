@@ -53,6 +53,51 @@ describe 'Triangle', ->
         it 'should return the triangle center', ->
           expect(@triangle.center()).toBeSamePoint(data.center)
 
+      describe 'its rotateAroundCenter method', ->
+        beforeEach ->
+          @rotation = 10
+          @result = @triangle.rotateAroundCenter @rotation
+
+        it 'should rotate the triangle around its center', ->
+          a = data.a.rotateAround(data.center, @rotation)
+          b = data.b.rotateAround(data.center, @rotation)
+          c = data.c.rotateAround(data.center, @rotation)
+
+          expect(@triangle.a).toBeSamePoint(a)
+          expect(@triangle.b).toBeSamePoint(b)
+          expect(@triangle.c).toBeSamePoint(c)
+
+        it 'should preserve the triangle center', ->
+          expect(@triangle.center()).toBeSamePoint(data.center)
+
+        it 'should return the triangle', ->
+          expect(@result).toBe(@triangle)
+
+      describe 'its scaleAroundCenter method', ->
+        beforeEach ->
+          @scale = 2
+          @result = @triangle.scaleAroundCenter @scale
+
+        it 'should rotate the triangle around its center', ->
+          center = point(data.center)
+          a = center.add data.a.subtract(center).scale(@scale)
+          b = center.add data.b.subtract(center).scale(@scale)
+          c = center.add data.c.subtract(center).scale(@scale)
+
+          expect(@triangle.a).toBeSamePoint(a)
+          expect(@triangle.b).toBeSamePoint(b)
+          expect(@triangle.c).toBeSamePoint(c)
+
+        it 'should preserve the triangle center', ->
+          expect(@triangle.center()).toBeSamePoint(data.center)
+
+        it 'should return the triangle', ->
+          expect(@result).toBe(@triangle)
+
+      # Drawing API
+      testDrawingOf(source)
+
+
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
@@ -123,7 +168,6 @@ describe 'Triangle', ->
           expect(points[2]).toBeSamePoint(data.c)
           expect(points[3]).toBeSamePoint(data.a)
 
-      # Geometry API
       shouldBeClosedGeometry(source)
 
       ['top', 'left', 'bottom', 'right'].forEach (k) ->
@@ -143,10 +187,6 @@ describe 'Triangle', ->
                            data.top,
                            data.right - data.left
                            data.bottom - data.top)
-
-      # Drawing API
-      testDrawingOf(source)
-
 
   describe 'when instanciated with at least an invalid point', ->
     it 'should throw an error', ->
