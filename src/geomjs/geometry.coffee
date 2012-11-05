@@ -10,9 +10,10 @@ class Geometry
   ##### Geometry.intersects
   #
   @intersects: (geometry) ->
+    return false if geometry.bounds? and not @boundsCollide geometry
     output = false
 
-    @eachIntersections geometry, (intersection) ->
+    @eachIntersections geometry, ->
       output = true
 
     output
@@ -20,6 +21,7 @@ class Geometry
   ##### Geometry.intersections
   #
   @intersections: (geometry) ->
+    return null if geometry.bounds? and not @boundsCollide geometry
     output = []
 
     @eachIntersections geometry, (intersection) ->
@@ -27,6 +29,19 @@ class Geometry
       false
 
     if output.length > 0 then output else null
+
+  ##### Geometry.boundsCollide
+  #
+  @boundsCollide: (geometry) ->
+    bounds1 = @bounds()
+    bounds2 = geometry.bounds()
+
+    not (
+      bounds1.top > bounds2.bottom or
+      bounds1.left > bounds2.right or
+      bounds1.bottom < bounds2.top or
+      bounds1.right < bounds2.left
+    )
 
   ##### Geometry.eachIntersections
   #
