@@ -1,5 +1,6 @@
 # @toc
 Point = require './point'
+Path = require './path'
 Surface = require './surface'
 Geometry = require './geometry'
 chancejs = require 'chancejs'
@@ -8,6 +9,7 @@ chancejs = require 'chancejs'
 class Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
+  Path.attachTo Rectangle
 
   PROPERTIES = ['x','y','width','height','rotation']
 
@@ -309,10 +311,8 @@ class Rectangle
 
   ##### Rectangle::pathTangentAt
   #
-  pathTangentAt: (n, accuracy=1 / 100, pathBasedOnLength=true) ->
-    @pathPointAt((n + accuracy) % 1)
-      .subtract(@pathPointAt((1 + n - accuracy) % 1))
-      .normalize(1)
+  # See
+  # [Path.pathTangentAt](src_geomjs_geometry.html#pathpathTangentAt)
 
   ##### Rectangle::pathSteps
   #
