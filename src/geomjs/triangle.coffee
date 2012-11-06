@@ -283,6 +283,27 @@ class Triangle
     context.lineTo @a.x, @a.y
     context.closePath()
 
+  #### Utilities
+
+  ##### Triangle::clone
+  #
+  clone: -> new Triangle @a, @b, @c
+
+  ##### Triangle::equals
+  #
+  equals: (target) ->
+    target? and
+    target.a.equals(@a) and
+    target.b.equals(@b) and
+    target.c.equals(@c)
+
+  ##### Triangle::toString
+  #
+  toString: ->
+    "[object Triangle(a=#{@a.x};#{@a.y},b=#{@b.x};#{@b.y},c=#{@c.x};#{@c.y})]"
+
+  #### Instance Error Methods
+
   ##### Triangle::invalidPoint
   #
   invalidPoint: (k,v) -> throw new Error "Invalid point #{v} for vertex #{k}"

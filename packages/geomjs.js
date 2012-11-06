@@ -1735,7 +1735,28 @@
       return context.closePath();
     };
 
-    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:283 */;
+    /* src/geomjs/triangle.coffee<Triangle::clone> line:285 */;
+
+
+    Triangle.prototype.clone = function() {
+      return new Triangle(this.a, this.b, this.c);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::equals> line:289 */;
+
+
+    Triangle.prototype.equals = function(target) {
+      return (target != null) && target.a.equals(this.a) && target.b.equals(this.b) && target.c.equals(this.c);
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::toString> line:297 */;
+
+
+    Triangle.prototype.toString = function() {
+      return "[object Triangle(a=" + this.a.x + ";" + this.a.y + ",b=" + this.b.x + ";" + this.b.y + ",c=" + this.c.x + ";" + this.c.y + ")]";
+    };
+
+    /* src/geomjs/triangle.coffee<Triangle::invalidPoint> line:304 */;
 
 
     Triangle.prototype.invalidPoint = function(k, v) {

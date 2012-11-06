@@ -218,3 +218,23 @@ describe 'Triangle', ->
     describe 'on a triangle which is not rectangle', ->
       it 'should return false', ->
         expect(triangle().rectangle()).toBeFalsy()
+
+  describe '::clone called', ->
+    it 'should return a copy of the object', ->
+      original = triangle()
+      clone = original.clone()
+
+      expect(clone.a).toBeSamePoint(original.a)
+      expect(clone.b).toBeSamePoint(original.b)
+      expect(clone.c).toBeSamePoint(original.c)
+
+  describe '::equals called', ->
+    beforeEach ->
+      @triangle = triangle()
+    describe 'with a point that is equal', ->
+      it 'should return true', ->
+        expect(@triangle.equals triangle()).toBeTruthy()
+
+    describe 'with a point that is not equal', ->
+      it 'should return false', ->
+        expect(@triangle.equals triangle.isosceles()).toBeFalsy()
