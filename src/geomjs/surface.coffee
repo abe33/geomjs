@@ -5,11 +5,11 @@ class Surface
 
   ##### Surface.attachTo
   #
-  @attachTo: (klass) -> klass::[k] = v for k,v of this when k isnt 'attachTo'
+  @attachTo: (klass) -> klass::[k] = v for k,v of Surface.prototype
 
-  ##### Surface.containsGeometry
+  ##### Surface::containsGeometry
   #
-  @containsGeometry: (geometry) ->
+  containsGeometry: (geometry) ->
     geometry.points().every (point) => @contains point
 
 module.exports = Surface

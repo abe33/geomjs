@@ -5,11 +5,11 @@ Point = require './point'
 class Geometry
   ##### Geometry.attachTo
   #
-  @attachTo: (klass) -> klass::[k] = v for k,v of this when k isnt 'attachTo'
+  @attachTo: (klass) -> klass::[k] = v for k,v of Geometry.prototype
 
-  ##### Geometry.intersects
+  ##### Geometry::intersects
   #
-  @intersects: (geometry) ->
+  intersects: (geometry) ->
     return false if geometry.bounds? and not @boundsCollide geometry
     output = false
 
@@ -18,9 +18,9 @@ class Geometry
 
     output
 
-  ##### Geometry.intersections
+  ##### Geometry::intersections
   #
-  @intersections: (geometry) ->
+  intersections: (geometry) ->
     return null if geometry.bounds? and not @boundsCollide geometry
     output = []
 
@@ -30,9 +30,9 @@ class Geometry
 
     if output.length > 0 then output else null
 
-  ##### Geometry.boundsCollide
+  ##### Geometry::boundsCollide
   #
-  @boundsCollide: (geometry) ->
+  boundsCollide: (geometry) ->
     bounds1 = @bounds()
     bounds2 = geometry.bounds()
 
@@ -43,9 +43,9 @@ class Geometry
       bounds1.right < bounds2.left
     )
 
-  ##### Geometry.eachIntersections
+  ##### Geometry::eachIntersections
   #
-  @eachIntersections: (geometry, block, providesDataInCallback=false) ->
+  eachIntersections: (geometry, block, providesDataInCallback=false) ->
     points1 = @points()
     points2 = geometry.points()
     length1 = points1.length
@@ -86,9 +86,9 @@ class Geometry
 
           return if block.call this, cross, context
 
-  ##### Geometry.perCrossing
+  ##### Geometry::perCrossing
   #
-  @perCrossing: (start1, dir1, start2, dir2) ->
+  perCrossing: (start1, dir1, start2, dir2) ->
     v3bx = start2.x - start1.x
     v3by = start2.y - start1.y
     perP1 = v3bx*dir2.y - v3by*dir2.x
@@ -103,18 +103,18 @@ class Geometry
 
   #### Drawing API
 
-  ##### Geometry.stroke
+  ##### Geometry::stroke
   #
-  @stroke: (context, color='#ff0000') ->
+  stroke: (context, color='#ff0000') ->
     return unless context?
 
     context.strokeStyle = color
     @drawPath context
     context.stroke()
 
-  ##### Geometry.fill
+  ##### Geometry::fill
   #
-  @fill: (context, color='#ff0000') ->
+  fill: (context, color='#ff0000') ->
     return unless context?
 
     context.fillStyle = color
