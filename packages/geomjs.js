@@ -48,21 +48,20 @@
 
 
     Geometry.attachTo = function(klass) {
-      var k, v, _results;
+      var k, v, _ref, _results;
+      _ref = Geometry.prototype;
       _results = [];
-      for (k in this) {
-        v = this[k];
-        if (k !== 'attachTo') {
-          _results.push(klass.prototype[k] = v);
-        }
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(klass.prototype[k] = v);
       }
       return _results;
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.intersects> line:11 */;
+    /* src/geomjs/geometry.coffee<Geometry::intersects> line:11 */;
 
 
-    Geometry.intersects = function(geometry) {
+    Geometry.prototype.intersects = function(geometry) {
       var output;
       if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
         return false;
@@ -74,10 +73,10 @@
       return output;
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.intersections> line:22 */;
+    /* src/geomjs/geometry.coffee<Geometry::intersections> line:22 */;
 
 
-    Geometry.intersections = function(geometry) {
+    Geometry.prototype.intersections = function(geometry) {
       var output;
       if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
         return null;
@@ -94,20 +93,20 @@
       }
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.boundsCollide> line:34 */;
+    /* src/geomjs/geometry.coffee<Geometry::boundsCollide> line:34 */;
 
 
-    Geometry.boundsCollide = function(geometry) {
+    Geometry.prototype.boundsCollide = function(geometry) {
       var bounds1, bounds2;
       bounds1 = this.bounds();
       bounds2 = geometry.bounds();
       return !(bounds1.top > bounds2.bottom || bounds1.left > bounds2.right || bounds1.bottom < bounds2.top || bounds1.right < bounds2.left);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.eachIntersections> line:47 */;
+    /* src/geomjs/geometry.coffee<Geometry::eachIntersections> line:47 */;
 
 
-    Geometry.eachIntersections = function(geometry, block, providesDataInCallback) {
+    Geometry.prototype.eachIntersections = function(geometry, block, providesDataInCallback) {
       var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
       if (providesDataInCallback == null) {
         providesDataInCallback = false;
@@ -151,10 +150,10 @@
       }
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.perCrossing> line:90 */;
+    /* src/geomjs/geometry.coffee<Geometry::perCrossing> line:90 */;
 
 
-    Geometry.perCrossing = function(start1, dir1, start2, dir2) {
+    Geometry.prototype.perCrossing = function(start1, dir1, start2, dir2) {
       var cx, cy, perP1, perP2, t, v3bx, v3by;
       v3bx = start2.x - start1.x;
       v3by = start2.y - start1.y;
@@ -166,10 +165,10 @@
       return new Point(cx, cy);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.stroke> line:107 */;
+    /* src/geomjs/geometry.coffee<Geometry::stroke> line:107 */;
 
 
-    Geometry.stroke = function(context, color) {
+    Geometry.prototype.stroke = function(context, color) {
       if (color == null) {
         color = '#ff0000';
       }
@@ -181,10 +180,10 @@
       return context.stroke();
     };
 
-    /* src/geomjs/geometry.coffee<Geometry.fill> line:116 */;
+    /* src/geomjs/geometry.coffee<Geometry::fill> line:116 */;
 
 
-    Geometry.fill = function(context, color) {
+    Geometry.prototype.fill = function(context, color) {
       if (color == null) {
         color = '#ff0000';
       }
@@ -214,21 +213,41 @@
 
 
     Surface.attachTo = function(klass) {
-      var k, v, _results;
+      var k, v, _ref, _results;
+      _ref = Surface.prototype;
       _results = [];
-      for (k in this) {
-        v = this[k];
-        if (k !== 'attachTo') {
-          _results.push(klass.prototype[k] = v);
-        }
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(klass.prototype[k] = v);
       }
       return _results;
     };
 
-    /* src/geomjs/surface.coffee<Surface.containsGeometry> line:12 */;
+    /* src/geomjs/surface.coffee<Surface::acreage> line:13 */;
 
 
-    Surface.containsGeometry = function(geometry) {
+    Surface.prototype.acreage = function() {
+      return null;
+    };
+
+    /* src/geomjs/surface.coffee<Surface::randomPointInSurface> line:18 */;
+
+
+    Surface.prototype.randomPointInSurface = function() {
+      return null;
+    };
+
+    /* src/geomjs/surface.coffee<Surface::contains> line:23 */;
+
+
+    Surface.prototype.contains = function(xOrPt, y) {
+      return null;
+    };
+
+    /* src/geomjs/surface.coffee<Surface::containsGeometry> line:27 */;
+
+
+    Surface.prototype.containsGeometry = function(geometry) {
       var _this = this;
       return geometry.points().every(function(point) {
         return _this.contains(point);
@@ -253,21 +272,47 @@
 
 
     Path.attachTo = function(klass) {
-      var k, v, _results;
+      var k, v, _ref, _results;
+      _ref = Path.prototype;
       _results = [];
-      for (k in this) {
-        v = this[k];
-        if (k !== 'attachTo') {
-          _results.push(klass.prototype[k] = v);
-        }
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(klass.prototype[k] = v);
       }
       return _results;
     };
 
-    /* src/geomjs/path.coffee<Path.pathTangentAt> line:8 */;
+    /* src/geomjs/path.coffee<Path::length> line:9 */;
 
 
-    Path.pathTangentAt = function(n, accuracy, pathBasedOnLength) {
+    Path.prototype.length = function() {
+      return null;
+    };
+
+    /* src/geomjs/path.coffee<Path::pathPointAt> line:14 */;
+
+
+    Path.prototype.pathPointAt = function(n, pathBasedOnLength) {
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      return null;
+    };
+
+    /* src/geomjs/path.coffee<Path::pathOrientationAt> line:19 */;
+
+
+    Path.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      return null;
+    };
+
+    /* src/geomjs/path.coffee<Path::pathTangentAt> line:23 */;
+
+
+    Path.prototype.pathTangentAt = function(n, accuracy, pathBasedOnLength) {
       if (accuracy == null) {
         accuracy = 1 / 100;
       }
