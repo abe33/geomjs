@@ -3,6 +3,21 @@ class Path
   #
   @attachTo: (klass) -> klass::[k] = v for k,v of Path.prototype
 
+  ##### Path::length
+  #
+  # **Virtual method**
+  length: -> null
+
+  ##### Path::pathPointAt
+  #
+  # **Virtual method**
+  pathPointAt: (n, pathBasedOnLength=true) -> null
+
+  ##### Path::pathOrientationAt
+  #
+  # **Virtual method**
+  pathOrientationAt: (n, pathBasedOnLength=true) -> null
+
   ##### Path::pathTangentAt
   #
   pathTangentAt: (n, accuracy=1 / 100, pathBasedOnLength=true) ->
