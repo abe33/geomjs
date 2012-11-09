@@ -100,21 +100,13 @@ class Rectangle
 
   ##### Rectangle::bounds
   #
-  bounds: ->
-    top: @top()
-    left: @left()
-    right: @right()
-    bottom: @bottom()
+  # See
+  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
 
   ##### Rectangle::boundingBox
   #
-  boundingBox: ->
-    new Rectangle(
-      @left(),
-      @top(),
-      @right() - @left(),
-      @bottom() - @top()
-    )
+  # See
+  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
 
   #### Rectangle Manipulation
 

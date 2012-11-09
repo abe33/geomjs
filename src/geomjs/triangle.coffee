@@ -77,21 +77,13 @@ class Triangle
 
   ##### Triangle::bounds
   #
-  bounds: ->
-    top: @top()
-    left: @left()
-    right: @right()
-    bottom: @bottom()
+  # See
+  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
 
   ##### Triangle::boundingBox
   #
-  boundingBox: ->
-    new Rectangle(
-      @left(),
-      @top(),
-      @right() - @left(),
-      @bottom() - @top()
-    )
+  # See
+  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
 
   #### Shape Properties
 
