@@ -7,6 +7,11 @@ class Geometry
   #
   @attachTo: (klass) -> klass::[k] = v for k,v of Geometry.prototype
 
+  ##### Geometry::points
+  #
+  # **Virtual method**
+  points: ->
+
   ##### Geometry::intersects
   #
   intersects: (geometry) ->
@@ -120,5 +125,10 @@ class Geometry
     context.fillStyle = color
     @drawPath context
     context.fill()
+
+  ##### Geometry::drawPath
+  #
+  # **Virtual method**
+  drawPath: ->
 
 module.exports = Geometry
