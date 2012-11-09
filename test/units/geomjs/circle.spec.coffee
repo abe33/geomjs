@@ -28,6 +28,28 @@ describe 'Circle', ->
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      # Geometry API
+      describe 'its top method', ->
+        it 'should returns the circle top', ->
+          expect(@circle.top()).toEqual(data.top)
+
+      describe 'its bottom method', ->
+        it 'should returns the circle bottom', ->
+          expect(@circle.bottom()).toEqual(data.bottom)
+
+      describe 'its left method', ->
+        it 'should returns the circle left', ->
+          expect(@circle.left()).toEqual(data.left)
+
+      describe 'its right method', ->
+        it 'should returns the circle right', ->
+          expect(@circle.right()).toEqual(data.right)
+
+      describe 'its bounds method', ->
+        it 'should returns the circle bounds', ->
+          expect(@circle.bounds()).toEqual(data.bounds)
+
+      # Others
       describe 'its equals method', ->
         describe 'when called with an object equal to the current circle', ->
           it 'should return true', ->

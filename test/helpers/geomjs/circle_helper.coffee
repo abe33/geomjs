@@ -25,6 +25,17 @@ global.circleData = (radius, x, y, segments) ->
   data.merge
     acreage: Math.PI * radius * radius
     length: 2 * Math.PI * radius
+    top: y - radius
+    bottom: y + radius
+    left: x - radius
+    right: x + radius
+
+  data.merge
+    bounds:
+      top: data.top
+      bottom: data.bottom
+      left: data.left
+      right: data.right
 
   data
 
