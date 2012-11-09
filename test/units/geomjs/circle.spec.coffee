@@ -9,6 +9,7 @@ describe 'Circle', ->
   circleFactories.map (k,v) ->
     {args, test} = v
     [radius, x, y] = test
+    source = 'circle'
     data = circleData.apply global, test
 
     describe "when instanciated with #{args}", ->
@@ -21,6 +22,10 @@ describe 'Circle', ->
       it 'should have defined the ad hoc properties', ->
         expect(@circle).toBeCircle(radius, x, y)
 
+      # Path API
+      lengthOf(source).shouldBe(data.length)
+
       # Surface API
-      acreageOf('circle').shouldBe(data.acreage)
+      acreageOf(source).shouldBe(data.acreage)
+
 

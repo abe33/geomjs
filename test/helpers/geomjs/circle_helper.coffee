@@ -21,6 +21,7 @@ global.circleData = (radius, x, y) ->
 
   data.merge
     acreage: Math.PI * radius * radius
+    length: 2 * Math.PI * radius
 
   data
 
