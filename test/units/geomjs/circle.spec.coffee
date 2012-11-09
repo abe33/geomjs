@@ -21,3 +21,6 @@ describe 'Circle', ->
       it 'should have defined the ad hoc properties', ->
         expect(@circle).toBeCircle(radius, x, y)
 
+      # Surface API
+      acreageOf('circle').shouldBe(data.acreage)
+

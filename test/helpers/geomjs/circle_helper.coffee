@@ -18,7 +18,12 @@ global.circle = (radius, x, y) ->
 
 global.circleData = (radius, x, y) ->
   data = {radius, x, y}
+
+  data.merge
+    acreage: Math.PI * radius * radius
+
   data
+
 
 global.circleFactories =
   default:
