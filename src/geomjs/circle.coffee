@@ -7,4 +7,7 @@ class Circle
   #### Surface API
   acreage: -> @radius * @radius * Math.PI
 
+  #### Utilities
+  equals: (o) -> o? and o.radius is @radius and o.x is @x and o.y is @y
+
 module.exports = Circle
