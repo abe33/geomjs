@@ -8,7 +8,7 @@ describe 'Circle', ->
 
   circleFactories.map (k,v) ->
     {args, test} = v
-    [radius, x, y] = test
+    [radius, x, y, segments] = test
     source = 'circle'
     data = circleData.apply global, test
 
@@ -20,7 +20,7 @@ describe 'Circle', ->
         expect(@circle).toBeDefined()
 
       it 'should have defined the ad hoc properties', ->
-        expect(@circle).toBeCircle(radius, x, y)
+        expect(@circle).toBeCircle(radius, x, y, segments)
 
       # Path API
       lengthOf(source).shouldBe(data.length)

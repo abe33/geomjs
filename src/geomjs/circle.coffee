@@ -1,5 +1,5 @@
 class Circle
-  constructor: (@radius=0, @x=0, @y=0) ->
+  constructor: (@radius=0, @x=0, @y=0, @segments=36) ->
 
   #### Path API
   length: -> @radius * Math.PI * 2
