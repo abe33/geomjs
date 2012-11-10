@@ -110,6 +110,11 @@ describe 'Circle', ->
         it 'should returns the circle bounds', ->
           expect(@circle.bounds()).toEqual(data.bounds)
 
+      shouldBeClosedGeometry(source)
+
+      # Drawing API
+      testDrawingOf(source)
+
       # Others
       describe 'its equals method', ->
         describe 'when called with an object equal to the current circle', ->

@@ -24,6 +24,7 @@ class Circle
     d = p2.subtract p1
 
     return d.angle()
+  closedGeometry: -> true
 
   #### Surface API
   acreage: -> @radius * @radius * Math.PI

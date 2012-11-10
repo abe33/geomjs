@@ -17,6 +17,7 @@ global.testDrawingOf = (source) ->
         closePath: => @closePathCalled = true
         moveTo: => @moveToCalled = true
         lineTo: => @lineToCalled = true
+        arc: => @arcCalled = true
 
     describe "the #{source} stroke method", ->
       beforeEach ->
