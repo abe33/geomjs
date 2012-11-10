@@ -27,6 +27,10 @@ class Circle
     new Point @x + Math.cos(Math.degToRad(angle)) * @radius,
               @y + Math.sin(Math.degToRad(angle)) * @radius
 
+  drawPath: (context) ->
+    context.beginPath()
+    context.arc @x, @y, @radius, 0, Math.PI * 2
+
   #### Utilities
   equals: (o) -> o? and o.radius is @radius and o.x is @x and o.y is @y
 
