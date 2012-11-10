@@ -48,4 +48,4 @@ global.circleFactories =
     test: [2,3,4,60]
   empty:
     args:[]
-    test:[0,0,0,DEFAULT_SEGMENTS]
+    test:[1,0,0,DEFAULT_SEGMENTS]

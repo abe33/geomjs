@@ -4,7 +4,7 @@ Geometry = require './geometry'
 class Circle
   Geometry.attachTo Circle
 
-  constructor: (@radius=0, @x=0, @y=0, @segments=36) ->
+  constructor: (@radius=1, @x=0, @y=0, @segments=36) ->
 
   center: -> new Point @x, @y
 
@@ -16,6 +16,14 @@ class Circle
 
   #### Path API
   length: -> @radius * Math.PI * 2
+
+  pathPointAt: (n) -> @pointAtAngle n * 360
+  pathOrientationAt: (n) ->
+    p1 = @pathPointAt n - 0.01
+    p2 = @pathPointAt n + 0.01
+    d = p2.subtract p1
+
+    return d.angle()
 
   #### Surface API
   acreage: -> @radius * @radius * Math.PI

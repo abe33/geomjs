@@ -28,6 +28,49 @@ describe 'Circle', ->
       # Path API
       lengthOf(source).shouldBe(data.length)
 
+      describe 'its pathPointAt method', ->
+        describe 'called with 0', ->
+          it "should return #{data.right},#{data.y}", ->
+            expect(@circle.pathPointAt 0).toBePoint(data.right, data.y)
+
+        describe 'called with 1', ->
+          it "should return #{data.right},#{data.y}", ->
+            expect(@circle.pathPointAt 1).toBePoint(data.right, data.y)
+
+        describe 'called with 0.25', ->
+          it "should return #{data.x},#{data.bottom}", ->
+            expect(@circle.pathPointAt 0.25).toBePoint(data.x, data.bottom)
+
+        describe 'called with 0.5', ->
+          it "should return #{data.left},#{data.y}", ->
+            expect(@circle.pathPointAt 0.5).toBePoint(data.left, data.y)
+
+        describe 'called with 0.75', ->
+          it "should return #{data.x},#{data.top}", ->
+            expect(@circle.pathPointAt 0.75).toBePoint(data.x, data.top)
+
+      describe 'its pathOrientationAt method', ->
+        describe 'called with 0', ->
+          it 'should return 90', ->
+            expect(@circle.pathOrientationAt 0).toBe(90)
+
+        describe 'called with 1', ->
+          it 'should return 90', ->
+            expect(@circle.pathOrientationAt 1).toBe(90)
+
+        describe 'called with 0.25', ->
+          it 'should return 180', ->
+            expect(@circle.pathOrientationAt 0.25).toBe(180)
+
+        describe 'called with 0.5', ->
+          it 'should return -90', ->
+            expect(@circle.pathOrientationAt 0.5).toBe(-90)
+
+        describe 'called with 0.75', ->
+          it 'should return 0', ->
+            expect(@circle.pathOrientationAt 0.75).toBe(0)
+
+
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
@@ -63,4 +106,5 @@ describe 'Circle', ->
           it 'should return false', ->
             target = circle 5, 1, 3
             expect(@circle.equals target).toBeFalsy()
+
 
