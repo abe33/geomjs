@@ -1,12 +1,15 @@
 # @toc
 Point = require './point'
+Equatable = require './equatable'
+Formattable = require './formattable'
 Path = require './path'
 Surface = require './surface'
 Geometry = require './geometry'
-Rectangle = require './rectangle'
 
 ## Triangle
 class Triangle
+  Equatable('a','b','c').attachTo Triangle
+  Formattable('a','b','c').attachTo Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
   Path.attachTo Triangle
@@ -283,16 +286,13 @@ class Triangle
 
   ##### Triangle::equals
   #
-  equals: (target) ->
-    target? and
-    target.a.equals(@a) and
-    target.b.equals(@b) and
-    target.c.equals(@c)
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Triangle::toString
   #
-  toString: ->
-    "[object Triangle(a=#{@a.x};#{@a.y},b=#{@b.x};#{@b.y},c=#{@c.x};#{@c.y})]"
+  # See
+  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
 
   #### Instance Error Methods
 

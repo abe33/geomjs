@@ -1,5 +1,7 @@
 # @toc
 Point = require './point'
+Equatable = require './equatable'
+Formattable = require './formattable'
 Path = require './path'
 Surface = require './surface'
 Geometry = require './geometry'
@@ -7,11 +9,14 @@ chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle
+  PROPERTIES = ['x','y','width','height','rotation']
+
+  Equatable.apply(null, PROPERTIES).attachTo Rectangle
+  Formattable.apply(null, PROPERTIES).attachTo Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle
 
-  PROPERTIES = ['x','y','width','height','rotation']
 
   ##### Rectangle::constructor
   #
@@ -348,8 +353,8 @@ class Rectangle
 
   ##### Rectangle::toString
   #
-  toString: ->
-    "[object Rectangle(#{@x},#{@y},#{@width},#{@height},#{@rotation})]"
+  # See
+  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
 
   ##### Rectangle::clone
   #
@@ -357,10 +362,8 @@ class Rectangle
 
   ##### Rectangle::equals
   #
-  equals: (rectangle) ->
-    return false unless rectangle?
-    return false for p in PROPERTIES when rectangle[p] isnt @[p]
-    true
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Rectangle::paste
   #

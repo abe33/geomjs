@@ -2,6 +2,8 @@
 # @toc
 require './math'
 Point = require './point'
+Equatable = require './equatable'
+Formattable = require './formattable'
 
 ## Matrix
 
@@ -23,6 +25,9 @@ class Matrix
 
   # A list of the proprties to be checked to consider an object as a matrix.
   PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
+
+  Equatable.apply(null, PROPERTIES).attachTo Matrix
+  Formattable.apply(null, PROPERTIES).attachTo Matrix
 
   #### Class Methods
 
@@ -79,21 +84,8 @@ class Matrix
 
   ##### Matrix::equals
   #
-  # Compares the current matrix with the passed-in object and
-  # returns `true` when the two objects properties are equals.
-  #
-  #     matrix = new Matrix
-  #
-  #     matrix.equals new Matrix  # true
-  #
-  #     matrix2 =
-  #       a: 1, b: 0, tx: 0
-  #       c: 0, d: 1, ty: 0
-  #     matrix.equals matrix2     # true
-  equals: (o) ->
-    return false unless o?
-    return false for k in PROPERTIES when o[k] isnt @[k]
-    true
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Matrix::transformPoint
   #
@@ -267,8 +259,8 @@ class Matrix
 
   ##### Matrix::toString
   #
-  # Returns the string representation of this matrix.
-  toString: -> "[object Matrix(#{@a},#{@b},#{@c},#{@d},#{@tx},#{@ty})]"
+  # See
+  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
 
   #### Instance Errors Method
 

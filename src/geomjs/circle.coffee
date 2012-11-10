@@ -1,11 +1,13 @@
 # @toc
 Point = require './point'
+Equatable = require './equatable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
 
 ## Circle
 class Circle
+  Equatable('x','y','radius').attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
   Path.attachTo Circle
@@ -151,7 +153,8 @@ class Circle
 
   ##### Circle::equals
   #
-  equals: (o) -> o? and o.radius is @radius and o.x is @x and o.y is @y
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Circle::clone
   #
@@ -159,6 +162,7 @@ class Circle
 
   ##### Circle::toString
   #
-  toString: -> "[object Circle(radius=#{@radius},x=#{@x},y=#{@y})]"
+  # See
+  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
 
 module.exports = Circle

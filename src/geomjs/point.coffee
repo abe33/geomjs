@@ -2,6 +2,9 @@
 #@toc
 require './math'
 
+Equatable = require './equatable'
+Formattable = require './formattable'
+
 ## Point
 
 # A `Point` represent a location in a two-dimensional space.
@@ -17,6 +20,9 @@ require './math'
 # class. For more details about how to achieve the same behavior in your own
 # functions please refer to the [`Point.coordsFrom`](#pointcoordsfrom) method.
 class Point
+  Equatable('x', 'y').attachTo Point
+  Formattable('x', 'y').attachTo Point
+
   #### Class Methods
 
   ##### Point.isPoint
@@ -176,12 +182,8 @@ class Point
 
   ##### Point::equals
   #
-  # Returns `true` if the passed-in object represent the same location.
-  #
-  #     point = new Point 10, 22
-  #     point.equals x: 10, y: 22 # true
-  #     point.equals x: 5,  y: 7  # false
-  equals: (o) -> o? and o.x is @x and o.y is @y
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Point::angleWith
   #
@@ -357,8 +359,8 @@ class Point
 
   ##### Point::toString
   #
-  # Returns the string representation of the current point.
-  toString: -> "[object Point(#{@x},#{@y})]"
+  # See
+  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
 
   #### Instances Error Methods
 
