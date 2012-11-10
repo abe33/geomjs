@@ -182,6 +182,6 @@ class Geometry
   ##### Geometry::drawPath
   #
   # **Virtual method**
-  drawPath: ->
+  drawPath: (context) ->
 
 module.exports = Geometry
