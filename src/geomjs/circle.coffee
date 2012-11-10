@@ -1,11 +1,14 @@
 # @toc
 Point = require './point'
 Geometry = require './geometry'
+Surface = require './surface'
+Path = require './path'
 
 ## Circle
 class Circle
   Geometry.attachTo Circle
-
+  Surface.attachTo Circle
+  Path.attachTo Circle
 
   ##### Circle::constructor
   #
@@ -149,5 +152,13 @@ class Circle
   ##### Circle::equals
   #
   equals: (o) -> o? and o.radius is @radius and o.x is @x and o.y is @y
+
+  ##### Circle::clone
+  #
+  clone: -> new Circle(@radius, @x, @y, @segments)
+
+  ##### Circle::toString
+  #
+  toString: -> "[object Circle(radius=#{@radius},x=#{@x},y=#{@y})]"
 
 module.exports = Circle

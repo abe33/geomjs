@@ -126,4 +126,15 @@ describe 'Circle', ->
             target = circle 5, 1, 3
             expect(@circle.equals target).toBeFalsy()
 
+      describe 'its clone method', ->
+        it 'should return a copy of this circle', ->
+          expect(@circle.clone())
+            .toBeCircle(
+              @circle.radius,
+              @circle.x,
+              @circle.y,
+              @circle.segments)
+
+
+
 
