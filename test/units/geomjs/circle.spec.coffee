@@ -22,6 +22,9 @@ describe 'Circle', ->
       it 'should have defined the ad hoc properties', ->
         expect(@circle).toBeCircle(radius, x, y, segments)
 
+      describe 'its center method', ->
+        it 'should return the circle coordinates', ->
+          expect(@circle.center()).toBePoint(@circle.x, @circle.y)
       # Path API
       lengthOf(source).shouldBe(data.length)
 

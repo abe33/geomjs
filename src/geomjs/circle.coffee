@@ -6,6 +6,8 @@ class Circle
 
   constructor: (@radius=0, @x=0, @y=0, @segments=36) ->
 
+  center: -> new Point @x, @y
+
   #### Bounds
   top: -> @y - @radius
   bottom: -> @y + @radius
