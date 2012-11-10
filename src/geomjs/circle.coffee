@@ -28,6 +28,15 @@ class Circle
   #### Surface API
   acreage: -> @radius * @radius * Math.PI
 
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+
+    pt = @pointAtAngle random.random(360)
+    center = @center()
+    dif = pt.subtract center
+    center.add dif.scale Math.sqrt random.random()
+
   #### Geometry API
   points: ->
     step = 360 / @segments
