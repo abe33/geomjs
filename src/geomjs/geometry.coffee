@@ -13,6 +13,11 @@ class Geometry
   # **Virtual method**
   points: ->
 
+  ##### Geometry::closedGeometry
+  #
+  # **Virtual method**
+  closedGeometry: -> false
+
   #### Bounds
 
   # The `pointsBounds` private utility is meant to provides the default
