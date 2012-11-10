@@ -70,7 +70,6 @@ describe 'Circle', ->
           it 'should return 0', ->
             expect(@circle.pathOrientationAt 0.75).toBe(0)
 
-
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
