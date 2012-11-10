@@ -2,6 +2,9 @@ name: 'geomjs'
 package: 'geomjs'
 includes: [
   'src/geomjs/math'
+  'src/geomjs/mixin'
+  'src/geomjs/equatable'
+  'src/geomjs/formattable'
   'src/geomjs/geometry'
   'src/geomjs/surface'
   'src/geomjs/path'
@@ -13,7 +16,7 @@ includes: [
 ]
 operators: [
   'strip:requires'
-  'annotate:class'
+  # 'annotate:class'
   'annotate:file'
   'join'
   'exports:package'
