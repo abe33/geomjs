@@ -64,41 +64,48 @@
 
     Geometry.prototype.points = function() {};
 
+    /* src/geomjs/geometry.coffee<Geometry::closedGeometry> line:18 */;
+
+
+    Geometry.prototype.closedGeometry = function() {
+      return false;
+    };
+
     pointsBounds = function(points, mode, axis, start) {
       return points.reduce((function(a, b) {
         return Math[mode](a, b[axis]);
       }), start);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::top> line:25 */;
+    /* src/geomjs/geometry.coffee<Geometry::top> line:30 */;
 
 
     Geometry.prototype.top = function() {
       return pointsBounds(this.points(), 'min', 'y', Infinity);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::bottom> line:29 */;
+    /* src/geomjs/geometry.coffee<Geometry::bottom> line:34 */;
 
 
     Geometry.prototype.bottom = function() {
       return pointsBounds(this.points(), 'max', 'y', -Infinity);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::left> line:33 */;
+    /* src/geomjs/geometry.coffee<Geometry::left> line:38 */;
 
 
     Geometry.prototype.left = function() {
       return pointsBounds(this.points(), 'min', 'x', Infinity);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::right> line:37 */;
+    /* src/geomjs/geometry.coffee<Geometry::right> line:42 */;
 
 
     Geometry.prototype.right = function() {
       return pointsBounds(this.points(), 'max', 'x', -Infinity);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::bounds> line:41 */;
+    /* src/geomjs/geometry.coffee<Geometry::bounds> line:46 */;
 
 
     Geometry.prototype.bounds = function() {
@@ -110,14 +117,14 @@
       };
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::boundingBox> line:49 */;
+    /* src/geomjs/geometry.coffee<Geometry::boundingBox> line:54 */;
 
 
     Geometry.prototype.boundingBox = function() {
       return new Rectangle(this.left(), this.top(), this.right() - this.left(), this.bottom() - this.top());
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::intersects> line:68 */;
+    /* src/geomjs/geometry.coffee<Geometry::intersects> line:73 */;
 
 
     Geometry.prototype.intersects = function(geometry) {
@@ -132,7 +139,7 @@
       return output;
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::intersections> line:79 */;
+    /* src/geomjs/geometry.coffee<Geometry::intersections> line:84 */;
 
 
     Geometry.prototype.intersections = function(geometry) {
@@ -152,7 +159,7 @@
       }
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::boundsCollide> line:91 */;
+    /* src/geomjs/geometry.coffee<Geometry::boundsCollide> line:96 */;
 
 
     Geometry.prototype.boundsCollide = function(geometry) {
@@ -162,7 +169,7 @@
       return !(bounds1.top > bounds2.bottom || bounds1.left > bounds2.right || bounds1.bottom < bounds2.top || bounds1.right < bounds2.left);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::eachIntersections> line:104 */;
+    /* src/geomjs/geometry.coffee<Geometry::eachIntersections> line:109 */;
 
 
     Geometry.prototype.eachIntersections = function(geometry, block, providesDataInCallback) {
@@ -209,7 +216,7 @@
       }
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::perCrossing> line:147 */;
+    /* src/geomjs/geometry.coffee<Geometry::perCrossing> line:152 */;
 
 
     Geometry.prototype.perCrossing = function(start1, dir1, start2, dir2) {
@@ -224,7 +231,7 @@
       return new Point(cx, cy);
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::stroke> line:164 */;
+    /* src/geomjs/geometry.coffee<Geometry::stroke> line:169 */;
 
 
     Geometry.prototype.stroke = function(context, color) {
@@ -239,7 +246,7 @@
       return context.stroke();
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::fill> line:173 */;
+    /* src/geomjs/geometry.coffee<Geometry::fill> line:178 */;
 
 
     Geometry.prototype.fill = function(context, color) {
@@ -254,7 +261,7 @@
       return context.fill();
     };
 
-    /* src/geomjs/geometry.coffee<Geometry::drawPath> line:183 */;
+    /* src/geomjs/geometry.coffee<Geometry::drawPath> line:188 */;
 
 
     Geometry.prototype.drawPath = function(context) {};
@@ -1841,14 +1848,14 @@
   /* src/geomjs/circle.coffee */;
 
 
-  /* src/geomjs/circle.coffee<Circle> line:2 */;
+  /* src/geomjs/circle.coffee<Circle> line:4 */;
 
 
   Circle = (function() {
 
     Geometry.attachTo(Circle);
 
-    /* src/geomjs/circle.coffee<Circle::constructor> line:5 */;
+    /* src/geomjs/circle.coffee<Circle::constructor> line:10 */;
 
 
     function Circle(radius, x, y, segments) {
@@ -1858,74 +1865,76 @@
       this.segments = segments != null ? segments : 36;
     }
 
-    /* src/geomjs/circle.coffee<Circle::center> line:7 */;
+    /* src/geomjs/circle.coffee<Circle::center> line:15 */;
 
 
     Circle.prototype.center = function() {
       return new Point(this.x, this.y);
     };
 
-    /* src/geomjs/circle.coffee<Circle::top> line:10 */;
+    /* src/geomjs/circle.coffee<Circle::top> line:21 */;
 
 
     Circle.prototype.top = function() {
       return this.y - this.radius;
     };
 
-    /* src/geomjs/circle.coffee<Circle::bottom> line:11 */;
+    /* src/geomjs/circle.coffee<Circle::bottom> line:25 */;
 
 
     Circle.prototype.bottom = function() {
       return this.y + this.radius;
     };
 
-    /* src/geomjs/circle.coffee<Circle::left> line:12 */;
+    /* src/geomjs/circle.coffee<Circle::left> line:29 */;
 
 
     Circle.prototype.left = function() {
       return this.x - this.radius;
     };
 
-    /* src/geomjs/circle.coffee<Circle::right> line:13 */;
+    /* src/geomjs/circle.coffee<Circle::right> line:33 */;
 
 
     Circle.prototype.right = function() {
       return this.x + this.radius;
     };
 
-    /* src/geomjs/circle.coffee<Circle::length> line:16 */;
+    /* src/geomjs/circle.coffee<Circle::points> line:49 */;
 
 
-    Circle.prototype.length = function() {
-      return this.radius * Math.PI * 2;
+    Circle.prototype.points = function() {
+      var n, step, _i, _ref, _results;
+      step = 360 / this.segments;
+      _results = [];
+      for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
+        _results.push(this.pointAtAngle(n * step));
+      }
+      return _results;
     };
 
-    /* src/geomjs/circle.coffee<Circle::pathPointAt> line:18 */;
+    /* src/geomjs/circle.coffee<Circle::closedGeometry> line:55 */;
 
 
-    Circle.prototype.pathPointAt = function(n) {
-      return this.pointAtAngle(n * 360);
+    Circle.prototype.closedGeometry = function() {
+      return true;
     };
 
-    /* src/geomjs/circle.coffee<Circle::pathOrientationAt> line:19 */;
+    /* src/geomjs/circle.coffee<Circle::pointAtAngle> line:69 */;
 
 
-    Circle.prototype.pathOrientationAt = function(n) {
-      var d, p1, p2;
-      p1 = this.pathPointAt(n - 0.01);
-      p2 = this.pathPointAt(n + 0.01);
-      d = p2.subtract(p1);
-      return d.angle();
+    Circle.prototype.pointAtAngle = function(angle) {
+      return new Point(this.x + Math.cos(Math.degToRad(angle)) * this.radius, this.y + Math.sin(Math.degToRad(angle)) * this.radius);
     };
 
-    /* src/geomjs/circle.coffee<Circle::acreage> line:27 */;
+    /* src/geomjs/circle.coffee<Circle::acreage> line:77 */;
 
 
     Circle.prototype.acreage = function() {
       return this.radius * this.radius * Math.PI;
     };
 
-    /* src/geomjs/circle.coffee<Circle::randomPointInSurface> line:29 */;
+    /* src/geomjs/circle.coffee<Circle::randomPointInSurface> line:82 */;
 
 
     Circle.prototype.randomPointInSurface = function(random) {
@@ -1939,27 +1948,41 @@
       return center.add(dif.scale(Math.sqrt(random.random())));
     };
 
-    /* src/geomjs/circle.coffee<Circle::points> line:39 */;
+    /* src/geomjs/circle.coffee<Circle::contains> line:93 */;
 
 
-    Circle.prototype.points = function() {
-      var n, step, _i, _ref, _results;
-      step = 360 / this.segments;
-      _results = [];
-      for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
-        _results.push(this.pointAtAngle(n * step));
-      }
-      return _results;
+    Circle.prototype.contains = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      return this.center().subtract(x, y).length() <= this.radius;
     };
 
-    /* src/geomjs/circle.coffee<Circle::pointAtAngle> line:43 */;
+    /* src/geomjs/circle.coffee<Circle::length> line:107 */;
 
 
-    Circle.prototype.pointAtAngle = function(angle) {
-      return new Point(this.x + Math.cos(Math.degToRad(angle)) * this.radius, this.y + Math.sin(Math.degToRad(angle)) * this.radius);
+    Circle.prototype.length = function() {
+      return this.radius * Math.PI * 2;
     };
 
-    /* src/geomjs/circle.coffee<Circle::drawPath> line:47 */;
+    /* src/geomjs/circle.coffee<Circle::pathPointAt> line:111 */;
+
+
+    Circle.prototype.pathPointAt = function(n) {
+      return this.pointAtAngle(n * 360);
+    };
+
+    /* src/geomjs/circle.coffee<Circle::pathOrientationAt> line:115 */;
+
+
+    Circle.prototype.pathOrientationAt = function(n) {
+      var d, p1, p2;
+      p1 = this.pathPointAt(n - 0.01);
+      p2 = this.pathPointAt(n + 0.01);
+      d = p2.subtract(p1);
+      return d.angle();
+    };
+
+    /* src/geomjs/circle.coffee<Circle::drawPath> line:141 */;
 
 
     Circle.prototype.drawPath = function(context) {
@@ -1967,7 +1990,7 @@
       return context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     };
 
-    /* src/geomjs/circle.coffee<Circle::equals> line:52 */;
+    /* src/geomjs/circle.coffee<Circle::equals> line:149 */;
 
 
     Circle.prototype.equals = function(o) {
