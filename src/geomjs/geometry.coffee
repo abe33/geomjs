@@ -1,12 +1,13 @@
 # @toc
+Mixin = require './mixin'
 Point = require './point'
 
-
 ## Geometry
-class Geometry
+class Geometry extends Mixin
   ##### Geometry.attachTo
   #
-  @attachTo: (klass) -> klass::[k] = v for k,v of Geometry.prototype
+  # See
+  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
 
   ##### Geometry::points
   #

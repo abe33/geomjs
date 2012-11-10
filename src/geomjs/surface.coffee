@@ -1,11 +1,12 @@
 # @toc
+Mixin = require './mixin'
 
 ## Surface
-class Surface
-
+class Surface extends Mixin
   ##### Surface.attachTo
   #
-  @attachTo: (klass) -> klass::[k] = v for k,v of Surface.prototype
+  # See
+  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
 
   ##### Surface::acreage
   #

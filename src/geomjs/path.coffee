@@ -1,7 +1,10 @@
-class Path
+Mixin = require './mixin'
+
+class Path extends Mixin
   ##### Path.attachTo
   #
-  @attachTo: (klass) -> klass::[k] = v for k,v of Path.prototype
+  # See
+  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
 
   ##### Path::length
   #
