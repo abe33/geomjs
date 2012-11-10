@@ -9,6 +9,7 @@ includes: [
   'src/geomjs/matrix'
   'src/geomjs/rectangle'
   'src/geomjs/triangle'
+  'src/geomjs/circle'
 ]
 operators: [
   'strip:requires'
