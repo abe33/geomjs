@@ -41,6 +41,8 @@ class Circle
   points: ->
     step = 360 / @segments
     @pointAtAngle n * step for n in [0..@segments]
+  contains: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y, true
 
   pointAtAngle: (angle) ->
     new Point @x + Math.cos(Math.degToRad(angle)) * @radius,

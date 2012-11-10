@@ -74,6 +74,21 @@ describe 'Circle', ->
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      describe 'its contains method', ->
+        calledWithPoints(data.x, data.y)
+          .where
+            source: source
+            method: 'contains'
+          .should 'return true', (res) ->
+            expect(res).toBeTruthy()
+
+        calledWithPoints(-100, -100)
+          .where
+            source: source
+            method: 'contains'
+          .should 'return false', (res) ->
+            expect(res).toBeFalsy()
+
       # Geometry API
       describe 'its top method', ->
         it 'should returns the circle top', ->
