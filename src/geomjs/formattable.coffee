@@ -1,10 +1,9 @@
 Mixin = require './mixin'
 
-Formattable = (properties...) ->
+Formattable = (classname, properties...) ->
   class extends Mixin
     toString: ->
-      className = @constructor.name
       formattedProperties = ("#{p}=#{@[p]}" for p in properties)
-      "[#{className}(#{formattedProperties.join ', '})]"
+      "[#{classname}(#{formattedProperties.join ', '})]"
 
 module.exports = Formattable

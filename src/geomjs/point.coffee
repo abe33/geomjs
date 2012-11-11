@@ -21,7 +21,7 @@ Formattable = require './formattable'
 # functions please refer to the [`Point.coordsFrom`](#pointcoordsfrom) method.
 class Point
   Equatable('x', 'y').attachTo Point
-  Formattable('x', 'y').attachTo Point
+  Formattable('Point','x', 'y').attachTo Point
 
   #### Class Methods
 

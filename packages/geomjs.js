@@ -92,8 +92,8 @@
 
 
   Formattable = function() {
-    var properties;
-    properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    var classname, properties;
+    classname = arguments[0], properties = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
     return (function(_super) {
 
       __extends(_Class, _super);
@@ -103,8 +103,7 @@
       }
 
       _Class.prototype.toString = function() {
-        var className, formattedProperties, p;
-        className = this.constructor.name;
+        var formattedProperties, p;
         formattedProperties = (function() {
           var _i, _len, _results;
           _results = [];
@@ -114,7 +113,7 @@
           }
           return _results;
         }).call(this);
-        return "[" + className + "(" + (formattedProperties.join(', ')) + ")]";
+        return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
       };
 
       return _Class;
@@ -381,7 +380,7 @@
 
     Equatable('x', 'y').attachTo(Point);
 
-    Formattable('x', 'y').attachTo(Point);
+    Formattable('Point', 'x', 'y').attachTo(Point);
 
     Point.isPoint = function(pt) {
       return (pt != null) && (pt.x != null) && (pt.y != null);
@@ -618,7 +617,7 @@
 
     Equatable.apply(null, PROPERTIES).attachTo(Matrix);
 
-    Formattable.apply(null, PROPERTIES).attachTo(Matrix);
+    Formattable.apply(null, ['Matrix'].concat(PROPERTIES)).attachTo(Matrix);
 
     Matrix.isMatrix = function(m) {
       var k, _i, _len;
@@ -846,7 +845,7 @@
 
     Equatable.apply(null, PROPERTIES).attachTo(Rectangle);
 
-    Formattable.apply(null, PROPERTIES).attachTo(Rectangle);
+    Formattable.apply(null, ['Rectangle'].concat(PROPERTIES)).attachTo(Rectangle);
 
     Geometry.attachTo(Rectangle);
 
@@ -1175,7 +1174,7 @@
 
     Equatable('a', 'b', 'c').attachTo(Triangle);
 
-    Formattable('a', 'b', 'c').attachTo(Triangle);
+    Formattable('Triangle', 'a', 'b', 'c').attachTo(Triangle);
 
     Geometry.attachTo(Triangle);
 
@@ -1404,6 +1403,8 @@
   Circle = (function() {
 
     Equatable('x', 'y', 'radius').attachTo(Circle);
+
+    Formattable('Circle', 'x', 'y', 'radius').attachTo(Circle);
 
     Geometry.attachTo(Circle);
 

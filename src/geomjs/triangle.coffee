@@ -9,7 +9,7 @@ Geometry = require './geometry'
 ## Triangle
 class Triangle
   Equatable('a','b','c').attachTo Triangle
-  Formattable('a','b','c').attachTo Triangle
+  Formattable('Triangle','a','b','c').attachTo Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
   Path.attachTo Triangle

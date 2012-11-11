@@ -12,7 +12,7 @@ class Rectangle
   PROPERTIES = ['x','y','width','height','rotation']
 
   Equatable.apply(null, PROPERTIES).attachTo Rectangle
-  Formattable.apply(null, PROPERTIES).attachTo Rectangle
+  Formattable.apply(null, ['Rectangle'].concat PROPERTIES).attachTo Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle

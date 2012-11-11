@@ -27,7 +27,7 @@ class Matrix
   PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
 
   Equatable.apply(null, PROPERTIES).attachTo Matrix
-  Formattable.apply(null, PROPERTIES).attachTo Matrix
+  Formattable.apply(null, ['Matrix'].concat PROPERTIES).attachTo Matrix
 
   #### Class Methods
 

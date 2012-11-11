@@ -1,6 +1,7 @@
 # @toc
 Point = require './point'
 Equatable = require './equatable'
+Formattable = require './formattable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
@@ -8,6 +9,7 @@ Path = require './path'
 ## Circle
 class Circle
   Equatable('x','y','radius').attachTo Circle
+  Formattable('Circle','x','y','radius').attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
   Path.attachTo Circle
@@ -131,7 +133,7 @@ class Circle
   # See
   # [Path.pathTangentAt](src_geomjs_path.html#pathpathtangentat)
 
-  ##### Drawing API
+  #### Drawing API
 
   ##### Circle::stroke
   #
