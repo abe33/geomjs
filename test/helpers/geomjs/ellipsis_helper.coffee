@@ -35,15 +35,19 @@ global.ellipsisData= (radius1, radius2, x, y, rotation, segments) ->
   phi = Math.degToRad rotation
   t1 = Math.atan(-b * Math.tan(phi) / a)
   t2 = Math.atan(b * (Math.cos(phi) / Math.sin(phi)) / a)
+  x1 = x + a*Math.cos(t1+Math.PI)*Math.cos(phi) -
+           b*Math.sin(t1+Math.PI)*Math.sin(phi)
+  x2 = x + a*Math.cos(t1)*Math.cos(phi) -
+           b*Math.sin(t1)*Math.sin(phi)
+  y1 = y + a*Math.cos(t2)*Math.sin(phi) +
+           b*Math.sin(t2)*Math.cos(phi)
+  y2 = y + a*Math.cos(t2+Math.PI)*Math.sin(phi) +
+           b*Math.sin(t2+Math.PI)*Math.cos(phi)
   data.merge
-    left: x + a*Math.cos(t1+Math.PI)*Math.cos(phi) -
-              b*Math.sin(t1+Math.PI)*Math.sin(phi)
-    right: x + a*Math.cos(t1)*Math.cos(phi) -
-               b*Math.sin(t1)*Math.sin(phi)
-    bottom: y + a*Math.cos(t2)*Math.sin(phi) +
-                b*Math.sin(t2)*Math.cos(phi)
-    top: y + a*Math.cos(t2+Math.PI)*Math.sin(phi) +
-             b*Math.sin(t2+Math.PI)*Math.cos(phi)
+    left: Math.min x1, x2
+    right: Math.max x1, x2
+    top: Math.min y1, y2
+    bottom: Math.max y1, y2
 
   data.merge
     bounds:
@@ -72,8 +76,8 @@ global.ellipsisFactories =
     args: [{radius1: 1, radius2: 2, x: 3, y: 4}]
     test: [1,2,3,4,0,DEFAULT_SEGMENTS]
   'with an ellipsis without segments':
-    args: [{radius1: 1, radius2: 2, x: 3, y: 4, rotation: 5}]
-    test: [1,2,3,4,5,DEFAULT_SEGMENTS]
+    args: [{radius1: 1, radius2: 2, x: 3, y: 4, rotation: 120}]
+    test: [1,2,3,4,120,DEFAULT_SEGMENTS]
   'with an ellipsis':
     args: [{radius1: 1, radius2: 2, x: 3, y: 4, rotation: 5, segments: 60}]
     test: [1,2,3,4,5,60]

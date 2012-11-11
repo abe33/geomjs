@@ -31,35 +31,45 @@ class Ellipsis
 
   ##### Ellipsis::left
   #
-  left: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1) + Math.PI
-    @x + @radius1*Math.cos(t)*Math.cos(phi) -
-         @radius2*Math.sin(t)*Math.sin(phi)
+  left: -> Math.min.apply Math, @xBounds()
 
   ##### Ellipsis::right
   #
-  right: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
-    @x + @radius1*Math.cos(t)*Math.cos(phi) -
-         @radius2*Math.sin(t)*Math.sin(phi)
+  right: -> Math.max.apply Math, @xBounds()
 
   ##### Ellipsis::bottom
   #
-  bottom: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1)
-    @y + @radius1*Math.cos(t)*Math.sin(phi) +
-         @radius2*Math.sin(t)*Math.cos(phi)
+  bottom: -> Math.max.apply Math, @yBounds()
 
   ##### Ellipsis::top
   #
-  top: ->
+  top: -> Math.min.apply Math, @yBounds()
+
+  ##### Ellipsis::xBounds
+  #
+  xBounds: ->
     phi = Math.degToRad @rotation
-    t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1) + Math.PI
-    @y + @radius1*Math.cos(t)*Math.sin(phi) +
-         @radius2*Math.sin(t)*Math.cos(phi)
+    xs = []
+    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
+    xs.push @x + @radius1*Math.cos(t)*Math.cos(phi) -
+                 @radius2*Math.sin(t)*Math.sin(phi)
+    t += Math.PI
+    xs.push @x + @radius1*Math.cos(t)*Math.cos(phi) -
+                 @radius2*Math.sin(t)*Math.sin(phi)
+    xs
+
+  ##### Ellipsis::yBounds
+  #
+  yBounds: ->
+    phi = Math.degToRad @rotation
+    ys = []
+    t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1)
+    ys.push @y + @radius1*Math.cos(t)*Math.sin(phi) +
+                 @radius2*Math.sin(t)*Math.cos(phi)
+    t += Math.PI
+    ys.push @y + @radius1*Math.cos(t)*Math.sin(phi) +
+                 @radius2*Math.sin(t)*Math.cos(phi)
+    ys
 
   ##### Ellipsis::bounds
   #
@@ -69,7 +79,7 @@ class Ellipsis
   ##### Ellipsis::boundingBox
   #
   # See
-  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboun
+  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
 
   #### Geometry API
 

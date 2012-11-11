@@ -1547,31 +1547,41 @@
     };
 
     Ellipsis.prototype.left = function() {
-      var phi, t;
-      phi = Math.degToRad(this.rotation);
-      t = Math.atan(-this.radius2 * Math.tan(phi) / this.radius1) + Math.PI;
-      return this.x + this.radius1 * Math.cos(t) * Math.cos(phi) - this.radius2 * Math.sin(t) * Math.sin(phi);
+      return Math.min.apply(Math, this.xBounds());
     };
 
     Ellipsis.prototype.right = function() {
-      var phi, t;
-      phi = Math.degToRad(this.rotation);
-      t = Math.atan(-this.radius2 * Math.tan(phi) / this.radius1);
-      return this.x + this.radius1 * Math.cos(t) * Math.cos(phi) - this.radius2 * Math.sin(t) * Math.sin(phi);
+      return Math.max.apply(Math, this.xBounds());
     };
 
     Ellipsis.prototype.bottom = function() {
-      var phi, t;
-      phi = Math.degToRad(this.rotation);
-      t = Math.atan(this.radius2 * (Math.cos(phi) / Math.sin(phi)) / this.radius1);
-      return this.y + this.radius1 * Math.cos(t) * Math.sin(phi) + this.radius2 * Math.sin(t) * Math.cos(phi);
+      return Math.max.apply(Math, this.yBounds());
     };
 
     Ellipsis.prototype.top = function() {
-      var phi, t;
+      return Math.min.apply(Math, this.yBounds());
+    };
+
+    Ellipsis.prototype.xBounds = function() {
+      var phi, t, xs;
       phi = Math.degToRad(this.rotation);
-      t = Math.atan(this.radius2 * (Math.cos(phi) / Math.sin(phi)) / this.radius1) + Math.PI;
-      return this.y + this.radius1 * Math.cos(t) * Math.sin(phi) + this.radius2 * Math.sin(t) * Math.cos(phi);
+      xs = [];
+      t = Math.atan(-this.radius2 * Math.tan(phi) / this.radius1);
+      xs.push(this.x + this.radius1 * Math.cos(t) * Math.cos(phi) - this.radius2 * Math.sin(t) * Math.sin(phi));
+      t += Math.PI;
+      xs.push(this.x + this.radius1 * Math.cos(t) * Math.cos(phi) - this.radius2 * Math.sin(t) * Math.sin(phi));
+      return xs;
+    };
+
+    Ellipsis.prototype.yBounds = function() {
+      var phi, t, ys;
+      phi = Math.degToRad(this.rotation);
+      ys = [];
+      t = Math.atan(this.radius2 * (Math.cos(phi) / Math.sin(phi)) / this.radius1);
+      ys.push(this.y + this.radius1 * Math.cos(t) * Math.sin(phi) + this.radius2 * Math.sin(t) * Math.cos(phi));
+      t += Math.PI;
+      ys.push(this.y + this.radius1 * Math.cos(t) * Math.sin(phi) + this.radius2 * Math.sin(t) * Math.cos(phi));
+      return ys;
     };
 
     Ellipsis.prototype.points = function() {
