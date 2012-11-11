@@ -59,6 +59,15 @@ class Ellipsis
 
   acreage: -> Math.PI * @radius1 * @radius2
 
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+
+    pt = @pathPointAt random.get()
+    center = @center()
+    dif = pt.subtract center
+    center.add dif.scale Math.sqrt random.random()
+
   #### Drawing API
 
   drawPath: (context) ->
