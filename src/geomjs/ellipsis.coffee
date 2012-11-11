@@ -23,34 +23,43 @@ class Ellipsis
 
   center: -> new Point @x, @y
 
-  acreage: -> Math.PI * @radius1 * @radius2
-  length: -> Math.PI * (3*(@radius1 + @radius2) -
-             Math.sqrt((3* @radius1 + @radius2) * (@radius1 + @radius2 *3)))
+  #### Geometry API
+
+  points: ->
+    @pathPointAt n / @segments for n in [0..@segments]
 
   closedGeometry: -> true
 
-  left: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1) + Math.PI
-    @x + @radius1*Math.cos(t)*Math.cos(phi) -
-         @radius2*Math.sin(t)*Math.sin(phi)
-  right: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
-    @x + @radius1*Math.cos(t)*Math.cos(phi) -
-         @radius2*Math.sin(t)*Math.sin(phi)
-  bottom: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(@radius2 * Math.cos(phi) / @radius1)
-    @y + @radius1*Math.sin(t)*Math.cos(phi) +
-         @radius2*Math.cos(t)*Math.sin(phi)
-  top: ->
-    phi = Math.degToRad @rotation
-    t = Math.atan(@radius2 * Math.cos(phi) / @radius1) + Math.PI
-    @y + @radius1*Math.sin(t)*Math.cos(phi) +
-         @radius2*Math.cos(t)*Math.sin(phi)
+  pointAtAngle: (angle) ->
+    center = @center()
+    vec = center.add Math.cos(Math.degToRad(angle))*10000,
+                     Math.sin(Math.degToRad(angle))*10000
+    @intersections(points: -> [center, vec])?[0]
 
-  clone: -> new Ellipsis this
+
+  #### Path API
+
+  length: -> Math.PI * (3*(@radius1 + @radius2) -
+             Math.sqrt((3* @radius1 + @radius2) * (@radius1 + @radius2 *3)))
+
+  pathPointAt: (n) ->
+    a = n * Math.PI * 2
+    p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
+
+    @center().add p.rotate(@rotation)
+
+  pathOrientationAt: (n) ->
+    p1 = @pathPointAt n - 0.01
+    p2 = @pathPointAt n + 0.01
+    d = p2.subtract p1
+
+    return d.angle()
+
+  #### Surface API
+
+  acreage: -> Math.PI * @radius1 * @radius2
+
+  #### Drawing API
 
   drawPath: (context) ->
     context.save()
@@ -62,15 +71,9 @@ class Ellipsis
     context.closePath()
     context.restore()
 
-  points: ->
-    step = 360 / @segments
-    @pathPointAt n * step for n in [0..@segments]
+  #### Utilities
 
-  pathPointAt: (n) ->
-    a = Math.degToRad n
-    p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
-
-    @center().add p.rotate(@rotation)
+  clone: -> new Ellipsis this
 
   ellipsisFrom: (radius1, radius2, x, y, rotation, segments) ->
     if typeof radius1 is 'object'
