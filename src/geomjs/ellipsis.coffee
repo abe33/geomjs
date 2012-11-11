@@ -49,27 +49,19 @@ class Ellipsis
   #
   xBounds: ->
     phi = Math.degToRad @rotation
-    xs = []
     t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
-    xs.push @x + @radius1*Math.cos(t)*Math.cos(phi) -
-                 @radius2*Math.sin(t)*Math.sin(phi)
-    t += Math.PI
-    xs.push @x + @radius1*Math.cos(t)*Math.cos(phi) -
-                 @radius2*Math.sin(t)*Math.sin(phi)
-    xs
+    [t, t+Math.PI].map (t) =>
+      @x + @radius1*Math.cos(t)*Math.cos(phi) -
+           @radius2*Math.sin(t)*Math.sin(phi)
 
   ##### Ellipsis::yBounds
   #
   yBounds: ->
     phi = Math.degToRad @rotation
-    ys = []
     t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1)
-    ys.push @y + @radius1*Math.cos(t)*Math.sin(phi) +
-                 @radius2*Math.sin(t)*Math.cos(phi)
-    t += Math.PI
-    ys.push @y + @radius1*Math.cos(t)*Math.sin(phi) +
-                 @radius2*Math.sin(t)*Math.cos(phi)
-    ys
+    [t, t+Math.PI].map (t) =>
+      @y + @radius1*Math.cos(t)*Math.sin(phi) +
+           @radius2*Math.sin(t)*Math.cos(phi)
 
   ##### Ellipsis::bounds
   #
