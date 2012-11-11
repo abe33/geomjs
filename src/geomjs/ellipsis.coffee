@@ -12,8 +12,8 @@ class Ellipsis
   Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation')
     .attachTo Ellipsis
   Geometry.attachTo Ellipsis
-  # Surface.attachTo Ellipsis
-  # Path.attachTo Ellipsis
+  Surface.attachTo Ellipsis
+  Path.attachTo Ellipsis
 
   constructor: (r1, r2, x, y, rot, segments) ->
     [@radius1, @radius2, @x, @y, @rotation, @segments] = @ellipsisFrom r1, r2,
@@ -67,6 +67,16 @@ class Ellipsis
     center = @center()
     dif = pt.subtract center
     center.add dif.scale Math.sqrt random.random()
+
+  contains: (xOrPt, y) ->
+    [x,y] = Point.coordsFrom xOrPt, y
+    p = new Point(x,y)
+    c = @center()
+    d = p.subtract c
+    a = d.angle()
+    p2 = @pointAtAngle a
+    c.distance(p2) >= c.distance(p)
+
 
   #### Drawing API
 

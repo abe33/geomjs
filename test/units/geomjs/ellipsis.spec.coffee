@@ -33,6 +33,21 @@ describe 'Ellipsis', ->
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      describe 'its contains method', ->
+        calledWithPoints(data.x, data.y)
+          .where
+            source: 'ellipsis'
+            method: 'contains'
+          .should 'return true', (res) ->
+            expect(res).toBeTruthy()
+
+        calledWithPoints(-100, -100)
+          .where
+            source: 'ellipsis'
+            method: 'contains'
+          .should 'return false', (res) ->
+            expect(res).toBeFalsy()
+
       # Geometry API
       shouldBeClosedGeometry(source)
 

@@ -1537,6 +1537,10 @@
 
     Geometry.attachTo(Ellipsis);
 
+    Surface.attachTo(Ellipsis);
+
+    Path.attachTo(Ellipsis);
+
     function Ellipsis(r1, r2, x, y, rot, segments) {
       var _ref;
       _ref = this.ellipsisFrom(r1, r2, x, y, rot, segments), this.radius1 = _ref[0], this.radius2 = _ref[1], this.x = _ref[2], this.y = _ref[3], this.rotation = _ref[4], this.segments = _ref[5];
@@ -1602,6 +1606,17 @@
       center = this.center();
       dif = pt.subtract(center);
       return center.add(dif.scale(Math.sqrt(random.random())));
+    };
+
+    Ellipsis.prototype.contains = function(xOrPt, y) {
+      var a, c, d, p, p2, x, _ref;
+      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      p = new Point(x, y);
+      c = this.center();
+      d = p.subtract(c);
+      a = d.angle();
+      p2 = this.pointAtAngle(a);
+      return c.distance(p2) >= c.distance(p);
     };
 
     Ellipsis.prototype.drawPath = function(context) {
