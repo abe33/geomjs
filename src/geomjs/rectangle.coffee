@@ -2,9 +2,10 @@
 Point = require './point'
 Equatable = require './equatable'
 Formattable = require './formattable'
-Path = require './path'
-Surface = require './surface'
 Geometry = require './geometry'
+Surface = require './surface'
+Path = require './path'
+Intersections = require './intersections'
 chancejs = require 'chancejs'
 
 ## Rectangle
@@ -16,7 +17,7 @@ class Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle
-
+  Intersections.attachTo Rectangle
 
   ##### Rectangle::constructor
   #
@@ -228,12 +229,12 @@ class Rectangle
   ##### Rectangle::intersects
   #
   # See
-  # [Geometry.intersects](src_geomjs_geometry.html#geometryintersects)
+  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
 
   ##### Rectangle::intersections
   #
   # See
-  # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
+  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
 
   ##### Rectangle::pointAtAngle
   #

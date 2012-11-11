@@ -5,6 +5,7 @@ Formattable = require './formattable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
+Intersections = require './intersections'
 
 ## Ellipsis
 class Ellipsis
@@ -14,6 +15,7 @@ class Ellipsis
   Geometry.attachTo Ellipsis
   Surface.attachTo Ellipsis
   Path.attachTo Ellipsis
+  Intersections.attachTo Ellipsis
 
   ##### Ellipsis::constructor
   #
@@ -95,12 +97,12 @@ class Ellipsis
   ##### Ellipsis::intersects
   #
   # See
-  # [Geometry.intersects](src_geomjs_geometry.html#geometryintersects)
+  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
 
   ##### Ellipsis::intersections
   #
   # See
-  # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
+  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
 
   #### Surface API
 

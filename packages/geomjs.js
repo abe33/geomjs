@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Ellipsis, Equatable, Formattable, Geometry, Matrix, Mixin, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -174,98 +174,6 @@
       return new Rectangle(this.left(), this.top(), this.right() - this.left(), this.bottom() - this.top());
     };
 
-    Geometry.prototype.intersects = function(geometry) {
-      var output;
-      if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
-        return false;
-      }
-      output = false;
-      this.eachIntersections(geometry, function() {
-        return output = true;
-      });
-      return output;
-    };
-
-    Geometry.prototype.intersections = function(geometry) {
-      var output;
-      if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
-        return null;
-      }
-      output = [];
-      this.eachIntersections(geometry, function(intersection) {
-        output.push(intersection);
-        return false;
-      });
-      if (output.length > 0) {
-        return output;
-      } else {
-        return null;
-      }
-    };
-
-    Geometry.prototype.boundsCollide = function(geometry) {
-      var bounds1, bounds2;
-      bounds1 = this.bounds();
-      bounds2 = geometry.bounds();
-      return !(bounds1.top > bounds2.bottom || bounds1.left > bounds2.right || bounds1.bottom < bounds2.top || bounds1.right < bounds2.left);
-    };
-
-    Geometry.prototype.eachIntersections = function(geometry, block, providesDataInCallback) {
-      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
-      if (providesDataInCallback == null) {
-        providesDataInCallback = false;
-      }
-      points1 = this.points();
-      points2 = geometry.points();
-      length1 = points1.length;
-      length2 = points2.length;
-      output = [];
-      for (i = _i = 0, _ref = length1 - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        sv1 = points1[i];
-        ev1 = points1[i + 1];
-        dif1 = ev1.subtract(sv1);
-        for (j = _j = 0, _ref1 = length2 - 2; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-          sv2 = points2[j];
-          ev2 = points2[j + 1];
-          dif2 = ev2.subtract(sv2);
-          cross = this.perCrossing(sv1, dif1, sv2, dif2);
-          d1 = cross.subtract(ev1);
-          d2 = cross.subtract(sv1);
-          d3 = cross.subtract(ev2);
-          d4 = cross.subtract(sv2);
-          if (d1.length() <= dif1.length() && d2.length() <= dif1.length() && d3.length() <= dif2.length() && d4.length() <= dif2.length()) {
-            if (providesDataInCallback) {
-              context = {
-                segment1: dif1,
-                segmentIndex1: i,
-                segmentStart1: sv1,
-                segmentEnd1: ev1,
-                segment2: dif2,
-                segmentIndex2: j,
-                segmentStart2: sv2,
-                segmentEnd2: ev2
-              };
-            }
-            if (block.call(this, cross, context)) {
-              return;
-            }
-          }
-        }
-      }
-    };
-
-    Geometry.prototype.perCrossing = function(start1, dir1, start2, dir2) {
-      var cx, cy, perP1, perP2, t, v3bx, v3by;
-      v3bx = start2.x - start1.x;
-      v3by = start2.y - start1.y;
-      perP1 = v3bx * dir2.y - v3by * dir2.x;
-      perP2 = dir1.x * dir2.y - dir1.y * dir2.x;
-      t = perP1 / perP2;
-      cx = start1.x + dir1.x * t;
-      cy = start1.y + dir1.y * t;
-      return new Point(cx, cy);
-    };
-
     Geometry.prototype.stroke = function(context, color) {
       if (color == null) {
         color = '#ff0000';
@@ -374,6 +282,113 @@
     };
 
     return Path;
+
+  })(Mixin);
+
+  /* src/geomjs/intersections.coffee */;
+
+
+  Intersections = (function(_super) {
+
+    __extends(Intersections, _super);
+
+    function Intersections() {
+      return Intersections.__super__.constructor.apply(this, arguments);
+    }
+
+    Intersections.prototype.intersects = function(geometry) {
+      var output;
+      if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
+        return false;
+      }
+      output = false;
+      this.eachIntersections(geometry, function() {
+        return output = true;
+      });
+      return output;
+    };
+
+    Intersections.prototype.intersections = function(geometry) {
+      var output;
+      if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
+        return null;
+      }
+      output = [];
+      this.eachIntersections(geometry, function(intersection) {
+        output.push(intersection);
+        return false;
+      });
+      if (output.length > 0) {
+        return output;
+      } else {
+        return null;
+      }
+    };
+
+    Intersections.prototype.boundsCollide = function(geometry) {
+      var bounds1, bounds2;
+      bounds1 = this.bounds();
+      bounds2 = geometry.bounds();
+      return !(bounds1.top > bounds2.bottom || bounds1.left > bounds2.right || bounds1.bottom < bounds2.top || bounds1.right < bounds2.left);
+    };
+
+    Intersections.prototype.eachIntersections = function(geometry, block, providesDataInCallback) {
+      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
+      if (providesDataInCallback == null) {
+        providesDataInCallback = false;
+      }
+      points1 = this.points();
+      points2 = geometry.points();
+      length1 = points1.length;
+      length2 = points2.length;
+      output = [];
+      for (i = _i = 0, _ref = length1 - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        sv1 = points1[i];
+        ev1 = points1[i + 1];
+        dif1 = ev1.subtract(sv1);
+        for (j = _j = 0, _ref1 = length2 - 2; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+          sv2 = points2[j];
+          ev2 = points2[j + 1];
+          dif2 = ev2.subtract(sv2);
+          cross = this.perCrossing(sv1, dif1, sv2, dif2);
+          d1 = cross.subtract(ev1);
+          d2 = cross.subtract(sv1);
+          d3 = cross.subtract(ev2);
+          d4 = cross.subtract(sv2);
+          if (d1.length() <= dif1.length() && d2.length() <= dif1.length() && d3.length() <= dif2.length() && d4.length() <= dif2.length()) {
+            if (providesDataInCallback) {
+              context = {
+                segment1: dif1,
+                segmentIndex1: i,
+                segmentStart1: sv1,
+                segmentEnd1: ev1,
+                segment2: dif2,
+                segmentIndex2: j,
+                segmentStart2: sv2,
+                segmentEnd2: ev2
+              };
+            }
+            if (block.call(this, cross, context)) {
+              return;
+            }
+          }
+        }
+      }
+    };
+
+    Intersections.prototype.perCrossing = function(start1, dir1, start2, dir2) {
+      var cx, cy, perP1, perP2, t, v3bx, v3by;
+      v3bx = start2.x - start1.x;
+      v3by = start2.y - start1.y;
+      perP1 = v3bx * dir2.y - v3by * dir2.x;
+      perP2 = dir1.x * dir2.y - dir1.y * dir2.x;
+      t = perP1 / perP2;
+      cx = start1.x + dir1.x * t;
+      cy = start1.y + dir1.y * t;
+      return new Point(cx, cy);
+    };
+
+    return Intersections;
 
   })(Mixin);
 
@@ -857,6 +872,8 @@
 
     Path.attachTo(Rectangle);
 
+    Intersections.attachTo(Rectangle);
+
     function Rectangle(x, y, width, height, rotation) {
       var args;
       args = this.defaultToZero.apply(this, this.rectangleFrom.apply(this, arguments));
@@ -1186,6 +1203,8 @@
 
     Path.attachTo(Triangle);
 
+    Intersections.attachTo(Triangle);
+
     function Triangle(a, b, c) {
       if (!Point.isPoint(a)) {
         this.invalidPoint('a', a);
@@ -1416,6 +1435,8 @@
 
     Path.attachTo(Circle);
 
+    Intersections.attachTo(Circle);
+
     function Circle(radiusOrCircle, x, y, segments) {
       var _ref;
       _ref = this.circleFrom(radiusOrCircle, x, y, segments), this.radius = _ref[0], this.x = _ref[1], this.y = _ref[2], this.segments = _ref[3];
@@ -1453,6 +1474,44 @@
 
     Circle.prototype.closedGeometry = function() {
       return true;
+    };
+
+    Circle.prototype.fastEachIntersections = function(geometry) {
+      var ev, i, length, output, points, sv, _i, _ref, _results;
+      points = geometry.points();
+      length = points.length;
+      output = [];
+      _results = [];
+      for (i = _i = 0, _ref = length - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        sv = points[i];
+        ev = points[i + 1];
+        _results.push(console.log(this.lineIntersection(sv, ev)));
+      }
+      return _results;
+    };
+
+    Circle.prototype.lineIntersection = function(a, b) {
+      var c, cc, deter, e, out, u1, u2, _a, _b;
+      c = this.center();
+      out = [];
+      _a = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
+      _b = 2 * ((b.x - a.x) * (a.x - c.x) + (b.y - a.y) * (a.y - c.y));
+      cc = c.x * c.x + c.y * c.y + a.x * a.x + a.y * a.y - 2 * (c.x * a.x + c.y * a.y) - this.radius * this.radius;
+      deter = _b * _b - 4 * _a * cc;
+      if (deter > 0) {
+        e = Math.sqrt(deter);
+        u1 = (-_b + e) / (2 * _a);
+        u2 = (-_b - e) / (2 * _a);
+        if (!((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))) {
+          if (0 <= u2 && u2 <= 1) {
+            out.push(Point.interpolate(a, b, 1 - u2));
+          }
+          if (0 <= u1 && u1 <= 1) {
+            out.push(Point.interpolate(a, b, 1 - u1));
+          }
+        }
+      }
+      return out;
     };
 
     Circle.prototype.pointAtAngle = function(angle) {
@@ -1536,6 +1595,8 @@
     Surface.attachTo(Ellipsis);
 
     Path.attachTo(Ellipsis);
+
+    Intersections.attachTo(Ellipsis);
 
     function Ellipsis(r1, r2, x, y, rot, segments) {
       var _ref;
@@ -1699,6 +1760,8 @@
   this.geomjs.Surface = Surface;
 
   this.geomjs.Path = Path;
+
+  this.geomjs.Intersections = Intersections;
 
   this.geomjs.Point = Point;
 

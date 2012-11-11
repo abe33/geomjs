@@ -5,6 +5,7 @@ Formattable = require './formattable'
 Path = require './path'
 Surface = require './surface'
 Geometry = require './geometry'
+Intersections = require './intersections'
 
 ## Triangle
 class Triangle
@@ -13,6 +14,7 @@ class Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
   Path.attachTo Triangle
+  Intersections.attachTo Triangle
 
   ##### Triangle::constructor
   #
@@ -144,12 +146,12 @@ class Triangle
   ##### Triangle::intersects
   #
   # See
-  # [Geometry.intersects](src_geomjs_geometry.html#geometryintersects)
+  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
 
   ##### Triangle::intersections
   #
   # See
-  # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
+  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
 
   ##### Triangle::pointAtAngle
   #

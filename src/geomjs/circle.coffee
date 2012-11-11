@@ -5,6 +5,7 @@ Formattable = require './formattable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
+Intersections = require './intersections'
 
 ## Circle
 class Circle
@@ -13,6 +14,7 @@ class Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
   Path.attachTo Circle
+  Intersections.attachTo Circle
 
   ##### Circle::constructor
   #
@@ -66,12 +68,13 @@ class Circle
   ##### Circle::intersects
   #
   # See
-  # [Geometry.intersects](src_geomjs_geometry.html#geometryintersects)
+  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
 
   ##### Circle::intersections
   #
   # See
-  # [Geometry.intersections](src_geomjs_geometry.html#geometryintersections)
+  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+
 
   ##### Circle::pointAtAngle
   #

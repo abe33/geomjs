@@ -8,6 +8,7 @@ includes: [
   'src/geomjs/geometry'
   'src/geomjs/surface'
   'src/geomjs/path'
+  'src/geomjs/intersections'
   'src/geomjs/point'
   'src/geomjs/matrix'
   'src/geomjs/rectangle'
