@@ -116,6 +116,10 @@
         return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
       };
 
+      _Class.prototype.classname = function() {
+        return classname;
+      };
+
       return _Class;
 
     })(Mixin);
@@ -1474,44 +1478,6 @@
 
     Circle.prototype.closedGeometry = function() {
       return true;
-    };
-
-    Circle.prototype.fastEachIntersections = function(geometry) {
-      var ev, i, length, output, points, sv, _i, _ref, _results;
-      points = geometry.points();
-      length = points.length;
-      output = [];
-      _results = [];
-      for (i = _i = 0, _ref = length - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        sv = points[i];
-        ev = points[i + 1];
-        _results.push(console.log(this.lineIntersection(sv, ev)));
-      }
-      return _results;
-    };
-
-    Circle.prototype.lineIntersection = function(a, b) {
-      var c, cc, deter, e, out, u1, u2, _a, _b;
-      c = this.center();
-      out = [];
-      _a = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
-      _b = 2 * ((b.x - a.x) * (a.x - c.x) + (b.y - a.y) * (a.y - c.y));
-      cc = c.x * c.x + c.y * c.y + a.x * a.x + a.y * a.y - 2 * (c.x * a.x + c.y * a.y) - this.radius * this.radius;
-      deter = _b * _b - 4 * _a * cc;
-      if (deter > 0) {
-        e = Math.sqrt(deter);
-        u1 = (-_b + e) / (2 * _a);
-        u2 = (-_b - e) / (2 * _a);
-        if (!((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))) {
-          if (0 <= u2 && u2 <= 1) {
-            out.push(Point.interpolate(a, b, 1 - u2));
-          }
-          if (0 <= u1 && u1 <= 1) {
-            out.push(Point.interpolate(a, b, 1 - u1));
-          }
-        }
-      }
-      return out;
     };
 
     Circle.prototype.pointAtAngle = function(angle) {

@@ -75,7 +75,6 @@ class Circle
   # See
   # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
 
-
   ##### Circle::pointAtAngle
   #
   pointAtAngle: (angle) ->
