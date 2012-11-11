@@ -12,7 +12,7 @@ describe 'Circle', ->
     source = 'circle'
     data = circleData.apply global, test
 
-    describe "when instanciated with #{args}", ->
+    describe "when instanciated with #{k} #{args}", ->
       beforeEach ->
         @circle = circle.apply global, args
 

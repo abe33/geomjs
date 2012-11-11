@@ -16,8 +16,8 @@ class Circle
 
   ##### Circle::constructor
   #
-  constructor: (@radius=1, @x=0, @y=0, @segments=36) ->
-
+  constructor: (radiusOrCircle, x, y, segments) ->
+    [@radius,@x,@y,@segments] = @circleFrom radiusOrCircle, x, y, segments
 
   ##### Circle::center
   #
@@ -160,11 +160,26 @@ class Circle
 
   ##### Circle::clone
   #
-  clone: -> new Circle(@radius, @x, @y, @segments)
+  clone: -> new Circle this
 
   ##### Circle::toString
   #
   # See
   # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+
+  #### Circle::circleFrom
+  #
+  circleFrom: (radiusOrCircle, x, y, segments) ->
+    radius = radiusOrCircle
+
+    if typeof radiusOrCircle is 'object'
+      {radius, x, y, segments} = radiusOrCircle
+
+    radius = 1 unless Point.isFloat radius
+    x = 0 unless Point.isFloat x
+    y = 0 unless Point.isFloat y
+    segments = 36 unless Point.isFloat segments
+
+    [radius, x, y, segments]
 
 module.exports = Circle

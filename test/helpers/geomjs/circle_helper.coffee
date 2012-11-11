@@ -40,12 +40,23 @@ global.circleData = (radius, x, y, segments) ->
   data
 
 global.circleFactories =
-  default:
+  'three numbers':
     args: [1,1,1]
     test: [1,1,1,DEFAULT_SEGMENTS]
-  withSegments:
+  'with four numbers':
     args: [2,3,4,60]
     test: [2,3,4,60]
-  empty:
-    args:[]
-    test:[1,0,0,DEFAULT_SEGMENTS]
+  'without arguments':
+    args: []
+    test: [1,0,0,DEFAULT_SEGMENTS]
+  'with a circle without segments':
+    args: [{x: 1, y: 1, radius: 1}]
+    test: [1,1,1,DEFAULT_SEGMENTS]
+  'with a circle with segments':
+    args: [{x: 1, y: 1, radius: 1, segments: 60}]
+    test: [1,1,1,60]
+  'with partial circle':
+    args: [{x:1}]
+    test: [1,1,0,36]
+
+
