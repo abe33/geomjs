@@ -1128,7 +1128,7 @@
     };
 
     Rectangle.prototype.clone = function() {
-      return new Rectangle(this.x, this.y, this.width, this.height, this.rotation);
+      return new Rectangle(this);
     };
 
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {

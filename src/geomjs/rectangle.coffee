@@ -358,7 +358,7 @@ class Rectangle
 
   ##### Rectangle::clone
   #
-  clone: -> new Rectangle @x, @y, @width, @height, @rotation
+  clone: -> new Rectangle this
 
   ##### Rectangle::equals
   #
