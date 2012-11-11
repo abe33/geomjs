@@ -1,0 +1,10 @@
+name: "tester"
+includes: [
+  'src/tester/tester'
+  'src/tester/boot'
+]
+operators: [
+  'join'
+  'compile'
+  'create:file'
+]

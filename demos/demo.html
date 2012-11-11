@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title></title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+    <script src = "../vendor/Stats.js"></script>
+    <script src='../packages/geomjs.js'></script>
+    <script src='../node_modules/chancejs/packages/chancejs_min.js'></script>
+    <!-- <script src='../packages/tester.js'></script> -->
+    <script src='../packages/tester.js'></script>
+    <script type='text/javascript'>
+    </script>
+    </head>
+    <style type='text/css'>
+      body, html {
+        margin: 0;
+        font-family: 'Open Sans Condensed', Arial, sans;
+        color: #9C9C9C;
+        background: #02181F;
+        text-align: center;
+      }
+
+      #wrapper {
+        margin: auto;
+        margin-top: 100px;
+        width: 640px;
+        position: relative;
+      }
+      canvas {
+        box-shadow: 0 2px 4px #000E13;
+      }
+      h1 {
+        font-weight: 300;
+        text-shadow: 0 2px 4px #000E13;
+      }
+
+      #stats{
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        right: 0;
+      }
+
+    </style>
+  <body>
+    <div id='wrapper'>
+      <canvas width='640px' height='480px'></canvas>
+      <h1>GeomJS Demo</h1>
+      <p>Click in the canvas to start/stop animations.</p>
+    </div>
+  </body>
+</html>
