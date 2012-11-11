@@ -1,7 +1,7 @@
 Mixin = require './mixin'
 
 Equatable = (properties...) ->
-  class Equatable extends Mixin
+  class extends Mixin
     equals: (o) -> o? and properties.every (p) =>
       if @[p].equals? then @[p].equals o[p] else o[p] is @[p]
 

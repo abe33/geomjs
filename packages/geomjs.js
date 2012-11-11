@@ -64,15 +64,15 @@
   Equatable = function() {
     var properties;
     properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    return Equatable = (function(_super) {
+    return (function(_super) {
 
-      __extends(Equatable, _super);
+      __extends(_Class, _super);
 
-      function Equatable() {
-        return Equatable.__super__.constructor.apply(this, arguments);
+      function _Class() {
+        return _Class.__super__.constructor.apply(this, arguments);
       }
 
-      Equatable.prototype.equals = function(o) {
+      _Class.prototype.equals = function(o) {
         var _this = this;
         return (o != null) && properties.every(function(p) {
           if (_this[p].equals != null) {
@@ -83,7 +83,7 @@
         });
       };
 
-      return Equatable;
+      return _Class;
 
     })(Mixin);
   };
@@ -94,15 +94,15 @@
   Formattable = function() {
     var properties;
     properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    return Formattable = (function(_super) {
+    return (function(_super) {
 
-      __extends(Formattable, _super);
+      __extends(_Class, _super);
 
-      function Formattable() {
-        return Formattable.__super__.constructor.apply(this, arguments);
+      function _Class() {
+        return _Class.__super__.constructor.apply(this, arguments);
       }
 
-      Formattable.prototype.toString = function() {
+      _Class.prototype.toString = function() {
         var className, formattedProperties, p;
         className = this.constructor.name;
         formattedProperties = (function() {
@@ -117,7 +117,7 @@
         return "[" + className + "(" + (formattedProperties.join(', ')) + ")]";
       };
 
-      return Formattable;
+      return _Class;
 
     })(Mixin);
   };
