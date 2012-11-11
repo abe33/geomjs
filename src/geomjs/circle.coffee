@@ -121,12 +121,8 @@ class Circle
 
   ##### Circle::pathOrientationAt
   #
-  pathOrientationAt: (n) ->
-    p1 = @pathPointAt n - 0.01
-    p2 = @pathPointAt n + 0.01
-    d = p2.subtract p1
-
-    return d.angle()
+  # See
+  # [Path.pathOrientationAt](src_geomjs_path.html#pathpathorientationat)
 
   ##### Circle::pathTangentAt
   #

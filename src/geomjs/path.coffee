@@ -19,7 +19,12 @@ class Path extends Mixin
   ##### Path::pathOrientationAt
   #
   # **Virtual method**
-  pathOrientationAt: (n, pathBasedOnLength=true) -> null
+  pathOrientationAt: (n, pathBasedOnLength=true) ->
+    p1 = @pathPointAt n - 0.01
+    p2 = @pathPointAt n + 0.01
+    d = p2.subtract p1
+
+    return d.angle()
 
   ##### Path::pathTangentAt
   #

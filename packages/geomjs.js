@@ -353,10 +353,14 @@
     };
 
     Path.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
+      var d, p1, p2;
       if (pathBasedOnLength == null) {
         pathBasedOnLength = true;
       }
-      return null;
+      p1 = this.pathPointAt(n - 0.01);
+      p2 = this.pathPointAt(n + 0.01);
+      d = p2.subtract(p1);
+      return d.angle();
     };
 
     Path.prototype.pathTangentAt = function(n, accuracy, pathBasedOnLength) {
@@ -1484,14 +1488,6 @@
       return this.pointAtAngle(n * 360);
     };
 
-    Circle.prototype.pathOrientationAt = function(n) {
-      var d, p1, p2;
-      p1 = this.pathPointAt(n - 0.01);
-      p2 = this.pathPointAt(n + 0.01);
-      d = p2.subtract(p1);
-      return d.angle();
-    };
-
     Circle.prototype.drawPath = function(context) {
       context.beginPath();
       return context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -1574,25 +1570,6 @@
       })) != null ? _ref[0] : void 0;
     };
 
-    Ellipsis.prototype.length = function() {
-      return Math.PI * (3 * (this.radius1 + this.radius2) - Math.sqrt((3 * this.radius1 + this.radius2) * (this.radius1 + this.radius2 * 3)));
-    };
-
-    Ellipsis.prototype.pathPointAt = function(n) {
-      var a, p;
-      a = n * Math.PI * 2;
-      p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
-      return this.center().add(p.rotate(this.rotation));
-    };
-
-    Ellipsis.prototype.pathOrientationAt = function(n) {
-      var d, p1, p2;
-      p1 = this.pathPointAt(n - 0.01);
-      p2 = this.pathPointAt(n + 0.01);
-      d = p2.subtract(p1);
-      return d.angle();
-    };
-
     Ellipsis.prototype.acreage = function() {
       return Math.PI * this.radius1 * this.radius2;
     };
@@ -1617,6 +1594,17 @@
       a = d.angle();
       p2 = this.pointAtAngle(a);
       return c.distance(p2) >= c.distance(p);
+    };
+
+    Ellipsis.prototype.length = function() {
+      return Math.PI * (3 * (this.radius1 + this.radius2) - Math.sqrt((3 * this.radius1 + this.radius2) * (this.radius1 + this.radius2 * 3)));
+    };
+
+    Ellipsis.prototype.pathPointAt = function(n) {
+      var a, p;
+      a = n * Math.PI * 2;
+      p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
+      return this.center().add(p.rotate(this.rotation));
     };
 
     Ellipsis.prototype.drawPath = function(context) {
