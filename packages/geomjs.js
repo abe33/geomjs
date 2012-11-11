@@ -525,18 +525,6 @@
       return this.subtract(x, y).length();
     };
 
-    Point.prototype.paste = function(xOrPt, y) {
-      var x, _ref;
-      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
-      if (!isNaN(x)) {
-        this.x = x;
-      }
-      if (!isNaN(y)) {
-        this.y = y;
-      }
-      return this;
-    };
-
     Point.prototype.scale = function(n) {
       if (!this.isFloat(n)) {
         this.invalidScale(n);
@@ -581,6 +569,18 @@
       x = isNaN(x) ? 0 : x;
       y = isNaN(y) ? 0 : y;
       return [x, y];
+    };
+
+    Point.prototype.paste = function(xOrPt, y) {
+      var x, _ref;
+      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      if (!isNaN(x)) {
+        this.x = x;
+      }
+      if (!isNaN(y)) {
+        this.y = y;
+      }
+      return this;
     };
 
     Point.prototype.clone = function() {

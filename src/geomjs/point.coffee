@@ -180,11 +180,6 @@ class Point
   #     angle = point.angle()
   angle: -> Math.radToDeg Math.atan2 @y, @x
 
-  ##### Point::equals
-  #
-  # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
-
   ##### Point::angleWith
   #
   # Given a triangle formed by this point, the passed-in point
@@ -203,6 +198,8 @@ class Point
     d = @normalize().dot new Point(x,y).normalize()
 
     Math.radToDeg Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
+
+  #### Point Manipulation
 
   ##### Point::normalize
   #
@@ -270,22 +267,6 @@ class Point
     [x,y] = @coordsFrom xOrPt, y, true
     @subtract(x,y).length()
 
-  ##### Point::paste
-  #
-  # Copy the values of the passed-in point into this point.
-  #
-  #     point = new Point
-  #     point.paste 1, 7
-  #     # point = [object Point(5,7)]
-  #
-  #     point.paste new Point 4, 4
-  #     # point = [object Point(4,4)]
-  paste: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y
-    @x = x unless isNaN x
-    @y = y unless isNaN y
-    this
-
   ##### Point::scale
   #
   # Returns a new point which is a scaled copy of the current point.
@@ -328,6 +309,8 @@ class Point
 
     @subtract(x,y).rotate(a).add(x,y)
 
+  #### Utilities
+
   ##### Point::isPoint
   #
   # Alias the `Point.isPoint` method in instances.
@@ -351,6 +334,27 @@ class Point
     x = if isNaN x then 0 else x
     y = if isNaN y then 0 else y
     [x,y]
+
+  ##### Point::paste
+  #
+  # Copy the values of the passed-in point into this point.
+  #
+  #     point = new Point
+  #     point.paste 1, 7
+  #     # point = [object Point(5,7)]
+  #
+  #     point.paste new Point 4, 4
+  #     # point = [object Point(4,4)]
+  paste: (xOrPt, y) ->
+    [x,y] = @coordsFrom xOrPt, y
+    @x = x unless isNaN x
+    @y = y unless isNaN y
+    this
+
+  ##### Point::equals
+  #
+  # See
+  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
 
   ##### Point::clone
   #
