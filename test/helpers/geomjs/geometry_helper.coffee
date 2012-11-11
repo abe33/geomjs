@@ -18,6 +18,11 @@ global.testDrawingOf = (source) ->
         moveTo: => @moveToCalled = true
         lineTo: => @lineToCalled = true
         arc: => @arcCalled = true
+        save: => @saveCalled = true
+        restore: => @restoreCalled = true
+        translate: => @translateCalled = true
+        rotate: => @rotateCalled = true
+        scale: => @scaleCalled = true
 
     describe "the #{source} stroke method", ->
       beforeEach ->
