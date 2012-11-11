@@ -13,6 +13,7 @@ includes: [
   'src/geomjs/rectangle'
   'src/geomjs/triangle'
   'src/geomjs/circle'
+  'src/geomjs/ellipsis'
 ]
 operators: [
   'strip:requires'

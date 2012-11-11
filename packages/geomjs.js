@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Equatable, Formattable, Geometry, Matrix, Mixin, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Ellipsis, Equatable, Formattable, Geometry, Matrix, Mixin, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1526,6 +1526,129 @@
 
   })();
 
+  /* src/geomjs/ellipsis.coffee */;
+
+
+  Ellipsis = (function() {
+
+    Equatable('radius1', 'radius2', 'x', 'y', 'rotation').attachTo(Ellipsis);
+
+    Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation').attachTo(Ellipsis);
+
+    Geometry.attachTo(Ellipsis);
+
+    function Ellipsis(r1, r2, x, y, rot, segments) {
+      var _ref;
+      _ref = this.ellipsisFrom(r1, r2, x, y, rot, segments), this.radius1 = _ref[0], this.radius2 = _ref[1], this.x = _ref[2], this.y = _ref[3], this.rotation = _ref[4], this.segments = _ref[5];
+    }
+
+    Ellipsis.prototype.center = function() {
+      return new Point(this.x, this.y);
+    };
+
+    Ellipsis.prototype.points = function() {
+      var n, _i, _ref, _results;
+      _results = [];
+      for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
+        _results.push(this.pathPointAt(n / this.segments));
+      }
+      return _results;
+    };
+
+    Ellipsis.prototype.closedGeometry = function() {
+      return true;
+    };
+
+    Ellipsis.prototype.pointAtAngle = function(angle) {
+      var center, vec, _ref;
+      center = this.center();
+      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      return (_ref = this.intersections({
+        points: function() {
+          return [center, vec];
+        }
+      })) != null ? _ref[0] : void 0;
+    };
+
+    Ellipsis.prototype.length = function() {
+      return Math.PI * (3 * (this.radius1 + this.radius2) - Math.sqrt((3 * this.radius1 + this.radius2) * (this.radius1 + this.radius2 * 3)));
+    };
+
+    Ellipsis.prototype.pathPointAt = function(n) {
+      var a, p;
+      a = n * Math.PI * 2;
+      p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
+      return this.center().add(p.rotate(this.rotation));
+    };
+
+    Ellipsis.prototype.pathOrientationAt = function(n) {
+      var d, p1, p2;
+      p1 = this.pathPointAt(n - 0.01);
+      p2 = this.pathPointAt(n + 0.01);
+      d = p2.subtract(p1);
+      return d.angle();
+    };
+
+    Ellipsis.prototype.acreage = function() {
+      return Math.PI * this.radius1 * this.radius2;
+    };
+
+    Ellipsis.prototype.randomPointInSurface = function(random) {
+      var center, dif, pt;
+      if (random == null) {
+        random = new chancejs.Random(new chancejs.MathRandom);
+      }
+      pt = this.pathPointAt(random.get());
+      center = this.center();
+      dif = pt.subtract(center);
+      return center.add(dif.scale(Math.sqrt(random.random())));
+    };
+
+    Ellipsis.prototype.drawPath = function(context) {
+      context.save();
+      context.translate(this.x, this.y);
+      context.rotate(Math.degToRad(this.rotation));
+      context.scale(this.radius1, this.radius2);
+      context.beginPath();
+      context.arc(0, 0, 1, 0, Math.PI * 2);
+      context.closePath();
+      return context.restore();
+    };
+
+    Ellipsis.prototype.clone = function() {
+      return new Ellipsis(this);
+    };
+
+    Ellipsis.prototype.ellipsisFrom = function(radius1, radius2, x, y, rotation, segments) {
+      var _ref;
+      if (typeof radius1 === 'object') {
+        _ref = radius1, radius1 = _ref.radius1, radius2 = _ref.radius2, x = _ref.x, y = _ref.y, rotation = _ref.rotation, segments = _ref.segments;
+      }
+      if (!Point.isFloat(radius1)) {
+        radius1 = 1;
+      }
+      if (!Point.isFloat(radius2)) {
+        radius2 = 1;
+      }
+      if (!Point.isFloat(x)) {
+        x = 0;
+      }
+      if (!Point.isFloat(y)) {
+        y = 0;
+      }
+      if (!Point.isFloat(rotation)) {
+        rotation = 0;
+      }
+      if (!Point.isFloat(segments)) {
+        segments = 36;
+      }
+      return [radius1, radius2, x, y, rotation, segments];
+    };
+
+    return Ellipsis;
+
+  })();
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -1547,5 +1670,7 @@
   this.geomjs.Triangle = Triangle;
 
   this.geomjs.Circle = Circle;
+
+  this.geomjs.Ellipsis = Ellipsis;
 
 }).call(this);
