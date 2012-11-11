@@ -30,6 +30,29 @@ global.ellipsisData= (radius1, radius2, x, y, rotation, segments) ->
     length: Math.PI * (3*(radius1 + radius2) -
             Math.sqrt((3* radius1 + radius2) * (radius1 + radius2 *3)))
 
+  a = radius1
+  b = radius2
+  phi = Math.degToRad rotation
+  t1 = Math.atan(-b * Math.tan(phi) / a)
+  t2 = Math.atan(b * (Math.cos(phi) / Math.sin(phi)) / a)
+  data.merge
+    left: x + a*Math.cos(t1+Math.PI)*Math.cos(phi) -
+              b*Math.sin(t1+Math.PI)*Math.sin(phi)
+    right: x + a*Math.cos(t1)*Math.cos(phi) -
+               b*Math.sin(t1)*Math.sin(phi)
+    bottom: y + a*Math.cos(t2)*Math.sin(phi) +
+                b*Math.sin(t2)*Math.cos(phi)
+    top: y + a*Math.cos(t2+Math.PI)*Math.sin(phi) +
+             b*Math.sin(t2+Math.PI)*Math.cos(phi)
+
+  data.merge
+    bounds:
+      top: data.top
+      bottom: data.bottom
+      left: data.left
+      right: data.right
+
+
   data
 
 global.ellipsisFactories =

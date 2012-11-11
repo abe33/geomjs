@@ -29,25 +29,37 @@ class Ellipsis
 
   #### Bounds
 
-  ##### Ellipsis::top
-  #
-  # See
-  # [Geometry.top](src_geomjs_geometry.html#geometrytop)
-
   ##### Ellipsis::left
   #
-  # See
-  # [Geometry.left](src_geomjs_geometry.html#geometryleft)
-
-  ##### Ellipsis::bottom
-  #
-  # See
-  # [Geometry.bottom](src_geomjs_geometry.html#geometrybottom)
+  left: ->
+    phi = Math.degToRad @rotation
+    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1) + Math.PI
+    @x + @radius1*Math.cos(t)*Math.cos(phi) -
+         @radius2*Math.sin(t)*Math.sin(phi)
 
   ##### Ellipsis::right
   #
-  # See
-  # [Geometry.right](src_geomjs_geometry.html#geometryright)
+  right: ->
+    phi = Math.degToRad @rotation
+    t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
+    @x + @radius1*Math.cos(t)*Math.cos(phi) -
+         @radius2*Math.sin(t)*Math.sin(phi)
+
+  ##### Ellipsis::bottom
+  #
+  bottom: ->
+    phi = Math.degToRad @rotation
+    t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1)
+    @y + @radius1*Math.cos(t)*Math.sin(phi) +
+         @radius2*Math.sin(t)*Math.cos(phi)
+
+  ##### Ellipsis::top
+  #
+  top: ->
+    phi = Math.degToRad @rotation
+    t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1) + Math.PI
+    @y + @radius1*Math.cos(t)*Math.sin(phi) +
+         @radius2*Math.sin(t)*Math.cos(phi)
 
   ##### Ellipsis::bounds
   #

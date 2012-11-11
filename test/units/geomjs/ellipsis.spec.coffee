@@ -51,6 +51,28 @@ describe 'Ellipsis', ->
       # Geometry API
       shouldBeClosedGeometry(source)
 
+      describe 'its top method', ->
+        it 'should returns the ellipsis top', ->
+          expect(@ellipsis.top()).toBeClose(data.top)
+
+      describe 'its bottom method', ->
+        it 'should returns the ellipsis bottom', ->
+          expect(@ellipsis.bottom()).toBeClose(data.bottom)
+
+      describe 'its left method', ->
+        it 'should returns the ellipsis left', ->
+          expect(@ellipsis.left()).toBeClose(data.left)
+
+      describe 'its right method', ->
+        it 'should returns the ellipsis right', ->
+          expect(@ellipsis.right()).toBeClose(data.right)
+
+      describe 'its bounds method', ->
+        it 'should returns the ellipsis bounds', ->
+          expect(@ellipsis.bounds()).toEqual(data.bounds)
+
+
+
       # Drawing API
       testDrawingOf(source)
 
