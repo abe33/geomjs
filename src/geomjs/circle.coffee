@@ -16,9 +16,9 @@ class Circle
   Path.attachTo Circle
   Intersections.attachTo Circle
 
-  ##### Circle.eachCircleIntersections
+  ##### Circle.eachIntersections
   #
-  @eachCircleIntersections: (geom1, geom2, block, data=false) ->
+  @eachIntersections: (geom1, geom2, block, data=false) ->
     [geom1, geom2] = [geom2, geom1] if geom2.classname?() is 'Circle'
     points = geom2.points()
     length = points.length
@@ -30,8 +30,39 @@ class Circle
 
       return if geom1.eachLineIntersections sv, ev, block
 
+  ##### Circle.eachCircleCircleIntersections
+  #
+  @eachCircleCircleIntersections: (geom1, geom2, block, data=false) ->
+    if geom1.equals geom2
+      for p in geom1.points()
+        return if block.call this, p
+    else
+      r1 = geom1.radius
+      r2 = geom2.radius
+      p1 = geom1.center()
+      p2 = geom2.center()
+      d = p1.distance(p2)
+      dv = p2.subtract(p1)
+      radii = r1 + r2
+
+      return if d > radii
+      return block.call this, p1.add(dv.normalize(r1)) if d is radii
+
+      a = (r1*r1 - r2*r2 + d*d) / (2*d)
+      h = Math.sqrt(r1*r1 - a*a)
+      hv = new Point h * (p2.y - p1.y) / d,
+                     -h * (p2.x - p1.x) / d
+
+      p = p1.add(dv.normalize(a)).add(hv)
+      block.call this, p
+
+      p = p1.add(dv.normalize(a)).add(hv.scale(-1))
+      block.call this, p
+
   # Registers the fast intersections iterators for the Circle class
-  Intersections.iterators['Circle'] = Circle.eachCircleIntersections
+  iterators = Intersections.iterators
+  iterators['Circle'] = Circle.eachIntersections
+  iterators['CircleCircle'] = Circle.eachCircleCircleIntersections
 
   ##### Circle::constructor
   #
