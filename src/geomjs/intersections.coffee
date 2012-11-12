@@ -4,6 +4,9 @@ Point = require './point'
 
 ## Intersections
 class Intersections extends Mixin
+
+  ##### Intersections.iterators
+  #
   @iterators: {}
 
   ##### Intersections::intersects

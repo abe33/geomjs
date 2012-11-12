@@ -28,39 +28,7 @@ class Circle
       sv = points[i]
       ev = points[i+1]
 
-      intersections = Circle.lineIntersections sv, ev, geom1
-      for intersection in intersections
-        return if block.call this, intersection, null
-
-  ##### Circle.lineIntersections
-  #
-  @lineIntersections: (a, b, circle) ->
-    c = circle.center()
-    out = []
-
-    _a = (b.x - a.x) * (b.x - a.x) +
-         (b.y - a.y) * (b.y - a.y)
-    _b = 2 * ((b.x - a.x) * (a.x - c.x) +
-              (b.y - a.y) * (a.y - c.y))
-    cc = c.x * c.x +
-         c.y * c.y +
-         a.x * a.x +
-         a.y * a.y -
-         2 * (c.x * a.x + c.y * a.y) - circle.radius * circle.radius
-    deter = _b * _b - 4 * _a * cc
-
-    if deter > 0
-      e = Math.sqrt deter
-      u1 = ( - _b + e ) / (2 * _a )
-      u2 = ( - _b - e ) / (2 * _a )
-      unless ((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))
-        if 0 <= u2 and u2 <= 1
-          out.push Point.interpolate a, b, u2
-
-        if 0 <= u1 and u1 <= 1
-          out.push Point.interpolate a, b, u1
-
-    return out
+      return if geom1.eachLineIntersections sv, ev, block
 
   # Registers the fast intersections iterators for the Circle class
   Intersections.iterators['Circle'] = Circle.eachCircleIntersections
@@ -123,6 +91,33 @@ class Circle
   #
   # See
   # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+
+  ##### Circle::eachLineIntersections
+  #
+  eachLineIntersections: (a, b, block) ->
+    c = @center()
+
+    _a = (b.x - a.x) * (b.x - a.x) +
+         (b.y - a.y) * (b.y - a.y)
+    _b = 2 * ((b.x - a.x) * (a.x - c.x) +
+              (b.y - a.y) * (a.y - c.y))
+    cc = c.x * c.x +
+         c.y * c.y +
+         a.x * a.x +
+         a.y * a.y -
+         2 * (c.x * a.x + c.y * a.y) - @radius * @radius
+    deter = _b * _b - 4 * _a * cc
+
+    if deter > 0
+      e = Math.sqrt deter
+      u1 = ( - _b + e ) / (2 * _a )
+      u2 = ( - _b - e ) / (2 * _a )
+      unless ((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))
+        if 0 <= u2 and u2 <= 1
+          return if block.call this, Point.interpolate a, b, u2
+
+        if 0 <= u1 and u1 <= 1
+          return if block.call this, Point.interpolate a, b, u1
 
   ##### Circle::pointAtAngle
   #
