@@ -16,6 +16,55 @@ class Circle
   Path.attachTo Circle
   Intersections.attachTo Circle
 
+  ##### Circle.eachCircleIntersections
+  #
+  @eachCircleIntersections: (geom1, geom2, block, data=false) ->
+    [geom1, geom2] = [geom2, geom1] if geom2.classname?() is 'Circle'
+    points = geom2.points()
+    length = points.length
+    output = []
+
+    for i in [0..length-2]
+      sv = points[i]
+      ev = points[i+1]
+
+      intersections = Circle.lineIntersections sv, ev, geom1
+      for intersection in intersections
+        return if block.call this, intersection, null
+
+  ##### Circle.lineIntersections
+  #
+  @lineIntersections: (a, b, circle) ->
+    c = circle.center()
+    out = []
+
+    _a = (b.x - a.x) * (b.x - a.x) +
+         (b.y - a.y) * (b.y - a.y)
+    _b = 2 * ((b.x - a.x) * (a.x - c.x) +
+              (b.y - a.y) * (a.y - c.y))
+    cc = c.x * c.x +
+         c.y * c.y +
+         a.x * a.x +
+         a.y * a.y -
+         2 * (c.x * a.x + c.y * a.y) - circle.radius * circle.radius
+    deter = _b * _b - 4 * _a * cc
+
+    if deter > 0
+      e = Math.sqrt deter
+      u1 = ( - _b + e ) / (2 * _a )
+      u2 = ( - _b - e ) / (2 * _a )
+      unless ((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))
+        if 0 <= u2 and u2 <= 1
+          out.push Point.interpolate a, b, u2
+
+        if 0 <= u1 and u1 <= 1
+          out.push Point.interpolate a, b, u1
+
+    return out
+
+  # Registers the fast intersections iterators for the Circle class
+  Intersections.iterators['Circle'] = Circle.eachCircleIntersections
+
   ##### Circle::constructor
   #
   constructor: (radiusOrCircle, x, y, segments) ->

@@ -300,25 +300,29 @@
       return Intersections.__super__.constructor.apply(this, arguments);
     }
 
+    Intersections.iterators = {};
+
     Intersections.prototype.intersects = function(geometry) {
-      var output;
+      var iterator, output;
       if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
         return false;
       }
       output = false;
-      this.eachIntersections(geometry, function() {
+      iterator = this.intersectionsIterator(this, geometry);
+      iterator.call(this, this, geometry, function() {
         return output = true;
       });
       return output;
     };
 
     Intersections.prototype.intersections = function(geometry) {
-      var output;
+      var iterator, output;
       if ((geometry.bounds != null) && !this.boundsCollide(geometry)) {
         return null;
       }
       output = [];
-      this.eachIntersections(geometry, function(intersection) {
+      iterator = this.intersectionsIterator(this, geometry);
+      iterator.call(this, this, geometry, function(intersection) {
         output.push(intersection);
         return false;
       });
@@ -336,13 +340,24 @@
       return !(bounds1.top > bounds2.bottom || bounds1.left > bounds2.right || bounds1.bottom < bounds2.top || bounds1.right < bounds2.left);
     };
 
-    Intersections.prototype.eachIntersections = function(geometry, block, providesDataInCallback) {
+    Intersections.prototype.intersectionsIterator = function(geom1, geom2) {
+      var c1, c2, iterator;
+      c1 = geom1.classname ? geom1.classname() : '';
+      c2 = geom2.classname ? geom2.classname() : '';
+      iterator = null;
+      iterator = Intersections.iterators[c1 + c2];
+      iterator || (iterator = Intersections.iterators[c1]);
+      iterator || (iterator = Intersections.iterators[c2]);
+      return iterator || this.eachIntersections;
+    };
+
+    Intersections.prototype.eachIntersections = function(geom1, geom2, block, providesDataInCallback) {
       var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
       if (providesDataInCallback == null) {
         providesDataInCallback = false;
       }
-      points1 = this.points();
-      points2 = geometry.points();
+      points1 = geom1.points();
+      points2 = geom2.points();
       length1 = points1.length;
       length2 = points2.length;
       output = [];
@@ -1440,6 +1455,56 @@
     Path.attachTo(Circle);
 
     Intersections.attachTo(Circle);
+
+    Circle.eachCircleIntersections = function(geom1, geom2, block, data) {
+      var ev, i, intersection, intersections, length, output, points, sv, _i, _j, _len, _ref, _ref1;
+      if (data == null) {
+        data = false;
+      }
+      if ((typeof geom2.classname === "function" ? geom2.classname() : void 0) === 'Circle') {
+        _ref = [geom2, geom1], geom1 = _ref[0], geom2 = _ref[1];
+      }
+      points = geom2.points();
+      length = points.length;
+      output = [];
+      for (i = _i = 0, _ref1 = length - 2; 0 <= _ref1 ? _i <= _ref1 : _i >= _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+        sv = points[i];
+        ev = points[i + 1];
+        intersections = Circle.lineIntersections(sv, ev, geom1);
+        for (_j = 0, _len = intersections.length; _j < _len; _j++) {
+          intersection = intersections[_j];
+          if (block.call(this, intersection, null)) {
+            return;
+          }
+        }
+      }
+    };
+
+    Circle.lineIntersections = function(a, b, circle) {
+      var c, cc, deter, e, out, u1, u2, _a, _b;
+      c = circle.center();
+      out = [];
+      _a = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
+      _b = 2 * ((b.x - a.x) * (a.x - c.x) + (b.y - a.y) * (a.y - c.y));
+      cc = c.x * c.x + c.y * c.y + a.x * a.x + a.y * a.y - 2 * (c.x * a.x + c.y * a.y) - circle.radius * circle.radius;
+      deter = _b * _b - 4 * _a * cc;
+      if (deter > 0) {
+        e = Math.sqrt(deter);
+        u1 = (-_b + e) / (2 * _a);
+        u2 = (-_b - e) / (2 * _a);
+        if (!((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))) {
+          if (0 <= u2 && u2 <= 1) {
+            out.push(Point.interpolate(a, b, u2));
+          }
+          if (0 <= u1 && u1 <= 1) {
+            out.push(Point.interpolate(a, b, u1));
+          }
+        }
+      }
+      return out;
+    };
+
+    Intersections.iterators['Circle'] = Circle.eachCircleIntersections;
 
     function Circle(radiusOrCircle, x, y, segments) {
       var _ref;

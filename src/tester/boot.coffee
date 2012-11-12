@@ -41,7 +41,6 @@ $(document).ready ->
         continue if g1 is g2
         continue if tested[g2 + g1]
 
-        console.log "test #{g1} vs #{g2}"
         a = g1.intersections g2
         intersections = intersections.concat a if a?
         tested[g1 + g2] = true

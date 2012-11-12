@@ -4,14 +4,15 @@ Point = require './point'
 
 ## Intersections
 class Intersections extends Mixin
+  @iterators: {}
+
   ##### Intersections::intersects
   #
   intersects: (geometry) ->
     return false if geometry.bounds? and not @boundsCollide geometry
     output = false
-
-    @eachIntersections geometry, ->
-      output = true
+    iterator = @intersectionsIterator this, geometry
+    iterator.call this, this, geometry, -> output = true
 
     output
 
@@ -20,8 +21,8 @@ class Intersections extends Mixin
   intersections: (geometry) ->
     return null if geometry.bounds? and not @boundsCollide geometry
     output = []
-
-    @eachIntersections geometry, (intersection) ->
+    iterator = @intersectionsIterator this, geometry
+    iterator.call this, this, geometry, (intersection) ->
       output.push intersection
       false
 
@@ -39,11 +40,23 @@ class Intersections extends Mixin
       bounds1.bottom < bounds2.top or
       bounds1.right < bounds2.left
     )
+
+  ##### Intersections::intersectionsIterator
+  #
+  intersectionsIterator: (geom1, geom2) ->
+    c1 = if geom1.classname then geom1.classname() else ''
+    c2 = if geom2.classname then geom2.classname() else ''
+    iterator = null
+    iterator = Intersections.iterators[c1 + c2]
+    iterator ||= Intersections.iterators[c1]
+    iterator ||= Intersections.iterators[c2]
+    iterator || @eachIntersections
+
   ##### Intersections::eachIntersections
   #
-  eachIntersections: (geometry, block, providesDataInCallback=false) ->
-    points1 = @points()
-    points2 = geometry.points()
+  eachIntersections: (geom1, geom2, block, providesDataInCallback=false) ->
+    points1 = geom1.points()
+    points2 = geom2.points()
     length1 = points1.length
     length2 = points2.length
     output = []
