@@ -19,6 +19,19 @@ class Rectangle
   Path.attachTo Rectangle
   Intersections.attachTo Rectangle
 
+  ##### Rectangle.eachRectangleRectangleIntersections
+  #
+  @eachRectangleRectangleIntersections: (geom1, geom2, block, data=false) ->
+    if geom1.equals geom2
+      for p in geom1.points()
+        return if block.call this, p
+    else
+      @eachIntersections geom1, geom2, block, data
+
+  # Registers the fast intersections iterators for the Rectangle class
+  iterators = Intersections.iterators
+  iterators['RectangleRectangle'] = Rectangle.eachRectangleRectangleIntersections
+
   ##### Rectangle::constructor
   #
   constructor: (x, y, width, height, rotation) ->

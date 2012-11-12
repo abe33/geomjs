@@ -4,14 +4,24 @@ describe 'Intersections between', ->
   beforeEach -> addPointMatchers this
 
   describe 'Rectangle and Rectangle', ->
-    it 'should return two points', ->
-      rect1 = rectangle 0, 0, 4, 4
-      rect2 = rectangle 2, 2, 4, 4
-      intersections = rect1.intersections rect2
+    describe 'that overlap', ->
+      it 'should return two points', ->
+        rect1 = rectangle 0, 0, 4, 4
+        rect2 = rectangle 2, 2, 4, 4
+        intersections = rect1.intersections rect2
 
-      expect(intersections.length).toBe(2)
-      expect(intersections[0]).toBePoint(4, 2)
-      expect(intersections[1]).toBePoint(2, 4)
+        expect(intersections.length).toBe(2)
+        expect(intersections[0]).toBePoint(4, 2)
+        expect(intersections[1]).toBePoint(2, 4)
+
+    describe 'that are equals', ->
+      it 'should return 4 points', ->
+        rect1 = rectangle 0, 0, 4, 4
+        rect2 = rectangle 0, 0, 4, 4
+
+        intersections = rect1.intersections rect2
+
+        expect(intersections).toEqual(rect1.points())
 
   describe 'Rectangle and Circle', ->
     beforeEach ->
