@@ -1,6 +1,6 @@
 # @toc
 Mixin = require './mixin'
-Point = require './point'
+Point = require '../point'
 
 ## Intersections
 class Intersections extends Mixin

@@ -1,6 +1,6 @@
 # @toc
 Mixin = require './mixin'
-Point = require './point'
+Point = require '../point'
 
 ## Geometry
 class Geometry extends Mixin
@@ -61,7 +61,7 @@ class Geometry extends Mixin
     #
     # **Note:** The require call is removed as any other requires
     # when packaged for browsers.
-    Rectangle = require './rectangle'
+    Rectangle = require '../rectangle'
     new Rectangle(
       @left(),
       @top(),

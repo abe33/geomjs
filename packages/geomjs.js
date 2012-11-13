@@ -80,7 +80,7 @@
     return ints;
   };
 
-  /* src/geomjs/mixin.coffee */;
+  /* src/geomjs/mixins/mixin.coffee */;
 
 
   Mixin = (function() {
@@ -101,7 +101,7 @@
 
   })();
 
-  /* src/geomjs/equatable.coffee */;
+  /* src/geomjs/mixins/equatable.coffee */;
 
 
   Equatable = function() {
@@ -131,7 +131,7 @@
     })(Mixin);
   };
 
-  /* src/geomjs/formattable.coffee */;
+  /* src/geomjs/mixins/formattable.coffee */;
 
 
   Formattable = function() {
@@ -168,7 +168,7 @@
     })(Mixin);
   };
 
-  /* src/geomjs/parameterizable.coffee */;
+  /* src/geomjs/mixins/parameterizable.coffee */;
 
 
   Parameterizable = function(method, parameters, allowPartial) {
@@ -231,7 +231,7 @@
     })(Mixin);
   };
 
-  /* src/geomjs/geometry.coffee */;
+  /* src/geomjs/mixins/geometry.coffee */;
 
 
   Geometry = (function(_super) {
@@ -314,7 +314,7 @@
 
   })(Mixin);
 
-  /* src/geomjs/surface.coffee */;
+  /* src/geomjs/mixins/surface.coffee */;
 
 
   Surface = (function(_super) {
@@ -348,7 +348,7 @@
 
   })(Mixin);
 
-  /* src/geomjs/path.coffee */;
+  /* src/geomjs/mixins/path.coffee */;
 
 
   Path = (function(_super) {
@@ -395,7 +395,7 @@
 
   })(Mixin);
 
-  /* src/geomjs/intersections.coffee */;
+  /* src/geomjs/mixins/intersections.coffee */;
 
 
   Intersections = (function(_super) {

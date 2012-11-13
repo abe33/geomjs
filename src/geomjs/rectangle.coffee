@@ -1,12 +1,12 @@
 # @toc
 Point = require './point'
-Equatable = require './equatable'
-Formattable = require './formattable'
-Parameterizable = require './parameterizable'
-Geometry = require './geometry'
-Surface = require './surface'
-Path = require './path'
-Intersections = require './intersections'
+Equatable = require './mixins/equatable'
+Formattable = require './mixins/formattable'
+Parameterizable = require './mixins/parameterizable'
+Geometry = require './mixins/geometry'
+Surface = require './mixins/surface'
+Path = require './mixins/path'
+Intersections = require './mixins/intersections'
 chancejs = require 'chancejs'
 
 ## Rectangle

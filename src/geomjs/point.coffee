@@ -2,8 +2,8 @@
 #@toc
 require './math'
 
-Equatable = require './equatable'
-Formattable = require './formattable'
+Equatable = require './mixins/equatable'
+Formattable = require './mixins/formattable'
 
 ## Point
 

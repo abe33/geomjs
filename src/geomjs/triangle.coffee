@@ -1,11 +1,11 @@
 # @toc
 Point = require './point'
-Equatable = require './equatable'
-Formattable = require './formattable'
-Path = require './path'
-Surface = require './surface'
-Geometry = require './geometry'
-Intersections = require './intersections'
+Equatable = require './mixins/equatable'
+Formattable = require './mixins/formattable'
+Path = require './mixins/path'
+Surface = require './mixins/surface'
+Geometry = require './mixins/geometry'
+Intersections = require './mixins/intersections'
 
 ## Triangle
 class Triangle

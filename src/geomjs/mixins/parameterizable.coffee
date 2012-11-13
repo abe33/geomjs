@@ -1,5 +1,7 @@
+# @toc
 Mixin = require './mixin'
 
+## Parameterizable
 Parameterizable = (method, parameters, allowPartial=false) ->
   class extends Mixin
     @included: (klass) ->

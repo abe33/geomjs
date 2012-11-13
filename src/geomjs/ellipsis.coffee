@@ -1,12 +1,12 @@
 # @toc
 Point = require './point'
-Equatable = require './equatable'
-Formattable = require './formattable'
-Geometry = require './geometry'
-Surface = require './surface'
-Path = require './path'
-Intersections = require './intersections'
-Parameterizable = require './parameterizable'
+Equatable = require './mixins/equatable'
+Formattable = require './mixins/formattable'
+Geometry = require './mixins/geometry'
+Surface = require './mixins/surface'
+Path = require './mixins/path'
+Intersections = require './mixins/intersections'
+Parameterizable = require './mixins/parameterizable'
 
 ## Ellipsis
 class Ellipsis
