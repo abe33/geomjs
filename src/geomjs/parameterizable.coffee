@@ -8,13 +8,13 @@ Parameterizable = (method, parameters, allowPartial=false) ->
         output = {}
 
         o = arguments[0]
-        if o? and typeof o is 'object'
-          output[k] = parseFloat o[k] for k of parameters
-        else
-          n = 0
-          output[k] = parseFloat arguments[n++] for k,v of parameters
+        n = 0
+        firstArgumentIsObject = o? and typeof o is 'object'
 
         for k,v of parameters
+          value = if firstArgumentIsObject then o[k] else arguments[n++]
+          output[k] = parseFloat value
+
           if isNaN output[k]
             if strict
               keys = (k for k in parameters).join ', '
