@@ -17,6 +17,7 @@ includes: [
   'src/geomjs/triangle'
   'src/geomjs/circle'
   'src/geomjs/ellipsis'
+  'src/geomjs/diamond'
 ]
 operators: [
   'strip:requires'

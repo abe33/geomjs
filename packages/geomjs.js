@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -329,7 +329,18 @@
       return context.fill();
     };
 
-    Geometry.prototype.drawPath = function(context) {};
+    Geometry.prototype.drawPath = function(context) {
+      var p, points, start, _i, _len;
+      points = this.points();
+      start = points.shift();
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      for (_i = 0, _len = points.length; _i < _len; _i++) {
+        p = points[_i];
+        context.lineTo(p.x, p.y);
+      }
+      return context.closePath();
+    };
 
     return Geometry;
 
@@ -1894,6 +1905,103 @@
 
   })();
 
+  /* src/geomjs/diamond.coffee */;
+
+
+  Diamond = (function() {
+    var PROPERTIES;
+
+    PROPERTIES = ['x', 'y', 'topLength', 'leftLength', 'bottomLength', 'rightLength'];
+
+    Formattable.apply(Formattable, ['Diamond'].concat(PROPERTIES)).attachTo(Diamond);
+
+    Parameterizable('diamondFrom', {
+      topLength: 1,
+      rightLength: 1,
+      bottomLength: 1,
+      leftLength: 1,
+      x: 0,
+      y: 0,
+      rotation: 0
+    }).attachTo(Diamond);
+
+    Equatable.apply(Equatable, PROPERTIES).attachTo(Diamond);
+
+    Cloneable.attachTo(Diamond);
+
+    Geometry.attachTo(Diamond);
+
+    function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
+      var args;
+      args = this.diamondFrom(topLength, rightLength, bottomLength, leftLength, x, y, rotation);
+      this.topLength = args.topLength, this.rightLength = args.rightLength, this.bottomLength = args.bottomLength, this.leftLength = args.leftLength, this.x = args.x, this.y = args.y, this.rotation = args.rotation;
+    }
+
+    Diamond.prototype.center = function() {
+      return new Point(this.x, this.y);
+    };
+
+    Diamond.prototype.topAxis = function() {
+      return new Point(0, -this.topLength).rotate(this.rotation);
+    };
+
+    Diamond.prototype.bottomAxis = function() {
+      return new Point(0, this.bottomLength).rotate(this.rotation);
+    };
+
+    Diamond.prototype.leftAxis = function() {
+      return new Point(-this.leftLength, 0).rotate(this.rotation);
+    };
+
+    Diamond.prototype.rightAxis = function() {
+      return new Point(this.rightLength, 0).rotate(this.rotation);
+    };
+
+    Diamond.prototype.topCorner = function() {
+      return this.center().add(this.topAxis());
+    };
+
+    Diamond.prototype.bottomCorner = function() {
+      return this.center().add(this.bottomAxis());
+    };
+
+    Diamond.prototype.leftCorner = function() {
+      return this.center().add(this.leftAxis());
+    };
+
+    Diamond.prototype.rightCorner = function() {
+      return this.center().add(this.rightAxis());
+    };
+
+    Diamond.prototype.topLeftEdge = function() {
+      return this.topCorner().subtract(this.leftCorner());
+    };
+
+    Diamond.prototype.topRightEdge = function() {
+      return this.rightCorner().subtract(this.topCorner());
+    };
+
+    Diamond.prototype.bottomLeftEdge = function() {
+      return this.leftCorner().subtract(this.bottomCorner());
+    };
+
+    Diamond.prototype.bottomRightEdge = function() {
+      return this.bottomCorner().subtract(this.rightCorner());
+    };
+
+    Diamond.prototype.points = function() {
+      var t;
+      return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
+    };
+
+    Diamond.prototype.closedGeometry = function() {
+      return true;
+    };
+
+    return Diamond;
+
+  })();
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -1923,5 +2031,7 @@
   this.geomjs.Circle = Circle;
 
   this.geomjs.Ellipsis = Ellipsis;
+
+  this.geomjs.Diamond = Diamond;
 
 }).call(this);
