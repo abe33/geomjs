@@ -4,7 +4,6 @@ require './math'
 
 Equatable = require './equatable'
 Formattable = require './formattable'
-Parameterizable = require './parameterizable'
 
 ## Point
 
@@ -56,7 +55,16 @@ class Point
   #
   # For further examples, feel free to take a look at the
   # methods of the `Point` class.
-  Parameterizable('pointFrom', x: 0, y: 0, true).attachTo Point
+  Point.pointFrom = Point::pointFrom = (xOrPt, y, strict=false) ->
+    x = xOrPt
+    {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
+
+    x = parseFloat x
+    y = parseFloat y
+
+    @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
+
+    {x,y}
 
   #### Class Methods
 
