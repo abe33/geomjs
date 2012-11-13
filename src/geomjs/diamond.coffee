@@ -1,5 +1,6 @@
 # @toc
 Point = require './point'
+Triangle = require './triangle'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
@@ -68,10 +69,40 @@ class Diamond
   bottomLeftEdge: -> @leftCorner().subtract(@bottomCorner())
   bottomRightEdge: -> @bottomCorner().subtract(@rightCorner())
 
+  topLeftQuadrant: -> new Triangle(@center(),
+                                   @topCorner(),
+                                   @leftCorner())
+
+  topRightQuadrant: -> new Triangle(@center(),
+                                    @topCorner(),
+                                    @rightCorner())
+
+  bottomLeftQuadrant: -> new Triangle(@center(),
+                                      @bottomCorner(),
+                                      @leftCorner())
+
+  bottomRightQuadrant: -> new Triangle(@center(),
+                                       @bottomCorner(),
+                                       @rightCorner())
+
   points: ->
     [t = @topCorner(), @rightCorner(), @bottomCorner(), @leftCorner(), t]
 
   closedGeometry: -> true
+
+  length: ->
+    @topRightEdge().length() +
+    @topLeftEdge().length() +
+    @bottomRightEdge().length() +
+    @bottomLeftEdge().length()
+
+  acreage: ->
+    @topLeftQuadrant().acreage() +
+    @topRightQuadrant().acreage() +
+    @bottomLeftQuadrant().acreage() +
+    @bottomRightQuadrant().acreage()
+
+
 
 
 

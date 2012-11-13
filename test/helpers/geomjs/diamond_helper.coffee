@@ -64,6 +64,28 @@ global.diamondData = (topLength,
     bottomLeftEdge: data.leftCorner.subtract data.bottomCorner
 
   data.merge
+    topLeftQuadrant: triangle(data.center,
+                              data.topCorner,
+                              data.leftCorner)
+    topRightQuadrant: triangle(data.center,
+                               data.topCorner,
+                               data.rightCorner)
+    bottomLeftQuadrant: triangle(data.center,
+                                 data.bottomCorner,
+                                 data.leftCorner)
+    bottomRightQuadrant: triangle(data.center,
+                                  data.bottomCorner,
+                                  data.rightCorner)
+
+  data.merge
+    length: data.topLeftEdge.length() +
+            data.topRightEdge.length() +
+            data.bottomLeftEdge.length() +
+            data.bottomRightEdge.length()
+    acreage: data.topLeftQuadrant.acreage() +
+             data.topRightQuadrant.acreage() +
+             data.bottomLeftQuadrant.acreage() +
+             data.bottomRightQuadrant.acreage()
     top: Math.min(data.topCorner.y,
                   data.leftCorner.y,
                   data.rightCorner.y,

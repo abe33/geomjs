@@ -1989,6 +1989,22 @@
       return this.bottomCorner().subtract(this.rightCorner());
     };
 
+    Diamond.prototype.topLeftQuadrant = function() {
+      return new Triangle(this.center(), this.topCorner(), this.leftCorner());
+    };
+
+    Diamond.prototype.topRightQuadrant = function() {
+      return new Triangle(this.center(), this.topCorner(), this.rightCorner());
+    };
+
+    Diamond.prototype.bottomLeftQuadrant = function() {
+      return new Triangle(this.center(), this.bottomCorner(), this.leftCorner());
+    };
+
+    Diamond.prototype.bottomRightQuadrant = function() {
+      return new Triangle(this.center(), this.bottomCorner(), this.rightCorner());
+    };
+
     Diamond.prototype.points = function() {
       var t;
       return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
@@ -1996,6 +2012,14 @@
 
     Diamond.prototype.closedGeometry = function() {
       return true;
+    };
+
+    Diamond.prototype.length = function() {
+      return this.topRightEdge().length() + this.topLeftEdge().length() + this.bottomRightEdge().length() + this.bottomLeftEdge().length();
+    };
+
+    Diamond.prototype.acreage = function() {
+      return this.topLeftQuadrant().acreage() + this.topRightQuadrant().acreage() + this.bottomLeftQuadrant().acreage() + this.bottomRightQuadrant().acreage();
     };
 
     return Diamond;

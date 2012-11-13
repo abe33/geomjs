@@ -45,6 +45,29 @@ describe 'Diamond', ->
       pointOf(source, 'bottomRightEdge').shouldBe(data.bottomRightEdge)
       pointOf(source, 'bottomLeftEdge').shouldBe(data.bottomLeftEdge)
 
+      describe 'its topLeftQuadrant method', ->
+        it 'should return a triangle', ->
+          expect(@diamond.topLeftQuadrant()).toEqual(data.topLeftQuadrant)
+
+      describe 'its topRightQuadrant method', ->
+        it 'should return a triangle', ->
+          expect(@diamond.topRightQuadrant()).toEqual(data.topRightQuadrant)
+
+      describe 'its bottomLeftQuadrant method', ->
+        it 'should return a triangle', ->
+          expect(@diamond.bottomLeftQuadrant()).toEqual(data.bottomLeftQuadrant)
+
+      describe 'its bottomRightQuadrant method', ->
+        it 'should return a triangle', ->
+          expect(@diamond.bottomRightQuadrant()).toEqual(data.bottomRightQuadrant)
+
+
+      # Path API
+      lengthOf(source).shouldBe(data.length)
+
+      # Surface API
+      acreageOf(source).shouldBe(data.acreage)
+
       # Geometry API
       shouldBeClosedGeometry(source)
 
