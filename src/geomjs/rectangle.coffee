@@ -2,6 +2,7 @@
 Point = require './point'
 Equatable = require './equatable'
 Formattable = require './formattable'
+Parameterizable = require './parameterizable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
@@ -14,6 +15,13 @@ class Rectangle
 
   Equatable.apply(null, PROPERTIES).attachTo Rectangle
   Formattable.apply(null, ['Rectangle'].concat PROPERTIES).attachTo Rectangle
+  Parameterizable('rectangleFrom', {
+    x: NaN,
+    y: NaN,
+    width: NaN,
+    height: NaN,
+    rotation: NaN
+  }).attachTo Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle
@@ -35,8 +43,8 @@ class Rectangle
   ##### Rectangle::constructor
   #
   constructor: (x, y, width, height, rotation) ->
-    args = @defaultToZero.apply this, @rectangleFrom.apply this, arguments
-    [@x,@y,@width,@height,@rotation] = args
+    args = @defaultToZero @rectangleFrom.apply this, arguments
+    {@x,@y,@width,@height,@rotation} = args
 
   #### Corners
 
@@ -382,20 +390,12 @@ class Rectangle
   #
   paste: (x, y, width, height, rotation) ->
     values = @rectangleFrom x, y, width, height, rotation
-    PROPERTIES.forEach (k,i) =>
-      @[k] = parseFloat values[i] if Math.isFloat values[i]
-
-  ##### Rectangle::rectangleFrom
-  #
-  rectangleFrom: (xOrRect,y,width,height,rotation) ->
-    x = xOrRect
-    {x,y,width,height,rotation} = xOrRect if typeof xOrRect is 'object'
-    [x,y,width,height,rotation]
+    @[k] = parseFloat v for k,v of values when Math.isFloat v
 
   ##### Rectangle::defaultToZero
   #
-  defaultToZero: (values...) ->
-    values[i] = 0 for n,i in values when not Math.isFloat n
+  defaultToZero: (values) ->
+    values[k] = 0 for k,v of values when not Math.isFloat v
     values
 
 module.exports = Rectangle

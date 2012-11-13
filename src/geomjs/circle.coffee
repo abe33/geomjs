@@ -2,6 +2,7 @@
 Point = require './point'
 Equatable = require './equatable'
 Formattable = require './formattable'
+Parameterizable = require './parameterizable'
 Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
@@ -11,6 +12,8 @@ Intersections = require './intersections'
 class Circle
   Equatable('x','y','radius').attachTo Circle
   Formattable('Circle','x','y','radius').attachTo Circle
+  Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
+    .attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
   Path.attachTo Circle
@@ -67,7 +70,7 @@ class Circle
   ##### Circle::constructor
   #
   constructor: (radiusOrCircle, x, y, segments) ->
-    [@radius,@x,@y,@segments] = @circleFrom radiusOrCircle, x, y, segments
+    {@radius,@x,@y,@segments} = @circleFrom radiusOrCircle, x, y, segments
 
   ##### Circle::center
   #
@@ -239,20 +242,5 @@ class Circle
   #
   # See
   # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
-
-  #### Circle::circleFrom
-  #
-  circleFrom: (radiusOrCircle, x, y, segments) ->
-    radius = radiusOrCircle
-
-    if typeof radiusOrCircle is 'object'
-      {radius, x, y, segments} = radiusOrCircle
-
-    radius = 1 unless Math.isFloat radius
-    x = 0 unless Math.isFloat x
-    y = 0 unless Math.isFloat y
-    segments = 36 unless Math.isFloat segments
-
-    [radius, x, y, segments]
 
 module.exports = Circle
