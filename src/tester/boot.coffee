@@ -23,6 +23,7 @@ $(document).ready ->
                         new geomjs.Point(140,200))
     new geomjs.Circle(60, 80, 160)
     new geomjs.Ellipsis(120, 60, 470, 180, 10)
+    new geomjs.Diamond(50,100, 60, 40, 420, 250)
   ]
   testers = geometries.map (g) -> new Tester g
 
