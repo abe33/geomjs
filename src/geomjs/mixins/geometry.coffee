@@ -93,5 +93,11 @@ class Geometry extends Mixin
   #
   # **Virtual method**
   drawPath: (context) ->
+    points = @points()
+    start = points.shift()
+    context.beginPath()
+    context.moveTo(start.x,start.y)
+    context.lineTo(p.x,p.y) for p in points
+    context.closePath()
 
 module.exports = Geometry
