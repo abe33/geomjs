@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -36,6 +36,50 @@
     return Math.interpolate(Math.normalize(value, min1, max1), min2, max2);
   };
 
+  Math.isFloat = function() {
+    var float, floats, _i, _len;
+    floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    for (_i = 0, _len = floats.length; _i < _len; _i++) {
+      float = floats[_i];
+      if (isNaN(parseFloat(float))) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  Math.isInt = function() {
+    var int, ints, _i, _len;
+    ints = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    for (_i = 0, _len = ints.length; _i < _len; _i++) {
+      int = ints[_i];
+      if (isNaN(parseInt(int))) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  Math.asFloat = function() {
+    var floats, i, n, _i, _len;
+    floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    for (i = _i = 0, _len = floats.length; _i < _len; i = ++_i) {
+      n = floats[i];
+      floats[i] = parseFloat(n);
+    }
+    return floats;
+  };
+
+  Math.asInt = function() {
+    var i, ints, n, _i, _len;
+    ints = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    for (i = _i = 0, _len = ints.length; _i < _len; i = ++_i) {
+      n = ints[i];
+      ints[i] = parseInt(n);
+    }
+    return ints;
+  };
+
   /* src/geomjs/mixin.coffee */;
 
 
@@ -44,14 +88,13 @@
     function Mixin() {}
 
     Mixin.attachTo = function(klass) {
-      var k, v, _ref, _results;
+      var k, v, _ref;
       _ref = this.prototype;
-      _results = [];
       for (k in _ref) {
         v = _ref[k];
-        _results.push(klass.prototype[k] = v);
+        klass.prototype[k] = v;
       }
-      return _results;
+      return typeof this.included === "function" ? this.included(klass) : void 0;
     };
 
     return Mixin;
@@ -118,6 +161,69 @@
 
       _Class.prototype.classname = function() {
         return classname;
+      };
+
+      return _Class;
+
+    })(Mixin);
+  };
+
+  /* src/geomjs/parameterizable.coffee */;
+
+
+  Parameterizable = function(method, parameters, allowPartial) {
+    if (allowPartial == null) {
+      allowPartial = false;
+    }
+    return (function(_super) {
+
+      __extends(_Class, _super);
+
+      function _Class() {
+        return _Class.__super__.constructor.apply(this, arguments);
+      }
+
+      _Class.included = function(klass) {
+        var f;
+        f = function() {
+          var args, firstArgumentIsObject, k, keys, n, o, output, strict, v, value, _i;
+          args = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), strict = arguments[_i++];
+          if (typeof strict === 'number') {
+            args.push(strict);
+            strict = false;
+          }
+          output = {};
+          o = arguments[0];
+          n = 0;
+          firstArgumentIsObject = (o != null) && typeof o === 'object';
+          for (k in parameters) {
+            v = parameters[k];
+            value = firstArgumentIsObject ? o[k] : arguments[n++];
+            output[k] = parseFloat(value);
+            if (isNaN(output[k])) {
+              if (strict) {
+                keys = ((function() {
+                  var _j, _len, _results;
+                  _results = [];
+                  for (_j = 0, _len = parameters.length; _j < _len; _j++) {
+                    k = parameters[_j];
+                    _results.push(k);
+                  }
+                  return _results;
+                })()).join(', ');
+                throw new Error("" + output + " doesn't match pattern {" + keys + "}");
+              }
+              if (allowPartial) {
+                delete output[k];
+              } else {
+                output[k] = v;
+              }
+            }
+          }
+          return output;
+        };
+        klass[method] = f;
+        return klass.prototype[method] = f;
       };
 
       return _Class;
@@ -424,11 +530,7 @@
       return (pt != null) && (pt.x != null) && (pt.y != null);
     };
 
-    Point.isFloat = function(n) {
-      return !isNaN(parseFloat(n));
-    };
-
-    Point.coordsFrom = function(xOrPt, y, strict) {
+    Point.pointFrom = function(xOrPt, y, strict) {
       var x;
       if (strict == null) {
         strict = false;
@@ -442,7 +544,10 @@
       if (strict && (isNaN(x) || isNaN(y))) {
         this.notAPoint([x, y]);
       }
-      return [x, y];
+      return {
+        x: x,
+        y: y
+      };
     };
 
     Point.polar = function(angle, length) {
@@ -465,7 +570,7 @@
         pt = null;
         if (_this.isPoint(args[0])) {
           pt = args.shift();
-        } else if (_this.isFloat(args[0]) && _this.isFloat(args[1])) {
+        } else if (Math.isFloat(args[0]) && Math.isFloat(args[1])) {
           pt = new Point(args[0], args[1]);
           args.splice(0, 2);
         } else {
@@ -491,13 +596,9 @@
       throw new Error("Can't find the " + pos + " point in Point.interpolate arguments " + args);
     };
 
-    Point.notAPoint = function(pt) {
-      throw new Error("" + pt + " isn't a point-like object");
-    };
-
     function Point(xOrPt, y) {
       var x, _ref, _ref1;
-      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       _ref1 = this.defaultToZero(x, y), this.x = _ref1[0], this.y = _ref1[1];
     }
 
@@ -514,7 +615,7 @@
       if (!(xOrPt != null) && !(y != null)) {
         this.noPoint('dot');
       }
-      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
       d = this.normalize().dot(new Point(x, y).normalize());
       return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
     };
@@ -524,7 +625,7 @@
       if (length == null) {
         length = 1;
       }
-      if (!this.isFloat(length)) {
+      if (!Math.isFloat(length)) {
         this.invalidLength(length);
       }
       l = this.length();
@@ -533,14 +634,14 @@
 
     Point.prototype.add = function(xOrPt, y) {
       var x, _ref, _ref1;
-      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
       return new Point(this.x + x, this.y + y);
     };
 
     Point.prototype.subtract = function(xOrPt, y) {
       var x, _ref, _ref1;
-      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       _ref1 = this.defaultToZero(x, y), x = _ref1[0], y = _ref1[1];
       return new Point(this.x - x, this.y - y);
     };
@@ -550,7 +651,7 @@
       if (!(xOrPt != null) && !(y != null)) {
         this.noPoint('dot');
       }
-      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
       return this.x * x + this.y * y;
     };
 
@@ -559,12 +660,12 @@
       if (!(xOrPt != null) && !(y != null)) {
         this.noPoint('dot');
       }
-      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
       return this.subtract(x, y).length();
     };
 
     Point.prototype.scale = function(n) {
-      if (!this.isFloat(n)) {
+      if (!Math.isFloat(n)) {
         this.invalidScale(n);
       }
       return new Point(this.x * n, this.y * n);
@@ -572,7 +673,7 @@
 
     Point.prototype.rotate = function(n) {
       var a, l, x, y;
-      if (!this.isFloat(n)) {
+      if (!Math.isFloat(n)) {
         this.invalidRotation(n);
       }
       l = this.length();
@@ -587,21 +688,13 @@
       if (this.isPoint(xOrPt)) {
         a = y;
       }
-      _ref = this.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
       return this.subtract(x, y).rotate(a).add(x, y);
     };
 
-    Point.prototype.isPoint = function(pt) {
-      return Point.isPoint(pt);
-    };
+    Point.prototype.isPoint = Point.isPoint;
 
-    Point.prototype.isFloat = function(n) {
-      return Point.isFloat(n);
-    };
-
-    Point.prototype.coordsFrom = function(xOrPt, y, strict) {
-      return Point.coordsFrom(xOrPt, y, strict);
-    };
+    Point.prototype.pointFrom = Point.pointFrom;
 
     Point.prototype.defaultToZero = function(x, y) {
       x = isNaN(x) ? 0 : x;
@@ -611,7 +704,7 @@
 
     Point.prototype.paste = function(xOrPt, y) {
       var x, _ref;
-      _ref = this.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = this.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       if (!isNaN(x)) {
         this.x = x;
       }
@@ -664,19 +757,7 @@
       }
       for (_i = 0, _len = PROPERTIES.length; _i < _len; _i++) {
         k = PROPERTIES[_i];
-        if (!this.isFloat(m[k])) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    Matrix.isFloat = function() {
-      var float, floats, _i, _len;
-      floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      for (_i = 0, _len = floats.length; _i < _len; _i++) {
-        float = floats[_i];
-        if (isNaN(parseFloat(float))) {
+        if (!Math.isFloat(m[k])) {
           return false;
         }
       }
@@ -707,19 +788,23 @@
     }
 
     Matrix.prototype.transformPoint = function(xOrPt, y) {
-      var x, x2, y2, _ref;
+      var x, _ref;
       if (!(xOrPt != null) && !(y != null)) {
         throw new Error("transformPoint was called without arguments");
       }
-      _ref = Point.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
-      x2 = x * this.a + y * this.c + this.tx;
-      y2 = x * this.b + y * this.d + this.ty;
-      return new Point(x2, y2);
+      _ref = Point.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
+      return new Point(x * this.a + y * this.c + this.tx, x * this.b + y * this.d + this.ty);
     };
 
     Matrix.prototype.translate = function(xOrPt, y) {
       var x, _ref;
-      _ref = this.coordsFrom(xOrPt, y, 0), x = _ref[0], y = _ref[1];
+      if (xOrPt == null) {
+        xOrPt = 0;
+      }
+      if (y == null) {
+        y = 0;
+      }
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.tx += x;
       this.ty += y;
       return this;
@@ -727,7 +812,13 @@
 
     Matrix.prototype.scale = function(xOrPt, y) {
       var x, _ref;
-      _ref = this.coordsFrom(xOrPt, y, 1), x = _ref[0], y = _ref[1];
+      if (xOrPt == null) {
+        xOrPt = 1;
+      }
+      if (y == null) {
+        y = 1;
+      }
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.a *= x;
       this.d *= y;
       this.tx *= x;
@@ -748,7 +839,13 @@
 
     Matrix.prototype.skew = function(xOrPt, y) {
       var x, _ref, _ref1;
-      _ref = this.coordsFrom(xOrPt, y, 0), x = _ref[0], y = _ref[1];
+      if (xOrPt == null) {
+        xOrPt = 0;
+      }
+      if (y == null) {
+        y = 0;
+      }
+      _ref = Point.pointFrom(xOrPt, y, 0), x = _ref.x, y = _ref.y;
       _ref1 = [Math.degToRad(x), Math.degToRad(y)], x = _ref1[0], y = _ref1[1];
       return this.append(Math.cos(y), Math.sin(y), -Math.sin(x), Math.cos(x));
     };
@@ -819,46 +916,18 @@
       return this;
     };
 
-    Matrix.prototype.asFloat = function() {
-      var floats, i, n, _i, _len;
-      floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      for (i = _i = 0, _len = floats.length; _i < _len; i = ++_i) {
-        n = floats[i];
-        floats[i] = parseFloat(n);
-      }
-      return floats;
-    };
-
     Matrix.prototype.matrixFrom = function(a, b, c, d, tx, ty) {
       var _ref;
       if (this.isMatrix(a)) {
         _ref = a, a = _ref.a, b = _ref.b, c = _ref.c, d = _ref.d, tx = _ref.tx, ty = _ref.ty;
-      } else if (!this.isFloat(a, b, c, d, tx, ty)) {
+      } else if (!Math.isFloat(a, b, c, d, tx, ty)) {
         this.invalidMatrixArguments([a, b, c, d, tx, ty]);
       }
-      return this.asFloat(a, b, c, d, tx, ty);
-    };
-
-    Matrix.prototype.coordsFrom = function(xOrPt, y, def) {
-      var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
-      if (isNaN(x)) {
-        x = def;
-      }
-      if (isNaN(y)) {
-        y = def;
-      }
-      return [x, y];
+      return Math.asFloat(a, b, c, d, tx, ty);
     };
 
     Matrix.prototype.isMatrix = function(m) {
       return Matrix.isMatrix(m);
-    };
-
-    Matrix.prototype.isFloat = function() {
-      var floats;
-      floats = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return Matrix.isFloat.apply(Matrix, floats);
     };
 
     Matrix.prototype.clone = function() {
@@ -884,6 +953,14 @@
     Equatable.apply(null, PROPERTIES).attachTo(Rectangle);
 
     Formattable.apply(null, ['Rectangle'].concat(PROPERTIES)).attachTo(Rectangle);
+
+    Parameterizable('rectangleFrom', {
+      x: NaN,
+      y: NaN,
+      width: NaN,
+      height: NaN,
+      rotation: NaN
+    }).attachTo(Rectangle);
 
     Geometry.attachTo(Rectangle);
 
@@ -917,8 +994,8 @@
 
     function Rectangle(x, y, width, height, rotation) {
       var args;
-      args = this.defaultToZero.apply(this, this.rectangleFrom.apply(this, arguments));
-      this.x = args[0], this.y = args[1], this.width = args[2], this.height = args[3], this.rotation = args[4];
+      args = this.defaultToZero(this.rectangleFrom.apply(this, arguments));
+      this.x = args.x, this.y = args.y, this.width = args.width, this.height = args.height, this.rotation = args.rotation;
     }
 
     Rectangle.prototype.topLeft = function() {
@@ -991,7 +1068,7 @@
 
     Rectangle.prototype.setCenter = function(xOrPt, y) {
       var c, x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       c = this.center();
       this.x += x - c.x;
       this.y += y - c.y;
@@ -1025,7 +1102,7 @@
 
     Rectangle.prototype.inflate = function(xOrPt, y) {
       var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.width += x;
       this.height += y;
       return this;
@@ -1059,7 +1136,7 @@
 
     Rectangle.prototype.inflateTopLeft = function(xOrPt, y) {
       var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.inflateLeft(x);
       this.inflateTop(y);
       return this;
@@ -1067,7 +1144,7 @@
 
     Rectangle.prototype.inflateTopRight = function(xOrPt, y) {
       var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.inflateRight(x);
       this.inflateTop(y);
       return this;
@@ -1075,7 +1152,7 @@
 
     Rectangle.prototype.inflateBottomLeft = function(xOrPt, y) {
       var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
       this.inflateLeft(x);
       this.inflateBottom(y);
       return this;
@@ -1109,9 +1186,8 @@
     };
 
     Rectangle.prototype.contains = function(xOrPt, y) {
-      var x, _ref, _ref1;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
-      _ref1 = new Point(x, y).rotateAround(this.topLeft(), -this.rotation), x = _ref1.x, y = _ref1.y;
+      var x, _ref;
+      _ref = new Point(xOrPt, y).rotateAround(this.topLeft(), -this.rotation), x = _ref.x, y = _ref.y;
       return ((this.x <= x && x <= this.x + this.width)) && ((this.y <= y && y <= this.y + this.height));
     };
 
@@ -1194,32 +1270,24 @@
     };
 
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {
-      var values,
-        _this = this;
+      var k, v, values, _results;
       values = this.rectangleFrom(x, y, width, height, rotation);
-      return PROPERTIES.forEach(function(k, i) {
-        if (Point.isFloat(values[i])) {
-          return _this[k] = parseFloat(values[i]);
+      _results = [];
+      for (k in values) {
+        v = values[k];
+        if (Math.isFloat(v)) {
+          _results.push(this[k] = parseFloat(v));
         }
-      });
-    };
-
-    Rectangle.prototype.rectangleFrom = function(xOrRect, y, width, height, rotation) {
-      var x;
-      x = xOrRect;
-      if (typeof xOrRect === 'object') {
-        x = xOrRect.x, y = xOrRect.y, width = xOrRect.width, height = xOrRect.height, rotation = xOrRect.rotation;
       }
-      return [x, y, width, height, rotation];
+      return _results;
     };
 
-    Rectangle.prototype.defaultToZero = function() {
-      var i, n, values, _i, _len;
-      values = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      for (i = _i = 0, _len = values.length; _i < _len; i = ++_i) {
-        n = values[i];
-        if (!Point.isFloat(n)) {
-          values[i] = 0;
+    Rectangle.prototype.defaultToZero = function(values) {
+      var k, v;
+      for (k in values) {
+        v = values[k];
+        if (!Math.isFloat(v)) {
+          values[k] = 0;
         }
       }
       return values;
@@ -1361,9 +1429,8 @@
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
-      var dot00, dot01, dot02, dot11, dot12, invDenom, p, u, v, v0, v1, v2, x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
-      p = new Point(x, y);
+      var dot00, dot01, dot02, dot11, dot12, invDenom, p, u, v, v0, v1, v2;
+      p = new Point(xOrPt, y);
       v0 = this.ac();
       v1 = this.ab();
       v2 = p.subtract(this.a);
@@ -1471,6 +1538,13 @@
 
     Formattable('Circle', 'x', 'y', 'radius').attachTo(Circle);
 
+    Parameterizable('circleFrom', {
+      radius: 1,
+      x: 0,
+      y: 0,
+      segments: 36
+    }).attachTo(Circle);
+
     Geometry.attachTo(Circle);
 
     Surface.attachTo(Circle);
@@ -1544,7 +1618,7 @@
 
     function Circle(radiusOrCircle, x, y, segments) {
       var _ref;
-      _ref = this.circleFrom(radiusOrCircle, x, y, segments), this.radius = _ref[0], this.x = _ref[1], this.y = _ref[2], this.segments = _ref[3];
+      _ref = this.circleFrom(radiusOrCircle, x, y, segments), this.radius = _ref.radius, this.x = _ref.x, this.y = _ref.y, this.segments = _ref.segments;
     }
 
     Circle.prototype.center = function() {
@@ -1628,7 +1702,7 @@
 
     Circle.prototype.contains = function(xOrPt, y) {
       var x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y, true), x = _ref[0], y = _ref[1];
+      _ref = Point.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
       return this.center().subtract(x, y).length() <= this.radius;
     };
 
@@ -1649,27 +1723,6 @@
       return new Circle(this);
     };
 
-    Circle.prototype.circleFrom = function(radiusOrCircle, x, y, segments) {
-      var radius;
-      radius = radiusOrCircle;
-      if (typeof radiusOrCircle === 'object') {
-        radius = radiusOrCircle.radius, x = radiusOrCircle.x, y = radiusOrCircle.y, segments = radiusOrCircle.segments;
-      }
-      if (!Point.isFloat(radius)) {
-        radius = 1;
-      }
-      if (!Point.isFloat(x)) {
-        x = 0;
-      }
-      if (!Point.isFloat(y)) {
-        y = 0;
-      }
-      if (!Point.isFloat(segments)) {
-        segments = 36;
-      }
-      return [radius, x, y, segments];
-    };
-
     return Circle;
 
   })();
@@ -1683,6 +1736,15 @@
 
     Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation').attachTo(Ellipsis);
 
+    Parameterizable('ellipsisFrom', {
+      radius1: 1,
+      radius2: 1,
+      x: 0,
+      y: 0,
+      rotation: 0,
+      segments: 36
+    }).attachTo(Ellipsis);
+
     Geometry.attachTo(Ellipsis);
 
     Surface.attachTo(Ellipsis);
@@ -1693,7 +1755,7 @@
 
     function Ellipsis(r1, r2, x, y, rot, segments) {
       var _ref;
-      _ref = this.ellipsisFrom(r1, r2, x, y, rot, segments), this.radius1 = _ref[0], this.radius2 = _ref[1], this.x = _ref[2], this.y = _ref[3], this.rotation = _ref[4], this.segments = _ref[5];
+      _ref = this.ellipsisFrom(r1, r2, x, y, rot, segments), this.radius1 = _ref.radius1, this.radius2 = _ref.radius2, this.x = _ref.x, this.y = _ref.y, this.rotation = _ref.rotation, this.segments = _ref.segments;
     }
 
     Ellipsis.prototype.center = function() {
@@ -1776,9 +1838,8 @@
     };
 
     Ellipsis.prototype.contains = function(xOrPt, y) {
-      var a, c, d, p, p2, x, _ref;
-      _ref = Point.coordsFrom(xOrPt, y), x = _ref[0], y = _ref[1];
-      p = new Point(x, y);
+      var a, c, d, p, p2;
+      p = new Point(xOrPt, y);
       c = this.center();
       d = p.subtract(c);
       a = d.angle();
@@ -1812,32 +1873,6 @@
       return new Ellipsis(this);
     };
 
-    Ellipsis.prototype.ellipsisFrom = function(radius1, radius2, x, y, rotation, segments) {
-      var _ref;
-      if (typeof radius1 === 'object') {
-        _ref = radius1, radius1 = _ref.radius1, radius2 = _ref.radius2, x = _ref.x, y = _ref.y, rotation = _ref.rotation, segments = _ref.segments;
-      }
-      if (!Point.isFloat(radius1)) {
-        radius1 = 1;
-      }
-      if (!Point.isFloat(radius2)) {
-        radius2 = 1;
-      }
-      if (!Point.isFloat(x)) {
-        x = 0;
-      }
-      if (!Point.isFloat(y)) {
-        y = 0;
-      }
-      if (!Point.isFloat(rotation)) {
-        rotation = 0;
-      }
-      if (!Point.isFloat(segments)) {
-        segments = 36;
-      }
-      return [radius1, radius2, x, y, rotation, segments];
-    };
-
     return Ellipsis;
 
   })();
@@ -1847,6 +1882,8 @@
   this.geomjs.Equatable = Equatable;
 
   this.geomjs.Formattable = Formattable;
+
+  this.geomjs.Parameterizable = Parameterizable;
 
   this.geomjs.Geometry = Geometry;
 

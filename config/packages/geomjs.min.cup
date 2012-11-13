@@ -5,6 +5,7 @@ includes: [
   'src/geomjs/mixin'
   'src/geomjs/equatable'
   'src/geomjs/formattable'
+  'src/geomjs/parameterizable'
   'src/geomjs/geometry'
   'src/geomjs/surface'
   'src/geomjs/path'
