@@ -16,10 +16,10 @@ class Rectangle
   Equatable.apply(null, PROPERTIES).attachTo Rectangle
   Formattable.apply(null, ['Rectangle'].concat PROPERTIES).attachTo Rectangle
   Parameterizable('rectangleFrom', {
-    x: NaN,
-    y: NaN,
-    width: NaN,
-    height: NaN,
+    x: NaN
+    y: NaN
+    width: NaN
+    height: NaN
     rotation: NaN
   }).attachTo Rectangle
   Geometry.attachTo Rectangle
