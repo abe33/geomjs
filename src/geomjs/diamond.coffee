@@ -10,23 +10,64 @@ Path = require './mixins/path'
 Intersections = require './mixins/intersections'
 
 class Diamond
-  PROPERTIES = ['x','y','top','left','bottom','right']
+  PROPERTIES = ['x','y','topLength','leftLength','bottomLength','rightLength']
 
   Formattable.apply(Formattable,['Diamond'].concat PROPERTIES).attachTo Diamond
   Parameterizable('diamondFrom',{
-    top: 1
-    right: 1
-    bottom: 1
-    left: 1
+    topLength: 1
+    rightLength: 1
+    bottomLength: 1
+    leftLength: 1
     x: 0
     y: 0
     rotation: 0
   }).attachTo Diamond
   Equatable.apply(Equatable, PROPERTIES).attachTo Diamond
   Cloneable.attachTo Diamond
+  # Geometry.attachTo Diamond
+  # Surface.attachTo Diamond
+  # Path.attachTo Diamond
+  # Intersections.attachTo Diamond
 
-  constructor: (top, right, bottom, left, x, y, rotation) ->
-    args = @diamondFrom top, right, bottom, left, x, y, rotation
-    {@top, @right, @bottom, @left, @x, @y, @rotation} = args
+  constructor: (topLength,
+                rightLength,
+                bottomLength,
+                leftLength,
+                x, y,
+                rotation) ->
+
+    args = @diamondFrom topLength,
+                        rightLength,
+                        bottomLength,
+                        leftLength,
+                        x, y,
+                        rotation
+    {
+      @topLength,
+      @rightLength,
+      @bottomLength,
+      @leftLength,
+      @x, @y,
+      @rotation
+    } = args
+
+  center: -> new Point(@x, @y)
+
+  topAxis: -> new Point(0,-@topLength).rotate(@rotation)
+  bottomAxis: -> new Point(0,@bottomLength).rotate(@rotation)
+  leftAxis: -> new Point(-@leftLength,0).rotate(@rotation)
+  rightAxis: -> new Point(@rightLength,0).rotate(@rotation)
+
+  topCorner: -> @center().add(@topAxis())
+  bottomCorner: -> @center().add(@bottomAxis())
+  leftCorner: -> @center().add(@leftAxis())
+  rightCorner: -> @center().add(@rightAxis())
+
+  topLeftEdge: -> @topCorner().subtract(@leftCorner())
+  topRightEdge: -> @rightCorner().subtract(@topCorner())
+  bottomLeftEdge: -> @leftCorner().subtract(@bottomCorner())
+  bottomRightEdge: -> @bottomCorner().subtract(@rightCorner())
+
+
 
 module.exports = Diamond

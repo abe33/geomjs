@@ -3,26 +3,67 @@ Diamond = require '../../../lib/geomjs/diamond'
 
 global.addDiamondMatchers = (scope) ->
   scope.addMatchers
-    toBeDiamond: (top, right, bottom, left, x, y, rotation) ->
-
+    toBeDiamond: (topLength,
+                  rightLength,
+                  bottomLength,
+                  leftLength,
+                  x,
+                  y,
+                  rotation) ->
       @message = ->
         notText = if @isNot then ' not' else ''
         "Expected #{@actual}#{notText} to be a diamond with
-        left=#{left}, right=#{right}, top=#{top}, bottom=#{bottom},
+        leftLength=#{leftLength}, rightLength=#{rightLength}, topLength=#{topLength}, bottomLength=#{bottomLength},
         x=#{x}, y=#{y}, rotation=#{rotation}".squeeze()
 
-      @actual.left is left and
-      @actual.top is top and
-      @actual.right is right and
-      @actual.bottom is bottom and
+      @actual.leftLength is leftLength and
+      @actual.topLength is topLength and
+      @actual.rightLength is rightLength and
+      @actual.bottomLength is bottomLength and
       @actual.x is x and
       @actual.y is y and
       @actual.rotation is rotation
 
-global.diamond = (top, right, bottom, left, x, y, rotation) ->
-  new Diamond top, right, bottom, left, x, y, rotation
+global.diamond = (topLength,
+                  rightLength,
+                  bottomLength,
+                  leftLength,
+                  x,
+                  y,
+                  rotation) ->
 
-global.diamondData = (top, right, bottom, left, x, y, rotation) ->
+  new Diamond topLength, rightLength, bottomLength, leftLength, x, y, rotation
+
+global.diamondData = (topLength,
+                      rightLength,
+                      bottomLength,
+                      leftLength,
+                      x,
+                      y,
+                      rotation) ->
+
+  center = point(x,y)
+  topVec = point(0,-topLength).rotate(rotation)
+  bottomVec = point(0,bottomLength).rotate(rotation)
+  leftVec = point(-leftLength,0).rotate(rotation)
+  rightVec = point(rightLength,0).rotate(rotation)
+
+  data = {topLength, rightLength, bottomLength, leftLength, x, y, rotation}
+
+  data.merge
+    center: center
+    topCorner: center.add(topVec)
+    bottomCorner: center.add(bottomVec)
+    leftCorner: center.add(leftVec)
+    rightCorner: center.add(rightVec)
+
+  data.merge
+    topLeftEdge: data.topCorner.subtract data.leftCorner
+    topRightEdge: data.rightCorner.subtract data.topCorner
+    bottomRightEdge: data.bottomCorner.subtract data.rightCorner
+    bottomLeftEdge: data.leftCorner.subtract data.bottomCorner
+
+  data
 
 global.diamondFactories =
   'with all properties':
@@ -35,11 +76,21 @@ global.diamondFactories =
     args: [1,2,3,4]
     test: [1,2,3,4,0,0,0]
   'with an object with all properties':
-    args: [{top:1,right:2,bottom:3,left:4,x:5,y:6,rotation:7}]
+    args: [{
+      topLength:1,
+      rightLength:2,
+      bottomLength:3,
+      leftLength:4,
+      x:5,
+      y:6,
+      rotation:7
+    }]
     test: [1,2,3,4,5,6,7]
   'with a partial object':
-    args: [{top:1,right:2,x:5}]
+    args: [{topLength:1,rightLength:2,x:5}]
     test: [1,2,1,1,5,0,0]
+
+
 
 
 
