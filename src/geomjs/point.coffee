@@ -23,6 +23,19 @@ class Point
   Equatable('x', 'y').attachTo Point
   Formattable('Point','x', 'y').attachTo Point
 
+  #### Class Methods
+
+  ##### Point.isPoint
+  #
+  # Returns `true` if the passed-in object pass the requirments
+  # to be a point. Valid points are objects that possess a x and
+  # a y property.
+  #
+  #     Point.isPoint new Point  # true
+  #     Point.isPoint x: 0, y: 0 # true
+  #     Point.isPoint x: 0       # false
+  @isPoint: (pt) -> pt? and pt.x? and pt.y?
+
   ##### Point.pointFrom
   #
   # Returns an array containing the x and y of a point according
@@ -55,7 +68,7 @@ class Point
   #
   # For further examples, feel free to take a look at the
   # methods of the `Point` class.
-  Point.pointFrom = Point::pointFrom = (xOrPt, y, strict=false) ->
+  @pointFrom: (xOrPt, y, strict=false) ->
     x = xOrPt
     {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
 
@@ -65,19 +78,6 @@ class Point
     @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
 
     {x,y}
-
-  #### Class Methods
-
-  ##### Point.isPoint
-  #
-  # Returns `true` if the passed-in object pass the requirments
-  # to be a point. Valid points are objects that possess a x and
-  # a y property.
-  #
-  #     Point.isPoint new Point  # true
-  #     Point.isPoint x: 0, y: 0 # true
-  #     Point.isPoint x: 0       # false
-  @isPoint: (pt) -> pt? and pt.x? and pt.y?
 
   ##### Point.polar
   #
@@ -298,7 +298,12 @@ class Point
   ##### Point::isPoint
   #
   # Alias the `Point.isPoint` method in instances.
-  isPoint: (pt) -> Point.isPoint pt
+  isPoint: Point.isPoint
+
+  ##### Point::pointFrom
+  #
+  # Alias the `Point.pointFrom` method in instances.
+  pointFrom: Point.pointFrom
 
   ##### Point::defaultToZero
   #
