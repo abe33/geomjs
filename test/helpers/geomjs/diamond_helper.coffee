@@ -63,6 +63,31 @@ global.diamondData = (topLength,
     bottomRightEdge: data.bottomCorner.subtract data.rightCorner
     bottomLeftEdge: data.leftCorner.subtract data.bottomCorner
 
+  data.merge
+    top: Math.min(data.topCorner.y,
+                  data.leftCorner.y,
+                  data.rightCorner.y,
+                  data.bottomCorner.y)
+    bottom: Math.max(data.topCorner.y,
+                     data.leftCorner.y,
+                     data.rightCorner.y,
+                     data.bottomCorner.y)
+    left: Math.min(data.topCorner.x,
+                   data.leftCorner.x,
+                   data.rightCorner.x,
+                   data.bottomCorner.x)
+    right: Math.max(data.topCorner.x,
+                    data.leftCorner.x,
+                    data.rightCorner.x,
+                    data.bottomCorner.x)
+
+  data.merge
+    bounds:
+      top: data.top
+      bottom: data.bottom
+      left: data.left
+      right: data.right
+
   data
 
 global.diamondFactories =

@@ -24,7 +24,7 @@ class Diamond
   }).attachTo Diamond
   Equatable.apply(Equatable, PROPERTIES).attachTo Diamond
   Cloneable.attachTo Diamond
-  # Geometry.attachTo Diamond
+  Geometry.attachTo Diamond
   # Surface.attachTo Diamond
   # Path.attachTo Diamond
   # Intersections.attachTo Diamond
@@ -67,6 +67,11 @@ class Diamond
   topRightEdge: -> @rightCorner().subtract(@topCorner())
   bottomLeftEdge: -> @leftCorner().subtract(@bottomCorner())
   bottomRightEdge: -> @bottomCorner().subtract(@rightCorner())
+
+  points: ->
+    [t = @topCorner(), @rightCorner(), @bottomCorner(), @leftCorner(), t]
+
+  closedGeometry: -> true
 
 
 

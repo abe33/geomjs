@@ -44,3 +44,32 @@ describe 'Diamond', ->
       pointOf(source, 'topRightEdge').shouldBe(data.topRightEdge)
       pointOf(source, 'bottomRightEdge').shouldBe(data.bottomRightEdge)
       pointOf(source, 'bottomLeftEdge').shouldBe(data.bottomLeftEdge)
+
+      # Geometry API
+      shouldBeClosedGeometry(source)
+
+      describe 'its top method', ->
+        it 'should returns the diamond top', ->
+          expect(@diamond.top()).toBeClose(data.top)
+
+      describe 'its bottom method', ->
+        it 'should returns the diamond bottom', ->
+          expect(@diamond.bottom()).toBeClose(data.bottom)
+
+      describe 'its left method', ->
+        it 'should returns the diamond left', ->
+          expect(@diamond.left()).toBeClose(data.left)
+
+      describe 'its right method', ->
+        it 'should returns the diamond right', ->
+          expect(@diamond.right()).toBeClose(data.right)
+
+      describe 'its bounds method', ->
+        it 'should returns the diamond bounds', ->
+          expect(@diamond.bounds()).toEqual(data.bounds)
+
+
+      # Drawing API
+      testDrawingOf(source)
+
+
