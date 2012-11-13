@@ -6,12 +6,21 @@ Geometry = require './geometry'
 Surface = require './surface'
 Path = require './path'
 Intersections = require './intersections'
+Parameterizable = require './parameterizable'
 
 ## Ellipsis
 class Ellipsis
   Equatable('radius1', 'radius2', 'x', 'y', 'rotation').attachTo Ellipsis
   Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation')
     .attachTo Ellipsis
+  Parameterizable('ellipsisFrom', {
+    radius1: 1
+    radius2: 1
+    x: 0
+    y: 0
+    rotation: 0
+    segments: 36
+  }).attachTo Ellipsis
   Geometry.attachTo Ellipsis
   Surface.attachTo Ellipsis
   Path.attachTo Ellipsis
@@ -20,10 +29,9 @@ class Ellipsis
   ##### Ellipsis::constructor
   #
   constructor: (r1, r2, x, y, rot, segments) ->
-    [@radius1, @radius2, @x, @y, @rotation, @segments] = @ellipsisFrom r1, r2,
-                                                                       x, y,
-                                                                       rot,
-                                                                       segments
+    {@radius1,@radius2,@x,@y,@rotation,@segments} = @ellipsisFrom r1, r2,
+                                                                  x, y, rot,
+                                                                  segments
 
   ##### Ellipsis::center
   #
@@ -201,20 +209,5 @@ class Ellipsis
   #
   # See
   # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
-
-  ##### Ellipsis::ellipsisFrom
-  #
-  ellipsisFrom: (radius1, radius2, x, y, rotation, segments) ->
-    if typeof radius1 is 'object'
-      {radius1, radius2, x, y, rotation, segments} = radius1
-
-    radius1 = 1 unless Math.isFloat radius1
-    radius2 = 1 unless Math.isFloat radius2
-    x = 0 unless Math.isFloat x
-    y = 0 unless Math.isFloat y
-    rotation = 0 unless Math.isFloat rotation
-    segments = 36 unless Math.isFloat segments
-
-    [radius1, radius2, x, y, rotation, segments]
 
 module.exports = Ellipsis
