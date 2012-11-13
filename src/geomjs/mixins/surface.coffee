@@ -6,7 +6,7 @@ class Surface extends Mixin
   ##### Surface.attachTo
   #
   # See
-  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
+  # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
 
   ##### Surface::acreage
   #

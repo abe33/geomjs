@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Cloneable, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -167,6 +167,27 @@
 
     })(Mixin);
   };
+
+  /* src/geomjs/mixins/cloneable.coffee */;
+
+
+  Cloneable = (function(_super) {
+
+    __extends(Cloneable, _super);
+
+    function Cloneable() {
+      return Cloneable.__super__.constructor.apply(this, arguments);
+    }
+
+    Cloneable.included = function(klass) {
+      return klass.prototype.clone = function() {
+        return new klass(this);
+      };
+    };
+
+    return Cloneable;
+
+  })(Mixin);
 
   /* src/geomjs/mixins/parameterizable.coffee */;
 
@@ -526,6 +547,8 @@
 
     Formattable('Point', 'x', 'y').attachTo(Point);
 
+    Cloneable.attachTo(Point);
+
     Point.isPoint = function(pt) {
       return (pt != null) && (pt.x != null) && (pt.y != null);
     };
@@ -714,10 +737,6 @@
       return this;
     };
 
-    Point.prototype.clone = function() {
-      return new Point(this);
-    };
-
     Point.prototype.noPoint = function(method) {
       throw new Error("" + method + " was called without arguments");
     };
@@ -749,6 +768,17 @@
     Equatable.apply(null, PROPERTIES).attachTo(Matrix);
 
     Formattable.apply(null, ['Matrix'].concat(PROPERTIES)).attachTo(Matrix);
+
+    Parameterizable('matrixFrom', {
+      a: 1,
+      b: 0,
+      c: 0,
+      d: 1,
+      tx: 0,
+      ty: 0
+    }).attachTo(Matrix);
+
+    Cloneable.attachTo(Matrix);
 
     Matrix.isMatrix = function(m) {
       var k, _i, _len;
@@ -784,7 +814,7 @@
       if (ty == null) {
         ty = 0;
       }
-      _ref = this.matrixFrom(a, b, c, d, tx, ty), this.a = _ref[0], this.b = _ref[1], this.c = _ref[2], this.d = _ref[3], this.tx = _ref[4], this.ty = _ref[5];
+      _ref = this.matrixFrom(a, b, c, d, tx, ty, true), this.a = _ref.a, this.b = _ref.b, this.c = _ref.c, this.d = _ref.d, this.tx = _ref.tx, this.ty = _ref.ty;
     }
 
     Matrix.prototype.transformPoint = function(xOrPt, y) {
@@ -870,7 +900,7 @@
       if (ty == null) {
         ty = 0;
       }
-      _ref = this.matrixFrom(a, b, c, d, tx, ty), a = _ref[0], b = _ref[1], c = _ref[2], d = _ref[3], tx = _ref[4], ty = _ref[5];
+      _ref = this.matrixFrom(a, b, c, d, tx, ty, true), a = _ref.a, b = _ref.b, c = _ref.c, d = _ref.d, tx = _ref.tx, ty = _ref.ty;
       _ref1 = [a * this.a + b * this.c, a * this.b + b * this.d, c * this.a + d * this.c, c * this.b + d * this.d, tx * this.a + ty * this.c + this.tx, tx * this.b + ty * this.d + this.ty], this.a = _ref1[0], this.b = _ref1[1], this.c = _ref1[2], this.d = _ref1[3], this.tx = _ref1[4], this.ty = _ref1[5];
       return this;
     };
@@ -895,7 +925,7 @@
       if (ty == null) {
         ty = 0;
       }
-      _ref = this.matrixFrom(a, b, c, d, tx, ty), a = _ref[0], b = _ref[1], c = _ref[2], d = _ref[3], tx = _ref[4], ty = _ref[5];
+      _ref = this.matrixFrom(a, b, c, d, tx, ty, true), a = _ref.a, b = _ref.b, c = _ref.c, d = _ref.d, tx = _ref.tx, ty = _ref.ty;
       if (a !== 1 || b !== 0 || c !== 0 || d !== 1) {
         _ref1 = [this.a * a + this.b * c, this.a * b + this.b * d, this.c * a + this.d * c, this.c * b + this.d * d], this.a = _ref1[0], this.b = _ref1[1], this.c = _ref1[2], this.d = _ref1[3];
       }
@@ -916,26 +946,8 @@
       return this;
     };
 
-    Matrix.prototype.matrixFrom = function(a, b, c, d, tx, ty) {
-      var _ref;
-      if (this.isMatrix(a)) {
-        _ref = a, a = _ref.a, b = _ref.b, c = _ref.c, d = _ref.d, tx = _ref.tx, ty = _ref.ty;
-      } else if (!Math.isFloat(a, b, c, d, tx, ty)) {
-        this.invalidMatrixArguments([a, b, c, d, tx, ty]);
-      }
-      return Math.asFloat(a, b, c, d, tx, ty);
-    };
-
     Matrix.prototype.isMatrix = function(m) {
       return Matrix.isMatrix(m);
-    };
-
-    Matrix.prototype.clone = function() {
-      return new Matrix(this);
-    };
-
-    Matrix.prototype.invalidMatrixArguments = function(args) {
-      throw new Error("Invalid arguments " + args + " for a Matrix");
     };
 
     return Matrix;
@@ -961,6 +973,8 @@
       height: NaN,
       rotation: NaN
     }).attachTo(Rectangle);
+
+    Cloneable.attachTo(Rectangle);
 
     Geometry.attachTo(Rectangle);
 
@@ -1265,10 +1279,6 @@
       return context.closePath();
     };
 
-    Rectangle.prototype.clone = function() {
-      return new Rectangle(this);
-    };
-
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {
       var k, v, values, _results;
       values = this.rectangleFrom(x, y, width, height, rotation);
@@ -1306,6 +1316,8 @@
 
     Formattable('Triangle', 'a', 'b', 'c').attachTo(Triangle);
 
+    Cloneable.attachTo(Triangle);
+
     Geometry.attachTo(Triangle);
 
     Surface.attachTo(Triangle);
@@ -1314,7 +1326,11 @@
 
     Intersections.attachTo(Triangle);
 
-    function Triangle(a, b, c) {
+    Triangle.triangleFrom = function(a, b, c) {
+      var _ref;
+      if ((a != null) && typeof a === 'object' && !Point.isPoint(a)) {
+        _ref = a, a = _ref.a, b = _ref.b, c = _ref.c;
+      }
       if (!Point.isPoint(a)) {
         this.invalidPoint('a', a);
       }
@@ -1324,9 +1340,16 @@
       if (!Point.isPoint(c)) {
         this.invalidPoint('c', c);
       }
-      this.a = new Point(a);
-      this.b = new Point(b);
-      this.c = new Point(c);
+      return {
+        a: new Point(a),
+        b: new Point(b),
+        c: new Point(c)
+      };
+    };
+
+    function Triangle(a, b, c) {
+      var _ref;
+      _ref = this.triangleFrom(a, b, c), this.a = _ref.a, this.b = _ref.b, this.c = _ref.c;
     }
 
     Triangle.prototype.center = function() {
@@ -1516,9 +1539,7 @@
       return context.closePath();
     };
 
-    Triangle.prototype.clone = function() {
-      return new Triangle(this.a, this.b, this.c);
-    };
+    Triangle.prototype.triangleFrom = Triangle.triangleFrom;
 
     Triangle.prototype.invalidPoint = function(k, v) {
       throw new Error("Invalid point " + v + " for vertex " + k);
@@ -1544,6 +1565,8 @@
       y: 0,
       segments: 36
     }).attachTo(Circle);
+
+    Cloneable.attachTo(Circle);
 
     Geometry.attachTo(Circle);
 
@@ -1719,10 +1742,6 @@
       return context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     };
 
-    Circle.prototype.clone = function() {
-      return new Circle(this);
-    };
-
     return Circle;
 
   })();
@@ -1744,6 +1763,8 @@
       rotation: 0,
       segments: 36
     }).attachTo(Ellipsis);
+
+    Cloneable.attachTo(Ellipsis);
 
     Geometry.attachTo(Ellipsis);
 
@@ -1869,10 +1890,6 @@
       return context.restore();
     };
 
-    Ellipsis.prototype.clone = function() {
-      return new Ellipsis(this);
-    };
-
     return Ellipsis;
 
   })();
@@ -1882,6 +1899,8 @@
   this.geomjs.Equatable = Equatable;
 
   this.geomjs.Formattable = Formattable;
+
+  this.geomjs.Cloneable = Cloneable;
 
   this.geomjs.Parameterizable = Parameterizable;
 

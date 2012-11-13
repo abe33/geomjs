@@ -4,6 +4,8 @@ require './math'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
+Cloneable = require './mixins/cloneable'
+Parameterizable = require './mixins/parameterizable'
 
 ## Matrix
 
@@ -28,6 +30,15 @@ class Matrix
 
   Equatable.apply(null, PROPERTIES).attachTo Matrix
   Formattable.apply(null, ['Matrix'].concat PROPERTIES).attachTo Matrix
+  Parameterizable('matrixFrom', {
+    a: 1
+    b: 0
+    c: 0
+    d: 1
+    tx: 0
+    ty: 0
+  }).attachTo Matrix
+  Cloneable.attachTo Matrix
 
   #### Class Methods
 
@@ -71,12 +82,7 @@ class Matrix
   #
   # An identity matrix is created if no arguments is provided.
   constructor: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
-    [@a, @b, @c, @d, @tx, @ty] = @matrixFrom a, b, c, d, tx, ty
-
-  ##### Matrix::equals
-  #
-  # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
+    {@a, @b, @c, @d, @tx, @ty} = @matrixFrom a, b, c, d, tx, ty, true
 
   ##### Matrix::transformPoint
   #
@@ -150,7 +156,7 @@ class Matrix
   #
   # Append the passed-in matrix to this matrix.
   append: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
-    [a, b, c, d, tx, ty] = @matrixFrom a, b, c, d, tx, ty
+    {a, b, c, d, tx, ty} = @matrixFrom a, b, c, d, tx, ty, true
     [@a, @b, @c, @d, @tx, @ty] = [
        a*@a + b*@c
        a*@b + b*@d
@@ -165,7 +171,7 @@ class Matrix
   #
   # Prepend the passed-in matrix with this matrix.
   prepend: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
-    [a, b, c, d, tx, ty] = @matrixFrom a, b, c, d, tx, ty
+    {a, b, c, d, tx, ty} = @matrixFrom a, b, c, d, tx, ty, true
     if a isnt 1 or b isnt 0 or c isnt 0 or d isnt 1
       [@a, @b, @c, @d] = [
         @a*a + @b*c
@@ -200,43 +206,26 @@ class Matrix
     ]
     this
 
-  ##### Matrix::matrixFrom
-  #
-  # Takes the arguments passed to a function that accept a matrix
-  # and returns an array with all the components of a matrix.
-  #
-  # It handle both the case where all components are passed to the functions
-  # as numbers or inside an object.
-  matrixFrom: (a, b, c, d, tx, ty) ->
-    if @isMatrix a
-      {a, b, c, d, tx, ty} = a
-    else unless Math.isFloat a, b, c, d, tx, ty
-      @invalidMatrixArguments [a, b, c, d, tx, ty]
-
-    Math.asFloat a, b, c, d, tx, ty
-
   ##### Matrix::isMatrix
   #
   # Alias the `Matrix.isMatrix` method in instances.
   isMatrix: (m) -> Matrix.isMatrix m
 
-  ##### Matrix::clone
-  #
-  # Returns a copy of this matrix.
-  clone: -> new Matrix this
-
   ##### Matrix::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
-  #### Instance Errors Method
 
-  ##### Matrix::invalidMatrixArguments
+  ##### Matrix::equals
   #
-  # Throws an error for invalid matrix components passed to a function.
-  invalidMatrixArguments: (args) ->
-    throw new Error "Invalid arguments #{args} for a Matrix"
+  # See
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
+
+  ##### Matrix::clone
+  #
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
 
 module.exports = Matrix

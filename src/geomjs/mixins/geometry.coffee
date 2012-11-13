@@ -7,7 +7,7 @@ class Geometry extends Mixin
   ##### Geometry.attachTo
   #
   # See
-  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
+  # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
 
   ##### Geometry::points
   #

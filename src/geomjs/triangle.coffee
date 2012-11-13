@@ -2,6 +2,7 @@
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
+Cloneable = require './mixins/cloneable'
 Path = require './mixins/path'
 Surface = require './mixins/surface'
 Geometry = require './mixins/geometry'
@@ -11,21 +12,35 @@ Intersections = require './mixins/intersections'
 class Triangle
   Equatable('a','b','c').attachTo Triangle
   Formattable('Triangle','a','b','c').attachTo Triangle
+  Cloneable.attachTo Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
   Path.attachTo Triangle
   Intersections.attachTo Triangle
 
-  ##### Triangle::constructor
+  #### Class Methods
+
+  ##### Triangle.triangleFrom
   #
-  constructor: (a, b, c) ->
+  @triangleFrom: (a, b, c) ->
+    {a,b,c} = a if a? and typeof a is 'object' and not Point.isPoint a
+
     @invalidPoint 'a', a unless Point.isPoint a
     @invalidPoint 'b', b unless Point.isPoint b
     @invalidPoint 'c', c unless Point.isPoint c
 
-    @a = new Point a
-    @b = new Point b
-    @c = new Point c
+    {
+      a: new Point(a)
+      b: new Point(b)
+      c: new Point(c)
+    }
+
+  #### Instances Methods
+
+  ##### Triangle::constructor
+  #
+  constructor: (a, b, c) ->
+    {@a,@b,@c} = @triangleFrom a, b, c
 
   #### Centers
 
@@ -83,12 +98,12 @@ class Triangle
   ##### Triangle::bounds
   #
   # See
-  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
 
   ##### Triangle::boundingBox
   #
   # See
-  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
   #### Shape Properties
 
@@ -146,12 +161,12 @@ class Triangle
   ##### Triangle::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
+  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
 
   ##### Triangle::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
 
   ##### Triangle::pointAtAngle
   #
@@ -191,7 +206,7 @@ class Triangle
   ##### Triangle::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
 
   ##### Triangle::randomPointInSurface
   #
@@ -242,7 +257,7 @@ class Triangle
   ##### Triangle::pathTangentAt
   #
   # See
-  # [Path.pathTangentAt](src_geomjs_path.html#pathpathtangentat)
+  # [Path.pathTangentAt](src_geomjs_mixins_path.html#pathpathtangentat)
 
   ##### Triangle::pathSteps
   #
@@ -262,12 +277,12 @@ class Triangle
   ##### Triangle::stroke
   #
   # See
-  # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
   ##### Triangle::fill
   #
   # See
-  # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
   ##### Triangle::drawPath
   #
@@ -281,19 +296,24 @@ class Triangle
 
   #### Utilities
 
+  ##### Triangle::triangleFrom
+  #
+  triangleFrom: Triangle.triangleFrom
+
   ##### Triangle::clone
   #
-  clone: -> new Triangle @a, @b, @c
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
   ##### Triangle::equals
   #
   # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Triangle::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
   #### Instance Error Methods
 

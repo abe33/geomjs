@@ -4,6 +4,7 @@ Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
+Cloneable = require './mixins/cloneable'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
 Parameterizable = require './mixins/parameterizable'
@@ -21,6 +22,7 @@ class Ellipsis
     rotation: 0
     segments: 36
   }).attachTo Ellipsis
+  Cloneable.attachTo Ellipsis
   Geometry.attachTo Ellipsis
   Surface.attachTo Ellipsis
   Path.attachTo Ellipsis
@@ -76,12 +78,12 @@ class Ellipsis
   ##### Ellipsis::bounds
   #
   # See
-  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
 
   ##### Ellipsis::boundingBox
   #
   # See
-  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
   #### Geometry API
 
@@ -105,12 +107,12 @@ class Ellipsis
   ##### Ellipsis::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
+  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
 
   ##### Ellipsis::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
 
   #### Surface API
 
@@ -142,7 +144,7 @@ class Ellipsis
   ##### Ellipsis::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
 
 
   #### Path API
@@ -163,24 +165,24 @@ class Ellipsis
   ##### Circle::pathOrientationAt
   #
   # See
-  # [Path.pathOrientationAt](src_geomjs_path.html#pathpathorientationat)
+  # [Path.pathOrientationAt](src_geomjs_mixins_path.html#pathpathorientationat)
 
   ##### Ellipsis::pathTangentAt
   #
   # See
-  # [Path.pathTangentAt](src_geomjs_path.html#pathpathtangentat)
+  # [Path.pathTangentAt](src_geomjs_mixins_path.html#pathpathtangentat)
 
   #### Drawing API
 
   ##### Ellipsis::stroke
   #
   # See
-  # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
   ##### Ellipsis::fill
   #
   # See
-  # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
   ##### Ellipsis::drawPath
   #
@@ -198,16 +200,17 @@ class Ellipsis
 
   ##### Ellipsis::clone
   #
-  clone: -> new Ellipsis this
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
   ##### Ellipsis::equals
   #
   # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Ellipsis::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
 module.exports = Ellipsis

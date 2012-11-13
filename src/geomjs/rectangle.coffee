@@ -2,6 +2,7 @@
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
+Cloneable = require './mixins/cloneable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -22,6 +23,7 @@ class Rectangle
     height: NaN
     rotation: NaN
   }).attachTo Rectangle
+  Cloneable.attachTo Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle
@@ -128,12 +130,12 @@ class Rectangle
   ##### Rectangle::bounds
   #
   # See
-  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
 
   ##### Rectangle::boundingBox
   #
   # See
-  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
   #### Rectangle Manipulation
 
@@ -250,12 +252,12 @@ class Rectangle
   ##### Rectangle::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
+  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
 
   ##### Rectangle::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
 
   ##### Rectangle::pointAtAngle
   #
@@ -280,7 +282,7 @@ class Rectangle
   ##### Rectangle::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
 
   ##### Rectangle::randomPointInSurface
   #
@@ -330,7 +332,7 @@ class Rectangle
   ##### Rectangle::pathTangentAt
   #
   # See
-  # [Path.pathTangentAt](src_geomjs_geometry.html#pathpathTangentAt)
+  # [Path.pathTangentAt](src_geomjs_mixins_geometry.html#pathpathTangentAt)
 
   ##### Rectangle::pathSteps
   #
@@ -352,12 +354,12 @@ class Rectangle
   ##### Rectangle::stroke
   #
   # See
-  # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
   ##### Rectangle::fill
   #
   # See
-  # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
   ##### Rectangle::drawPath
   #
@@ -375,16 +377,17 @@ class Rectangle
   ##### Rectangle::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
   ##### Rectangle::clone
   #
-  clone: -> new Rectangle this
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
   ##### Rectangle::equals
   #
   # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Rectangle::paste
   #

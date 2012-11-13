@@ -2,6 +2,7 @@
 #@toc
 require './math'
 
+Cloneable = require './mixins/cloneable'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 
@@ -22,6 +23,7 @@ Formattable = require './mixins/formattable'
 class Point
   Equatable('x', 'y').attachTo Point
   Formattable('Point','x', 'y').attachTo Point
+  Cloneable.attachTo Point
 
   #### Class Methods
 
@@ -333,17 +335,12 @@ class Point
   ##### Point::equals
   #
   # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
-
-  ##### Point::clone
-  #
-  # Returns a copy of the current point.
-  clone: -> new Point this
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Point::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
   #### Instances Error Methods
 

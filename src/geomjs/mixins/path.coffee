@@ -4,7 +4,7 @@ class Path extends Mixin
   ##### Path.attachTo
   #
   # See
-  # [Mixin.attachTo](src_geomjs_mixin.html#mixinattachto)
+  # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
 
   ##### Path::length
   #

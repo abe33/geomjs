@@ -1,6 +1,7 @@
 # @toc
 Point = require './point'
 Equatable = require './mixins/equatable'
+Cloneable = require './mixins/cloneable'
 Formattable = require './mixins/formattable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
@@ -14,6 +15,7 @@ class Circle
   Formattable('Circle','x','y','radius').attachTo Circle
   Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
     .attachTo Circle
+  Cloneable.attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
   Path.attachTo Circle
@@ -97,12 +99,12 @@ class Circle
   ##### Circle::bounds
   #
   # See
-  # [Geometry.bounds](src_geomjs_geometry.html#geometrybounds)
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
 
   ##### Circle::boundingBox
   #
   # See
-  # [Geometry.boundingbox](src_geomjs_geometry.html#geometryboundingbox)
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
   #### Geometry API
 
@@ -119,12 +121,12 @@ class Circle
   ##### Circle::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_intersections.html#intersectionsintersects)
+  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
 
   ##### Circle::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_intersections.html#intersectionsintersections)
+  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
 
   ##### Circle::eachLineIntersections
   #
@@ -187,7 +189,7 @@ class Circle
   ##### Circle::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
 
   #### Path API
 
@@ -202,24 +204,24 @@ class Circle
   ##### Circle::pathOrientationAt
   #
   # See
-  # [Path.pathOrientationAt](src_geomjs_path.html#pathpathorientationat)
+  # [Path.pathOrientationAt](src_geomjs_mixins_path.html#pathpathorientationat)
 
   ##### Circle::pathTangentAt
   #
   # See
-  # [Path.pathTangentAt](src_geomjs_path.html#pathpathtangentat)
+  # [Path.pathTangentAt](src_geomjs_mixins_path.html#pathpathtangentat)
 
   #### Drawing API
 
   ##### Circle::stroke
   #
   # See
-  # [Geometry.stroke](src_geomjs_geometry.html#geometrystroke)
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
   ##### Circle::fill
   #
   # See
-  # [Geometry.fill](src_geomjs_geometry.html#geometryfill)
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
   ##### Circle::drawPath
   #
@@ -232,15 +234,16 @@ class Circle
   ##### Circle::equals
   #
   # See
-  # [Equatable.equals](src_geomjs_equatable.html#equatableequals)
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Circle::clone
   #
-  clone: -> new Circle this
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
   ##### Circle::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_formattable.html#formattabletostring)
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
 module.exports = Circle
