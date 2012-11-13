@@ -170,8 +170,7 @@ class Triangle
   ##### Triangle::contains
   #
   contains: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
-    p = new Point x,y
+    p = new Point xOrPt, y
 
     v0 = @ac()
     v1 = @ab()

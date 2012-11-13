@@ -132,7 +132,7 @@ class Rectangle
   ##### Rectangle::setCenter
   #
   setCenter: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
     c = @center()
 
     @x += x - c.x
@@ -167,7 +167,7 @@ class Rectangle
   ##### Rectangle::inflate
   #
   inflate: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
     @width += x
     @height += y
     this
@@ -203,7 +203,7 @@ class Rectangle
   ##### Rectangle::inflateTopLeft
   #
   inflateTopLeft: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
     @inflateLeft x
     @inflateTop y
     this
@@ -211,7 +211,7 @@ class Rectangle
   ##### Rectangle::inflateTopRight
   #
   inflateTopRight: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
     @inflateRight x
     @inflateTop y
     this
@@ -219,7 +219,7 @@ class Rectangle
   ##### Rectangle::inflateBottomLeft
   #
   inflateBottomLeft: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
     @inflateLeft x
     @inflateBottom y
     this
@@ -266,8 +266,7 @@ class Rectangle
   ##### Rectangle::contains
   #
   contains: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
-    {x,y} = new Point(x,y).rotateAround(@topLeft(), -@rotation)
+    {x,y} = new Point(xOrPt, y).rotateAround(@topLeft(), -@rotation)
     (@x <= x <= @x + @width) and (@y <= y <= @y + @height)
 
   ##### Rectangle::containsGeometry
@@ -384,7 +383,7 @@ class Rectangle
   paste: (x, y, width, height, rotation) ->
     values = @rectangleFrom x, y, width, height, rotation
     PROPERTIES.forEach (k,i) =>
-      @[k] = parseFloat values[i] if Point.isFloat values[i]
+      @[k] = parseFloat values[i] if Math.isFloat values[i]
 
   ##### Rectangle::rectangleFrom
   #
@@ -396,7 +395,7 @@ class Rectangle
   ##### Rectangle::defaultToZero
   #
   defaultToZero: (values...) ->
-    values[i] = 0 for n,i in values when not Point.isFloat n
+    values[i] = 0 for n,i in values when not Math.isFloat n
     values
 
 module.exports = Rectangle

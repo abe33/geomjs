@@ -4,6 +4,7 @@ require './math'
 
 Equatable = require './equatable'
 Formattable = require './formattable'
+Parameterizable = require './parameterizable'
 
 ## Point
 
@@ -18,10 +19,44 @@ Formattable = require './formattable'
 # **Note:** Any functions in geomjs that accept a `Point` object also allow
 # to use numbers instead, this is obviously also the case in the `Point`
 # class. For more details about how to achieve the same behavior in your own
-# functions please refer to the [`Point.coordsFrom`](#pointcoordsfrom) method.
+# functions please refer to the [`Point.pointFrom`](#pointcoordsfrom) method.
 class Point
   Equatable('x', 'y').attachTo Point
   Formattable('Point','x', 'y').attachTo Point
+
+  ##### Point.pointFrom
+  #
+  # Returns an array containing the x and y of a point according
+  # to the provided arguments:
+  #
+  #     translate = (xOrPt, y) ->
+  #       {x,y} = Point.pointFrom xOrPt, y
+  #       # ...
+  #
+  # The first argument can be either an object or a number.
+  # In the case the argument is an object, the function will
+  # extract the x and y values from it. However, if the `strict`
+  # argument is `true`, the function will throw an error if
+  # the object does not have either x or y property:
+  #
+  #     Point.pointFrom x: 10            # will not throw
+  #     Point.pointFrom x: 10, 0, true   # will throw
+  #
+  # In the case the object is incomplete or empty, and with
+  # the strict mode disabled, the missing property will end
+  # being set to `NaN`.
+  #
+  #     {x,y} = Point.pointFrom x: 10 # [10, NaN]
+  #
+  # Strings are allowed as arguments as well as values for
+  # the x and y properties of the passed-in object:
+  #
+  #     {x,y} = Point.pointFrom '2.6', '5.4'
+  #     {x,y} = Point.pointFrom x: '2.6', y: '5.4'
+  #
+  # For further examples, feel free to take a look at the
+  # methods of the `Point` class.
+  Parameterizable('pointFrom', x: 0, y: 0, true).attachTo Point
 
   #### Class Methods
 
@@ -35,58 +70,6 @@ class Point
   #     Point.isPoint x: 0, y: 0 # true
   #     Point.isPoint x: 0       # false
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
-
-  ##### Point.isFloat
-  #
-  # Returns true if the passed-in argument can be casted to a number.
-  #
-  #     Point.isFloat 0.245 # true
-  #     Point.isFloat '12'  # true
-  #     Point.isFloat 'foo' # false
-  @isFloat = (n) -> not isNaN parseFloat n
-
-  ##### Point.coordsFrom
-  #
-  # Returns an array containing the x and y of a point according
-  # to the provided arguments:
-  #
-  #     translate = (xOrPt, y) ->
-  #       [x,y] = Point.coordsFrom xOrPt, y
-  #       # ...
-  #
-  # The first argument can be either an object or a number.
-  # In the case the argument is an object, the function will
-  # extract the x and y values from it. However, if the `strict`
-  # argument is `true`, the function will throw an error if
-  # the object does not have either x or y property:
-  #
-  #     Point.coordsFrom x: 10            # will not throw
-  #     Point.coordsFrom x: 10, 0, true   # will throw
-  #
-  # In the case the object is incomplete or empty, and with
-  # the strict mode disabled, the missing property will end
-  # being set to `NaN`.
-  #
-  #     [x,y] = Point.coordsFrom x: 10 # [10, NaN]
-  #
-  # Strings are allowed as arguments as well as values for
-  # the x and y properties of the passed-in object:
-  #
-  #     [x,y] = Point.coordsFrom '2.6', '5.4'
-  #     [x,y] = Point.coordsFrom x: '2.6', y: '5.4'
-  #
-  # For further examples, feel free to take a look at the
-  # methods of the `Point` class.
-  @coordsFrom: (xOrPt, y, strict=false) ->
-    x = xOrPt
-    {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
-
-    x = parseFloat x
-    y = parseFloat y
-
-    @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
-
-    [x,y]
 
   ##### Point.polar
   #
@@ -114,7 +97,7 @@ class Point
     extract = (args, name) =>
       pt = null
       if @isPoint args[0] then pt = args.shift()
-      else if @isFloat(args[0]) and @isFloat(args[1])
+      else if Math.isFloat(args[0]) and Math.isFloat(args[1])
         pt = new Point args[0], args[1]
         args.splice 0, 2
       else @missingPoint args, name
@@ -143,13 +126,6 @@ class Point
   @missingPoint: (args, pos) ->
     throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
 
-  ##### Point.notAPoint
-  #
-  # Throws an error for an invalid point in `Point.coordsFrom` with
-  # strict mode enabled.
-  @notAPoint: (pt) ->
-    throw new Error "#{pt} isn't a point-like object"
-
   #### Instances Methods
 
   ##### Point::constructor
@@ -163,7 +139,7 @@ class Point
   #     new Point 0, 0
   #     new Point x: 0, y: 0
   constructor: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y
+    {x,y} = @pointFrom xOrPt, y
     [@x,@y] = @defaultToZero x, y
 
   ##### Point::length
@@ -193,7 +169,7 @@ class Point
   #     # angle = 45
   angleWith: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
-    [x, y] = @coordsFrom xOrPt, y, true
+    {x,y} = @pointFrom xOrPt, y, true
 
     d = @normalize().dot new Point(x,y).normalize()
 
@@ -211,7 +187,7 @@ class Point
   #     normalized = point.normalize(6)
   #     normalized.length() # 6
   normalize: (length=1) ->
-    @invalidLength length unless @isFloat length
+    @invalidLength length unless Math.isFloat length
     l = @length()
     new Point @x / l * length, @y / l * length
 
@@ -226,7 +202,7 @@ class Point
   #     inc = point.add new Point 1.8, 8
   #     # inc = [object Point(7,17)]
   add: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y
+    {x,y} = @pointFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x + x, @y + y
 
@@ -241,7 +217,7 @@ class Point
   #     inc = point.subtract new Point 1.8, 8
   #     # inc = [object Point(2,-9)]
   subtract: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y
+    {x,y} = @pointFrom xOrPt, y
     [x,y] = @defaultToZero x, y
     new Point @x - x, @y - y
 
@@ -253,7 +229,7 @@ class Point
   #     # dot = 83
   dot: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
-    [x,y] = @coordsFrom xOrPt, y, true
+    {x,y} = @pointFrom xOrPt, y, true
     @x * x + @y * y
 
   ##### Point::distance
@@ -264,7 +240,7 @@ class Point
   #     # distance = 2
   distance: (xOrPt, y) ->
     @noPoint 'dot' if not xOrPt? and not y?
-    [x,y] = @coordsFrom xOrPt, y, true
+    {x,y} = @pointFrom xOrPt, y, true
     @subtract(x,y).length()
 
   ##### Point::scale
@@ -275,7 +251,7 @@ class Point
   #     scaled = point.scale 2
   #     # scaled = [object Point(2,2)]
   scale: (n) ->
-    @invalidScale n unless @isFloat n
+    @invalidScale n unless Math.isFloat n
     new Point @x * n, @y * n
 
   ##### Point::rotate
@@ -287,7 +263,7 @@ class Point
   #     rotated = point.rotate 90
   #     # rotated = [object Point(0,10)]
   rotate: (n) ->
-    @invalidRotation n unless @isFloat n
+    @invalidRotation n unless Math.isFloat n
     l = @length()
     a = Math.atan2(@y, @x) + Math.degToRad(n)
     x = Math.cos(a) * l
@@ -305,7 +281,7 @@ class Point
   #     # rotated = [object Point(20, -10)]
   rotateAround: (xOrPt, y, a) ->
     a = y if @isPoint xOrPt
-    [x, y] = @coordsFrom xOrPt, y, true
+    {x,y} = @pointFrom xOrPt, y, true
 
     @subtract(x,y).rotate(a).add(x,y)
 
@@ -315,16 +291,6 @@ class Point
   #
   # Alias the `Point.isPoint` method in instances.
   isPoint: (pt) -> Point.isPoint pt
-
-  ##### Point::isFloat
-  #
-  # Alias the `Point.isFloat` method in instances.
-  isFloat: (n) -> Point.isFloat n
-
-  ##### Point::coordsFrom
-  #
-  # Alias the `Point.coordsFrom` method in instances.
-  coordsFrom: (xOrPt, y, strict) -> Point.coordsFrom xOrPt, y, strict
 
   ##### Point::defaultToZero
   #
@@ -346,7 +312,7 @@ class Point
   #     point.paste new Point 4, 4
   #     # point = [object Point(4,4)]
   paste: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y
+    {x,y} = @pointFrom xOrPt, y
     @x = x unless isNaN x
     @y = y unless isNaN y
     this

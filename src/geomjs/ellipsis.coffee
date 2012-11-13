@@ -124,8 +124,7 @@ class Ellipsis
   ##### Ellipsis::contains
   #
   contains: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y
-    p = new Point(x,y)
+    p = new Point xOrPt, y
     c = @center()
     d = p.subtract c
     a = d.angle()
@@ -209,12 +208,12 @@ class Ellipsis
     if typeof radius1 is 'object'
       {radius1, radius2, x, y, rotation, segments} = radius1
 
-    radius1 = 1 unless Point.isFloat radius1
-    radius2 = 1 unless Point.isFloat radius2
-    x = 0 unless Point.isFloat x
-    y = 0 unless Point.isFloat y
-    rotation = 0 unless Point.isFloat rotation
-    segments = 36 unless Point.isFloat segments
+    radius1 = 1 unless Math.isFloat radius1
+    radius2 = 1 unless Math.isFloat radius2
+    x = 0 unless Math.isFloat x
+    y = 0 unless Math.isFloat y
+    rotation = 0 unless Math.isFloat rotation
+    segments = 36 unless Math.isFloat segments
 
     [radius1, radius2, x, y, rotation, segments]
 

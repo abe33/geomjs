@@ -177,7 +177,7 @@ class Circle
   ##### Circle::contains
   #
   contains: (xOrPt, y) ->
-    [x,y] = Point.coordsFrom xOrPt, y, true
+    {x,y} = Point.pointFrom xOrPt, y, true
 
     @center().subtract(x,y).length() <= @radius
 
@@ -248,10 +248,10 @@ class Circle
     if typeof radiusOrCircle is 'object'
       {radius, x, y, segments} = radiusOrCircle
 
-    radius = 1 unless Point.isFloat radius
-    x = 0 unless Point.isFloat x
-    y = 0 unless Point.isFloat y
-    segments = 36 unless Point.isFloat segments
+    radius = 1 unless Math.isFloat radius
+    x = 0 unless Math.isFloat x
+    y = 0 unless Math.isFloat y
+    segments = 36 unless Math.isFloat segments
 
     [radius, x, y, segments]
 

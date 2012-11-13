@@ -52,16 +52,7 @@ class Matrix
   #     Matris.isMatrix {}          # false
   @isMatrix: (m) ->
     return false unless m?
-    return false for k in PROPERTIES when not @isFloat m[k]
-    true
-
-  # Returns `true` if all the arguments passed to function are
-  # floats or can be casted to floats.
-  #
-  #     Matrix.isFloat 1, 0.2, '0.5' # true
-  #     Matrix.isFloat 'foo'         # false
-  @isFloat: (floats...) ->
-    return false for float in floats when isNaN parseFloat float
+    return false for k in PROPERTIES when not Math.isFloat m[k]
     true
 
   #### Instances Methods
@@ -102,16 +93,15 @@ class Matrix
     if not xOrPt? and not y?
       throw new Error "transformPoint was called without arguments"
 
-    [x,y] = Point.coordsFrom xOrPt, y, true
-    x2 = x*@a + y*@c + @tx
-    y2 = x*@b + y*@d + @ty
-    new Point x2, y2
+    {x,y} = Point.pointFrom xOrPt, y, true
+    new Point x*@a + y*@c + @tx,
+              x*@b + y*@d + @ty
 
   ##### Matrix::translate
   #
   # Translates the matrix by the amount of the passed-in point.
-  translate: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y, 0
+  translate: (xOrPt=0, y=0) ->
+    {x,y} = Point.pointFrom xOrPt, y
 
     @tx += x
     @ty += y
@@ -120,8 +110,8 @@ class Matrix
   ##### Matrix::scale
   #
   # Scales the matrix by the amount of the passed-in point.
-  scale: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y, 1
+  scale: (xOrPt=1, y=1) ->
+    {x,y} = Point.pointFrom xOrPt, y
 
     @a *= x
     @d *= y
@@ -148,8 +138,8 @@ class Matrix
   ##### Matrix::skew
   #
   # Skews the matrix by the amount of the passed-in point.
-  skew: (xOrPt, y) ->
-    [x,y] = @coordsFrom xOrPt, y, 0
+  skew: (xOrPt=0, y=0) ->
+    {x,y} = Point.pointFrom xOrPt, y, 0
     [x,y] = [Math.degToRad(x), Math.degToRad(y)]
     @append Math.cos(y),
             Math.sin(y),
@@ -210,13 +200,6 @@ class Matrix
     ]
     this
 
-  ##### Matrix::asFloat
-  #
-  # Returns the passed-in arguments casted into floats.
-  asFloat: (floats...) ->
-    floats[i] = parseFloat n for n,i in floats
-    floats
-
   ##### Matrix::matrixFrom
   #
   # Takes the arguments passed to a function that accept a matrix
@@ -227,30 +210,15 @@ class Matrix
   matrixFrom: (a, b, c, d, tx, ty) ->
     if @isMatrix a
       {a, b, c, d, tx, ty} = a
-    else unless @isFloat a, b, c, d, tx, ty
+    else unless Math.isFloat a, b, c, d, tx, ty
       @invalidMatrixArguments [a, b, c, d, tx, ty]
 
-    @asFloat a, b, c, d, tx, ty
-
-  ##### Matrix::coordsFrom
-  #
-  # Takes the arguments passed to a function that accept a point
-  # and returns an array with the point coordinates.
-  coordsFrom: (xOrPt, y, def) ->
-    [x,y] = Point.coordsFrom xOrPt, y
-    x = def if isNaN x
-    y = def if isNaN y
-    [x,y]
+    Math.asFloat a, b, c, d, tx, ty
 
   ##### Matrix::isMatrix
   #
   # Alias the `Matrix.isMatrix` method in instances.
   isMatrix: (m) -> Matrix.isMatrix m
-
-  ##### Matrix::isFloat
-  #
-  # Alias the `Matrix.isFloat` method in instances.
-  isFloat: (floats...) -> Matrix.isFloat.apply Matrix, floats
 
   ##### Matrix::clone
   #
