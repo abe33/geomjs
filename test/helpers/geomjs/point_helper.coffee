@@ -75,18 +75,6 @@ global.pointOperator = (operator) ->
         it "should #{message}", ->
           block.call this, @point[operator] pointLike x2, y2
 
-        describe 'containing strings', ->
-          it "should #{message}", ->
-            block.call this, @point[operator] pointLike "#{x2}","#{y2}"
-
-      describe 'with two numbers as arguments', ->
-        it "should #{message}", ->
-          block.call this, @point[operator] x2, y2
-
-      describe 'with two string as arguments', ->
-        it "should #{message}", ->
-          block.call this, @point[operator] "#{x2}", "#{y2}"
-
       if options.emptyArguments?
         describe 'with no argument', ->
           operatorOption options.emptyArguments,
@@ -135,22 +123,6 @@ global.calledWithPoints = (coordinates...) ->
                      @[options.source][options.method](pointLike x, y),
                      x, y
 
-        describe "containing strings '#{x}' and '#{y}'", ->
-          it "should #{message}", ->
-            block.call this,
-                       @[options.source][options.method](pointLike("#{x}",
-                                                                   "#{y}")),
-                       x, y
-
-      describe "called with numbers #{x} and #{y}", ->
-        it "should #{message}", ->
-          block.call this, @[options.source][options.method](x, y), x, y
-
-      describe "called with strings '#{x}' and '#{y}'", ->
-        it "should #{message}", ->
-          block.call this,
-                     @[options.source][options.method]("#{x}", "#{y}"),
-                     x, y
 
 global.pointOf = (source, method, args...) ->
   shouldBe: (x, y) ->
