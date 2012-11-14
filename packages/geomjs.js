@@ -1931,6 +1931,8 @@
 
     Geometry.attachTo(Diamond);
 
+    Intersections.attachTo(Diamond);
+
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
       var args;
       args = this.diamondFrom(topLength, rightLength, bottomLength, leftLength, x, y, rotation);
@@ -2014,12 +2016,104 @@
       return true;
     };
 
+    Diamond.prototype.pointAtAngle = function(angle) {
+      var center, vec, _ref;
+      center = this.center();
+      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      return (_ref = this.intersections({
+        points: function() {
+          return [center, vec];
+        }
+      })) != null ? _ref[0] : void 0;
+    };
+
     Diamond.prototype.length = function() {
       return this.topRightEdge().length() + this.topLeftEdge().length() + this.bottomRightEdge().length() + this.bottomLeftEdge().length();
     };
 
+    Diamond.prototype.pathPointAt = function(n, pathBasedOnLength) {
+      var p1, p2, p3, _ref;
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+      if (n < p1) {
+        return this.topCorner().add(this.topRightEdge().scale(Math.map(n, 0, p1, 0, 1)));
+      } else if (n < p2) {
+        return this.rightCorner().add(this.bottomRightEdge().scale(Math.map(n, p1, p2, 0, 1)));
+      } else if (n < p3) {
+        return this.bottomCorner().add(this.bottomLeftEdge().scale(Math.map(n, p2, p3, 0, 1)));
+      } else {
+        return this.leftCorner().add(this.topLeftEdge().scale(Math.map(n, p3, 1, 0, 1)));
+      }
+    };
+
+    Diamond.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
+      var p, p1, p2, p3, _ref;
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+      if (n < p1) {
+        p = this.topRightEdge();
+      } else if (n < p2) {
+        p = this.bottomRightEdge();
+      } else if (n < p3) {
+        p = this.bottomLeftEdge().scale(-1);
+      } else {
+        p = this.topLeftEdge().scale(-1);
+      }
+      return p.angle();
+    };
+
+    Diamond.prototype.pathSteps = function(pathBasedOnLength) {
+      var l, p1, p2, p3;
+      if (pathBasedOnLength == null) {
+        pathBasedOnLength = true;
+      }
+      if (pathBasedOnLength) {
+        l = this.length();
+        p1 = this.topRightEdge().length() / l;
+        p2 = p1 + this.bottomRightEdge().length() / l;
+        p3 = p2 + this.bottomLeftEdge().length() / l;
+      } else {
+        p1 = 1 / 4;
+        p2 = 1 / 2;
+        p3 = 3 / 4;
+      }
+      return [p1, p2, p3];
+    };
+
     Diamond.prototype.acreage = function() {
       return this.topLeftQuadrant().acreage() + this.topRightQuadrant().acreage() + this.bottomLeftQuadrant().acreage() + this.bottomRightQuadrant().acreage();
+    };
+
+    Diamond.prototype.randomPointInSurface = function(random) {
+      var a, a1, a2, a3, a4, l, l1, l2, l3, l4, n, q1, q2, q3, q4;
+      l = this.acreage();
+      q1 = this.topLeftQuadrant();
+      q2 = this.topRightQuadrant();
+      q3 = this.bottomRightQuadrant();
+      q4 = this.bottomLeftQuadrant();
+      a1 = q1.acreage();
+      a2 = q2.acreage();
+      a3 = q3.acreage();
+      a4 = q4.acreage();
+      a = a1 + a2 + a3 + a4;
+      l1 = a1 / a;
+      l2 = a2 / a;
+      l3 = a3 / a;
+      l4 = a4 / a;
+      n = random.get();
+      if (n < l1) {
+        return q1.randomPointInSurface(random);
+      } else if (n < l1 + l2) {
+        return q2.randomPointInSurface(random);
+      } else if (n < l1 + l2 + l3) {
+        return q3.randomPointInSurface(random);
+      } else {
+        return q4.randomPointInSurface(random);
+      }
     };
 
     return Diamond;
