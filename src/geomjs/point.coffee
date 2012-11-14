@@ -73,12 +73,7 @@ class Point
   @pointFrom: (xOrPt, y, strict=false) ->
     x = xOrPt
     {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
-
-    x = parseFloat x
-    y = parseFloat y
-
     @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
-
     {x,y}
 
   ##### Point.polar
@@ -136,6 +131,9 @@ class Point
   @missingPoint: (args, pos) ->
     throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
 
+  @notAPoint: (args) ->
+    throw new Error "#{args} is not a point"
+
   #### Instances Methods
 
   ##### Point::constructor
@@ -148,9 +146,11 @@ class Point
   #     new Point
   #     new Point 0, 0
   #     new Point x: 0, y: 0
-  constructor: (xOrPt, y) ->
-    {x,y} = @pointFrom xOrPt, y
-    [@x,@y] = @defaultToZero x, y
+  constructor: (x, y) ->
+    y = x.y or y if x?; y = 0 if isNaN y
+    x = x.x or x if x?; x = 0 if isNaN x
+    @x = x
+    @y = y
 
   ##### Point::length
   #
@@ -177,9 +177,12 @@ class Point
   #     point2 = new Point 10, 10
   #     angle = point1.angleWith point2
   #     # angle = 45
-  angleWith: (xOrPt, y) ->
-    @noPoint 'dot' if not xOrPt? and not y?
-    {x,y} = @pointFrom xOrPt, y, true
+  angleWith: (x, y) ->
+    @noPoint 'dot' if not x? and not y?
+    isPoint = @isPoint x
+    y = if isPoint then x.y else y
+    x = if isPoint then x.x else x
+    Point.notAPoint [x,y] if (isNaN(x) or isNaN(y))
 
     d = @normalize().dot new Point(x,y).normalize()
 
@@ -211,9 +214,9 @@ class Point
   #     inc = point.add x: 0.2
   #     inc = point.add new Point 1.8, 8
   #     # inc = [object Point(7,17)]
-  add: (xOrPt, y) ->
-    {x,y} = @pointFrom xOrPt, y
-    [x,y] = @defaultToZero x, y
+  add: (x, y) ->
+    y = x.y or y if x?; y = 0 if isNaN y
+    x = x.x or x if x?; x = 0 if isNaN x
     new Point @x + x, @y + y
 
   ##### Point::subtract
@@ -226,9 +229,9 @@ class Point
   #     inc = point.subtract x: 0.2
   #     inc = point.subtract new Point 1.8, 8
   #     # inc = [object Point(2,-9)]
-  subtract: (xOrPt, y) ->
-    {x,y} = @pointFrom xOrPt, y
-    [x,y] = @defaultToZero x, y
+  subtract: (x, y) ->
+    y = x.y or y if x?; y = 0 if isNaN y
+    x = x.x or x if x?; x = 0 if isNaN x
     new Point @x - x, @y - y
 
   ##### Point::dot
@@ -237,9 +240,12 @@ class Point
   #
   #     dot = new Point(5,6).dot(7,8)
   #     # dot = 83
-  dot: (xOrPt, y) ->
-    @noPoint 'dot' if not xOrPt? and not y?
-    {x,y} = @pointFrom xOrPt, y, true
+  dot: (x, y) ->
+    @noPoint 'dot' if not x? and not y?
+    isPoint = @isPoint x
+    y = if isPoint then x.y else y
+    x = if isPoint then x.x else x
+    Point.notAPoint [x,y] if (isNaN(x) or isNaN(y))
     @x * x + @y * y
 
   ##### Point::distance
@@ -248,9 +254,12 @@ class Point
   #
   #     distance = new Point(0,2).distance(2,2)
   #     # distance = 2
-  distance: (xOrPt, y) ->
-    @noPoint 'dot' if not xOrPt? and not y?
-    {x,y} = @pointFrom xOrPt, y, true
+  distance: (x, y) ->
+    @noPoint 'distance' if not x? and not y?
+    isPoint = @isPoint x
+    y = if isPoint then x.y else y
+    x = if isPoint then x.x else x
+    Point.notAPoint [x,y] if (isNaN(x) or isNaN(y))
     @subtract(x,y).length()
 
   ##### Point::scale
@@ -289,9 +298,11 @@ class Point
   #     origin = new Point 20, 0
   #     rotated = point.rotateAround origin, 90
   #     # rotated = [object Point(20, -10)]
-  rotateAround: (xOrPt, y, a) ->
-    a = y if @isPoint xOrPt
-    {x,y} = @pointFrom xOrPt, y, true
+  rotateAround: (x, y, a) ->
+    isPoint = @isPoint x
+    a = y if isPoint
+    y = if isPoint then x.y else y
+    x = if isPoint then x.x else x
 
     @subtract(x,y).rotate(a).add(x,y)
 
@@ -326,8 +337,11 @@ class Point
   #
   #     point.paste new Point 4, 4
   #     # point = [object Point(4,4)]
-  paste: (xOrPt, y) ->
-    {x,y} = @pointFrom xOrPt, y
+  paste: (x, y) ->
+    return this if not x? and not y?
+    isObject = x? and typeof x is 'object'
+    y = if isObject then x.y else y
+    x = if isObject then x.x else x
     @x = x unless isNaN x
     @y = y unless isNaN y
     this

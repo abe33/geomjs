@@ -183,14 +183,6 @@ describe 'Point', ->
         pt2 = pt1.rotateAround 20, 0, 90
         expect(pt2).toBePoint(20, -10)
 
-    describe 'with a point and a string', ->
-      describe 'containing a number', ->
-        it 'should return a new point rotated around the given point', ->
-          pt1 = point 10, 0
-          pt2 = point 20, 0
-          pt3 = pt1.rotateAround pt2, '90'
-          expect(pt3).toBePoint(20, -10)
-
     describe 'with two numbers', ->
       it 'should throw an error', ->
         expect(-> point(1,2).rotateAround(10,1)).toThrow()
@@ -208,15 +200,6 @@ describe 'Point', ->
       describe 'that is negative', ->
         it 'should return a new scaled point with negative coordinates', ->
           expect(point(1,2).scale(-2)).toBePoint(-2,-4)
-
-    describe 'with a string', ->
-      describe 'that contains a number', ->
-        it 'should return a new scaled point', ->
-          expect(point(1,2).scale('2')).toBePoint(2,4)
-
-      describe 'that not contains a number', ->
-        it 'should throw an error', ->
-          expect(-> point(1,2).scale('foo')).toThrow()
 
     describe 'without arguments', ->
       it 'should throw an error', ->
@@ -272,19 +255,19 @@ describe 'Point', ->
         it 'should return a new point with length equal to 0', ->
           expect(point(5,6).normalize(0).length()).toBeClose(0)
 
-    describe 'with a string', ->
-      describe 'containing a number', ->
-        beforeEach ->
-          @normalizedLength = '10.5'
-          @point1 = point(5,6)
-          @point2 = @point1.normalize(@normalizedLength)
+    # describe 'with a string', ->
+    #   describe 'containing a number', ->
+    #     beforeEach ->
+    #       @normalizedLength = '10.5'
+    #       @point1 = point(5,6)
+    #       @point2 = @point1.normalize(@normalizedLength)
 
-        it 'should return a new point with length equal to the number', ->
-          expect(@point2.length()).toBeClose(parseFloat @normalizedLength)
+    #     it 'should return a new point with length equal to the number', ->
+    #       expect(@point2.length()).toBeClose(parseFloat @normalizedLength)
 
-      describe 'containing anything but a number', ->
-        it 'should throw an error', ->
-          expect(-> point(5,6).normalize('foo')).toThrow()
+    #   describe 'containing anything but a number', ->
+    #     it 'should throw an error', ->
+    #       expect(-> point(5,6).normalize('foo')).toThrow()
 
     describe 'with an object', ->
       it 'should throw an error', ->
@@ -357,19 +340,6 @@ describe 'Point', ->
           expect(pt.x).toBeClose(p1.x + xdif * pos)
           expect(pt.y).toBeClose(p1.y + ydif * pos)
 
-        describe 'with both coordinates and position containing strings', ->
-           it 'should return a point between the point argument
-            and the coordinates defined by the two first floats'.squeeze(), ->
-            p1 = point('4.5', '3.0')
-            x2 = '6.2'
-            y2 = '0.1'
-            pos = '0.7'
-            pt = Point.interpolate(p1, x2, y2, pos)
-            xdif = x2 - p1.x
-            ydif = y2 - p1.y
-
-            expect(pt.x).toBeClose(p1.x + xdif * pos)
-            expect(pt.y).toBeClose(p1.y + ydif * pos)
 
       describe 'with the point as third argument', ->
         it 'should return a point between the point argument
