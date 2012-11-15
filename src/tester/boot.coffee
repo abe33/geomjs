@@ -1,9 +1,8 @@
-
 $(document).ready ->
   stats = new Stats
   stats.setMode 0
 
-  $('div').prepend(stats.domElement)
+  $('#canvas').prepend(stats.domElement)
 
   requestAnimationFrame = window.mozRequestAnimationFrame or
                           window.webkitRequestAnimationFrame or
@@ -25,61 +24,94 @@ $(document).ready ->
     new geomjs.Ellipsis(120, 60, 470, 180, 10)
     new geomjs.Diamond(50,100, 60, 40, 420, 250)
   ]
-  testers = geometries.map (g) -> new Tester g
+
+  options =
+    bounds: true
+    path: true
+    surface: true
+    angle: true
+    intersections: true
+
+  testers = geometries.map (g) ->
+    tester = new Tester g, options
+    options[tester.name] = true
+    tester
 
   t = new Date().valueOf()
 
   render = ->
     context.fillStyle = '#042029'
     context.fillRect(0, 0, canvas.width(), canvas.height())
-    testers.forEach (t) -> t.render context
+    testers.forEach (t) ->
+      t.render context if options[t.name]
 
-    intersections = []
-    tested = {}
+    if options.intersections
+      intersections = []
+      tested = {}
 
-    for g1 in geometries
-      for g2 in geometries
-        continue if g1 is g2
-        continue if tested[g2 + g1]
+      for g1 in geometries
+        continue unless options[g1.classname().toLowerCase()]
+        for g2 in geometries
+          continue unless options[g2.classname().toLowerCase()]
+          continue if g1 is g2
+          continue if tested[g2 + g1]
 
-        a = g1.intersections g2
-        intersections = intersections.concat a if a?
-        tested[g1 + g2] = true
+          a = g1.intersections g2
+          intersections = intersections.concat a if a?
+          tested[g1 + g2] = true
 
-    context.fillStyle = '#ffffff'
-    for intersection in intersections
-      context.fillRect intersection.x-2, intersection.y-2, 4, 4
+      context.fillStyle = '#ffffff'
+      for intersection in intersections
+        context.fillRect intersection.x-2, intersection.y-2, 4, 4
+
+  [rectangle, triangle, circle, ellipsis, diamond] = geometries
 
   animate = (n) ->
     stats.begin()
     d = n - t
     t = n
 
-    testers.forEach (t) -> t.animate d
+    testers.forEach (t) -> t.animate d if options[t.name]
 
-    geometries[0].rotateAroundCenter(d / 70)
-    geometries[0].inflateAroundCenter(Math.cos(t * Math.PI / 180) ,
-                                      Math.sin(t * Math.PI / 180) )
+    rectangle.rotateAroundCenter(d / 70)
+    rectangle.inflateAroundCenter(Math.cos(t * Math.PI / 180) ,
+                                  Math.sin(t * Math.PI / 180) )
 
-    geometries[1].rotateAroundCenter(-d / 60)
-    geometries[1].scaleAroundCenter(1 + Math.cos(t / 12 * Math.PI / 180) / 200)
+    triangle.rotateAroundCenter(-d / 60)
+    triangle.scaleAroundCenter(1 + Math.cos(t / 12 * Math.PI / 180) / 200)
 
-    geometries[2].radius = 40 + Math.sin(t / 17 * Math.PI / 180) * 20
+    circle.radius = 40 + Math.sin(t / 17 * Math.PI / 180) * 20
 
-    geometries[3].radius1 = 120 + Math.sin(t / 17 * Math.PI / 180) * 20
-    geometries[3].radius2 = 60 + Math.cos(t / 17 * Math.PI / 180) * 20
-    geometries[3].rotation += -d / 60
+    ellipsis.radius1 = 120 + Math.sin(t / 17 * Math.PI / 180) * 20
+    ellipsis.radius2 = 60 + Math.cos(t / 17 * Math.PI / 180) * 20
+    ellipsis.rotation += -d / 60
+
+    diamond.topLength = 50 + Math.sin(t / 17 * Math.PI / 180) * 20
+    diamond.rightLength = 100 + Math.cos((Math.PI / 2 + t / 17 * Math.PI) / 180) * 20
+    diamond.bottomLength = 60 + Math.sin((Math.PI + t / 17 * Math.PI) / 180) * 20
+    diamond.leftLength = 40 + Math.sin((Math.PI * 1.5 + t / 17 * Math.PI) / 180) * 20
+    diamond.rotation += -d / 80
 
     render()
     requestAnimationFrame(animate) if animated
     stats.end()
 
-  canvas.click (e) ->
-    unless animated
-      t = new Date().valueOf()
-      requestAnimationFrame(animate)
-      animated = true
-    else
-      animated = false
+  initUI = ->
+    canvas.click (e) ->
+      unless animated
+        t = new Date().valueOf()
+        requestAnimationFrame(animate)
+        animated = true
+      else
+        animated = false
 
+    widgets = $('input').widgets()
+    widgets.forEach (widget) ->
+      widget.valueChanged.add (w,v) ->
+        options[w.jTarget.attr('id')] = v
+        render()
+
+  initUI()
   render()
+
+  $('body').removeClass 'preload'

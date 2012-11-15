@@ -9,9 +9,10 @@ class Tester
     text: '#93a1a1'
     mobile: '#b58900'
 
-  constructor: (@geometry) ->
+  constructor: (@geometry, @options) ->
     @pathPosition = 0
     @random = new chancejs.Random new chancejs.MathRandom
+    @name = @geometry.classname().toLowerCase()
 
   animate: (t) ->
     @pathPosition += t
@@ -58,9 +59,13 @@ class Tester
 
   render: (context) ->
     @renderShape context if @geometry.stroke? and @geometry.fill?
-    @renderBounds context if @geometry.bounds?
-    @renderPath context if @geometry.pathPointAt? and
+    @renderBounds context if @options.bounds and @geometry.bounds?
+    @renderPath context if @options.path and
+                           @geometry.pathPointAt? and
                            @geometry.pathOrientationAt?
-    @renderSurface context if @geometry.randomPointInSurface?
-    @renderClosedGeometry context if @geometry.center? and
+
+    @renderSurface context if @options.surface and
+                              @geometry.randomPointInSurface?
+    @renderClosedGeometry context if @options.angle and
+                                     @geometry.center? and
                                      @geometry.pointAtAngle?
