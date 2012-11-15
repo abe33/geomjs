@@ -41,6 +41,7 @@ class Triangle
   #
   constructor: (a, b, c) ->
     {@a,@b,@c} = @triangleFrom a, b, c
+    @__cache__ = {}
 
   #### Centers
 
@@ -180,7 +181,13 @@ class Triangle
 
   ##### Triangle::acreage
   #
-  acreage: -> @ab().length() * @bc().length() * Math.abs(Math.sin(@abc())) / 2
+  acreage: ->
+    key = "#{@a}#{@b}#{@c}"
+    return @__cache__.acreage if key is @__key__
+    @__key__ = key
+    @__cache__.acreage = @ab().length() *
+                       @bc().length() *
+                       Math.abs(Math.sin(@abc())) / 2
 
   ##### Triangle::contains
   #

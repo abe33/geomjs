@@ -1414,6 +1414,7 @@
     function Triangle(a, b, c) {
       var _ref;
       _ref = this.triangleFrom(a, b, c), this.a = _ref.a, this.b = _ref.b, this.c = _ref.c;
+      this.__cache__ = {};
     }
 
     Triangle.prototype.center = function() {
@@ -1512,7 +1513,13 @@
     };
 
     Triangle.prototype.acreage = function() {
-      return this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
+      var key;
+      key = "" + this.a + this.b + this.c;
+      if (key === this.__key__) {
+        return this.__cache__.acreage;
+      }
+      this.__key__ = key;
+      return this.__cache__.acreage = this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
