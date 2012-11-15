@@ -764,21 +764,13 @@
     };
 
     Point.prototype.rotateAround = function(x, y, a) {
-      if (this.isPoint(x)) {
+      var isPoint;
+      isPoint = this.isPoint(x);
+      if (isPoint) {
         a = y;
       }
-      if (x != null) {
-        y = x.y || y;
-      }
-      if (isNaN(y)) {
-        y = 0;
-      }
-      if (x != null) {
-        x = x.x || x;
-      }
-      if (isNaN(x)) {
-        x = 0;
-      }
+      y = isPoint ? x.y : y;
+      x = isPoint ? x.x : x;
       return this.subtract(x, y).rotate(a).add(x, y);
     };
 
@@ -793,12 +785,13 @@
     };
 
     Point.prototype.paste = function(x, y) {
-      if (x != null) {
-        y = x.y || y;
+      var isObject;
+      if (!(x != null) && !(y != null)) {
+        return this;
       }
-      if (x != null) {
-        x = x.x || x;
-      }
+      isObject = (x != null) && typeof x === 'object';
+      y = isObject ? x.y : y;
+      x = isObject ? x.x : x;
       if (!isNaN(x)) {
         this.x = x;
       }
