@@ -47,19 +47,31 @@ describe 'Diamond', ->
 
       describe 'its topLeftQuadrant method', ->
         it 'should return a triangle', ->
-          expect(@diamond.topLeftQuadrant()).toEqual(data.topLeftQuadrant)
+          quad = @diamond.topLeftQuadrant()
+          expect(quad.a).toBeSamePoint(data.topLeftQuadrant.a)
+          expect(quad.b).toBeSamePoint(data.topLeftQuadrant.b)
+          expect(quad.c).toBeSamePoint(data.topLeftQuadrant.c)
 
       describe 'its topRightQuadrant method', ->
         it 'should return a triangle', ->
-          expect(@diamond.topRightQuadrant()).toEqual(data.topRightQuadrant)
+          quad = @diamond.topRightQuadrant()
+          expect(quad.a).toBeSamePoint(data.topRightQuadrant.a)
+          expect(quad.b).toBeSamePoint(data.topRightQuadrant.b)
+          expect(quad.c).toBeSamePoint(data.topRightQuadrant.c)
 
       describe 'its bottomLeftQuadrant method', ->
         it 'should return a triangle', ->
-          expect(@diamond.bottomLeftQuadrant()).toEqual(data.bottomLeftQuadrant)
+          quad = @diamond.bottomLeftQuadrant()
+          expect(quad.a).toBeSamePoint(data.bottomLeftQuadrant.a)
+          expect(quad.b).toBeSamePoint(data.bottomLeftQuadrant.b)
+          expect(quad.c).toBeSamePoint(data.bottomLeftQuadrant.c)
 
       describe 'its bottomRightQuadrant method', ->
         it 'should return a triangle', ->
-          expect(@diamond.bottomRightQuadrant()).toEqual(data.bottomRightQuadrant)
+          quad = @diamond.bottomRightQuadrant()
+          expect(quad.a).toBeSamePoint(data.bottomRightQuadrant.a)
+          expect(quad.b).toBeSamePoint(data.bottomRightQuadrant.b)
+          expect(quad.c).toBeSamePoint(data.bottomRightQuadrant.c)
 
 
       # Path API
