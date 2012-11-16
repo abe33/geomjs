@@ -1837,6 +1837,12 @@
       return this.radius * this.radius * Math.PI;
     };
 
+    Circle.prototype.contains = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
+      return this.center().subtract(x, y).length() <= this.radius;
+    };
+
     Circle.prototype.randomPointInSurface = function(random) {
       var center, dif, pt;
       if (random == null) {
@@ -1846,12 +1852,6 @@
       center = this.center();
       dif = pt.subtract(center);
       return center.add(dif.scale(Math.sqrt(random.random())));
-    };
-
-    Circle.prototype.contains = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
-      return this.center().subtract(x, y).length() <= this.radius;
     };
 
     Circle.prototype.length = function() {
@@ -2047,6 +2047,8 @@
 
     Memoizable.attachTo(Diamond);
 
+    Surface.attachTo(Diamond);
+
     Intersections.attachTo(Diamond);
 
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
@@ -2075,6 +2077,10 @@
       return new Point(this.rightLength, 0).rotate(this.rotation);
     };
 
+    Diamond.prototype.corners = function() {
+      return [this.topCorner(), this.bottomCorner(), this.leftCorner(), this.rightCorner()];
+    };
+
     Diamond.prototype.topCorner = function() {
       return this.center().add(this.topAxis());
     };
@@ -2091,6 +2097,10 @@
       return this.center().add(this.rightAxis());
     };
 
+    Diamond.prototype.edges = function() {
+      return [this.topLeftEdge(), this.topRightEdge(), this.bottomLeftEdge(), this.bottomRightEdge()];
+    };
+
     Diamond.prototype.topLeftEdge = function() {
       return this.topCorner().subtract(this.leftCorner());
     };
@@ -2105,6 +2115,10 @@
 
     Diamond.prototype.bottomRightEdge = function() {
       return this.bottomCorner().subtract(this.rightCorner());
+    };
+
+    Diamond.prototype.quadrants = function() {
+      return [this.topLeftQuadrant(), this.topRightQuadrant(), this.bottomLeftQuadrant(), this.bottomRightQuadrant()];
     };
 
     Diamond.prototype.topLeftQuadrant = function() {
@@ -2143,6 +2157,22 @@
       return this.memoize(k, new Triangle(this.center(), this.bottomCorner(), this.rightCorner()));
     };
 
+    Diamond.prototype.top = function() {
+      return Math.min(this.topCorner().y, this.bottomCorner().y, this.leftCorner().y, this.rightCorner().y);
+    };
+
+    Diamond.prototype.bottom = function() {
+      return Math.max(this.topCorner().y, this.bottomCorner().y, this.leftCorner().y, this.rightCorner().y);
+    };
+
+    Diamond.prototype.left = function() {
+      return Math.min(this.topCorner().x, this.bottomCorner().x, this.leftCorner().x, this.rightCorner().x);
+    };
+
+    Diamond.prototype.right = function() {
+      return Math.max(this.topCorner().x, this.bottomCorner().x, this.leftCorner().x, this.rightCorner().x);
+    };
+
     Diamond.prototype.points = function() {
       var t;
       return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
@@ -2161,6 +2191,42 @@
           return [center, vec];
         }
       })) != null ? _ref[0] : void 0;
+    };
+
+    Diamond.prototype.acreage = function() {
+      return this.topLeftQuadrant().acreage() + this.topRightQuadrant().acreage() + this.bottomLeftQuadrant().acreage() + this.bottomRightQuadrant().acreage();
+    };
+
+    Diamond.prototype.contains = function(x, y) {
+      return this.center().equals(x, y) || this.topLeftQuadrant().contains(x, y) || this.topRightQuadrant().contains(x, y) || this.bottomLeftQuadrant().contains(x, y) || this.bottomRightQuadrant().contains(x, y);
+    };
+
+    Diamond.prototype.randomPointInSurface = function(random) {
+      var a, a1, a2, a3, a4, l, l1, l2, l3, l4, n, q1, q2, q3, q4;
+      l = this.acreage();
+      q1 = this.topLeftQuadrant();
+      q2 = this.topRightQuadrant();
+      q3 = this.bottomRightQuadrant();
+      q4 = this.bottomLeftQuadrant();
+      a1 = q1.acreage();
+      a2 = q2.acreage();
+      a3 = q3.acreage();
+      a4 = q4.acreage();
+      a = a1 + a2 + a3 + a4;
+      l1 = a1 / a;
+      l2 = a2 / a;
+      l3 = a3 / a;
+      l4 = a4 / a;
+      n = random.get();
+      if (n < l1) {
+        return q1.randomPointInSurface(random);
+      } else if (n < l1 + l2) {
+        return q2.randomPointInSurface(random);
+      } else if (n < l1 + l2 + l3) {
+        return q3.randomPointInSurface(random);
+      } else {
+        return q4.randomPointInSurface(random);
+      }
     };
 
     Diamond.prototype.length = function() {
@@ -2218,38 +2284,6 @@
         p3 = 3 / 4;
       }
       return [p1, p2, p3];
-    };
-
-    Diamond.prototype.acreage = function() {
-      return this.topLeftQuadrant().acreage() + this.topRightQuadrant().acreage() + this.bottomLeftQuadrant().acreage() + this.bottomRightQuadrant().acreage();
-    };
-
-    Diamond.prototype.randomPointInSurface = function(random) {
-      var a, a1, a2, a3, a4, l, l1, l2, l3, l4, n, q1, q2, q3, q4;
-      l = this.acreage();
-      q1 = this.topLeftQuadrant();
-      q2 = this.topRightQuadrant();
-      q3 = this.bottomRightQuadrant();
-      q4 = this.bottomLeftQuadrant();
-      a1 = q1.acreage();
-      a2 = q2.acreage();
-      a3 = q3.acreage();
-      a4 = q4.acreage();
-      a = a1 + a2 + a3 + a4;
-      l1 = a1 / a;
-      l2 = a2 / a;
-      l3 = a3 / a;
-      l4 = a4 / a;
-      n = random.get();
-      if (n < l1) {
-        return q1.randomPointInSurface(random);
-      } else if (n < l1 + l2) {
-        return q2.randomPointInSurface(random);
-      } else if (n < l1 + l2 + l3) {
-        return q3.randomPointInSurface(random);
-      } else {
-        return q4.randomPointInSurface(random);
-      }
     };
 
     Diamond.prototype.memoizationKey = function() {
