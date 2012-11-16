@@ -168,16 +168,6 @@ class Circle
   acreage: -> @radius * @radius * Math.PI
 
 
-  ##### Circle::randomPointInSurface
-  #
-  randomPointInSurface: (random) ->
-    unless random?
-      random = new chancejs.Random new chancejs.MathRandom
-
-    pt = @pointAtAngle random.random(360)
-    center = @center()
-    dif = pt.subtract center
-    center.add dif.scale Math.sqrt random.random()
 
   ##### Circle::contains
   #
@@ -190,6 +180,17 @@ class Circle
   #
   # See
   # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
+
+  ##### Circle::randomPointInSurface
+  #
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+
+    pt = @pointAtAngle random.random(360)
+    center = @center()
+    dif = pt.subtract center
+    center.add dif.scale Math.sqrt random.random()
 
   #### Path API
 
