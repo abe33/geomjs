@@ -3,6 +3,7 @@ Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Memoizable = require './mixins/memoizable'
 Path = require './mixins/path'
 Surface = require './mixins/surface'
 Geometry = require './mixins/geometry'
@@ -13,6 +14,7 @@ class Triangle
   Equatable('a','b','c').attachTo Triangle
   Formattable('Triangle','a','b','c').attachTo Triangle
   Cloneable.attachTo Triangle
+  Memoizable.attachTo Triangle
   Geometry.attachTo Triangle
   Surface.attachTo Triangle
   Path.attachTo Triangle
@@ -182,12 +184,10 @@ class Triangle
   ##### Triangle::acreage
   #
   acreage: ->
-    key = "#{@a}#{@b}#{@c}"
-    return @__cache__.acreage if key is @__key__
-    @__key__ = key
-    @__cache__.acreage = @ab().length() *
-                       @bc().length() *
-                       Math.abs(Math.sin(@abc())) / 2
+    return @memoFor 'acreage' if @memoized 'acreage'
+    @memoize 'acreage', @ab().length() *
+                        @bc().length() *
+                        Math.abs(Math.sin(@abc())) / 2
 
   ##### Triangle::contains
   #
@@ -300,6 +300,12 @@ class Triangle
     context.lineTo @c.x, @c.y
     context.lineTo @a.x, @a.y
     context.closePath()
+
+  #### Memoization
+
+  ##### Triangle::memoizationKey
+  #
+  memoizationKey: -> "#{@a.x};#{@a.y};#{@b.x};#{@b.y};#{@c.x};#{@c.y}"
 
   #### Utilities
 

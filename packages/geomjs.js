@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -186,6 +186,45 @@
     };
 
     return Cloneable;
+
+  })(Mixin);
+
+  /* src/geomjs/mixins/memoizable.coffee */;
+
+
+  Memoizable = (function(_super) {
+
+    __extends(Memoizable, _super);
+
+    function Memoizable() {
+      return Memoizable.__super__.constructor.apply(this, arguments);
+    }
+
+    Memoizable.prototype.memoized = function(prop) {
+      var _ref;
+      if (this.memoizationKey() === this.__memoizationKey__) {
+        return ((_ref = this.__cache__) != null ? _ref[prop] : void 0) != null;
+      } else {
+        this.__cache__ = {};
+        return false;
+      }
+    };
+
+    Memoizable.prototype.memoFor = function(prop) {
+      return this.__cache__[prop];
+    };
+
+    Memoizable.prototype.memoize = function(prop, value) {
+      this.__cache__ || (this.__cache__ = {});
+      this.__memoizationKey__ = this.memoizationKey();
+      return this.__cache__[prop] = value;
+    };
+
+    Memoizable.prototype.memoizationKey = function() {
+      return this.toString();
+    };
+
+    return Memoizable;
 
   })(Mixin);
 
@@ -1382,6 +1421,8 @@
 
     Cloneable.attachTo(Triangle);
 
+    Memoizable.attachTo(Triangle);
+
     Geometry.attachTo(Triangle);
 
     Surface.attachTo(Triangle);
@@ -1513,13 +1554,10 @@
     };
 
     Triangle.prototype.acreage = function() {
-      var key;
-      key = "" + this.a + this.b + this.c;
-      if (key === this.__key__) {
-        return this.__cache__.acreage;
+      if (this.memoized('acreage')) {
+        return this.memoFor('acreage');
       }
-      this.__key__ = key;
-      return this.__cache__.acreage = this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2;
+      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2);
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -1608,6 +1646,10 @@
       context.lineTo(this.c.x, this.c.y);
       context.lineTo(this.a.x, this.a.y);
       return context.closePath();
+    };
+
+    Triangle.prototype.memoizationKey = function() {
+      return "" + this.a.x + ";" + this.a.y + ";" + this.b.x + ";" + this.b.y + ";" + this.c.x + ";" + this.c.y;
     };
 
     Triangle.prototype.triangleFrom = Triangle.triangleFrom;
@@ -1991,6 +2033,8 @@
 
     Geometry.attachTo(Diamond);
 
+    Memoizable.attachTo(Diamond);
+
     Intersections.attachTo(Diamond);
 
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
@@ -2052,19 +2096,39 @@
     };
 
     Diamond.prototype.topLeftQuadrant = function() {
-      return new Triangle(this.center(), this.topCorner(), this.leftCorner());
+      var k;
+      k = 'topLeftQuadrant';
+      if (this.memoized(k)) {
+        return this.memoFor(k);
+      }
+      return this.memoize(k, new Triangle(this.center(), this.topCorner(), this.leftCorner()));
     };
 
     Diamond.prototype.topRightQuadrant = function() {
-      return new Triangle(this.center(), this.topCorner(), this.rightCorner());
+      var k;
+      k = 'topRightQuadrant';
+      if (this.memoized(k)) {
+        return this.memoFor(k);
+      }
+      return this.memoize(k, new Triangle(this.center(), this.topCorner(), this.rightCorner()));
     };
 
     Diamond.prototype.bottomLeftQuadrant = function() {
-      return new Triangle(this.center(), this.bottomCorner(), this.leftCorner());
+      var k;
+      k = 'bottomLeftQuadrant';
+      if (this.memoized(k)) {
+        return this.memoFor(k);
+      }
+      return this.memoize(k, new Triangle(this.center(), this.bottomCorner(), this.leftCorner()));
     };
 
     Diamond.prototype.bottomRightQuadrant = function() {
-      return new Triangle(this.center(), this.bottomCorner(), this.rightCorner());
+      var k;
+      k = 'bottomRightQuadrant';
+      if (this.memoized(k)) {
+        return this.memoFor(k);
+      }
+      return this.memoize(k, new Triangle(this.center(), this.bottomCorner(), this.rightCorner()));
     };
 
     Diamond.prototype.points = function() {
@@ -2176,6 +2240,10 @@
       }
     };
 
+    Diamond.prototype.memoizationKey = function() {
+      return "" + this.x + ";" + this.y + ";" + this.topLength + ";" + this.bottomLength + ";" + this.leftLength + ";" + this.rightLength;
+    };
+
     return Diamond;
 
   })();
@@ -2187,6 +2255,8 @@
   this.geomjs.Formattable = Formattable;
 
   this.geomjs.Cloneable = Cloneable;
+
+  this.geomjs.Memoizable = Memoizable;
 
   this.geomjs.Parameterizable = Parameterizable;
 

@@ -4,6 +4,7 @@ Triangle = require './triangle'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Memoizable = require './mixins/memoizable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -26,6 +27,7 @@ class Diamond
   Equatable.apply(Equatable, PROPERTIES).attachTo Diamond
   Cloneable.attachTo Diamond
   Geometry.attachTo Diamond
+  Memoizable.attachTo Diamond
   # Surface.attachTo Diamond
   # Path.attachTo Diamond
   Intersections.attachTo Diamond
@@ -105,27 +107,39 @@ class Diamond
 
   ##### Diamond::topLeftQuadrant
   #
-  topLeftQuadrant: -> new Triangle(@center(),
-                                   @topCorner(),
-                                   @leftCorner())
+  topLeftQuadrant: ->
+    k = 'topLeftQuadrant'
+    return @memoFor k if @memoized k
+    @memoize k, new Triangle(@center(),
+                             @topCorner(),
+                             @leftCorner())
 
   ##### Diamond::topRightQuadrant
   #
-  topRightQuadrant: -> new Triangle(@center(),
-                                    @topCorner(),
-                                    @rightCorner())
+  topRightQuadrant: ->
+    k = 'topRightQuadrant'
+    return @memoFor k if @memoized k
+    @memoize k, new Triangle(@center(),
+                             @topCorner(),
+                             @rightCorner())
 
   ##### Diamond::bottomLeftQuadrant
   #
-  bottomLeftQuadrant: -> new Triangle(@center(),
-                                      @bottomCorner(),
-                                      @leftCorner())
+  bottomLeftQuadrant: ->
+    k = 'bottomLeftQuadrant'
+    return @memoFor k if @memoized k
+    @memoize k, new Triangle(@center(),
+                             @bottomCorner(),
+                             @leftCorner())
 
   ##### Diamond::bottomRightQuadrant
   #
-  bottomRightQuadrant: -> new Triangle(@center(),
-                                       @bottomCorner(),
-                                       @rightCorner())
+  bottomRightQuadrant: ->
+    k = 'bottomRightQuadrant'
+    return @memoFor k if @memoized k
+    @memoize k, new Triangle(@center(),
+                             @bottomCorner(),
+                             @rightCorner())
 
   #### Geometry API
 
@@ -247,6 +261,13 @@ class Diamond
       q3.randomPointInSurface random
     else
       q4.randomPointInSurface random
+
+  #### Memoization
+
+  ##### Diamond::memoizationKey
+  #
+  memoizationKey: ->
+    "#{@x};#{@y};#{@topLength};#{@bottomLength};#{@leftLength};#{@rightLength}"
 
 
 

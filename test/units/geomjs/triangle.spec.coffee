@@ -78,7 +78,7 @@ describe 'Triangle', ->
           @scale = 2
           @result = @triangle.scaleAroundCenter @scale
 
-        it 'should rotate the triangle around its center', ->
+        it 'should scale the triangle around its center', ->
           center = point(data.center)
           a = center.add data.a.subtract(center).scale(@scale)
           b = center.add data.b.subtract(center).scale(@scale)
@@ -97,9 +97,22 @@ describe 'Triangle', ->
       # Drawing API
       testDrawingOf(source)
 
-
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
+
+      # acreage memoization
+      describe '::acreage memoization', ->
+        it 'should not break the behavior of the function', ->
+          a1 = @triangle.acreage()
+          a2 = @triangle.acreage()
+          expect(a2).toBe(a1)
+
+          @triangle.a.x = 100
+          a3 = @triangle.acreage()
+          a4 = @triangle.acreage()
+          expect(a3).not.toBe(a1)
+          expect(a4).toBe(a3)
+
 
       calledWithPoints(data.center.x, data.center.y)
         .where
