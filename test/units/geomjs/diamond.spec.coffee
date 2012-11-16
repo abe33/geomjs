@@ -80,6 +80,15 @@ describe 'Diamond', ->
       # Surface API
       acreageOf(source).shouldBe(data.acreage)
 
+      describe 'its contains method', ->
+        describe 'with a point inside', ->
+          it 'should return true', ->
+            expect(@diamond.contains @diamond.center()).toBeTruthy()
+
+        describe 'with a point outside', ->
+          it 'should return false', ->
+            expect(@diamond.contains -10, -10).toBeFalsy()
+
       # Geometry API
       shouldBeClosedGeometry(source)
 

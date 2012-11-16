@@ -28,7 +28,7 @@ class Diamond
   Cloneable.attachTo Diamond
   Geometry.attachTo Diamond
   Memoizable.attachTo Diamond
-  # Surface.attachTo Diamond
+  Surface.attachTo Diamond
   # Path.attachTo Diamond
   Intersections.attachTo Diamond
 
@@ -75,6 +75,16 @@ class Diamond
 
   #### Corners
 
+  ##### Diamond::corners
+  #
+  corners: ->
+    [
+      @topCorner()
+      @bottomCorner()
+      @leftCorner()
+      @rightCorner()
+    ]
+
   ##### Diamond::topCorner
   #
   topCorner: -> @center().add(@topAxis())
@@ -90,6 +100,16 @@ class Diamond
 
   #### Edges
 
+  ##### Diamond::edges
+  #
+  edges: ->
+    [
+      @topLeftEdge()
+      @topRightEdge()
+      @bottomLeftEdge()
+      @bottomRightEdge()
+    ]
+
   ##### Diamond::topLeftEdge
   #
   topLeftEdge: -> @topCorner().subtract(@leftCorner())
@@ -104,6 +124,16 @@ class Diamond
   bottomRightEdge: -> @bottomCorner().subtract(@rightCorner())
 
   #### Quadrants
+
+  ##### Diamond::quadrants
+  #
+  quadrants: ->
+    [
+      @topLeftQuadrant()
+      @topRightQuadrant()
+      @bottomLeftQuadrant()
+      @bottomRightQuadrant()
+    ]
 
   ##### Diamond::topLeftQuadrant
   #
@@ -141,6 +171,46 @@ class Diamond
                              @bottomCorner(),
                              @rightCorner())
 
+  #### Bounds
+
+  ##### Diamond::top
+  #
+  top: -> Math.min @topCorner().y,
+                   @bottomCorner().y,
+                   @leftCorner().y,
+                   @rightCorner().y,
+
+  ##### Diamond::bottom
+  #
+  bottom: -> Math.max @topCorner().y,
+                      @bottomCorner().y,
+                      @leftCorner().y,
+                      @rightCorner().y,
+
+  ##### Diamond::left
+  #
+  left: -> Math.min @topCorner().x,
+                    @bottomCorner().x,
+                    @leftCorner().x,
+                    @rightCorner().x,
+
+  ##### Diamond::right
+  #
+  right: -> Math.max @topCorner().x,
+                     @bottomCorner().x,
+                     @leftCorner().x,
+                     @rightCorner().x,
+
+  ##### Diamond::bounds
+  #
+  # See
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
+
+  ##### Diamond::boundingBox
+  #
+  # See
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
+
   #### Geometry API
 
   ##### Diamond::points
@@ -159,6 +229,73 @@ class Diamond
     vec = center.add Math.cos(Math.degToRad(angle))*10000,
                      Math.sin(Math.degToRad(angle))*10000
     @intersections(points: -> [center, vec])?[0]
+
+  ##### Diamond::intersects
+  #
+  # See
+  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
+
+  ##### Diamond::intersections
+  #
+  # See
+  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
+
+  #### Surface API
+
+  ##### Diamond::acreage
+  #
+  acreage: ->
+    @topLeftQuadrant().acreage() +
+    @topRightQuadrant().acreage() +
+    @bottomLeftQuadrant().acreage() +
+    @bottomRightQuadrant().acreage()
+
+  ##### Diamond::contains
+  #
+  contains: (x,y) ->
+    @center().equals(x,y) or
+    @topLeftQuadrant().contains(x,y) or
+    @topRightQuadrant().contains(x,y) or
+    @bottomLeftQuadrant().contains(x,y) or
+    @bottomRightQuadrant().contains(x,y)
+
+  ##### Diamond::containsGeometry
+  #
+  # See
+  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
+
+  ##### Diamond::randomPointInSurface
+  #
+  randomPointInSurface: (random) ->
+    l = @acreage()
+    q1 = @topLeftQuadrant()
+    q2 = @topRightQuadrant()
+    q3 = @bottomRightQuadrant()
+    q4 = @bottomLeftQuadrant()
+
+    a1 = q1.acreage()
+    a2 = q2.acreage()
+    a3 = q3.acreage()
+    a4 = q4.acreage()
+    a = a1 + a2 + a3 + a4
+
+    l1 = a1 / a
+    l2 = a2 / a
+    l3 = a3 / a
+    l4 = a4 / a
+
+    n = random.get()
+
+    if n < l1
+      q1.randomPointInSurface random
+    else if n < l1 + l2
+      q2.randomPointInSurface random
+    else if n < l1 + l2 + l3
+      q3.randomPointInSurface random
+    else
+      q4.randomPointInSurface random
+
+
 
   #### Path API
 
@@ -183,7 +320,6 @@ class Diamond
       @bottomCorner().add @bottomLeftEdge().scale Math.map n, p2, p3, 0, 1
     else
       @leftCorner().add @topLeftEdge().scale Math.map n, p3, 1, 0, 1
-
 
   ##### Diamond::pathOrientationAt
   #
@@ -221,46 +357,18 @@ class Diamond
 
     [p1, p2, p3]
 
-  #### Surface API
+  #### Drawing API
 
-  ##### Diamond::acreage
+  ##### Diamond::stroke
   #
-  acreage: ->
-    @topLeftQuadrant().acreage() +
-    @topRightQuadrant().acreage() +
-    @bottomLeftQuadrant().acreage() +
-    @bottomRightQuadrant().acreage()
+  # See
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
-  ##### Diamond::randomPointInSurface
+  ##### Diamond::fill
   #
-  randomPointInSurface: (random) ->
-    l = @acreage()
-    q1 = @topLeftQuadrant()
-    q2 = @topRightQuadrant()
-    q3 = @bottomRightQuadrant()
-    q4 = @bottomLeftQuadrant()
+  # See
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
-    a1 = q1.acreage()
-    a2 = q2.acreage()
-    a3 = q3.acreage()
-    a4 = q4.acreage()
-    a = a1 + a2 + a3 + a4
-
-    l1 = a1 / a
-    l2 = a2 / a
-    l3 = a3 / a
-    l4 = a4 / a
-
-    n = random.get()
-
-    if n < l1
-      q1.randomPointInSurface random
-    else if n < l1 + l2
-      q2.randomPointInSurface random
-    else if n < l1 + l2 + l3
-      q3.randomPointInSurface random
-    else
-      q4.randomPointInSurface random
 
   #### Memoization
 
@@ -268,6 +376,23 @@ class Diamond
   #
   memoizationKey: ->
     "#{@x};#{@y};#{@topLength};#{@bottomLength};#{@leftLength};#{@rightLength}"
+
+  #### Utilities
+
+  ##### Diamond::equals
+  #
+  # See
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
+
+  ##### Diamond::clone
+  #
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
+
+  ##### Diamond::toString
+  #
+  # See
+  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
 
 
 
