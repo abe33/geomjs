@@ -62,12 +62,6 @@ class Point
   #
   #     {x,y} = Point.pointFrom x: 10 # [10, NaN]
   #
-  # Strings are allowed as arguments as well as values for
-  # the x and y properties of the passed-in object:
-  #
-  #     {x,y} = Point.pointFrom '2.6', '5.4'
-  #     {x,y} = Point.pointFrom x: '2.6', y: '5.4'
-  #
   # For further examples, feel free to take a look at the
   # methods of the `Point` class.
   @pointFrom: (xOrPt, y, strict=false) ->

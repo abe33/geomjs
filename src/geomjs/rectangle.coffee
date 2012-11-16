@@ -50,6 +50,10 @@ class Rectangle
 
   #### Corners
 
+  ##### Rectangle::corners
+  #
+  corners: -> [@topLeft(), @topRight(), @bottomRight(), @bottomLeft()]
+
   ##### Rectangle::topLeft
   #
   topLeft: -> new Point(@x, @y)
@@ -89,6 +93,10 @@ class Rectangle
   rightEdgeCenter: -> @topRight().add(@leftEdge().scale(0.5))
 
   #### Edges
+
+  ##### Rectangle::edges
+  #
+  edges: -> [@topEdge(), @topRight(), @bottomRight(), @bottomLeft()]
 
   ##### Rectangle::topEdge
   #

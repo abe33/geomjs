@@ -61,6 +61,10 @@ class Triangle
 
   #### Edges
 
+  ##### Triangle::edges
+  #
+  edges: -> [@ab(), @bc(), @ca()]
+
   ##### Triangle::ab
   ##### Triangle::ac
   ##### Triangle::ba

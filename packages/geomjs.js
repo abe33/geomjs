@@ -1115,6 +1115,10 @@
       this.x = args.x, this.y = args.y, this.width = args.width, this.height = args.height, this.rotation = args.rotation;
     }
 
+    Rectangle.prototype.corners = function() {
+      return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft()];
+    };
+
     Rectangle.prototype.topLeft = function() {
       return new Point(this.x, this.y);
     };
@@ -1149,6 +1153,10 @@
 
     Rectangle.prototype.rightEdgeCenter = function() {
       return this.topRight().add(this.leftEdge().scale(0.5));
+    };
+
+    Rectangle.prototype.edges = function() {
+      return [this.topEdge(), this.topRight(), this.bottomRight(), this.bottomLeft()];
     };
 
     Rectangle.prototype.topEdge = function() {
@@ -1469,6 +1477,10 @@
         return this[p1].add(this["" + p1 + p2]().scale(0.5));
       };
     });
+
+    Triangle.prototype.edges = function() {
+      return [this.ab(), this.bc(), this.ca()];
+    };
 
     ['ab', 'ac', 'ba', 'bc', 'ca', 'cb'].forEach(function(k) {
       var p1, p2, _ref;
@@ -2080,7 +2092,7 @@
     };
 
     Diamond.prototype.corners = function() {
-      return [this.topCorner(), this.bottomCorner(), this.leftCorner(), this.rightCorner()];
+      return [this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner()];
     };
 
     Diamond.prototype.topCorner = function() {
@@ -2100,7 +2112,7 @@
     };
 
     Diamond.prototype.edges = function() {
-      return [this.topLeftEdge(), this.topRightEdge(), this.bottomLeftEdge(), this.bottomRightEdge()];
+      return [this.topLeftEdge(), this.topRightEdge(), this.bottomRightEdge(), this.bottomLeftEdge()];
     };
 
     Diamond.prototype.topLeftEdge = function() {
@@ -2120,7 +2132,7 @@
     };
 
     Diamond.prototype.quadrants = function() {
-      return [this.topLeftQuadrant(), this.topRightQuadrant(), this.bottomLeftQuadrant(), this.bottomRightQuadrant()];
+      return [this.topLeftQuadrant(), this.topRightQuadrant(), this.bottomRightQuadrant(), this.bottomLeftQuadrant()];
     };
 
     Diamond.prototype.topLeftQuadrant = function() {

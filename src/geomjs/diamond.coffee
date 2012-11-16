@@ -83,9 +83,9 @@ class Diamond
   corners: ->
     [
       @topCorner()
+      @rightCorner()
       @bottomCorner()
       @leftCorner()
-      @rightCorner()
     ]
 
   ##### Diamond::topCorner
@@ -109,8 +109,8 @@ class Diamond
     [
       @topLeftEdge()
       @topRightEdge()
-      @bottomLeftEdge()
       @bottomRightEdge()
+      @bottomLeftEdge()
     ]
 
   ##### Diamond::topLeftEdge
@@ -134,8 +134,8 @@ class Diamond
     [
       @topLeftQuadrant()
       @topRightQuadrant()
-      @bottomLeftQuadrant()
       @bottomRightQuadrant()
+      @bottomLeftQuadrant()
     ]
 
   ##### Diamond::topLeftQuadrant

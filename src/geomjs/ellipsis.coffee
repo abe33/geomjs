@@ -162,7 +162,7 @@ class Ellipsis
 
     @center().add p.rotate(@rotation)
 
-  ##### Circle::pathOrientationAt
+  ##### Ellipsis::pathOrientationAt
   #
   # See
   # [Path.pathOrientationAt](src_geomjs_mixins_path.html#pathpathorientationat)
