@@ -98,6 +98,9 @@ $(document).ready ->
 
   initUI = ->
     canvas.click (e) ->
+      unless $('#canvas .hint').hasClass 'clicked'
+        $('#canvas .hint').addClass 'clicked'
+
       unless animated
         t = new Date().valueOf()
         requestAnimationFrame(animate)

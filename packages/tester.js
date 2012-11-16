@@ -201,6 +201,9 @@
     initUI = function() {
       var widgets;
       canvas.click(function(e) {
+        if (!$('#canvas .hint').hasClass('clicked')) {
+          $('#canvas .hint').addClass('clicked');
+        }
         if (!animated) {
           t = new Date().valueOf();
           requestAnimationFrame(animate);
