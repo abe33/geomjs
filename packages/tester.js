@@ -21,6 +21,7 @@
       this.random = new chancejs.Random(new chancejs.MathRandom);
       this.name = this.geometry.classname().toLowerCase();
       this.angle = 0;
+      this.angleSpeed = this.random["in"]([4, 5, 6, 7, 8]);
     }
 
     Tester.prototype.animate = function(t) {
@@ -28,7 +29,7 @@
       if (this.pathPosition > 10000) {
         this.pathPosition -= 10000;
       }
-      return this.angle += t / 2;
+      return this.angle += t / this.angleSpeed;
     };
 
     Tester.prototype.renderShape = function(context) {

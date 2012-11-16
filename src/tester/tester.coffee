@@ -14,11 +14,12 @@ class Tester
     @random = new chancejs.Random new chancejs.MathRandom
     @name = @geometry.classname().toLowerCase()
     @angle = 0
+    @angleSpeed = @random.in [4..8]
 
   animate: (t) ->
     @pathPosition += t
     @pathPosition -= 10000 if @pathPosition > 10000
-    @angle += t / 2
+    @angle += t / @angleSpeed
 
   renderShape: (context) ->
     @geometry.fill(context, colorPalette.shapeFill)
