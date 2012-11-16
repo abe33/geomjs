@@ -13,10 +13,12 @@ class Tester
     @pathPosition = 0
     @random = new chancejs.Random new chancejs.MathRandom
     @name = @geometry.classname().toLowerCase()
+    @angle = 0
 
   animate: (t) ->
     @pathPosition += t
     @pathPosition -= 10000 if @pathPosition > 10000
+    @angle += t / 2
 
   renderShape: (context) ->
     @geometry.fill(context, colorPalette.shapeFill)
@@ -42,19 +44,23 @@ class Tester
 
   renderClosedGeometry: (context) ->
     c = @geometry.center()
-    pt1 = @geometry.pointAtAngle(0)
-    pt2 = @geometry.pointAtAngle(-90)
+    pt1 = @geometry.pointAtAngle(@angle)
+    pt2 = @geometry.pointAtAngle(@angle-120)
+    pt3 = @geometry.pointAtAngle(@angle+120)
 
     context.fillStyle = colorPalette.intersections
     context.strokeStyle = colorPalette.intersections
 
     context.fillRect(pt1.x-2, pt1.y-2, 4, 4)
     context.fillRect(pt2.x-2, pt2.y-2, 4, 4)
+    context.fillRect(pt3.x-2, pt3.y-2, 4, 4)
 
     context.beginPath()
     context.moveTo(pt1.x,pt1.y)
     context.lineTo(c.x,c.y)
     context.lineTo(pt2.x,pt2.y)
+    context.moveTo(c.x,c.y)
+    context.lineTo(pt3.x,pt3.y)
     context.stroke()
 
   render: (context) ->

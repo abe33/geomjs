@@ -1516,6 +1516,18 @@
       return Math.deltaBelowRatio(Math.abs(this.abc()), sqr) || Math.deltaBelowRatio(Math.abs(this.bac()), sqr) || Math.deltaBelowRatio(Math.abs(this.acb()), sqr);
     };
 
+    Triangle.prototype.translate = function(x, y) {
+      var _ref;
+      _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
+      this.a.x += x;
+      this.a.y += y;
+      this.b.x += x;
+      this.b.y += y;
+      this.c.x += x;
+      this.c.y += y;
+      return this;
+    };
+
     Triangle.prototype.rotateAroundCenter = function(rotation) {
       var center;
       center = this.center();

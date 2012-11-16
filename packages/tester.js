@@ -20,13 +20,15 @@
       this.pathPosition = 0;
       this.random = new chancejs.Random(new chancejs.MathRandom);
       this.name = this.geometry.classname().toLowerCase();
+      this.angle = 0;
     }
 
     Tester.prototype.animate = function(t) {
       this.pathPosition += t;
       if (this.pathPosition > 10000) {
-        return this.pathPosition -= 10000;
+        this.pathPosition -= 10000;
       }
+      return this.angle += t / 2;
     };
 
     Tester.prototype.renderShape = function(context) {
@@ -61,18 +63,22 @@
     };
 
     Tester.prototype.renderClosedGeometry = function(context) {
-      var c, pt1, pt2;
+      var c, pt1, pt2, pt3;
       c = this.geometry.center();
-      pt1 = this.geometry.pointAtAngle(0);
-      pt2 = this.geometry.pointAtAngle(-90);
+      pt1 = this.geometry.pointAtAngle(this.angle);
+      pt2 = this.geometry.pointAtAngle(this.angle - 120);
+      pt3 = this.geometry.pointAtAngle(this.angle + 120);
       context.fillStyle = colorPalette.intersections;
       context.strokeStyle = colorPalette.intersections;
       context.fillRect(pt1.x - 2, pt1.y - 2, 4, 4);
       context.fillRect(pt2.x - 2, pt2.y - 2, 4, 4);
+      context.fillRect(pt3.x - 2, pt3.y - 2, 4, 4);
       context.beginPath();
       context.moveTo(pt1.x, pt1.y);
       context.lineTo(c.x, c.y);
       context.lineTo(pt2.x, pt2.y);
+      context.moveTo(c.x, c.y);
+      context.lineTo(pt3.x, pt3.y);
       return context.stroke();
     };
 
