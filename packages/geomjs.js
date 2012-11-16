@@ -2049,6 +2049,8 @@
 
     Surface.attachTo(Diamond);
 
+    Path.attachTo(Diamond);
+
     Intersections.attachTo(Diamond);
 
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {

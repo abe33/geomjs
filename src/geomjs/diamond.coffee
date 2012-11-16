@@ -11,6 +11,7 @@ Surface = require './mixins/surface'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
 
+## Diamond
 class Diamond
   PROPERTIES = ['x','y','topLength','leftLength','bottomLength','rightLength']
 
@@ -29,9 +30,11 @@ class Diamond
   Geometry.attachTo Diamond
   Memoizable.attachTo Diamond
   Surface.attachTo Diamond
-  # Path.attachTo Diamond
+  Path.attachTo Diamond
   Intersections.attachTo Diamond
 
+  ##### Diamond::constructor
+  #
   constructor: (topLength,
                 rightLength,
                 bottomLength,
