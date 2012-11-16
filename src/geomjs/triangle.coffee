@@ -133,6 +133,15 @@ class Triangle
 
   #### Triangle Manipulation
 
+  ##### Triangle::translate
+  #
+  translate: (x,y) ->
+    {x,y} = Point.pointFrom x,y
+    @a.x += x; @a.y += y
+    @b.x += x; @b.y += y
+    @c.x += x; @c.y += y
+    this
+
   ##### Triangle::rotateAroundCenter
   #
   rotateAroundCenter: (rotation) ->

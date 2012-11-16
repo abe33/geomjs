@@ -53,6 +53,20 @@ describe 'Triangle', ->
         it 'should return the triangle center', ->
           expect(@triangle.center()).toBeSamePoint(data.center)
 
+      describe 'its translate method', ->
+        beforeEach ->
+          @x = 3
+          @y = 4
+          @result = @triangle.translate @x, @y
+
+        it 'should translate the triangle', ->
+          expect(@triangle.a).toBePoint(data.a.x + @x, data.a.y + @y)
+          expect(@triangle.b).toBePoint(data.b.x + @x, data.b.y + @y)
+          expect(@triangle.c).toBePoint(data.c.x + @x, data.c.y + @y)
+
+        it 'should return the triangle', ->
+          expect(@result).toBe(@triangle)
+
       describe 'its rotateAroundCenter method', ->
         beforeEach ->
           @rotation = 10
