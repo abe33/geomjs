@@ -23,6 +23,14 @@ $(document).ready ->
     new geomjs.Circle(60, 80, 160)
     new geomjs.Ellipsis(120, 60, 470, 180, 10)
     new geomjs.Diamond(50,100, 60, 40, 420, 250)
+
+    new geomjs.LinearSpline([
+      new geomjs.Point(260, 290)
+      new geomjs.Point(300, 380)
+      new geomjs.Point(320, 300)
+      new geomjs.Point(340, 380)
+      new geomjs.Point(380, 290)
+    ])
   ]
 
   options =
