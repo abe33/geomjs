@@ -6,6 +6,7 @@ includes: [
   'src/geomjs/mixins/equatable'
   'src/geomjs/mixins/formattable'
   'src/geomjs/mixins/cloneable'
+  'src/geomjs/mixins/sourcable'
   'src/geomjs/mixins/memoizable'
   'src/geomjs/mixins/parameterizable'
   'src/geomjs/mixins/geometry'

@@ -3,6 +3,7 @@ Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -23,6 +24,8 @@ class Rectangle
     height: NaN
     rotation: NaN
   }).attachTo Rectangle
+  Sourcable.apply(null, ['geomjs.Rectangle'].concat PROPERTIES)
+    .attachTo Rectangle
   Cloneable.attachTo Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle

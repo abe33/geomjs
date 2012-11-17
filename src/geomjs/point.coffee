@@ -5,6 +5,7 @@ require './math'
 Cloneable = require './mixins/cloneable'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
+Sourcable = require './mixins/sourcable'
 
 ## Point
 
@@ -23,6 +24,7 @@ Formattable = require './mixins/formattable'
 class Point
   Equatable('x', 'y').attachTo Point
   Formattable('Point','x', 'y').attachTo Point
+  Sourcable('geomjs.Point', 'x', 'y').attachTo Point
   Cloneable.attachTo Point
 
   #### Class Methods

@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Spline, Surface, Triangle,
+  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Sourcable, Spline, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -188,6 +188,45 @@
     return Cloneable;
 
   })(Mixin);
+
+  /* src/geomjs/mixins/sourcable.coffee */;
+
+
+  Sourcable = function() {
+    var name, signature;
+    name = arguments[0], signature = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return (function(_super) {
+
+      __extends(_Class, _super);
+
+      function _Class() {
+        return _Class.__super__.constructor.apply(this, arguments);
+      }
+
+      _Class.prototype.toSource = function() {
+        var arg, args;
+        args = ((function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = signature.length; _i < _len; _i++) {
+            arg = signature[_i];
+            _results.push(this[arg]);
+          }
+          return _results;
+        }).call(this)).map(function(o) {
+          if (o.toSource) {
+            return o.toSource();
+          } else {
+            return o;
+          }
+        });
+        return "new " + name + "(" + (args.join(',')) + ")";
+      };
+
+      return _Class;
+
+    })(Mixin);
+  };
 
   /* src/geomjs/mixins/memoizable.coffee */;
 
@@ -742,6 +781,8 @@
 
     Formattable('Point', 'x', 'y').attachTo(Point);
 
+    Sourcable('geomjs.Point', 'x', 'y').attachTo(Point);
+
     Cloneable.attachTo(Point);
 
     Point.isPoint = function(pt) {
@@ -1221,6 +1262,8 @@
       height: NaN,
       rotation: NaN
     }).attachTo(Rectangle);
+
+    Sourcable.apply(null, ['geomjs.Rectangle'].concat(PROPERTIES)).attachTo(Rectangle);
 
     Cloneable.attachTo(Rectangle);
 
@@ -2511,6 +2554,8 @@
   this.geomjs.Formattable = Formattable;
 
   this.geomjs.Cloneable = Cloneable;
+
+  this.geomjs.Sourcable = Sourcable;
 
   this.geomjs.Memoizable = Memoizable;
 

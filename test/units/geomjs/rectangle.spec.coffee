@@ -49,6 +49,10 @@ describe 'Rectangle', ->
         it 'should have been set with the provided values', ->
           expect(@rectangle).toBeRectangle(x, y, width, height, rotation)
 
+        describe 'its toSource method', ->
+          it 'should return the code source of the Rectangle', ->
+            expect(@rectangle.toSource()).toBe(@data.source)
+
         # Rectangle API
         testRotatedRectangle source, x, y, width, height, rotation
 

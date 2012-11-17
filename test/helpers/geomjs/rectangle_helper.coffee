@@ -59,6 +59,8 @@ global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
   xLeftEdge = height * Math.cos Math.degToRad(rotation) + Math.PI / 2
   yLeftEdge = height * Math.sin Math.degToRad(rotation) + Math.PI / 2
 
+  source = "new geomjs.Rectangle(#{x},#{y},#{width},#{height},#{rotation})"
+
   topEdge:
     x: xTopEdge
     y: yTopEdge
@@ -115,3 +117,4 @@ global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
   bottom: Math.max y, y+yTopEdge, y+yLeftEdge, y+yTopEdge+yLeftEdge
   left: Math.min x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
   right: Math.max x, x+xTopEdge, x+xLeftEdge, x+xTopEdge+xLeftEdge
+  source: source

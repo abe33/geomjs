@@ -26,6 +26,10 @@ describe 'Point', ->
       it 'should create the new instance with the value of the object', ->
         expect(point x: 10).toBePoint(10, 0)
 
+  describe '::toSource called', ->
+    it 'should return the source code of the point', ->
+      expect(point(2,2).toSource()).toBe 'new geomjs.Point(2,2)'
+
   describe '::length called', ->
     describe 'with a zero length point', ->
       it 'should return 0', ->
