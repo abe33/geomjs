@@ -24,24 +24,24 @@ class Geometry extends Mixin
   # The `pointsBounds` private utility is meant to provides the default
   # bounds computation for a geometry, subclasses should implements their
   # own bounds methods if a faster implementation exist.
-  pointsBounds = (points, mode, axis, start) ->
-    points.reduce ((a,b)-> Math[mode] a, b[axis] ), start
+  pointsBounds = (points, mode, axis) ->
+    Math[mode].apply Math, points.map (pt) -> pt[axis]
 
   ##### Geometry::top
   #
-  top: -> pointsBounds @points(), 'min', 'y', Infinity
+  top: -> pointsBounds @points(), 'min', 'y'
 
   ##### Geometry::bottom
   #
-  bottom: -> pointsBounds @points(), 'max', 'y', -Infinity
+  bottom: -> pointsBounds @points(), 'max', 'y'
 
   ##### Geometry::left
   #
-  left: -> pointsBounds @points(), 'min', 'x', Infinity
+  left: -> pointsBounds @points(), 'min', 'x'
 
   ##### Geometry::right
   #
-  right: -> pointsBounds @points(), 'max', 'x', -Infinity
+  right: -> pointsBounds @points(), 'max', 'x'
 
   ##### Geometry::bounds
   #
@@ -91,7 +91,6 @@ class Geometry extends Mixin
 
   ##### Geometry::drawPath
   #
-  # **Virtual method**
   drawPath: (context) ->
     points = @points()
     start = points.shift()
