@@ -2,8 +2,18 @@
 Mixin = require './mixin'
 
 ## Parameterizable
+
+#
 Parameterizable = (method, parameters, allowPartial=false) ->
+  #
   class extends Mixin
+    ##### Parameterizable.attachTo
+    #
+    # See
+    # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
+
+    ##### Parameterizable.included
+    #
     @included: (klass) ->
       f = (args..., strict)->
         (args.push(strict); strict = false) if typeof strict is 'number'

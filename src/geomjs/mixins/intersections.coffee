@@ -4,6 +4,10 @@ Point = require '../point'
 
 ## Intersections
 class Intersections extends Mixin
+  ##### Intersections.attachTo
+  #
+  # See
+  # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
 
   ##### Intersections.iterators
   #

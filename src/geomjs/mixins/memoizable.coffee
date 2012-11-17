@@ -1,7 +1,12 @@
+# @toc
 Mixin = require './mixin'
 
 ## Memoizable
 class Memoizable extends Mixin
+  ##### Memoizable.attachTo
+  #
+  # See
+  # [Mixin.attachTo](src_geomjs_mixins_mixin.html#mixinattachto)
 
   ##### Memoizable::memoized
   #

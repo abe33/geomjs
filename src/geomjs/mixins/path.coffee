@@ -1,5 +1,7 @@
+# @toc
 Mixin = require './mixin'
 
+## Path
 class Path extends Mixin
   ##### Path.attachTo
   #

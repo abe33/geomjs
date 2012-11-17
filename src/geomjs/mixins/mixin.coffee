@@ -1,3 +1,5 @@
+# @toc
+
 ## Mixin
 class Mixin
 
