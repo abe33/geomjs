@@ -39,6 +39,7 @@ $(document).ready ->
     surface: true
     angle: true
     intersections: true
+    vertices: true
 
   testers = geometries.map (g) ->
     tester = new Tester g, options

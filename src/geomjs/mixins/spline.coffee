@@ -115,4 +115,16 @@ Spline = (segmentSize) ->
 
       @pointInSegment pos - segment, @segment segment
 
+    #### Drawing API
+
+    ##### Spline::drawVertices
+    #
+    drawVertices: (context, color) ->
+      context.fillStyle = color
+      for vertice in @vertices
+        context.beginPath()
+        context.arc vertice.x, vertice.y, 2, 0, Math.PI*2
+        context.fill()
+        context.closePath()
+
 module.exports = Spline

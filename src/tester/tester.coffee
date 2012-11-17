@@ -8,6 +8,7 @@ class Tester
     intersections2: 'white'
     text: '#93a1a1'
     mobile: '#b58900'
+    vertices: '#d33682'
 
   constructor: (@geometry, @options) ->
     @pathPosition = 0
@@ -64,15 +65,24 @@ class Tester
     context.lineTo(pt3.x,pt3.y)
     context.stroke()
 
+  renderVertices: (context) ->
+    @geometry.drawVertices context, colorPalette.vertices
+
+
   render: (context) ->
     @renderShape context if @geometry.stroke? and @geometry.fill?
+
     @renderBounds context if @options.bounds and @geometry.bounds?
+
     @renderPath context if @options.path and
                            @geometry.pathPointAt? and
                            @geometry.pathOrientationAt?
 
     @renderSurface context if @options.surface and
                               @geometry.randomPointInSurface?
+
     @renderClosedGeometry context if @options.angle and
                                      @geometry.center? and
                                      @geometry.pointAtAngle?
+
+    @renderVertices context if @options.vertices and @geometry.drawVertices?

@@ -11,7 +11,8 @@
       intersections: '#268bd2',
       intersections2: 'white',
       text: '#93a1a1',
-      mobile: '#b58900'
+      mobile: '#b58900',
+      vertices: '#d33682'
     };
 
     function Tester(geometry, options) {
@@ -83,6 +84,10 @@
       return context.stroke();
     };
 
+    Tester.prototype.renderVertices = function(context) {
+      return this.geometry.drawVertices(context, colorPalette.vertices);
+    };
+
     Tester.prototype.render = function(context) {
       if ((this.geometry.stroke != null) && (this.geometry.fill != null)) {
         this.renderShape(context);
@@ -97,7 +102,10 @@
         this.renderSurface(context);
       }
       if (this.options.angle && (this.geometry.center != null) && (this.geometry.pointAtAngle != null)) {
-        return this.renderClosedGeometry(context);
+        this.renderClosedGeometry(context);
+      }
+      if (this.options.vertices && (this.geometry.drawVertices != null)) {
+        return this.renderVertices(context);
       }
     };
 
@@ -122,7 +130,8 @@
       path: true,
       surface: true,
       angle: true,
-      intersections: true
+      intersections: true,
+      vertices: true
     };
     testers = geometries.map(function(g) {
       var tester;
