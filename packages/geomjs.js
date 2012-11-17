@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Surface, Triangle,
+  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Spline, Surface, Triangle,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -309,26 +309,26 @@
       return false;
     };
 
-    pointsBounds = function(points, mode, axis, start) {
-      return points.reduce((function(a, b) {
-        return Math[mode](a, b[axis]);
-      }), start);
+    pointsBounds = function(points, mode, axis) {
+      return Math[mode].apply(Math, points.map(function(pt) {
+        return pt[axis];
+      }));
     };
 
     Geometry.prototype.top = function() {
-      return pointsBounds(this.points(), 'min', 'y', Infinity);
+      return pointsBounds(this.points(), 'min', 'y');
     };
 
     Geometry.prototype.bottom = function() {
-      return pointsBounds(this.points(), 'max', 'y', -Infinity);
+      return pointsBounds(this.points(), 'max', 'y');
     };
 
     Geometry.prototype.left = function() {
-      return pointsBounds(this.points(), 'min', 'x', Infinity);
+      return pointsBounds(this.points(), 'min', 'x');
     };
 
     Geometry.prototype.right = function() {
-      return pointsBounds(this.points(), 'max', 'x', -Infinity);
+      return pointsBounds(this.points(), 'max', 'x');
     };
 
     Geometry.prototype.bounds = function() {
@@ -587,6 +587,136 @@
     return Intersections;
 
   })(Mixin);
+
+  /* src/geomjs/mixins/spline.coffee */;
+
+
+  Spline = function(segmentSize) {
+    var _;
+    return _ = (function(_super) {
+
+      __extends(_, _super);
+
+      function _() {
+        return _.__super__.constructor.apply(this, arguments);
+      }
+
+      Memoizable.attachTo(_);
+
+      _.prototype.initSpline = function(vertices, bias) {
+        this.vertices = vertices;
+        this.bias = bias != null ? bias : 20;
+        if (!this.validateVertices(this.vertices)) {
+          throw new Error("The number of vertices for " + this + " doesn't match");
+        }
+      };
+
+      _.prototype.validateVertices = function() {
+        return true;
+      };
+
+      _.prototype.segmentSize = function() {
+        return segmentSize;
+      };
+
+      _.prototype.segment = function(index) {
+        if (index < this.segments()) {
+          return this.vertices.concat().slice(index * segmentSize, (index + 1) * segmentSize + 1);
+        } else {
+          return null;
+        }
+      };
+
+      _.prototype.pointInSegment = function(position, segment) {
+        return Point.interpolate(segment[0], segment[1], position);
+      };
+
+      _.prototype.length = function() {
+        return this.measure(this.bias);
+      };
+
+      _.prototype.measure = function(bias) {
+        var i, length, _i, _ref;
+        length = 0;
+        for (i = _i = 0, _ref = this.segments() - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+          length += this.measureSegment(this.segment(i), bias);
+        }
+        return length;
+      };
+
+      _.prototype.measureSegment = function(segment, bias) {
+        var i, length, step, _i;
+        step = 1 / bias;
+        length = 0;
+        for (i = _i = 1; 1 <= bias ? _i <= bias : _i >= bias; i = 1 <= bias ? ++_i : --_i) {
+          length += this.pointInSegment((i - 1) * step, segment).distance(this.pointInSegment(i * step, segment));
+        }
+        return length;
+      };
+
+      _.prototype.pathPointAt = function(pos, pathBasedOnLength) {
+        if (pathBasedOnLength == null) {
+          pathBasedOnLength = true;
+        }
+        if (pos < 0) {
+          pos = 0;
+        }
+        if (pos > 1) {
+          pos = 1;
+        }
+        if (pos === 0) {
+          return this.vertices[0];
+        }
+        if (pos === 1) {
+          return this.vertices[this.vertices.length - 1];
+        }
+        if (pathBasedOnLength) {
+          return this.walkPathBasedOnLength(pos);
+        } else {
+          return this.walkPathBasedOnSegments(pos);
+        }
+      };
+
+      _.prototype.walkPathBasedOnLength = function(pos) {
+        var i, innerStepPos, length, p1, p2, points, stepLength, walked, _i, _ref;
+        walked = 0;
+        length = this.length();
+        points = this.points();
+        for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+          p1 = points[i - 1];
+          p2 = points[i];
+          stepLength = p1.distance(p2) / length;
+          if (walked + stepLength > pos) {
+            innerStepPos = Math.map(pos, walked, walked + stepLength, 0, 1);
+            return p1.add(p2.subtract(p1).scale(innerStepPos));
+          }
+          walked += stepLength;
+        }
+      };
+
+      _.prototype.walkPathBasedOnSegments = function(pos) {
+        var segment, segments;
+        segments = this.segments();
+        pos = pos * segments;
+        segment = Math.floor(pos);
+        if (segment === segments) {
+          segment -= 1;
+        }
+        return this.pointInSegment(pos - segment, this.segment(segment));
+      };
+
+      _.included = function(klass) {
+        return klass.prototype.clone = function() {
+          return new klass(this.vertices.map(function(pt) {
+            return pt.clone();
+          }), this.bias);
+        };
+      };
+
+      return _;
+
+    })(Mixin);
+  };
 
   /* src/geomjs/point.coffee */;
 
@@ -2308,6 +2438,57 @@
 
   })();
 
+  /* src/geomjs/linear_spline.coffee */;
+
+
+  LinearSpline = (function() {
+
+    Formattable('LinearSpline').attachTo(LinearSpline);
+
+    Geometry.attachTo(LinearSpline);
+
+    Path.attachTo(LinearSpline);
+
+    Intersections.attachTo(LinearSpline);
+
+    Spline(1).attachTo(LinearSpline);
+
+    function LinearSpline(vertices, bias) {
+      this.initSpline(vertices, bias);
+    }
+
+    LinearSpline.prototype.points = function() {
+      return this.vertices.concat();
+    };
+
+    LinearSpline.prototype.segments = function() {
+      return this.vertices.length - 1;
+    };
+
+    LinearSpline.prototype.validateVertices = function(vertices) {
+      return vertices.length >= 2;
+    };
+
+    LinearSpline.prototype.fill = function() {};
+
+    LinearSpline.prototype.drawPath = function(context) {
+      var p, points, start, _i, _len, _results;
+      points = this.points();
+      start = points.shift();
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      _results = [];
+      for (_i = 0, _len = points.length; _i < _len; _i++) {
+        p = points[_i];
+        _results.push(context.lineTo(p.x, p.y));
+      }
+      return _results;
+    };
+
+    return LinearSpline;
+
+  })();
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -2328,6 +2509,8 @@
 
   this.geomjs.Intersections = Intersections;
 
+  this.geomjs.Spline = Spline;
+
   this.geomjs.Point = Point;
 
   this.geomjs.Matrix = Matrix;
@@ -2341,5 +2524,7 @@
   this.geomjs.Ellipsis = Ellipsis;
 
   this.geomjs.Diamond = Diamond;
+
+  this.geomjs.LinearSpline = LinearSpline;
 
 }).call(this);
