@@ -5,7 +5,14 @@ Sourcable = (name, signature...) ->
     toSource: ->
       args = (@[arg] for arg in signature).map (o) ->
         if typeof o is 'object'
-          if o.toSource? then o.toSource() else o
+          isArray = Object::toString.call(o).indexOf('Array') isnt -1
+          if o.toSource?
+            o.toSource()
+          else
+            if isArray
+              "[#{o.map (el) -> if el.toSource? then el.toSource() else el}]"
+            else
+              o
         else
           o
 
