@@ -5,6 +5,7 @@ Formattable = require './mixins/formattable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
 Parameterizable = require './mixins/parameterizable'
@@ -22,6 +23,7 @@ class Ellipsis
     rotation: 0
     segments: 36
   }).attachTo Ellipsis
+  Sourcable('geomjs.Ellipsis','radius1','radius2','x','y').attachTo Ellipsis
   Cloneable.attachTo Ellipsis
   Geometry.attachTo Ellipsis
   Surface.attachTo Ellipsis

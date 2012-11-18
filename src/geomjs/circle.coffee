@@ -2,6 +2,7 @@
 Point = require './point'
 Equatable = require './mixins/equatable'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Formattable = require './mixins/formattable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
@@ -15,6 +16,7 @@ class Circle
   Formattable('Circle','x','y','radius').attachTo Circle
   Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
     .attachTo Circle
+  Sourcable('geomjs.Circle', 'radius', 'x', 'y').attachTo Circle
   Cloneable.attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle

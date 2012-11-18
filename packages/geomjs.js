@@ -214,8 +214,12 @@
           }
           return _results;
         }).call(this)).map(function(o) {
-          if (o.toSource) {
-            return o.toSource();
+          if (typeof o === 'object') {
+            if (o.toSource != null) {
+              return o.toSource();
+            } else {
+              return o;
+            }
           } else {
             return o;
           }
@@ -1058,6 +1062,8 @@
 
     Formattable.apply(null, ['Matrix'].concat(PROPERTIES)).attachTo(Matrix);
 
+    Sourcable.apply(null, ['geomjs.Matrix'].concat(PROPERTIES)).attachTo(Matrix);
+
     Parameterizable('matrixFrom', {
       a: 1,
       b: 0,
@@ -1615,6 +1621,8 @@
 
     Formattable('Triangle', 'a', 'b', 'c').attachTo(Triangle);
 
+    Sourcable('geomjs.Triangle', 'a', 'b', 'c').attachTo(Triangle);
+
     Cloneable.attachTo(Triangle);
 
     Memoizable.attachTo(Triangle);
@@ -1891,6 +1899,8 @@
       segments: 36
     }).attachTo(Circle);
 
+    Sourcable('geomjs.Circle', 'radius', 'x', 'y').attachTo(Circle);
+
     Cloneable.attachTo(Circle);
 
     Geometry.attachTo(Circle);
@@ -2089,6 +2099,8 @@
       segments: 36
     }).attachTo(Ellipsis);
 
+    Sourcable('geomjs.Ellipsis', 'radius1', 'radius2', 'x', 'y').attachTo(Ellipsis);
+
     Cloneable.attachTo(Ellipsis);
 
     Geometry.attachTo(Ellipsis);
@@ -2238,6 +2250,8 @@
       y: 0,
       rotation: 0
     }).attachTo(Diamond);
+
+    Sourcable('geomjs.Diamond', 'topLength', 'rightLength', 'bottomLength', 'leftLength', 'x', 'y', 'rotation').attachTo(Diamond);
 
     Equatable.apply(Equatable, PROPERTIES).attachTo(Diamond);
 
@@ -2502,6 +2516,8 @@
   LinearSpline = (function() {
 
     Formattable('LinearSpline').attachTo(LinearSpline);
+
+    Sourcable('geomjs.LinearSpline', 'vertices', 'bias').attachTo(LinearSpline);
 
     Geometry.attachTo(LinearSpline);
 

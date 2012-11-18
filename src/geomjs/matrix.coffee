@@ -5,6 +5,7 @@ Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Parameterizable = require './mixins/parameterizable'
 
 ## Matrix
@@ -30,6 +31,7 @@ class Matrix
 
   Equatable.apply(null, PROPERTIES).attachTo Matrix
   Formattable.apply(null, ['Matrix'].concat PROPERTIES).attachTo Matrix
+  Sourcable.apply(null, ['geomjs.Matrix'].concat PROPERTIES).attachTo Matrix
   Parameterizable('matrixFrom', {
     a: 1
     b: 0

@@ -4,6 +4,7 @@ Triangle = require './triangle'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Memoizable = require './mixins/memoizable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
@@ -25,6 +26,14 @@ class Diamond
     y: 0
     rotation: 0
   }).attachTo Diamond
+  Sourcable('geomjs.Diamond',
+            'topLength',
+            'rightLength',
+            'bottomLength',
+            'leftLength',
+            'x','y',
+            'rotation'
+  ).attachTo Diamond
   Equatable.apply(Equatable, PROPERTIES).attachTo Diamond
   Cloneable.attachTo Diamond
   Geometry.attachTo Diamond

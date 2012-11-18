@@ -3,6 +3,7 @@ Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
+Sourcable = require './mixins/sourcable'
 Memoizable = require './mixins/memoizable'
 Path = require './mixins/path'
 Surface = require './mixins/surface'
@@ -13,6 +14,7 @@ Intersections = require './mixins/intersections'
 class Triangle
   Equatable('a','b','c').attachTo Triangle
   Formattable('Triangle','a','b','c').attachTo Triangle
+  Sourcable('geomjs.Triangle','a','b','c').attachTo Triangle
   Cloneable.attachTo Triangle
   Memoizable.attachTo Triangle
   Geometry.attachTo Triangle

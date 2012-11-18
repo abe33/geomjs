@@ -1,6 +1,7 @@
 # @toc
 Point = require './point'
 Formattable = require './mixins/formattable'
+Sourcable = require './mixins/sourcable'
 Intersections = require './mixins/intersections'
 Geometry = require './mixins/geometry'
 Spline = require './mixins/spline'
@@ -9,6 +10,7 @@ Path = require './mixins/path'
 ## LinearSpline
 class LinearSpline
   Formattable('LinearSpline').attachTo LinearSpline
+  Sourcable('geomjs.LinearSpline', 'vertices', 'bias').attachTo LinearSpline
   Geometry.attachTo LinearSpline
   Path.attachTo LinearSpline
   Intersections.attachTo LinearSpline
