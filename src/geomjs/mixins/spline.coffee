@@ -121,9 +121,9 @@ Spline = (segmentSize) ->
     #
     drawVertices: (context, color) ->
       context.fillStyle = color
-      for vertice in @vertices
+      for vertex in @vertices
         context.beginPath()
-        context.arc vertice.x, vertice.y, 2, 0, Math.PI*2
+        context.arc vertex.x, vertex.y, 2, 0, Math.PI*2
         context.fill()
         context.closePath()
 

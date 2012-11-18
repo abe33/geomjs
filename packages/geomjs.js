@@ -757,14 +757,14 @@
       };
 
       _.prototype.drawVertices = function(context, color) {
-        var vertice, _i, _len, _ref, _results;
+        var vertex, _i, _len, _ref, _results;
         context.fillStyle = color;
         _ref = this.vertices;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          vertice = _ref[_i];
+          vertex = _ref[_i];
           context.beginPath();
-          context.arc(vertice.x, vertice.y, 2, 0, Math.PI * 2);
+          context.arc(vertex.x, vertex.y, 2, 0, Math.PI * 2);
           context.fill();
           _results.push(context.closePath());
         }
