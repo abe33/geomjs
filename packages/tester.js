@@ -7,6 +7,8 @@
     colorPalette = {
       shapeStroke: '#ff0000',
       shapeFill: 'rgba(255,0,0,0.2)',
+      shapeOverStroke: '#859900',
+      shapeOverFill: 'rgba(133, 153, 0, 0.2)',
       bounds: 'rgba(133, 153, 0, 0.3)',
       intersections: '#268bd2',
       intersections2: 'white',
@@ -23,7 +25,20 @@
       this.name = this.geometry.classname().toLowerCase();
       this.angle = 0;
       this.angleSpeed = this.random["in"]([4, 5, 6, 7, 8]);
+      this.shate;
+      this.fillColor = colorPalette.shapeFill;
+      this.strokeColor = colorPalette.shapeStroke;
     }
+
+    Tester.prototype.isOver = function(mouseX, mouseY) {
+      if ((this.geometry.contains != null) && this.geometry.contains(mouseX, mouseY)) {
+        this.fillColor = colorPalette.shapeOverFill;
+        return this.strokeColor = colorPalette.shapeOverStroke;
+      } else {
+        this.fillColor = colorPalette.shapeFill;
+        return this.strokeColor = colorPalette.shapeStroke;
+      }
+    };
 
     Tester.prototype.animate = function(t) {
       this.pathPosition += t;
@@ -34,25 +49,43 @@
     };
 
     Tester.prototype.renderShape = function(context) {
-      this.geometry.fill(context, colorPalette.shapeFill);
-      return this.geometry.stroke(context, colorPalette.shapeStroke);
+      this.geometry.fill(context, this.fillColor);
+      return this.geometry.stroke(context, this.strokeColor);
     };
 
     Tester.prototype.renderPath = function(context) {
       var pt, tan, tr;
       pt = this.geometry.pathPointAt(this.pathPosition / 10000);
       tan = this.geometry.pathOrientationAt(this.pathPosition / 10000);
-      tr = new geomjs.Rectangle(pt.x, pt.y, 6, 6, tan);
-      return tr.stroke(context, colorPalette.mobile);
+      if ((pt != null) && (tan != null)) {
+        tr = new geomjs.Rectangle(pt.x, pt.y, 6, 6, tan);
+        return tr.stroke(context, colorPalette.mobile);
+      }
     };
 
     Tester.prototype.renderSurface = function(context) {
       var i, pt, _i, _results;
-      context.fillStyle = colorPalette.shapeStroke;
+      context.fillStyle = this.strokeColor;
       _results = [];
       for (i = _i = 0; _i <= 100; i = ++_i) {
         pt = this.geometry.randomPointInSurface(this.random);
-        _results.push(context.fillRect(pt.x, pt.y, 1, 1));
+        if (pt != null) {
+          _results.push(context.fillRect(pt.x, pt.y, 1, 1));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+
+    Tester.prototype.renderTriangles = function(context) {
+      var tri, triangles, _i, _len, _results;
+      triangles = this.geometry.triangles();
+      console.log(triangles);
+      _results = [];
+      for (_i = 0, _len = triangles.length; _i < _len; _i++) {
+        tri = triangles[_i];
+        _results.push(tri.stroke(context, this.fillColor));
       }
       return _results;
     };
@@ -61,7 +94,9 @@
       var r;
       context.strokeStyle = colorPalette.bounds;
       r = this.geometry.boundingBox();
-      return context.strokeRect(r.x, r.y, r.width, r.height);
+      if (r != null) {
+        return context.strokeRect(r.x, r.y, r.width, r.height);
+      }
     };
 
     Tester.prototype.renderClosedGeometry = function(context) {
@@ -70,18 +105,20 @@
       pt1 = this.geometry.pointAtAngle(this.angle);
       pt2 = this.geometry.pointAtAngle(this.angle - 120);
       pt3 = this.geometry.pointAtAngle(this.angle + 120);
-      context.fillStyle = colorPalette.intersections;
-      context.strokeStyle = colorPalette.intersections;
-      context.fillRect(pt1.x - 2, pt1.y - 2, 4, 4);
-      context.fillRect(pt2.x - 2, pt2.y - 2, 4, 4);
-      context.fillRect(pt3.x - 2, pt3.y - 2, 4, 4);
-      context.beginPath();
-      context.moveTo(pt1.x, pt1.y);
-      context.lineTo(c.x, c.y);
-      context.lineTo(pt2.x, pt2.y);
-      context.moveTo(c.x, c.y);
-      context.lineTo(pt3.x, pt3.y);
-      return context.stroke();
+      if ((pt1 != null) && (pt2 != null) && (pt3 != null)) {
+        context.fillStyle = colorPalette.intersections;
+        context.strokeStyle = colorPalette.intersections;
+        context.fillRect(pt1.x - 2, pt1.y - 2, 4, 4);
+        context.fillRect(pt2.x - 2, pt2.y - 2, 4, 4);
+        context.fillRect(pt3.x - 2, pt3.y - 2, 4, 4);
+        context.beginPath();
+        context.moveTo(pt1.x, pt1.y);
+        context.lineTo(c.x, c.y);
+        context.lineTo(pt2.x, pt2.y);
+        context.moveTo(c.x, c.y);
+        context.lineTo(pt3.x, pt3.y);
+        return context.stroke();
+      }
     };
 
     Tester.prototype.renderVertices = function(context) {
@@ -105,7 +142,10 @@
         this.renderClosedGeometry(context);
       }
       if (this.options.vertices && (this.geometry.drawVertices != null)) {
-        return this.renderVertices(context);
+        this.renderVertices(context);
+      }
+      if (this.options.triangles && (this.geometry.triangles != null)) {
+        return this.renderTriangles(context);
       }
     };
 
@@ -114,7 +154,7 @@
   })();
 
   $(document).ready(function() {
-    var animate, animated, canvas, circle, context, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, options, pt, rectangle, render, requestAnimationFrame, stats, t, testers, triangle;
+    var animate, animated, canvas, circle, context, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, mouseX, mouseY, options, polygon, pt, rectangle, render, requestAnimationFrame, stats, t, testers, triangle;
     stats = new Stats;
     stats.setMode(0);
     $('#canvas').prepend(stats.domElement);
@@ -124,14 +164,15 @@
     canvas = $('canvas');
     context = canvas[0].getContext('2d');
     animated = false;
-    geometries = [new geomjs.Rectangle(250, 40, 180, 100, 16), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)])];
+    geometries = [new geomjs.Rectangle(250, 40, 180, 100, 16), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)])];
     options = {
       bounds: true,
       path: true,
       surface: true,
       angle: true,
       intersections: true,
-      vertices: true
+      vertices: true,
+      triangles: true
     };
     testers = geometries.map(function(g) {
       var tester;
@@ -140,11 +181,14 @@
       return tester;
     });
     t = new Date().valueOf();
+    mouseX = 0;
+    mouseY = 0;
     render = function() {
       var a, g1, g2, intersection, intersections, tested, _i, _j, _k, _len, _len1, _len2, _results;
       context.fillStyle = '#042029';
       context.fillRect(0, 0, canvas.width(), canvas.height());
       testers.forEach(function(t) {
+        t.isOver(mouseX, mouseY);
         if (options[t.name]) {
           return t.render(context);
         }
@@ -184,7 +228,7 @@
         return _results;
       }
     };
-    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], linearSpline = geometries[5];
+    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], polygon = geometries[5], linearSpline = geometries[6];
     linearSplinePoints = (function() {
       var _i, _len, _ref, _results;
       _ref = linearSpline.vertices;
@@ -244,6 +288,10 @@
         } else {
           return animated = false;
         }
+      });
+      canvas.mousemove(function(e) {
+        mouseX = e.pageX - canvas.offset().left;
+        return mouseY = e.pageY - canvas.offset().top;
       });
       widgets = $('input').widgets();
       return widgets.forEach(function(widget) {

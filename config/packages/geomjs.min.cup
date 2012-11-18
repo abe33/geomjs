@@ -13,6 +13,7 @@ includes: [
   'src/geomjs/mixins/surface'
   'src/geomjs/mixins/path'
   'src/geomjs/mixins/intersections'
+  'src/geomjs/mixins/triangulable'
   'src/geomjs/mixins/spline'
   'src/geomjs/point'
   'src/geomjs/matrix'
@@ -21,6 +22,7 @@ includes: [
   'src/geomjs/circle'
   'src/geomjs/ellipsis'
   'src/geomjs/diamond'
+  'src/geomjs/polygon'
   'src/geomjs/linear_spline'
 ]
 operators: [

@@ -23,11 +23,8 @@
       <div class='hint'>Click in the canvas to start/stop animations.</div>
       <aside>
         <p>
-          <strong>Diamond</strong> The diamond geometry surface methods relies on its four quadrants, which are recreated each time the methods are used, it creates a big overhead.
-        </p>
-        <p>
-          <strong>Surface Random</strong> 101 points are generated for each geometry each frame. As it's already a heavy computation, combined with Diamond it creates a big overhead (quadrants are generated at least 101 times each frame).
-        </p>
+          <strong>CPU Heavy</strong> In general this feature may be responsible
+          for a low framerate.
       </aside>
 
       <div id="options">
@@ -55,6 +52,11 @@
         <p>
           <label for="diamond"><strong>cpu heavy</strong> Diamond</label>
           <input id="diamond" type="checkbox" checked/>
+        </p>
+
+        <p>
+          <label for="polygon"><strong>cpu heavy</strong> Polygon</label>
+          <input id="polygon" type="checkbox" checked/>
         </p>
 
         <p>
@@ -93,6 +95,10 @@
           <input id="vertices" type="checkbox" checked/>
         </p>
 
+        <p>
+          <label for="triangles"><strong>cpu heavy</strong> Triangles</label>
+          <input id="triangles" type="checkbox" checked/>
+        </p>
 
       </div>
     </div>

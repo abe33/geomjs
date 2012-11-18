@@ -24,6 +24,16 @@ $(document).ready ->
     new geomjs.Ellipsis(120, 60, 470, 180, 10)
     new geomjs.Diamond(50,100, 60, 40, 420, 250)
 
+    new geomjs.Polygon([
+      new geomjs.Point(160, 190)
+      new geomjs.Point(200, 280)
+      new geomjs.Point(260, 260)
+      new geomjs.Point(280, 280)
+      new geomjs.Point(380, 190)
+      new geomjs.Point(180, 160)
+      new geomjs.Point(260, 220)
+    ])
+
     new geomjs.LinearSpline([
       new geomjs.Point(260, 290)
       new geomjs.Point(300, 380)
@@ -40,6 +50,7 @@ $(document).ready ->
     angle: true
     intersections: true
     vertices: true
+    triangles: true
 
   testers = geometries.map (g) ->
     tester = new Tester g, options
@@ -48,10 +59,14 @@ $(document).ready ->
 
   t = new Date().valueOf()
 
+  mouseX= 0
+  mouseY= 0
+
   render = ->
     context.fillStyle = '#042029'
     context.fillRect(0, 0, canvas.width(), canvas.height())
     testers.forEach (t) ->
+      t.isOver mouseX, mouseY
       t.render context if options[t.name]
 
     if options.intersections
@@ -73,7 +88,15 @@ $(document).ready ->
       for intersection in intersections
         context.fillRect intersection.x-2, intersection.y-2, 4, 4
 
-  [rectangle, triangle, circle, ellipsis, diamond, linearSpline] = geometries
+  [
+    rectangle,
+    triangle,
+    circle,
+    ellipsis,
+    diamond,
+    polygon,
+    linearSpline
+  ] = geometries
 
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)
 
@@ -124,6 +147,10 @@ $(document).ready ->
         animated = true
       else
         animated = false
+
+    canvas.mousemove (e) ->
+      mouseX = e.pageX - canvas.offset().left
+      mouseY = e.pageY - canvas.offset().top
 
     widgets = $('input').widgets()
     widgets.forEach (widget) ->

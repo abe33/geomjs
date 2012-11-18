@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Rectangle, Sourcable, Spline, Surface, Triangle,
+  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -214,11 +214,23 @@
           }
           return _results;
         }).call(this)).map(function(o) {
+          var isArray;
           if (typeof o === 'object') {
+            isArray = Object.prototype.toString.call(o).indexOf('Array') !== -1;
             if (o.toSource != null) {
               return o.toSource();
             } else {
-              return o;
+              if (isArray) {
+                return "[" + (o.map(function(el) {
+                  if (el.toSource != null) {
+                    return el.toSource();
+                  } else {
+                    return el;
+                  }
+                })) + "]";
+              } else {
+                return o;
+              }
             }
           } else {
             return o;
@@ -628,6 +640,146 @@
     };
 
     return Intersections;
+
+  })(Mixin);
+
+  /* src/geomjs/mixins/triangulable.coffee */;
+
+
+  Triangulable = (function(_super) {
+    var arrayCopy, polyArea, ptInTri;
+
+    __extends(Triangulable, _super);
+
+    function Triangulable() {
+      return Triangulable.__super__.constructor.apply(this, arguments);
+    }
+
+    Memoizable.attachTo(Triangulable);
+
+    arrayCopy = function(arrayTo, arrayFrom) {
+      var i, n, _i, _len, _results;
+      _results = [];
+      for (i = _i = 0, _len = arrayFrom.length; _i < _len; i = ++_i) {
+        n = arrayFrom[i];
+        _results.push(arrayTo[i] = n);
+      }
+      return _results;
+    };
+
+    ptInTri = function(pt, v1, v2, v3) {
+      var b1, b2, b3, denom;
+      denom = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
+      b1 = ((pt.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - pt.x)) / denom;
+      b2 = ((pt.y - v1.y) * (v3.x - v1.x) + (v3.y - v1.y) * (v1.x - pt.x)) / denom;
+      b3 = ((pt.y - v2.y) * (v1.x - v2.x) + (v1.y - v2.y) * (v2.x - pt.x)) / denom;
+      if (b1 < 0 || b2 < 0 || b3 < 0) {
+        return false;
+      }
+      return true;
+    };
+
+    polyArea = function(pts) {
+      var i, l, sum, _i, _ref;
+      sum = 0;
+      i = 0;
+      l = pts.length;
+      for (i = _i = 0, _ref = l - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        sum += pts[i].x * pts[(i + 1) % l].y - pts[(i + 1) % l].x * pts[i].y;
+      }
+      return sum / 2;
+    };
+
+    Triangulable.prototype.triangles = function() {
+      var a, b, c, i, index, indices, triangles, vertices, _i, _ref;
+      if (this.memoized('triangles')) {
+        return this.memoFor('triangles');
+      }
+      vertices = this.points();
+      vertices.pop();
+      indices = this.triangulate(vertices);
+      triangles = [];
+      for (i = _i = 0, _ref = indices.length / 3 - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        index = i * 3;
+        a = vertices[indices[index]];
+        b = vertices[indices[index + 1]];
+        c = vertices[indices[index + 2]];
+        triangles.push(new Triangle(a, b, c));
+      }
+      return this.memoize('triangles', triangles);
+    };
+
+    Triangulable.prototype.triangulate = function(vertices) {
+      var cr, i, j, l, n, nr, ok, pArea, pts, ptsArea, r1, r2, r3, refs, tArea, triangulated, v0, v1, v2, v3;
+      if (vertices.length < 4) {
+        return;
+      }
+      pts = vertices;
+      refs = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (i = _i = 0, _len = pts.length; _i < _len; i = ++_i) {
+          n = pts[i];
+          _results.push(i);
+        }
+        return _results;
+      })();
+      ptsArea = [];
+      i = 0;
+      l = refs.length;
+      while (i < l) {
+        ptsArea[i] = pts[refs[i]].clone();
+        ++i;
+      }
+      pArea = polyArea(ptsArea);
+      cr = [];
+      nr = [];
+      r1 = void 0;
+      r2 = void 0;
+      r3 = void 0;
+      v0 = void 0;
+      v1 = void 0;
+      v2 = void 0;
+      arrayCopy(cr, refs);
+      while (cr.length > 3) {
+        i = 0;
+        l = cr.length;
+        while (i < l) {
+          r1 = cr[i % l];
+          r2 = cr[(i + 1) % l];
+          r3 = cr[(i + 2) % l];
+          v1 = pts[r1];
+          v2 = pts[r2];
+          v3 = pts[r3];
+          ok = true;
+          j = (i + 3) % l;
+          while (j !== i) {
+            ptsArea = [v1, v2, v3];
+            tArea = polyArea(ptsArea);
+            if ((pArea < 0 && tArea > 0) || (pArea > 0 && tArea < 0) || ptInTri(pts[cr[j]], v1, v2, v3)) {
+              ok = false;
+              break;
+            }
+            j = (j + 1) % l;
+          }
+          if (ok) {
+            nr.push(r1);
+            nr.push(r2);
+            nr.push(r3);
+            cr.splice((i + 1) % l, 1);
+            break;
+          }
+          ++i;
+        }
+      }
+      nr.push(cr[0]);
+      nr.push(cr[1]);
+      nr.push(cr[2]);
+      triangulated = true;
+      return nr;
+    };
+
+    return Triangulable;
 
   })(Mixin);
 
@@ -1794,7 +1946,7 @@
       invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
       u = (dot11 * dot02 - dot01 * dot12) * invDenom;
       v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-      return v > 0 && v > 0 && u + v < 1;
+      return u > 0 && v > 0 && u + v < 1;
     };
 
     Triangle.prototype.randomPointInSurface = function(random) {
@@ -2510,6 +2662,77 @@
 
   })();
 
+  /* src/geomjs/polygon.coffee */;
+
+
+  Polygon = (function() {
+
+    Formattable('Polygon', 'vertices').attachTo(Polygon);
+
+    Sourcable('geomjs.Polygon', 'vertices').attachTo(Polygon);
+
+    Cloneable.attachTo(Polygon);
+
+    Geometry.attachTo(Polygon);
+
+    Intersections.attachTo(Polygon);
+
+    Triangulable.attachTo(Polygon);
+
+    Polygon.polygonFrom = function(vertices) {
+      var isArray;
+      if ((vertices != null) && typeof vertices === 'object') {
+        isArray = Object.prototype.toString.call(vertices).indexOf('Array') !== -1;
+        if (!isArray) {
+          return vertices;
+        }
+        return {
+          vertices: vertices
+        };
+      } else {
+        return {
+          vertices: null
+        };
+      }
+    };
+
+    function Polygon(vertices) {
+      vertices = this.polygonFrom(vertices).vertices;
+      if (vertices == null) {
+        this.noVertices();
+      }
+      if (vertices.length < 3) {
+        this.notEnougthVertices(vertices);
+      }
+      this.vertices = vertices;
+    }
+
+    Polygon.prototype.points = function() {
+      return this.vertices.concat(this.vertices[0]);
+    };
+
+    Polygon.prototype.polygonFrom = Polygon.polygonFrom;
+
+    Polygon.prototype.memoizationKey = function() {
+      return this.vertices.map(function(pt) {
+        return "" + pt.x + "," + pt.y;
+      }).join(";");
+    };
+
+    Polygon.prototype.noVertices = function() {
+      throw new Error('No vertices provided to Polygon');
+    };
+
+    Polygon.prototype.notEnougthVertices = function(vertices) {
+      var length;
+      length = vertices.length;
+      throw new Error("Polygon must have at least 3 vertices, was " + length);
+    };
+
+    return Polygon;
+
+  })();
+
   /* src/geomjs/linear_spline.coffee */;
 
 
@@ -2585,6 +2808,8 @@
 
   this.geomjs.Intersections = Intersections;
 
+  this.geomjs.Triangulable = Triangulable;
+
   this.geomjs.Spline = Spline;
 
   this.geomjs.Point = Point;
@@ -2600,6 +2825,8 @@
   this.geomjs.Ellipsis = Ellipsis;
 
   this.geomjs.Diamond = Diamond;
+
+  this.geomjs.Polygon = Polygon;
 
   this.geomjs.LinearSpline = LinearSpline;
 
