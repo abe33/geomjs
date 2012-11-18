@@ -489,11 +489,29 @@
       return null;
     };
 
-    Path.prototype.pathPointAt = function(n, pathBasedOnLength) {
+    Path.prototype.pathPointAt = function(pos, pathBasedOnLength) {
+      var points;
       if (pathBasedOnLength == null) {
         pathBasedOnLength = true;
       }
-      return null;
+      if (pos < 0) {
+        pos = 0;
+      }
+      if (pos > 1) {
+        pos = 1;
+      }
+      points = this.points();
+      if (pos === 0) {
+        return points[0];
+      }
+      if (pos === 1) {
+        return points[points.length - 1];
+      }
+      if (pathBasedOnLength) {
+        return this.walkPathBasedOnLength(pos, points);
+      } else {
+        return this.walkPathBasedOnSegments(pos, points);
+      }
     };
 
     Path.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
@@ -515,6 +533,33 @@
         pathBasedOnLength = true;
       }
       return this.pathPointAt((n + accuracy) % 1).subtract(this.pathPointAt((1 + n - accuracy) % 1)).normalize(1);
+    };
+
+    Path.prototype.walkPathBasedOnLength = function(pos, points) {
+      var i, innerStepPos, length, p1, p2, stepLength, walked, _i, _ref;
+      walked = 0;
+      length = this.length();
+      for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        p1 = points[i - 1];
+        p2 = points[i];
+        stepLength = p1.distance(p2) / length;
+        if (walked + stepLength > pos) {
+          innerStepPos = Math.map(pos, walked, walked + stepLength, 0, 1);
+          return p1.add(p2.subtract(p1).scale(innerStepPos));
+        }
+        walked += stepLength;
+      }
+    };
+
+    Path.prototype.walkPathBasedOnSegments = function(pos, points) {
+      var segment, segments;
+      segments = points.length - 1;
+      pos = pos * segments;
+      segment = Math.floor(pos);
+      if (segment === segments) {
+        segment -= 1;
+      }
+      return Point.interpolate(points[segment], points[segment + 1], pos - segment);
     };
 
     return Path;
@@ -874,38 +919,10 @@
           return this.vertices[this.vertices.length - 1];
         }
         if (pathBasedOnLength) {
-          return this.walkPathBasedOnLength(pos);
+          return this.walkPathBasedOnLength(pos, this.vertices);
         } else {
-          return this.walkPathBasedOnSegments(pos);
+          return this.walkPathBasedOnSegments(pos, this.vertices);
         }
-      };
-
-      _.prototype.walkPathBasedOnLength = function(pos) {
-        var i, innerStepPos, length, p1, p2, points, stepLength, walked, _i, _ref;
-        walked = 0;
-        length = this.length();
-        points = this.points();
-        for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-          p1 = points[i - 1];
-          p2 = points[i];
-          stepLength = p1.distance(p2) / length;
-          if (walked + stepLength > pos) {
-            innerStepPos = Math.map(pos, walked, walked + stepLength, 0, 1);
-            return p1.add(p2.subtract(p1).scale(innerStepPos));
-          }
-          walked += stepLength;
-        }
-      };
-
-      _.prototype.walkPathBasedOnSegments = function(pos) {
-        var segment, segments;
-        segments = this.segments();
-        pos = pos * segments;
-        segment = Math.floor(pos);
-        if (segment === segments) {
-          segment -= 1;
-        }
-        return this.pointInSegment(pos - segment, this.segment(segment));
       };
 
       _.prototype.drawVertices = function(context, color) {
@@ -2679,6 +2696,10 @@
 
     Triangulable.attachTo(Polygon);
 
+    Surface.attachTo(Polygon);
+
+    Path.attachTo(Polygon);
+
     Polygon.polygonFrom = function(vertices) {
       var isArray;
       if ((vertices != null) && typeof vertices === 'object') {
@@ -2711,8 +2732,6 @@
       return this.vertices.concat(this.vertices[0]);
     };
 
-    Polygon.prototype.polygonFrom = Polygon.polygonFrom;
-
     Polygon.prototype.acreage = function() {
       var acreage, tri, _i, _len, _ref;
       acreage = 0;
@@ -2736,11 +2755,42 @@
       return false;
     };
 
+    Polygon.prototype.randomPointInSurface = function(random) {
+      var acreage, i, n, ratios, triangles, _i, _len;
+      if (random == null) {
+        random = new chancejs.Random(new chancejs.MathRandom);
+      }
+      acreage = this.acreage();
+      triangles = this.triangles();
+      ratios = triangles.map(function(t, i) {
+        return t.acreage() / acreage;
+      });
+      for (i = _i = 0, _len = ratios.length; _i < _len; i = ++_i) {
+        n = ratios[i];
+        if (i > 0) {
+          ratios[i] += ratios[i - 1];
+        }
+      }
+      return random.inArray(triangles, ratios).randomPointInSurface(random);
+    };
+
+    Polygon.prototype.length = function() {
+      var i, length, points, _i, _ref;
+      length = 0;
+      points = this.points();
+      for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        length += points[i - 1].distance(points[i]);
+      }
+      return length;
+    };
+
     Polygon.prototype.memoizationKey = function() {
       return this.vertices.map(function(pt) {
         return "" + pt.x + "," + pt.y;
       }).join(";");
     };
+
+    Polygon.prototype.polygonFrom = Polygon.polygonFrom;
 
     Polygon.prototype.noVertices = function() {
       throw new Error('No vertices provided to Polygon');

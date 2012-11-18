@@ -55,7 +55,6 @@ class Tester
 
   renderTriangles: (context) ->
     triangles = @geometry.triangles()
-    console.log triangles
     for tri in triangles
       tri.stroke context, @fillColor
 

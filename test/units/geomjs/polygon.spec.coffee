@@ -51,7 +51,6 @@ describe 'Polygon', ->
           it 'should return false', ->
             expect(@polygon.contains -10, -10).toBeFalsy()
 
-      describe 'its acreage method', ->
-        it 'should return 16', ->
-          expect(@polygon.acreage()).toBeClose(16)
+      acreageOf('polygon').shouldBe(16)
+      lengthOf('polygon').shouldBe(16)
 

@@ -1,13 +1,21 @@
+# @toc
 Mixin = require './mixin'
 Memoizable = require './memoizable'
 Triangle = require '../triangle'
 Point = require '../point'
 
+## Triangulable
 class Triangulable extends Mixin
   Memoizable.attachTo Triangulable
 
+  #### Private Utility
+
+  ##### arrayCopy
+  #
   arrayCopy = (arrayTo, arrayFrom) -> arrayTo[i] = n for n,i in arrayFrom
 
+  ##### ptInTri
+  #
   ptInTri = (pt, v1, v2, v3) ->
     #Compute barycentric coordinates
     denom = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x)
@@ -17,6 +25,8 @@ class Triangulable extends Mixin
     return false if b1 < 0 or b2 < 0 or b3 < 0
     true
 
+  ##### polyArea
+  #
   polyArea = (pts) ->
     sum = 0
     i = 0
@@ -27,6 +37,10 @@ class Triangulable extends Mixin
 
     sum / 2
 
+  #### Mixin Methods
+
+  ##### Triangulable::triangles
+  #
   triangles: ->
     return @memoFor 'triangles' if @memoized 'triangles'
 
@@ -43,7 +57,8 @@ class Triangulable extends Mixin
 
     @memoize 'triangles', triangles
 
-
+  ##### Triangulable::triangulate
+  #
   triangulate: (vertices) ->
     return if vertices.length < 4
 

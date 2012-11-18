@@ -18,7 +18,13 @@ class Polygon
   Geometry.attachTo Polygon
   Intersections.attachTo Polygon
   Triangulable.attachTo Polygon
+  Surface.attachTo Polygon
+  Path.attachTo Polygon
 
+  #### Class Methods
+
+  ##### Polygon.polygonFrom
+  #
   @polygonFrom: (vertices) ->
     if vertices? and typeof vertices is 'object'
       isArray = Object::toString.call(vertices).indexOf('Array') isnt -1
@@ -27,6 +33,10 @@ class Polygon
     else
       vertices: null
 
+  #### Instances Methods
+
+  ##### Polygon::constructor
+  #
   constructor: (vertices) ->
     {vertices} = @polygonFrom vertices
 
@@ -34,28 +44,74 @@ class Polygon
     @notEnougthVertices vertices if vertices.length < 3
     @vertices = vertices
 
+  #### Polygon Manipulation
+
+  #### Geometry API
+
+  ##### Polygon::points
+  #
   points: -> @vertices.concat @vertices[0]
 
-  polygonFrom: Polygon.polygonFrom
+  #### Surface API
 
+  ##### Polygon::acreage
+  #
   acreage: ->
     acreage = 0
     acreage += tri.acreage() for tri in @triangles()
     acreage
 
+  ##### Polygon::contains
+  #
   contains: (x,y) ->
     return true for tri in @triangles() when tri.contains x,y
     false
 
+  ##### Polygon::randomPointInSurface
+  #
+  randomPointInSurface: (random) ->
+    unless random?
+      random = new chancejs.Random new chancejs.MathRandom
+
+    acreage = @acreage()
+    triangles = @triangles()
+    ratios = triangles.map (t, i) -> t.acreage() / acreage
+    ratios[i] += ratios[i-1] for n,i in ratios when i > 0
+
+    random.inArray(triangles, ratios).randomPointInSurface random
+
+  #### Path API
+
+  length: ->
+    length = 0
+    points = @points()
+    for i in [1..points.length-1]
+      length += points[i-1].distance(points[i])
+    length
+
+  #### Memoization
+
+  ##### Polygon::memoizationKey
+  #
   memoizationKey: -> @vertices.map((pt) -> "#{pt.x},#{pt.y}").join ";"
 
+  #### Utilities
+
+  ##### Polygon::polygonFrom
+  #
+  polygonFrom: Polygon.polygonFrom
+
+  #### Instance Errors Methods
+
+  ##### Polygon::noVertices
+  #
   noVertices: ->
     throw new Error 'No vertices provided to Polygon'
 
+  ##### Polygon::notEnougthVertices
+  #
   notEnougthVertices: (vertices) ->
     length = vertices.length
     throw new Error "Polygon must have at least 3 vertices, was #{length}"
-
-
 
 module.exports = Polygon

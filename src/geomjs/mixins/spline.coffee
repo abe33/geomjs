@@ -83,37 +83,9 @@ Spline = (segmentSize) ->
       return @vertices[@vertices.length - 1] if pos is 1
 
       if pathBasedOnLength
-        @walkPathBasedOnLength pos
+        @walkPathBasedOnLength pos, @vertices
       else
-        @walkPathBasedOnSegments pos
-
-    ##### Spline::walkPathBasedOnLength
-    #
-    walkPathBasedOnLength: (pos) ->
-      walked = 0
-      length = @length()
-      points = @points()
-
-      for i in [1..points.length-1]
-        p1 = points[i-1]
-        p2 = points[i]
-        stepLength = p1.distance(p2) / length
-
-        if walked + stepLength > pos
-          innerStepPos = Math.map pos, walked, walked + stepLength, 0, 1
-          return p1.add p2.subtract(p1).scale(innerStepPos)
-
-        walked += stepLength
-
-    ##### Spline::walkPathBasedOnSegments
-    #
-    walkPathBasedOnSegments: (pos) ->
-      segments = @segments()
-      pos = pos * segments
-      segment = Math.floor pos
-      segment -= 1 if segment is segments
-
-      @pointInSegment pos - segment, @segment segment
+        @walkPathBasedOnSegments pos, @vertices
 
     #### Drawing API
 
