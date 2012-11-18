@@ -1929,7 +1929,7 @@
       if (this.memoized('acreage')) {
         return this.memoFor('acreage');
       }
-      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2);
+      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(Math.degToRad(this.abc()))) / 2);
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -2712,6 +2712,29 @@
     };
 
     Polygon.prototype.polygonFrom = Polygon.polygonFrom;
+
+    Polygon.prototype.acreage = function() {
+      var acreage, tri, _i, _len, _ref;
+      acreage = 0;
+      _ref = this.triangles();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tri = _ref[_i];
+        acreage += tri.acreage();
+      }
+      return acreage;
+    };
+
+    Polygon.prototype.contains = function(x, y) {
+      var tri, _i, _len, _ref;
+      _ref = this.triangles();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tri = _ref[_i];
+        if (tri.contains(x, y)) {
+          return true;
+        }
+      }
+      return false;
+    };
 
     Polygon.prototype.memoizationKey = function() {
       return this.vertices.map(function(pt) {

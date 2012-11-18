@@ -38,6 +38,15 @@ class Polygon
 
   polygonFrom: Polygon.polygonFrom
 
+  acreage: ->
+    acreage = 0
+    acreage += tri.acreage() for tri in @triangles()
+    acreage
+
+  contains: (x,y) ->
+    return true for tri in @triangles() when tri.contains x,y
+    false
+
   memoizationKey: -> @vertices.map((pt) -> "#{pt.x},#{pt.y}").join ";"
 
   noVertices: ->

@@ -1,6 +1,8 @@
 require '../../test_helper'
 
 describe 'Polygon', ->
+  beforeEach -> addPointMatchers this
+
   describe 'called without argument', ->
     it 'should throw an error', ->
       expect(-> polygon()).toThrow()
@@ -39,4 +41,17 @@ describe 'Polygon', ->
       describe 'its triangles method', ->
         it 'should return two triangles', ->
           expect(@polygon.triangles().length).toBe(2)
+
+      describe 'its contains method', ->
+        describe 'with a point in the geometry', ->
+          it 'should return true', ->
+            expect(@polygon.contains 1, 2).toBeTruthy()
+
+        describe 'with a point off the geometry', ->
+          it 'should return false', ->
+            expect(@polygon.contains -10, -10).toBeFalsy()
+
+      describe 'its acreage method', ->
+        it 'should return 16', ->
+          expect(@polygon.acreage()).toBeClose(16)
 
