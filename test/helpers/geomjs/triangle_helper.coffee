@@ -85,7 +85,7 @@ global.triangleData = (a,b,c) ->
     length: data.ab.length() + data.bc.length() + data.ca.length()
     acreage: data.ab.length() *
              data.bc.length() *
-             Math.abs(Math.sin(data.abc)) / 2
+             Math.abs(Math.sin(Math.degToRad(data.abc))) / 2
 
   data
 

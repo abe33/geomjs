@@ -202,7 +202,7 @@ class Triangle
     return @memoFor 'acreage' if @memoized 'acreage'
     @memoize 'acreage', @ab().length() *
                         @bc().length() *
-                        Math.abs(Math.sin(@abc())) / 2
+                        Math.abs(Math.sin(Math.degToRad(@abc()))) / 2
 
   ##### Triangle::contains
   #
