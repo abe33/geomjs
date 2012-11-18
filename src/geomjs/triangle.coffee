@@ -223,7 +223,7 @@ class Triangle
     u = (dot11 * dot02 - dot01 * dot12) * invDenom
     v = (dot00 * dot12 - dot01 * dot02) * invDenom
 
-    v > 0 and v > 0 and u + v < 1
+    u > 0 and v > 0 and u + v < 1
 
   ##### Triangle::containsGeometry
   #
