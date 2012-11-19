@@ -8,7 +8,7 @@ Point = require '../point'
 class Triangulable extends Mixin
   Memoizable.attachTo Triangulable
 
-  #### Private Utility
+  #### Private Utilities
 
   ##### arrayCopy
   #
@@ -17,7 +17,6 @@ class Triangulable extends Mixin
   ##### ptInTri
   #
   ptInTri = (pt, v1, v2, v3) ->
-    #Compute barycentric coordinates
     denom = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x)
     b1 = ((pt.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - pt.x)) / denom
     b2 = ((pt.y - v1.y) * (v3.x - v1.x) + (v3.y - v1.y) * (v1.x - pt.x)) / denom

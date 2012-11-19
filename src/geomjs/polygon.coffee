@@ -44,7 +44,46 @@ class Polygon
     @notEnougthVertices vertices if vertices.length < 3
     @vertices = vertices
 
+  ##### Polygon::center
+  #
+  center: ->
+    x = y = 0
+
+    for vertex in @vertices
+      x += vertex.x
+      y += vertex.y
+
+    x = x / @vertices.length
+    y = y / @vertices.length
+
+    new Point x, y
+
   #### Polygon Manipulation
+
+  ##### Polygon::translate
+  #
+  translate: (x,y) ->
+    {x,y} = Point.pointFrom x,y
+    for vertex in @vertices
+      vertex.x += x
+      vertex.y += y
+    this
+
+  ##### Polygon::rotateAroundCenter
+  #
+  rotateAroundCenter: (rotation=0) ->
+    center = @center()
+    for vertex,i in @vertices
+      @vertices[i] = vertex.rotateAround center, rotation
+    this
+
+  ##### Polygon::scaleAroundCenter
+  #
+  scaleAroundCenter: (scale) ->
+    center = @center()
+    for vertex,i in @vertices
+      @vertices[i] = center.add vertex.subtract(center).scale(scale)
+    this
 
   #### Geometry API
 
