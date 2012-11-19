@@ -121,9 +121,11 @@ $(document).ready ->
     ellipsis.rotation += -d / 60
 
     diamond.topLength = 50 + Math.sin(Math.degToRad(t / 17)) * 20
-    diamond.rightLength = 100 + Math.cos(Math.degToRad(Math.PI / 2 + t / 17)) * 20
+    diamond.rightLength = 100 +
+                          Math.cos(Math.degToRad(Math.PI / 2 + t / 17)) * 20
     diamond.bottomLength = 60 + Math.sin(Math.degToRad(Math.PI + t / 17)) * 20
-    diamond.leftLength = 40 + Math.sin(Math.degToRad(Math.PI * 1.5 + t / 17)) * 20
+    diamond.leftLength = 40 +
+                         Math.sin(Math.degToRad(Math.PI * 1.5 + t / 17)) * 20
     diamond.rotation += -d / 80
 
     linearSpline.vertices.forEach (vertex, i) ->

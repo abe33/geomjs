@@ -75,18 +75,18 @@ describe 'Circle', ->
 
       describe 'its contains method', ->
         calledWithPoints(data.x, data.y)
-          .where
-            source: source
-            method: 'contains'
-          .should 'return true', (res) ->
-            expect(res).toBeTruthy()
+        .where
+          source: source
+          method: 'contains'
+        .should 'return true', (res) ->
+          expect(res).toBeTruthy()
 
         calledWithPoints(-100, -100)
-          .where
-            source: source
-            method: 'contains'
-          .should 'return false', (res) ->
-            expect(res).toBeFalsy()
+        .where
+          source: source
+          method: 'contains'
+        .should 'return false', (res) ->
+          expect(res).toBeFalsy()
 
       # Geometry API
       describe 'its top method', ->
@@ -129,11 +129,11 @@ describe 'Circle', ->
       describe 'its clone method', ->
         it 'should return a copy of this circle', ->
           expect(@circle.clone())
-            .toBeCircle(
-              @circle.radius,
-              @circle.x,
-              @circle.y,
-              @circle.segments)
+          .toBeCircle(
+            @circle.radius,
+            @circle.x,
+            @circle.y,
+            @circle.segments)
 
 
 

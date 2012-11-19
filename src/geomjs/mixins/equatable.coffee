@@ -6,7 +6,7 @@ Mixin = require './mixin'
 #
 Equatable = (properties...) ->
   #
-  class extends Mixin
+  class ConcretEquatable extends Mixin
     ##### Equatable.attachTo
     #
     # See

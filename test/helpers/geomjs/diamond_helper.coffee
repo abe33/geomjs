@@ -13,7 +13,8 @@ global.addDiamondMatchers = (scope) ->
       @message = ->
         notText = if @isNot then ' not' else ''
         "Expected #{@actual}#{notText} to be a diamond with
-        leftLength=#{leftLength}, rightLength=#{rightLength}, topLength=#{topLength}, bottomLength=#{bottomLength},
+        leftLength=#{leftLength}, rightLength=#{rightLength},
+        topLength=#{topLength}, bottomLength=#{bottomLength},
         x=#{x}, y=#{y}, rotation=#{rotation}".squeeze()
 
       @actual.leftLength is leftLength and
@@ -136,8 +137,3 @@ global.diamondFactories =
   'with a partial object':
     args: [{topLength:1,rightLength:2,x:5}]
     test: [1,2,1,1,5,0,0]
-
-
-
-
-

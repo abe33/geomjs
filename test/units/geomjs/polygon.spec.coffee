@@ -74,7 +74,10 @@ describe 'Polygon', ->
             pt = center.add data.vertices[i].subtract(center).scale(2)
             expect(vertex).toBeSamePoint(pt)
 
-
       acreageOf('polygon').shouldBe(16)
       lengthOf('polygon').shouldBe(16)
 
+      shouldBeClosedGeometry('polygon')
+
+      # Drawing API
+      testDrawingOf('polygon')

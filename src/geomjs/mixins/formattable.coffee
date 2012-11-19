@@ -6,7 +6,7 @@ Mixin = require './mixin'
 #
 Formattable = (classname, properties...) ->
   #
-  class extends Mixin
+  class ConcretFormattable extends Mixin
     ##### Formattable.attachTo
     #
     # See

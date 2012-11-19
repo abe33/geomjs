@@ -5,10 +5,9 @@ Point = require '../point'
 
 ## Spline
 Spline = (segmentSize) ->
-
   #
-  class _ extends Mixin
-    Memoizable.attachTo _
+  class ConcretSpline extends Mixin
+    Memoizable.attachTo ConcretSpline
 
     ##### Spline.attachTo
     #

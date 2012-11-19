@@ -58,18 +58,18 @@ describe 'Rectangle', ->
 
         describe 'its setCenter method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'setCenter'
-            .should 'have moved the rectangle and returned it', (res, tx,ty) ->
-              {x,y} = @data.topLeft
-              center = @data.center
-              [x,y] = [
-                x + (tx - center.x)
-                y + (ty - center.y)
-              ]
-              expect(@rectangle.topLeft()).toBePoint(x,y)
-              expect(res).toBe(@rectangle)
+          .where
+            source: source
+            method: 'setCenter'
+          .should 'have moved the rectangle and returned it', (res, tx,ty) ->
+            {x,y} = @data.topLeft
+            center = @data.center
+            [x,y] = [
+              x + (tx - center.x)
+              y + (ty - center.y)
+            ]
+            expect(@rectangle.topLeft()).toBePoint(x,y)
+            expect(res).toBe(@rectangle)
 
         describe 'its rotateAroundCenter method', ->
           beforeEach ->
@@ -107,79 +107,79 @@ describe 'Rectangle', ->
 
         describe 'its inflateAroundCenter method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflateAroundCenter'
-            .should 'have inflate the rectangle and returned it', (res,x,y)->
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.center()).toBeSamePoint(@data.center)
-              expect(res).toBe(@rectangle)
+          .where
+            source: source
+            method: 'inflateAroundCenter'
+          .should 'have inflate the rectangle and returned it', (res,x,y)->
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.center()).toBeSamePoint(@data.center)
+            expect(res).toBe(@rectangle)
 
         describe 'its inflate method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflate'
-            .should 'have inflate the rectangle and returned it', (res,x,y) ->
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
-              expect(res).toBe(@rectangle)
+          .where
+            source: source
+            method: 'inflate'
+          .should 'have inflate the rectangle and returned it', (res,x,y) ->
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+            expect(res).toBe(@rectangle)
 
         describe 'its inflateTopLeft method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflateTopLeft'
-            .should 'have inflate the rectangle and returned it', (res,x,y) ->
-              topEdge = point(@rectangle.topEdge()).normalize(-x)
-              leftEdge = point(@rectangle.leftEdge()).normalize(-y)
+          .where
+            source: source
+            method: 'inflateTopLeft'
+          .should 'have inflate the rectangle and returned it', (res,x,y) ->
+            topEdge = point(@rectangle.topEdge()).normalize(-x)
+            leftEdge = point(@rectangle.leftEdge()).normalize(-y)
 
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.topLeft())
-                .toBeSamePoint(point(@data.topLeft).add(topEdge).add(leftEdge))
-              expect(res).toBe(@rectangle)
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.topLeft())
+              .toBeSamePoint(point(@data.topLeft).add(topEdge).add(leftEdge))
+            expect(res).toBe(@rectangle)
 
         describe 'its inflateTopRight method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflateTopRight'
-            .should 'have inflate the rectangle and returned it', (res,x,y) ->
-              leftEdge = point(@rectangle.leftEdge()).normalize(-y)
+          .where
+            source: source
+            method: 'inflateTopRight'
+          .should 'have inflate the rectangle and returned it', (res,x,y) ->
+            leftEdge = point(@rectangle.leftEdge()).normalize(-y)
 
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.topLeft())
-                .toBeSamePoint(point(@data.topLeft).add(leftEdge))
-              expect(res).toBe(@rectangle)
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.topLeft())
+              .toBeSamePoint(point(@data.topLeft).add(leftEdge))
+            expect(res).toBe(@rectangle)
 
         describe 'its inflateBottomLeft method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflateBottomLeft'
-            .should 'have inflate the rectangle and returned it', (res,x,y) ->
-              topEdge = point(@rectangle.topEdge()).normalize(-x)
+          .where
+            source: source
+            method: 'inflateBottomLeft'
+          .should 'have inflate the rectangle and returned it', (res,x,y) ->
+            topEdge = point(@rectangle.topEdge()).normalize(-x)
 
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.topLeft())
-                .toBeSamePoint(point(@data.topLeft).add(topEdge))
-              expect(res).toBe(@rectangle)
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.topLeft())
+              .toBeSamePoint(point(@data.topLeft).add(topEdge))
+            expect(res).toBe(@rectangle)
 
         describe 'its inflateBottomRight method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
-            .where
-              source: source
-              method: 'inflateBottomRight'
-            .should 'have inflate the rectangle and returned it', (res,x,y) ->
-              expect(@rectangle.width).toBe(width + x)
-              expect(@rectangle.height).toBe(height + y)
-              expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
-              expect(res).toBe(@rectangle)
+          .where
+            source: source
+            method: 'inflateBottomRight'
+          .should 'have inflate the rectangle and returned it', (res,x,y) ->
+            expect(@rectangle.width).toBe(width + x)
+            expect(@rectangle.height).toBe(height + y)
+            expect(@rectangle.topLeft()).toBeSamePoint(@data.topLeft)
+            expect(res).toBe(@rectangle)
 
         describe 'its inflateLeft method called', ->
           beforeEach ->
@@ -250,18 +250,18 @@ describe 'Rectangle', ->
                                     (n / 5) * data.leftEdge.y
 
           calledWithPoints.apply(global, a)
-            .where
-              source: source
-              method: 'contains'
-            .should 'return true for points inside the rectangle', (res) ->
-              expect(res).toBeTruthy()
+          .where
+            source: source
+            method: 'contains'
+          .should 'return true for points inside the rectangle', (res) ->
+            expect(res).toBeTruthy()
 
           calledWithPoints(-10,-10)
-            .where
-              source: source
-              method: 'contains'
-            .should 'return false for points outside the rectangle', (res) ->
-              expect(res).toBeFalsy()
+          .where
+            source: source
+            method: 'contains'
+          .should 'return false for points outside the rectangle', (res) ->
+            expect(res).toBeFalsy()
 
         # Path API
         lengthOf(source).shouldBe(length)
@@ -272,21 +272,21 @@ describe 'Rectangle', ->
         describe 'its bounds method', ->
           it 'should return the bounds of the rectangle', ->
             expect(@rectangle.bounds())
-              .toEqual
-                top: @rectangle.top()
-                left: @rectangle.left()
-                bottom: @rectangle.bottom()
-                right: @rectangle.right()
+            .toEqual
+              top: @rectangle.top()
+              left: @rectangle.left()
+              bottom: @rectangle.bottom()
+              right: @rectangle.right()
 
         describe 'its boundingBox method', ->
           it 'should return a rectangle representing its bounds', ->
             expect(@rectangle.boundingBox())
-              .toBeRectangle(
-                @rectangle.left(),
-                @rectangle.top(),
-                @rectangle.right() - @rectangle.left(),
-                @rectangle.bottom() - @rectangle.top()
-              )
+            .toBeRectangle(
+              @rectangle.left(),
+              @rectangle.top(),
+              @rectangle.right() - @rectangle.left(),
+              @rectangle.bottom() - @rectangle.top()
+            )
 
         # Drawing API
         testDrawingOf(source)

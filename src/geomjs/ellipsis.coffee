@@ -125,12 +125,14 @@ class Ellipsis
   ##### Ellipsis::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
+  # [Intersections.intersects][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersects
 
   ##### Ellipsis::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
+  # [Intersections.intersections][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersections
 
   #### Surface API
 
@@ -162,7 +164,8 @@ class Ellipsis
   ##### Ellipsis::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry][1]
+  # [1]: src_geomjs_mixins_surface.html#surfacecontainsgeometry
 
 
   #### Path API
@@ -235,6 +238,7 @@ class Ellipsis
   ##### Ellipsis::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
+  # [Formattable.toString][1]
+  # [1]: src_geomjs_mixins_formattable.html#formattabletostring
 
 module.exports = Ellipsis

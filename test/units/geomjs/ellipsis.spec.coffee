@@ -35,18 +35,18 @@ describe 'Ellipsis', ->
 
       describe 'its contains method', ->
         calledWithPoints(data.x, data.y)
-          .where
-            source: 'ellipsis'
-            method: 'contains'
-          .should 'return true', (res) ->
-            expect(res).toBeTruthy()
+        .where
+          source: 'ellipsis'
+          method: 'contains'
+        .should 'return true', (res) ->
+          expect(res).toBeTruthy()
 
         calledWithPoints(-100, -100)
-          .where
-            source: 'ellipsis'
-            method: 'contains'
-          .should 'return false', (res) ->
-            expect(res).toBeFalsy()
+        .where
+          source: 'ellipsis'
+          method: 'contains'
+        .should 'return false', (res) ->
+          expect(res).toBeFalsy()
 
       # Geometry API
       shouldBeClosedGeometry(source)
@@ -71,8 +71,6 @@ describe 'Ellipsis', ->
         it 'should returns the ellipsis bounds', ->
           expect(@ellipsis.bounds()).toEqual(data.bounds)
 
-
-
       # Drawing API
       testDrawingOf(source)
 
@@ -91,12 +89,12 @@ describe 'Ellipsis', ->
       describe 'its clone method', ->
         it 'should return a copy of this ellipsis', ->
           expect(@ellipsis.clone())
-            .toBeEllipsis(
-              @ellipsis.radius1,
-              @ellipsis.radius2,
-              @ellipsis.x,
-              @ellipsis.y,
-              @ellipsis.rotation,
-              @ellipsis.segments)
+          .toBeEllipsis(
+            @ellipsis.radius1,
+            @ellipsis.radius2,
+            @ellipsis.x,
+            @ellipsis.y,
+            @ellipsis.rotation,
+            @ellipsis.segments)
 
 

@@ -45,7 +45,8 @@ class Rectangle
 
   # Registers the fast intersections iterators for the Rectangle class
   iterators = Intersections.iterators
-  iterators['RectangleRectangle'] = Rectangle.eachRectangleRectangleIntersections
+  k = 'RectangleRectangle'
+  iterators[k] = Rectangle.eachRectangleRectangleIntersections
 
   ##### Rectangle::constructor
   #
@@ -265,12 +266,14 @@ class Rectangle
   ##### Rectangle::intersects
   #
   # See
-  # [Intersections.intersects](src_geomjs_mixins_intersections.html#intersectionsintersects)
+  # [Intersections.intersects][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersects
 
   ##### Rectangle::intersections
   #
   # See
-  # [Intersections.intersections](src_geomjs_mixins_intersections.html#intersectionsintersections)
+  # [Intersections.intersections][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersections
 
   ##### Rectangle::pointAtAngle
   #
@@ -295,7 +298,8 @@ class Rectangle
   ##### Rectangle::containsGeometry
   #
   # See
-  # [Surface.containsgeometry](src_geomjs_mixins_surface.html#surfacecontainsgeometry)
+  # [Surface.containsgeometry][1]
+  # [1]: src_geomjs_mixins_surface.html#surfacecontainsgeometry
 
   ##### Rectangle::randomPointInSurface
   #
@@ -345,7 +349,7 @@ class Rectangle
   ##### Rectangle::pathTangentAt
   #
   # See
-  # [Path.pathTangentAt](src_geomjs_mixins_geometry.html#pathpathTangentAt)
+  # [Path.pathTangentAt](src_geomjs_mixins_geometry.html#pathpathtangentat)
 
   ##### Rectangle::pathSteps
   #
@@ -390,7 +394,8 @@ class Rectangle
   ##### Rectangle::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
+  # [Formattable.toString][1]
+  # [1]: src_geomjs_mixins_formattable.html#formattabletostring
 
   ##### Rectangle::clone
   #

@@ -105,17 +105,17 @@
 
 
   Equatable = function() {
-    var properties;
+    var ConcretEquatable, properties;
     properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    return (function(_super) {
+    return ConcretEquatable = (function(_super) {
 
-      __extends(_Class, _super);
+      __extends(ConcretEquatable, _super);
 
-      function _Class() {
-        return _Class.__super__.constructor.apply(this, arguments);
+      function ConcretEquatable() {
+        return ConcretEquatable.__super__.constructor.apply(this, arguments);
       }
 
-      _Class.prototype.equals = function(o) {
+      ConcretEquatable.prototype.equals = function(o) {
         var _this = this;
         return (o != null) && properties.every(function(p) {
           if (_this[p].equals != null) {
@@ -126,7 +126,7 @@
         });
       };
 
-      return _Class;
+      return ConcretEquatable;
 
     })(Mixin);
   };
@@ -135,17 +135,17 @@
 
 
   Formattable = function() {
-    var classname, properties;
+    var ConcretFormattable, classname, properties;
     classname = arguments[0], properties = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return (function(_super) {
+    return ConcretFormattable = (function(_super) {
 
-      __extends(_Class, _super);
+      __extends(ConcretFormattable, _super);
 
-      function _Class() {
-        return _Class.__super__.constructor.apply(this, arguments);
+      function ConcretFormattable() {
+        return ConcretFormattable.__super__.constructor.apply(this, arguments);
       }
 
-      _Class.prototype.toString = function() {
+      ConcretFormattable.prototype.toString = function() {
         var formattedProperties, p;
         formattedProperties = (function() {
           var _i, _len, _results;
@@ -159,11 +159,11 @@
         return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
       };
 
-      _Class.prototype.classname = function() {
+      ConcretFormattable.prototype.classname = function() {
         return classname;
       };
 
-      return _Class;
+      return ConcretFormattable;
 
     })(Mixin);
   };
@@ -193,17 +193,17 @@
 
 
   Sourcable = function() {
-    var name, signature;
+    var ConcretSourcable, name, signature;
     name = arguments[0], signature = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return (function(_super) {
+    return ConcretSourcable = (function(_super) {
 
-      __extends(_Class, _super);
+      __extends(ConcretSourcable, _super);
 
-      function _Class() {
-        return _Class.__super__.constructor.apply(this, arguments);
+      function ConcretSourcable() {
+        return ConcretSourcable.__super__.constructor.apply(this, arguments);
       }
 
-      _Class.prototype.toSource = function() {
+      ConcretSourcable.prototype.toSource = function() {
         var arg, args;
         args = ((function() {
           var _i, _len, _results;
@@ -239,7 +239,7 @@
         return "new " + name + "(" + (args.join(',')) + ")";
       };
 
-      return _Class;
+      return ConcretSourcable;
 
     })(Mixin);
   };
@@ -287,18 +287,19 @@
 
 
   Parameterizable = function(method, parameters, allowPartial) {
+    var ConcretParameterizable;
     if (allowPartial == null) {
       allowPartial = false;
     }
-    return (function(_super) {
+    return ConcretParameterizable = (function(_super) {
 
-      __extends(_Class, _super);
+      __extends(ConcretParameterizable, _super);
 
-      function _Class() {
-        return _Class.__super__.constructor.apply(this, arguments);
+      function ConcretParameterizable() {
+        return ConcretParameterizable.__super__.constructor.apply(this, arguments);
       }
 
-      _Class.included = function(klass) {
+      ConcretParameterizable.included = function(klass) {
         var f;
         f = function() {
           var args, firstArgumentIsObject, k, keys, n, o, output, strict, v, value, _i;
@@ -341,7 +342,7 @@
         return klass.prototype[method] = f;
       };
 
-      return _Class;
+      return ConcretParameterizable;
 
     })(Mixin);
   };
@@ -736,7 +737,7 @@
     };
 
     triangulate = function(vertices) {
-      var cr, i, j, l, n, nr, ok, pArea, pts, ptsArea, r1, r2, r3, refs, tArea, triangulated, v0, v1, v2, v3;
+      var cr, i, j, l, n, nr, ok, pArea, pts, ptsArea, r1, r2, r3, refs, tArea, triangulated, v1, v2, v3;
       if (vertices.length < 4) {
         return;
       }
@@ -760,12 +761,6 @@
       pArea = polyArea(ptsArea);
       cr = [];
       nr = [];
-      r1 = void 0;
-      r2 = void 0;
-      r3 = void 0;
-      v0 = void 0;
-      v1 = void 0;
-      v2 = void 0;
       arrayCopy(cr, refs);
       while (cr.length > 3) {
         i = 0;
@@ -789,18 +784,14 @@
             j = (j + 1) % l;
           }
           if (ok) {
-            nr.push(r1);
-            nr.push(r2);
-            nr.push(r3);
+            nr.push(r1, r2, r3);
             cr.splice((i + 1) % l, 1);
             break;
           }
           ++i;
         }
       }
-      nr.push(cr[0]);
-      nr.push(cr[1]);
-      nr.push(cr[2]);
+      nr.push.apply(nr, cr.slice(0, 3));
       triangulated = true;
       return nr;
     };
@@ -832,18 +823,18 @@
 
 
   Spline = function(segmentSize) {
-    var _;
-    return _ = (function(_super) {
+    var ConcretSpline;
+    return ConcretSpline = (function(_super) {
 
-      __extends(_, _super);
+      __extends(ConcretSpline, _super);
 
-      function _() {
-        return _.__super__.constructor.apply(this, arguments);
+      function ConcretSpline() {
+        return ConcretSpline.__super__.constructor.apply(this, arguments);
       }
 
-      Memoizable.attachTo(_);
+      Memoizable.attachTo(ConcretSpline);
 
-      _.included = function(klass) {
+      ConcretSpline.included = function(klass) {
         return klass.prototype.clone = function() {
           return new klass(this.vertices.map(function(pt) {
             return pt.clone();
@@ -851,7 +842,7 @@
         };
       };
 
-      _.prototype.initSpline = function(vertices, bias) {
+      ConcretSpline.prototype.initSpline = function(vertices, bias) {
         this.vertices = vertices;
         this.bias = bias != null ? bias : 20;
         if (!this.validateVertices(this.vertices)) {
@@ -859,15 +850,15 @@
         }
       };
 
-      _.prototype.validateVertices = function() {
+      ConcretSpline.prototype.validateVertices = function() {
         return true;
       };
 
-      _.prototype.segmentSize = function() {
+      ConcretSpline.prototype.segmentSize = function() {
         return segmentSize;
       };
 
-      _.prototype.segment = function(index) {
+      ConcretSpline.prototype.segment = function(index) {
         if (index < this.segments()) {
           return this.vertices.concat().slice(index * segmentSize, (index + 1) * segmentSize + 1);
         } else {
@@ -875,15 +866,15 @@
         }
       };
 
-      _.prototype.pointInSegment = function(position, segment) {
+      ConcretSpline.prototype.pointInSegment = function(position, segment) {
         return Point.interpolate(segment[0], segment[1], position);
       };
 
-      _.prototype.length = function() {
+      ConcretSpline.prototype.length = function() {
         return this.measure(this.bias);
       };
 
-      _.prototype.measure = function(bias) {
+      ConcretSpline.prototype.measure = function(bias) {
         var i, length, _i, _ref;
         length = 0;
         for (i = _i = 0, _ref = this.segments() - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -892,7 +883,7 @@
         return length;
       };
 
-      _.prototype.measureSegment = function(segment, bias) {
+      ConcretSpline.prototype.measureSegment = function(segment, bias) {
         var i, length, step, _i;
         step = 1 / bias;
         length = 0;
@@ -902,7 +893,7 @@
         return length;
       };
 
-      _.prototype.pathPointAt = function(pos, pathBasedOnLength) {
+      ConcretSpline.prototype.pathPointAt = function(pos, pathBasedOnLength) {
         if (pathBasedOnLength == null) {
           pathBasedOnLength = true;
         }
@@ -925,7 +916,7 @@
         }
       };
 
-      _.prototype.drawVertices = function(context, color) {
+      ConcretSpline.prototype.drawVertices = function(context, color) {
         var vertex, _i, _len, _ref, _results;
         context.fillStyle = color;
         _ref = this.vertices;
@@ -940,7 +931,7 @@
         return _results;
       };
 
-      return _;
+      return ConcretSpline;
 
     })(Mixin);
   };
@@ -1023,7 +1014,9 @@
     };
 
     Point.missingPoint = function(args, pos) {
-      throw new Error("Can't find the " + pos + " point in Point.interpolate arguments " + args);
+      var msg;
+      msg = "Can't find the " + pos + " point in Point.interpolate arguments " + args;
+      throw new Error(msg);
     };
 
     Point.notAPoint = function(args) {
@@ -1422,7 +1415,7 @@
 
 
   Rectangle = (function() {
-    var PROPERTIES, iterators;
+    var PROPERTIES, iterators, k;
 
     PROPERTIES = ['x', 'y', 'width', 'height', 'rotation'];
 
@@ -1472,7 +1465,9 @@
 
     iterators = Intersections.iterators;
 
-    iterators['RectangleRectangle'] = Rectangle.eachRectangleRectangleIntersections;
+    k = 'RectangleRectangle';
+
+    iterators[k] = Rectangle.eachRectangleRectangleIntersections;
 
     function Rectangle(x, y, width, height, rotation) {
       var args;
@@ -1756,7 +1751,7 @@
     };
 
     Rectangle.prototype.paste = function(x, y, width, height, rotation) {
-      var k, v, values, _results;
+      var v, values, _results;
       values = this.rectangleFrom(x, y, width, height, rotation);
       _results = [];
       for (k in values) {
@@ -1769,7 +1764,7 @@
     };
 
     Rectangle.prototype.defaultToZero = function(values) {
-      var k, v;
+      var v;
       for (k in values) {
         v = values[k];
         if (!Math.isFloat(v)) {
@@ -2827,6 +2822,24 @@
 
     Polygon.prototype.points = function() {
       return this.vertices.concat(this.vertices[0]);
+    };
+
+    Polygon.prototype.closedGeometry = function() {
+      return true;
+    };
+
+    Polygon.prototype.pointAtAngle = function(angle) {
+      var center, distance, vec, _ref;
+      center = this.center();
+      distance = function(a, b) {
+        return a.distance(center) - b.distance(center);
+      };
+      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      return (_ref = this.intersections({
+        points: function() {
+          return [center, vec];
+        }
+      })) != null ? _ref.sort(distance)[0] : void 0;
     };
 
     Polygon.prototype.acreage = function() {

@@ -85,11 +85,75 @@ class Polygon
       @vertices[i] = center.add vertex.subtract(center).scale(scale)
     this
 
+  #### Bounds
+
+  ##### Polygon::top
+  #
+  # See
+  # [Geometry.top](src_geomjs_mixins_geometry.html#geometrytop)
+
+  ##### Polygon::bottom
+  #
+  # See
+  # [Geometry.bottom](src_geomjs_mixins_geometry.html#geometrybottom)
+
+  ##### Polygon::left
+  #
+  # See
+  # [Geometry.left](src_geomjs_mixins_geometry.html#geometryleft)
+
+  ##### Polygon::right
+  #
+  # See
+  # [Geometry.right](src_geomjs_mixins_geometry.html#geometryright)
+
+  ##### Polygon::bounds
+  #
+  # See
+  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
+
+  ##### Polygon::boundingBox
+  #
+  # See
+  # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
+
   #### Geometry API
+
 
   ##### Polygon::points
   #
   points: -> @vertices.concat @vertices[0]
+
+  ##### Polygon::triangles
+  #
+  # See
+  # [Triangulable.triangles][1]
+  # [1]: src_geomjs_mixins_triangulable.html#triangulabletriangles
+
+  ##### Polygon::closedGeometry
+  #
+  closedGeometry: -> true
+
+  ##### Polygon::intersects
+  #
+  # See
+  # [Intersections.intersects][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersects
+
+  ##### Polygon::intersections
+  #
+  # See
+  # [Intersections.intersections][1]
+  # [1]: src_geomjs_mixins_intersections.html#intersectionsintersections
+
+  ##### Polygon::pointAtAngle
+  #
+  pointAtAngle: (angle) ->
+    center = @center()
+    distance = (a,b) -> a.distance(center) - b.distance(center)
+    vec = center.add Math.cos(Math.degToRad(angle))*10000,
+                     Math.sin(Math.degToRad(angle))*10000
+    @intersections(points: -> [center, vec])?.sort(distance)[0]
 
   #### Surface API
 
@@ -106,6 +170,12 @@ class Polygon
     return true for tri in @triangles() when tri.contains x,y
     false
 
+  ##### Polygon::containsGeometry
+  #
+  # See
+  # [Surface.containsgeometry][1]
+  # [1]: src_geomjs_mixins_surface.html#surfacecontainsgeometry
+
   ##### Polygon::randomPointInSurface
   #
   randomPointInSurface: (random) ->
@@ -121,12 +191,47 @@ class Polygon
 
   #### Path API
 
+  ##### Polygon::length
+  #
   length: ->
     length = 0
     points = @points()
     for i in [1..points.length-1]
       length += points[i-1].distance(points[i])
     length
+
+  ##### Polygon::pathPointAt
+  #
+  # See
+  # [Path.pathPointAt](src_geomjs_mixins_geometry.html#pathpathpointat)
+
+  ##### Polygon::pathOrientationAt
+  #
+  # See
+  # [Path.pathOrientationAt][1]
+  # [1]: src_geomjs_mixins_geometry.html#pathpathorientationat
+
+  ##### Polygon::pathTangentAt
+  #
+  # See
+  # [Path.pathTangentAt](src_geomjs_mixins_geometry.html#pathpathtangentat)
+
+  #### Drawing API
+
+  ##### Polygon::stroke
+  #
+  # See
+  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
+
+  ##### Polygon::fill
+  #
+  # See
+  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
+
+  ##### Polygon::drawPath
+  #
+  # See
+  # [Geometry.drawPath](src_geomjs_mixins_geometry.html#geometrydrawpath)
 
   #### Memoization
 
@@ -139,6 +244,22 @@ class Polygon
   ##### Polygon::polygonFrom
   #
   polygonFrom: Polygon.polygonFrom
+
+  ##### Polygon::toString
+  #
+  # See
+  # [Formattable.toString][1]
+  # [1]: src_geomjs_mixins_formattable.html#formattabletostring
+
+  ##### Polygon::clone
+  #
+  # See
+  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
+
+  ##### Polygon::equals
+  #
+  # See
+  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   #### Instance Errors Methods
 

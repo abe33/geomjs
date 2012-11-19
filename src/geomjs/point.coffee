@@ -125,7 +125,8 @@ class Point
   #
   # Throws an error for a missing point in `Point.interpolate`.
   @missingPoint: (args, pos) ->
-    throw new Error "Can't find the #{pos} point in Point.interpolate arguments #{args}"
+    msg = "Can't find the #{pos} point in Point.interpolate arguments #{args}"
+    throw new Error msg
 
   @notAPoint: (args) ->
     throw new Error "#{args} is not a point"
@@ -350,7 +351,8 @@ class Point
   ##### Point::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
+  # [Formattable.toString][1]
+  # [1]: src_geomjs_mixins_formattable.html#formattabletostring
 
   #### Instances Error Methods
 

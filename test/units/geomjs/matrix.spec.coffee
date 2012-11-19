@@ -68,11 +68,11 @@ describe 'Matrix', ->
       @translated = matrix.translated()
 
     calledWithPoints(-2,2)
-      .where
-        source: 'matrix'
-        method: 'translate'
-      .should 'translate the matrix', (result) ->
-        expect(result).toBeSameMatrix(@translated)
+    .where
+      source: 'matrix'
+      method: 'translate'
+    .should 'translate the matrix', (result) ->
+      expect(result).toBeSameMatrix(@translated)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->
@@ -84,11 +84,11 @@ describe 'Matrix', ->
       @scaled = matrix.scaled()
 
     calledWithPoints(0.5,2)
-      .where
-        source: 'matrix'
-        method: 'scale'
-      .should 'scale the matrix', (result) ->
-        expect(result).toBeSameMatrix(@scaled)
+    .where
+      source: 'matrix'
+      method: 'scale'
+    .should 'scale the matrix', (result) ->
+      expect(result).toBeSameMatrix(@scaled)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->
@@ -160,11 +160,11 @@ describe 'Matrix', ->
       @skewed = matrix.skewed()
 
     calledWithPoints(-2,2)
-      .where
-        source: 'matrix'
-        method: 'skew'
-      .should 'skew the matrix', (result) ->
-        expect(result).toBeSameMatrix(@skewed)
+    .where
+      source: 'matrix'
+      method: 'skew'
+    .should 'skew the matrix', (result) ->
+      expect(result).toBeSameMatrix(@skewed)
 
     describe 'without arguments', ->
       it 'should not modify the matrix', ->
@@ -185,13 +185,13 @@ describe 'Matrix', ->
         expect(transformed).toBePoint(0, 20)
 
     describe 'with two numbers', ->
-       it 'should return a new point resulting
+      it 'should return a new point resulting
           of the matrix transformations'.squeeze(), ->
         transformed = @matrix.transformPoint 10, 0
         expect(transformed).toBePoint(0, 20)
 
     describe 'with one number', ->
-       it 'should throw an error', ->
+      it 'should throw an error', ->
         expect(=> @matrix.transformPoint 10).toThrow()
 
     describe 'without arguments', ->

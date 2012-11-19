@@ -17,10 +17,14 @@ class Triangulable extends Mixin
   ##### ptInTri
   #
   ptInTri = (pt, v1, v2, v3) ->
-    denom = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x)
-    b1 = ((pt.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - pt.x)) / denom
-    b2 = ((pt.y - v1.y) * (v3.x - v1.x) + (v3.y - v1.y) * (v1.x - pt.x)) / denom
-    b3 = ((pt.y - v2.y) * (v1.x - v2.x) + (v1.y - v2.y) * (v2.x - pt.x)) / denom
+    denom = (v1.y - v3.y) * (v2.x - v3.x) +
+            (v2.y - v3.y) * (v3.x - v1.x)
+    b1 = ((pt.y - v3.y) * (v2.x - v3.x) +
+          (v2.y - v3.y) * (v3.x - pt.x)) / denom
+    b2 = ((pt.y - v1.y) * (v3.x - v1.x) +
+          (v3.y - v1.y) * (v1.x - pt.x)) / denom
+    b3 = ((pt.y - v2.y) * (v1.x - v2.x) +
+          (v1.y - v2.y) * (v2.x - pt.x)) / denom
     return false if b1 < 0 or b2 < 0 or b3 < 0
     true
 
@@ -53,12 +57,6 @@ class Triangulable extends Mixin
     pArea = polyArea(ptsArea)
     cr = []
     nr = []
-    r1 = undefined
-    r2 = undefined
-    r3 = undefined
-    v0 = undefined
-    v1 = undefined
-    v2 = undefined
     arrayCopy cr, refs
     while cr.length > 3
       i = 0
@@ -77,20 +75,18 @@ class Triangulable extends Mixin
         while j isnt i
           ptsArea = [v1, v2, v3]
           tArea = polyArea(ptsArea)
-          if (pArea < 0 and tArea > 0) or (pArea > 0 and tArea < 0) or ptInTri(pts[cr[j]], v1, v2, v3)
+          if (pArea < 0 and tArea > 0) or
+             (pArea > 0 and tArea < 0) or
+             ptInTri(pts[cr[j]], v1, v2, v3)
             ok = false
             break
           j = (j + 1) % l
         if ok
-          nr.push r1
-          nr.push r2
-          nr.push r3
+          nr.push r1, r2, r3
           cr.splice (i + 1) % l, 1
           break
         ++i
-    nr.push cr[0]
-    nr.push cr[1]
-    nr.push cr[2]
+    nr.push.apply nr, cr[0..2]
     triangulated = true
 
     return nr

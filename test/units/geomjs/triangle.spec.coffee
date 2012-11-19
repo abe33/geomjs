@@ -129,18 +129,18 @@ describe 'Triangle', ->
 
 
       calledWithPoints(data.center.x, data.center.y)
-        .where
-          source: source
-          method: 'contains'
-        .should 'return true for points inside the triangle', (res) ->
-          expect(res).toBeTruthy()
+      .where
+        source: source
+        method: 'contains'
+      .should 'return true for points inside the triangle', (res) ->
+        expect(res).toBeTruthy()
 
       calledWithPoints(100,100)
-        .where
-          source: source
-          method: 'contains'
-        .should 'return false for points outside the triangle', (res) ->
-          expect(res).toBeFalsy()
+      .where
+        source: source
+        method: 'contains'
+      .should 'return false for points outside the triangle', (res) ->
+        expect(res).toBeFalsy()
 
       # Path API
       lengthOf(source).shouldBe(data.length)

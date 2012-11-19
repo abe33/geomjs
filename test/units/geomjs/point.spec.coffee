@@ -73,62 +73,62 @@ describe 'Point', ->
 
 
   pointOperator('add')
-    .with(2,3).and(4,5)
-    .where
-      emptyArguments: 'copy'
-      emptyObject: 'copy'
-      partialObject: (result) -> expect(result).toBePoint(6,3)
-      nullArgument: 'copy'
-      singleNumber: (result) -> expect(result).toBePoint(6,3)
-    .should 'return a new point corresponding
-             to the addition product'.squeeze(), (result) ->
-      expect(result).toBePoint(6,8)
+  .with(2,3).and(4,5)
+  .where
+    emptyArguments: 'copy'
+    emptyObject: 'copy'
+    partialObject: (result) -> expect(result).toBePoint(6,3)
+    nullArgument: 'copy'
+    singleNumber: (result) -> expect(result).toBePoint(6,3)
+  .should 'return a new point corresponding
+           to the addition product'.squeeze(), (result) ->
+    expect(result).toBePoint(6,8)
 
   pointOperator('subtract')
-    .with(6,8).and(4,5)
-    .where
-      emptyArguments: 'copy'
-      emptyObject: 'copy'
-      partialObject: (result) -> expect(result).toBePoint(2,8)
-      nullArgument: 'copy'
-      singleNumber: (result) -> expect(result).toBePoint(2,8)
-    .should 'return a new point corresponding
-             to the subtract product'.squeeze(), (result) ->
-      expect(result).toBePoint(2,3)
+  .with(6,8).and(4,5)
+  .where
+    emptyArguments: 'copy'
+    emptyObject: 'copy'
+    partialObject: (result) -> expect(result).toBePoint(2,8)
+    nullArgument: 'copy'
+    singleNumber: (result) -> expect(result).toBePoint(2,8)
+  .should 'return a new point corresponding
+           to the subtract product'.squeeze(), (result) ->
+    expect(result).toBePoint(2,3)
 
   pointOperator('dot')
-    .with(7,3).and(4,2)
-    .where
-      emptyArguments: 'throws'
-      emptyObject: 'throws'
-      partialObject: 'throws'
-      nullArgument: 'throws'
-      singleNumber: 'throws'
-    .should 'return the dot product of the current
-             point and the point argument'.squeeze(), (result) ->
-      expect(result).toBeClose(7*4 + 3*2)
+  .with(7,3).and(4,2)
+  .where
+    emptyArguments: 'throws'
+    emptyObject: 'throws'
+    partialObject: 'throws'
+    nullArgument: 'throws'
+    singleNumber: 'throws'
+  .should 'return the dot product of the current
+           point and the point argument'.squeeze(), (result) ->
+    expect(result).toBeClose(7*4 + 3*2)
 
   pointOperator('distance')
-    .with(7,3).and(4,2)
-    .where
-      emptyArguments: 'throws'
-      emptyObject: 'throws'
-      partialObject: 'throws'
-      nullArgument: 'throws'
-      singleNumber: 'throws'
-    .should 'return the distance between the two points', (result) ->
-      expect(result).toBeClose(point(3,1).length())
+  .with(7,3).and(4,2)
+  .where
+    emptyArguments: 'throws'
+    emptyObject: 'throws'
+    partialObject: 'throws'
+    nullArgument: 'throws'
+    singleNumber: 'throws'
+  .should 'return the distance between the two points', (result) ->
+    expect(result).toBeClose(point(3,1).length())
 
   pointOperator('angleWith')
-    .with(10,0).and(0,10)
-    .where
-      emptyArguments: 'throws'
-      emptyObject: 'throws'
-      partialObject: 'throws'
-      nullArgument: 'throws'
-      singleNumber: 'throws'
-    .should 'return the angle formed by the two points', (result) ->
-      expect(result).toBeClose(90)
+  .with(10,0).and(0,10)
+  .where
+    emptyArguments: 'throws'
+    emptyObject: 'throws'
+    partialObject: 'throws'
+    nullArgument: 'throws'
+    singleNumber: 'throws'
+  .should 'return the angle formed by the two points', (result) ->
+    expect(result).toBeClose(90)
 
 
   leftUnchanged = (result) ->
@@ -136,16 +136,16 @@ describe 'Point', ->
     expect(result).toBe(@point)
 
   pointOperator('paste')
-    .with(7,3).and(4,2)
-    .where
-      emptyArguments: leftUnchanged
-      emptyObject: leftUnchanged
-      partialObject: (result) -> expect(result).toBePoint(4,3)
-      nullArgument: leftUnchanged
-      singleNumber: (result) -> expect(result).toBePoint(4,3)
-    .should 'copy the data into this point', (result) ->
-      expect(result).toBePoint(4,2)
-      expect(result).toBeSamePoint(@point)
+  .with(7,3).and(4,2)
+  .where
+    emptyArguments: leftUnchanged
+    emptyObject: leftUnchanged
+    partialObject: (result) -> expect(result).toBePoint(4,3)
+    nullArgument: leftUnchanged
+    singleNumber: (result) -> expect(result).toBePoint(4,3)
+  .should 'copy the data into this point', (result) ->
+    expect(result).toBePoint(4,2)
+    expect(result).toBeSamePoint(@point)
 
   describe '::rotate called', ->
     describe 'with a number', ->
@@ -258,20 +258,6 @@ describe 'Point', ->
       describe 'that is 0', ->
         it 'should return a new point with length equal to 0', ->
           expect(point(5,6).normalize(0).length()).toBeClose(0)
-
-    # describe 'with a string', ->
-    #   describe 'containing a number', ->
-    #     beforeEach ->
-    #       @normalizedLength = '10.5'
-    #       @point1 = point(5,6)
-    #       @point2 = @point1.normalize(@normalizedLength)
-
-    #     it 'should return a new point with length equal to the number', ->
-    #       expect(@point2.length()).toBeClose(parseFloat @normalizedLength)
-
-    #   describe 'containing anything but a number', ->
-    #     it 'should throw an error', ->
-    #       expect(-> point(5,6).normalize('foo')).toThrow()
 
     describe 'with an object', ->
       it 'should throw an error', ->

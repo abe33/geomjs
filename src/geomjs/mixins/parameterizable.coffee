@@ -6,7 +6,7 @@ Mixin = require './mixin'
 #
 Parameterizable = (method, parameters, allowPartial=false) ->
   #
-  class extends Mixin
+  class ConcretParameterizable extends Mixin
     ##### Parameterizable.attachTo
     #
     # See

@@ -216,8 +216,8 @@ class Matrix
   ##### Matrix::toString
   #
   # See
-  # [Formattable.toString](src_geomjs_mixins_formattable.html#formattabletostring)
-
+  # [Formattable.toString][1]
+  # [1]: src_geomjs_mixins_formattable.html#formattabletostring
 
   ##### Matrix::equals
   #
