@@ -16,7 +16,7 @@ class Triangulable extends Mixin
 
   ##### ptInTri
   #
-  ptInTri = (pt, v1, v2, v3) ->
+  pointInTriangle = (pt, v1, v2, v3) ->
     denom = (v1.y - v3.y) * (v2.x - v3.x) +
             (v2.y - v3.y) * (v3.x - v1.x)
     b1 = ((pt.y - v3.y) * (v2.x - v3.x) +
@@ -77,7 +77,7 @@ class Triangulable extends Mixin
           tArea = polyArea(ptsArea)
           if (pArea < 0 and tArea > 0) or
              (pArea > 0 and tArea < 0) or
-             ptInTri(pts[cr[j]], v1, v2, v3)
+             pointInTriangle(pts[cr[j]], v1, v2, v3)
             ok = false
             break
           j = (j + 1) % l
