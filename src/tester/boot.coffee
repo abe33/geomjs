@@ -132,6 +132,9 @@ $(document).ready ->
       vertex.x = v.x + Math.cos(Math.degToRad(Math.PI * 1.5 + t / (5*i))) * 20
       vertex.y = v.y + Math.sin(Math.degToRad(Math.PI * 1.5 + t / (5*i))) * 20
 
+    polygon.rotateAroundCenter(d / 80)
+    polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120)
+
     render()
     requestAnimationFrame(animate) if animated
     stats.end()

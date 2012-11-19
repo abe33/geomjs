@@ -49,7 +49,7 @@ class Tester
 
   renderSurface: (context) ->
     context.fillStyle = @strokeColor
-    for i in [0..100]
+    for i in [0..50]
       pt = @geometry.randomPointInSurface @random
       context.fillRect(pt.x, pt.y, 1, 1) if pt?
 
@@ -101,10 +101,10 @@ class Tester
     @renderSurface context if @options.surface and
                               @geometry.randomPointInSurface?
 
+    @renderTriangles context if @options.triangles and @geometry.triangles?
+
     @renderClosedGeometry context if @options.angle and
                                      @geometry.center? and
                                      @geometry.pointAtAngle?
 
     @renderVertices context if @options.vertices and @geometry.drawVertices?
-
-    @renderTriangles context if @options.triangles and @geometry.triangles?

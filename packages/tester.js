@@ -67,7 +67,7 @@
       var i, pt, _i, _results;
       context.fillStyle = this.strokeColor;
       _results = [];
-      for (i = _i = 0; _i <= 100; i = ++_i) {
+      for (i = _i = 0; _i <= 50; i = ++_i) {
         pt = this.geometry.randomPointInSurface(this.random);
         if (pt != null) {
           _results.push(context.fillRect(pt.x, pt.y, 1, 1));
@@ -137,14 +137,14 @@
       if (this.options.surface && (this.geometry.randomPointInSurface != null)) {
         this.renderSurface(context);
       }
+      if (this.options.triangles && (this.geometry.triangles != null)) {
+        this.renderTriangles(context);
+      }
       if (this.options.angle && (this.geometry.center != null) && (this.geometry.pointAtAngle != null)) {
         this.renderClosedGeometry(context);
       }
       if (this.options.vertices && (this.geometry.drawVertices != null)) {
-        this.renderVertices(context);
-      }
-      if (this.options.triangles && (this.geometry.triangles != null)) {
-        return this.renderTriangles(context);
+        return this.renderVertices(context);
       }
     };
 
@@ -268,6 +268,8 @@
         vertex.x = v.x + Math.cos(Math.degToRad(Math.PI * 1.5 + t / (5 * i))) * 20;
         return vertex.y = v.y + Math.sin(Math.degToRad(Math.PI * 1.5 + t / (5 * i))) * 20;
       });
+      polygon.rotateAroundCenter(d / 80);
+      polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120);
       render();
       if (animated) {
         requestAnimationFrame(animate);
