@@ -4,6 +4,7 @@ Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
 Sourcable = require './mixins/sourcable'
+Triangulable = require './mixins/triangulable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -30,6 +31,7 @@ class Rectangle
   Geometry.attachTo Rectangle
   Surface.attachTo Rectangle
   Path.attachTo Rectangle
+  Triangulable.attachTo Rectangle
   Intersections.attachTo Rectangle
 
   ##### Rectangle.eachRectangleRectangleIntersections

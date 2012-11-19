@@ -5,6 +5,7 @@ Formattable = require './mixins/formattable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
 Cloneable = require './mixins/cloneable'
+Memoizable = require './mixins/memoizable'
 Sourcable = require './mixins/sourcable'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
@@ -25,6 +26,7 @@ class Ellipsis
   }).attachTo Ellipsis
   Sourcable('geomjs.Ellipsis','radius1','radius2','x','y').attachTo Ellipsis
   Cloneable.attachTo Ellipsis
+  Memoizable.attachTo Ellipsis
   Geometry.attachTo Ellipsis
   Surface.attachTo Ellipsis
   Path.attachTo Ellipsis
@@ -93,6 +95,20 @@ class Ellipsis
   #
   points: ->
     @pathPointAt n / @segments for n in [0..@segments]
+
+  ##### Ellipsis::triangles
+  #
+  triangles: ->
+    return @memoFor 'triangles' if @memoized 'triangles'
+
+    triangles = []
+    points = @points()
+    center = @center()
+    for i in [1..points.length-1]
+      triangles.push new Triangle center, points[i-1], points[i]
+
+    @memoize 'triangles', triangles
+
 
   ##### Ellipsis::closedGeometry
   #
@@ -197,6 +213,12 @@ class Ellipsis
     context.arc(0,0,1,0, Math.PI*2)
     context.closePath()
     context.restore()
+
+  #### Memoization
+
+  ##### Circle::memoizationKey
+  #
+  memoizationKey: -> "#{@radius1};#{@radius2};#{@x};#{@y};#{@segments}"
 
   #### Utilities
 

@@ -1,9 +1,11 @@
 # @toc
 Point = require './point'
+Triangle = require './triangle'
 Equatable = require './mixins/equatable'
 Cloneable = require './mixins/cloneable'
 Sourcable = require './mixins/sourcable'
 Formattable = require './mixins/formattable'
+Memoizable = require './mixins/memoizable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -17,6 +19,7 @@ class Circle
   Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
     .attachTo Circle
   Sourcable('geomjs.Circle', 'radius', 'x', 'y').attachTo Circle
+  Memoizable.attachTo Circle
   Cloneable.attachTo Circle
   Geometry.attachTo Circle
   Surface.attachTo Circle
@@ -116,6 +119,20 @@ class Circle
     step = 360 / @segments
     @pointAtAngle n * step for n in [0..@segments]
 
+  ##### Circle::triangles
+  #
+  triangles: ->
+    return @memoFor 'triangles' if @memoized 'triangles'
+
+    triangles = []
+    points = @points()
+    center = @center()
+    for i in [1..points.length-1]
+      triangles.push new Triangle center, points[i-1], points[i]
+
+    @memoize 'triangles', triangles
+
+
   ##### Circle::closedGeometry
   #
   closedGeometry: -> true
@@ -168,8 +185,6 @@ class Circle
   ##### Circle::acreage
   #
   acreage: -> @radius * @radius * Math.PI
-
-
 
   ##### Circle::contains
   #
@@ -231,6 +246,12 @@ class Circle
   drawPath: (context) ->
     context.beginPath()
     context.arc @x, @y, @radius, 0, Math.PI * 2
+
+  #### Memoization
+
+  ##### Circle::memoizationKey
+  #
+  memoizationKey: -> "#{@radius};#{@x};#{@y};#{@segments}"
 
   #### Utilities
 

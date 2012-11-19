@@ -37,29 +37,9 @@ class Triangulable extends Mixin
 
     sum / 2
 
-  #### Mixin Methods
-
-  ##### Triangulable::triangles
+  ##### triangulate
   #
-  triangles: ->
-    return @memoFor 'triangles' if @memoized 'triangles'
-
-    vertices = @points()
-    vertices.pop()
-    indices = @triangulate vertices
-    triangles = []
-    for i in [0..indices.length / 3 -1]
-      index = i * 3
-      a = vertices[indices[index]]
-      b = vertices[indices[index+1]]
-      c = vertices[indices[index+2]]
-      triangles.push new Triangle a, b, c
-
-    @memoize 'triangles', triangles
-
-  ##### Triangulable::triangulate
-  #
-  triangulate: (vertices) ->
+  triangulate = (vertices) ->
     return if vertices.length < 4
 
     pts = vertices
@@ -115,5 +95,26 @@ class Triangulable extends Mixin
     triangulated = true
 
     return nr
+
+  #### Mixin Methods
+
+  ##### Triangulable::triangles
+  #
+  triangles: ->
+    return @memoFor 'triangles' if @memoized 'triangles'
+
+    vertices = @points()
+    vertices.pop()
+    indices = triangulate vertices
+    triangles = []
+    for i in [0..indices.length / 3 -1]
+      index = i * 3
+      a = vertices[indices[index]]
+      b = vertices[indices[index+1]]
+      c = vertices[indices[index+2]]
+      triangles.push new Triangle a, b, c
+
+    @memoize 'triangles', triangles
+
 
 module.exports = Triangulable

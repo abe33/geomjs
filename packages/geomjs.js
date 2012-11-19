@@ -692,7 +692,7 @@
 
 
   Triangulable = (function(_super) {
-    var arrayCopy, polyArea, ptInTri;
+    var arrayCopy, polyArea, ptInTri, triangulate;
 
     __extends(Triangulable, _super);
 
@@ -735,26 +735,7 @@
       return sum / 2;
     };
 
-    Triangulable.prototype.triangles = function() {
-      var a, b, c, i, index, indices, triangles, vertices, _i, _ref;
-      if (this.memoized('triangles')) {
-        return this.memoFor('triangles');
-      }
-      vertices = this.points();
-      vertices.pop();
-      indices = this.triangulate(vertices);
-      triangles = [];
-      for (i = _i = 0, _ref = indices.length / 3 - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        index = i * 3;
-        a = vertices[indices[index]];
-        b = vertices[indices[index + 1]];
-        c = vertices[indices[index + 2]];
-        triangles.push(new Triangle(a, b, c));
-      }
-      return this.memoize('triangles', triangles);
-    };
-
-    Triangulable.prototype.triangulate = function(vertices) {
+    triangulate = function(vertices) {
       var cr, i, j, l, n, nr, ok, pArea, pts, ptsArea, r1, r2, r3, refs, tArea, triangulated, v0, v1, v2, v3;
       if (vertices.length < 4) {
         return;
@@ -822,6 +803,25 @@
       nr.push(cr[2]);
       triangulated = true;
       return nr;
+    };
+
+    Triangulable.prototype.triangles = function() {
+      var a, b, c, i, index, indices, triangles, vertices, _i, _ref;
+      if (this.memoized('triangles')) {
+        return this.memoFor('triangles');
+      }
+      vertices = this.points();
+      vertices.pop();
+      indices = triangulate(vertices);
+      triangles = [];
+      for (i = _i = 0, _ref = indices.length / 3 - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        index = i * 3;
+        a = vertices[indices[index]];
+        b = vertices[indices[index + 1]];
+        c = vertices[indices[index + 2]];
+        triangles.push(new Triangle(a, b, c));
+      }
+      return this.memoize('triangles', triangles);
     };
 
     return Triangulable;
@@ -1448,6 +1448,8 @@
 
     Path.attachTo(Rectangle);
 
+    Triangulable.attachTo(Rectangle);
+
     Intersections.attachTo(Rectangle);
 
     Rectangle.eachRectangleRectangleIntersections = function(geom1, geom2, block, data) {
@@ -2070,6 +2072,8 @@
 
     Sourcable('geomjs.Circle', 'radius', 'x', 'y').attachTo(Circle);
 
+    Memoizable.attachTo(Circle);
+
     Cloneable.attachTo(Circle);
 
     Geometry.attachTo(Circle);
@@ -2178,6 +2182,20 @@
       return _results;
     };
 
+    Circle.prototype.triangles = function() {
+      var center, i, points, triangles, _i, _ref;
+      if (this.memoized('triangles')) {
+        return this.memoFor('triangles');
+      }
+      triangles = [];
+      points = this.points();
+      center = this.center();
+      for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        triangles.push(new Triangle(center, points[i - 1], points[i]));
+      }
+      return this.memoize('triangles', triangles);
+    };
+
     Circle.prototype.closedGeometry = function() {
       return true;
     };
@@ -2246,6 +2264,10 @@
       return context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     };
 
+    Circle.prototype.memoizationKey = function() {
+      return "" + this.radius + ";" + this.x + ";" + this.y + ";" + this.segments;
+    };
+
     return Circle;
 
   })();
@@ -2271,6 +2293,8 @@
     Sourcable('geomjs.Ellipsis', 'radius1', 'radius2', 'x', 'y').attachTo(Ellipsis);
 
     Cloneable.attachTo(Ellipsis);
+
+    Memoizable.attachTo(Ellipsis);
 
     Geometry.attachTo(Ellipsis);
 
@@ -2334,6 +2358,20 @@
       return _results;
     };
 
+    Ellipsis.prototype.triangles = function() {
+      var center, i, points, triangles, _i, _ref;
+      if (this.memoized('triangles')) {
+        return this.memoFor('triangles');
+      }
+      triangles = [];
+      points = this.points();
+      center = this.center();
+      for (i = _i = 1, _ref = points.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        triangles.push(new Triangle(center, points[i - 1], points[i]));
+      }
+      return this.memoize('triangles', triangles);
+    };
+
     Ellipsis.prototype.closedGeometry = function() {
       return true;
     };
@@ -2394,6 +2432,10 @@
       context.arc(0, 0, 1, 0, Math.PI * 2);
       context.closePath();
       return context.restore();
+    };
+
+    Ellipsis.prototype.memoizationKey = function() {
+      return "" + this.radius1 + ";" + this.radius2 + ";" + this.x + ";" + this.y + ";" + this.segments;
     };
 
     return Ellipsis;
@@ -2561,6 +2603,10 @@
     Diamond.prototype.points = function() {
       var t;
       return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
+    };
+
+    Diamond.prototype.triangles = function() {
+      return this.quadrants();
     };
 
     Diamond.prototype.closedGeometry = function() {

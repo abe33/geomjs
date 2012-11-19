@@ -230,6 +230,10 @@ class Diamond
   points: ->
     [t = @topCorner(), @rightCorner(), @bottomCorner(), @leftCorner(), t]
 
+  ##### Diamond::triangles
+  #
+  triangles: -> @quadrants()
+
   ##### Diamond::closedGeometry
   #
   closedGeometry: -> true
