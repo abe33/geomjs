@@ -78,7 +78,7 @@ class Polygon
     ratios = triangles.map (t, i) -> t.acreage() / acreage
     ratios[i] += ratios[i-1] for n,i in ratios when i > 0
 
-    random.inArray(triangles, ratios).randomPointInSurface random
+    random.inArray(triangles, ratios, true).randomPointInSurface random
 
   #### Path API
 
