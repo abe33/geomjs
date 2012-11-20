@@ -191,9 +191,9 @@ class Circle
   ##### Circle::contains
   #
   contains: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y, true
+    pt = Point.pointFrom xOrPt, y, true
 
-    @center().subtract(x,y).length() <= @radius
+    @center().subtract(pt).length() <= @radius
 
   ##### Circle::containsGeometry
   #

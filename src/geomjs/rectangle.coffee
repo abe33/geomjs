@@ -143,8 +143,7 @@ class Rectangle
 
   ##### Rectangle::bounds
   #
-  # See
-  # [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
+  # See [Geometry.bounds](src_geomjs_mixins_geometry.html#geometrybounds)
 
   ##### Rectangle::boundingBox
   #
@@ -156,11 +155,10 @@ class Rectangle
   ##### Rectangle::setCenter
   #
   setCenter: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y
-    c = @center()
+    pt = Point.pointFrom(xOrPt, y).subtract(@center())
 
-    @x += x - c.x
-    @y += y - c.y
+    @x += pt.x
+    @y += pt.y
     this
 
   ##### Rectangle::rotateAroundCenter
@@ -191,9 +189,9 @@ class Rectangle
   ##### Rectangle::inflate
   #
   inflate: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y
-    @width += x
-    @height += y
+    pt = Point.pointFrom xOrPt, y
+    @width += pt.x
+    @height += pt.y
     this
 
   ##### Rectangle::inflateLeft
@@ -227,25 +225,25 @@ class Rectangle
   ##### Rectangle::inflateTopLeft
   #
   inflateTopLeft: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y
-    @inflateLeft x
-    @inflateTop y
+    pt = Point.pointFrom xOrPt, y
+    @inflateLeft pt.x
+    @inflateTop pt.y
     this
 
   ##### Rectangle::inflateTopRight
   #
   inflateTopRight: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y
-    @inflateRight x
-    @inflateTop y
+    pt = Point.pointFrom xOrPt, y
+    @inflateRight pt.x
+    @inflateTop pt.y
     this
 
   ##### Rectangle::inflateBottomLeft
   #
   inflateBottomLeft: (xOrPt, y) ->
-    {x,y} = Point.pointFrom xOrPt, y
-    @inflateLeft x
-    @inflateBottom y
+    pt = Point.pointFrom xOrPt, y
+    @inflateLeft pt.x
+    @inflateBottom pt.y
     this
 
   ##### Rectangle::inflateBottomRight
@@ -265,14 +263,12 @@ class Rectangle
 
   ##### Rectangle::intersects
   #
-  # See
-  # [Intersections.intersects][1]
+  # See [Intersections.intersects][1]
   # [1]: src_geomjs_mixins_intersections.html#intersectionsintersects
 
   ##### Rectangle::intersections
   #
-  # See
-  # [Intersections.intersections][1]
+  # See [Intersections.intersections][1]
   # [1]: src_geomjs_mixins_intersections.html#intersectionsintersections
 
   ##### Rectangle::pointAtAngle
@@ -297,8 +293,7 @@ class Rectangle
 
   ##### Rectangle::containsGeometry
   #
-  # See
-  # [Surface.containsgeometry][1]
+  # See [Surface.containsgeometry][1]
   # [1]: src_geomjs_mixins_surface.html#surfacecontainsgeometry
 
   ##### Rectangle::randomPointInSurface
@@ -370,13 +365,11 @@ class Rectangle
 
   ##### Rectangle::stroke
   #
-  # See
-  # [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
+  # See [Geometry.stroke](src_geomjs_mixins_geometry.html#geometrystroke)
 
   ##### Rectangle::fill
   #
-  # See
-  # [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
+  # See [Geometry.fill](src_geomjs_mixins_geometry.html#geometryfill)
 
   ##### Rectangle::drawPath
   #
@@ -393,19 +386,16 @@ class Rectangle
 
   ##### Rectangle::toString
   #
-  # See
-  # [Formattable.toString][1]
+  # See [Formattable.toString][1]
   # [1]: src_geomjs_mixins_formattable.html#formattabletostring
 
   ##### Rectangle::clone
   #
-  # See
-  # [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
+  # See [Cloneable.clone](src_geomjs_mixins_cloneable.html#cloneableclone)
 
   ##### Rectangle::equals
   #
-  # See
-  # [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
+  # See [Equatable.equals](src_geomjs_mixins_equatable.html#equatableequals)
 
   ##### Rectangle::paste
   #

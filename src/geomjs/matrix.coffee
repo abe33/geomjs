@@ -146,13 +146,12 @@ class Matrix
   ##### Matrix::skew
   #
   # Skews the matrix by the amount of the passed-in point.
-  skew: (xOrPt=0, y=0) ->
-    {x,y} = Point.pointFrom xOrPt, y, 0
-    [x,y] = [Math.degToRad(x), Math.degToRad(y)]
-    @append Math.cos(y),
-            Math.sin(y),
-            -Math.sin(x),
-            Math.cos(x)
+  skew: (xOrPt, y) ->
+    pt = Point.pointFrom(xOrPt, y, 0).scale(Math.PI / 180)
+    @append Math.cos(pt.y),
+            Math.sin(pt.y),
+            -Math.sin(pt.x),
+            Math.cos(pt.x)
 
   ##### Matrix::append
   #

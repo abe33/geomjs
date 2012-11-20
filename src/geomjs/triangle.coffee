@@ -142,10 +142,10 @@ class Triangle
   ##### Triangle::translate
   #
   translate: (x,y) ->
-    {x,y} = Point.pointFrom x,y
-    @a.x += x; @a.y += y
-    @b.x += x; @b.y += y
-    @c.x += x; @c.y += y
+    pt = Point.pointFrom x,y
+    @a.x += pt.x; @a.y += pt.y
+    @b.x += pt.x; @b.y += pt.y
+    @c.x += pt.x; @c.y += pt.y
     this
 
   ##### Triangle::rotateAroundCenter

@@ -42,11 +42,10 @@ class Point
 
   ##### Point.pointFrom
   #
-  # Returns an array containing the x and y of a point according
-  # to the provided arguments:
+  # Returns a point according to the provided arguments:
   #
   #     translate = (xOrPt, y) ->
-  #       {x,y} = Point.pointFrom xOrPt, y
+  #       point = Point.pointFrom xOrPt, y
   #       # ...
   #
   # The first argument can be either an object or a number.
@@ -60,9 +59,9 @@ class Point
   #
   # In the case the object is incomplete or empty, and with
   # the strict mode disabled, the missing property will end
-  # being set to `NaN`.
+  # being set to `0`.
   #
-  #     {x,y} = Point.pointFrom x: 10 # [10, NaN]
+  #     point = Point.pointFrom x: 10 # {x: 10, y: NaN}
   #
   # For further examples, feel free to take a look at the
   # methods of the `Point` class.
@@ -70,13 +69,13 @@ class Point
     x = xOrPt
     {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
     @notAPoint [x,y] if strict and (isNaN(x) or isNaN(y))
-    {x,y}
+    new Point x, y
 
   ##### Point.polar
   #
   # Converts polar coordinates in cartesian coordinates.
   #
-  #     Point.polar 90, 10 # [object Point(0,10)]
+  #     Point.polar 90, 10 # [Point(x=0,y=10)]
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
 
@@ -210,7 +209,7 @@ class Point
   #     inc = point.add 1, 5
   #     inc = point.add x: 0.2
   #     inc = point.add new Point 1.8, 8
-  #     # inc = [object Point(7,17)]
+  #     # inc = [Point(x=7,y=17)]
   add: (x, y) ->
     y = x.y or y if x?; y = 0 if isNaN y
     x = x.x or x if x?; x = 0 if isNaN x
@@ -225,7 +224,7 @@ class Point
   #     inc = point.subtract 1, 5
   #     inc = point.subtract x: 0.2
   #     inc = point.subtract new Point 1.8, 8
-  #     # inc = [object Point(2,-9)]
+  #     # inc = [Point(x=2,y=-9)]
   subtract: (x, y) ->
     y = x.y or y if x?; y = 0 if isNaN y
     x = x.x or x if x?; x = 0 if isNaN x
@@ -265,7 +264,7 @@ class Point
   #
   #     point = new Point 1, 1
   #     scaled = point.scale 2
-  #     # scaled = [object Point(2,2)]
+  #     # scaled = [Point(x=2,y=2)]
   scale: (n) ->
     @invalidScale n unless Math.isFloat n
     new Point @x * n, @y * n
@@ -277,7 +276,7 @@ class Point
   #
   #     point = new Point 10, 0
   #     rotated = point.rotate 90
-  #     # rotated = [object Point(0,10)]
+  #     # rotated = [Point(x=0,y=10)]
   rotate: (n) ->
     @invalidRotation n unless Math.isFloat n
     l = @length()
@@ -294,7 +293,7 @@ class Point
   #     point = new Point 10, 0
   #     origin = new Point 20, 0
   #     rotated = point.rotateAround origin, 90
-  #     # rotated = [object Point(20, -10)]
+  #     # rotated = [Point(x=20,y=-10)]
   rotateAround: (x, y, a) ->
     isPoint = @isPoint x
     a = y if isPoint
@@ -330,10 +329,10 @@ class Point
   #
   #     point = new Point
   #     point.paste 1, 7
-  #     # point = [object Point(5,7)]
+  #     # point = [Point(x=5,y=7)]
   #
   #     point.paste new Point 4, 4
-  #     # point = [object Point(4,4)]
+  #     # point = [Point(x=4,y=4)]
   paste: (x, y) ->
     return this if not x? and not y?
     isObject = x? and typeof x is 'object'
