@@ -127,6 +127,9 @@ class Point
     msg = "Can't find the #{pos} point in Point.interpolate arguments #{args}"
     throw new Error msg
 
+  ##### Point.notAPoint
+  #
+  # Throws an error for an invalid point in `Point.pointFrom`.
   @notAPoint: (args) ->
     throw new Error "#{args} is not a point"
 
