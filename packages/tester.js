@@ -240,6 +240,9 @@
     })();
     animate = function(n) {
       var d;
+      if (isNaN(n)) {
+        n = new Date().valueOf();
+      }
       stats.begin();
       d = n - t;
       t = n;

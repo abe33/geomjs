@@ -101,6 +101,7 @@ $(document).ready ->
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)
 
   animate = (n) ->
+    n = new Date().valueOf() if isNaN n
     stats.begin()
     d = n - t
     t = n
