@@ -147,16 +147,20 @@
 
       ConcretFormattable.prototype.toString = function() {
         var formattedProperties, p;
-        formattedProperties = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = properties.length; _i < _len; _i++) {
-            p = properties[_i];
-            _results.push("" + p + "=" + this[p]);
-          }
-          return _results;
-        }).call(this);
-        return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
+        if (properties.length === 0) {
+          return "[" + classname + "]";
+        } else {
+          formattedProperties = (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = properties.length; _i < _len; _i++) {
+              p = properties[_i];
+              _results.push("" + p + "=" + this[p]);
+            }
+            return _results;
+          }).call(this);
+          return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
+        }
       };
 
       ConcretFormattable.prototype.classname = function() {
@@ -258,21 +262,21 @@
     Memoizable.prototype.memoized = function(prop) {
       var _ref;
       if (this.memoizationKey() === this.__memoizationKey__) {
-        return ((_ref = this.__cache__) != null ? _ref[prop] : void 0) != null;
+        return ((_ref = this.__memo__) != null ? _ref[prop] : void 0) != null;
       } else {
-        this.__cache__ = {};
+        this.__memo__ = {};
         return false;
       }
     };
 
     Memoizable.prototype.memoFor = function(prop) {
-      return this.__cache__[prop];
+      return this.__memo__[prop];
     };
 
     Memoizable.prototype.memoize = function(prop, value) {
-      this.__cache__ || (this.__cache__ = {});
+      this.__memo__ || (this.__memo__ = {});
       this.__memoizationKey__ = this.memoizationKey();
-      return this.__cache__[prop] = value;
+      return this.__memo__[prop] = value;
     };
 
     Memoizable.prototype.memoizationKey = function() {
@@ -693,7 +697,7 @@
 
 
   Triangulable = (function(_super) {
-    var arrayCopy, polyArea, ptInTri, triangulate;
+    var arrayCopy, pointInTriangle, polyArea, triangulate;
 
     __extends(Triangulable, _super);
 
@@ -713,7 +717,7 @@
       return _results;
     };
 
-    ptInTri = function(pt, v1, v2, v3) {
+    pointInTriangle = function(pt, v1, v2, v3) {
       var b1, b2, b3, denom;
       denom = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
       b1 = ((pt.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - pt.x)) / denom;
@@ -777,7 +781,7 @@
           while (j !== i) {
             ptsArea = [v1, v2, v3];
             tArea = polyArea(ptsArea);
-            if ((pArea < 0 && tArea > 0) || (pArea > 0 && tArea < 0) || ptInTri(pts[cr[j]], v1, v2, v3)) {
+            if ((pArea < 0 && tArea > 0) || (pArea > 0 && tArea < 0) || pointInTriangle(pts[cr[j]], v1, v2, v3)) {
               ok = false;
               break;
             }
@@ -965,10 +969,7 @@
       if (strict && (isNaN(x) || isNaN(y))) {
         this.notAPoint([x, y]);
       }
-      return {
-        x: x,
-        y: y
-      };
+      return new Point(x, y);
     };
 
     Point.polar = function(angle, length) {
@@ -1325,16 +1326,9 @@
     };
 
     Matrix.prototype.skew = function(xOrPt, y) {
-      var x, _ref, _ref1;
-      if (xOrPt == null) {
-        xOrPt = 0;
-      }
-      if (y == null) {
-        y = 0;
-      }
-      _ref = Point.pointFrom(xOrPt, y, 0), x = _ref.x, y = _ref.y;
-      _ref1 = [Math.degToRad(x), Math.degToRad(y)], x = _ref1[0], y = _ref1[1];
-      return this.append(Math.cos(y), Math.sin(y), -Math.sin(x), Math.cos(x));
+      var pt;
+      pt = Point.pointFrom(xOrPt, y, 0).scale(Math.PI / 180);
+      return this.append(Math.cos(pt.y), Math.sin(pt.y), -Math.sin(pt.x), Math.cos(pt.x));
     };
 
     Matrix.prototype.append = function(a, b, c, d, tx, ty) {
@@ -1552,11 +1546,10 @@
     };
 
     Rectangle.prototype.setCenter = function(xOrPt, y) {
-      var c, x, _ref;
-      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
-      c = this.center();
-      this.x += x - c.x;
-      this.y += y - c.y;
+      var pt;
+      pt = Point.pointFrom(xOrPt, y).subtract(this.center());
+      this.x += pt.x;
+      this.y += pt.y;
       return this;
     };
 
@@ -1586,10 +1579,10 @@
     };
 
     Rectangle.prototype.inflate = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
-      this.width += x;
-      this.height += y;
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.width += pt.x;
+      this.height += pt.y;
       return this;
     };
 
@@ -1620,26 +1613,26 @@
     };
 
     Rectangle.prototype.inflateTopLeft = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
-      this.inflateLeft(x);
-      this.inflateTop(y);
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.inflateLeft(pt.x);
+      this.inflateTop(pt.y);
       return this;
     };
 
     Rectangle.prototype.inflateTopRight = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
-      this.inflateRight(x);
-      this.inflateTop(y);
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.inflateRight(pt.x);
+      this.inflateTop(pt.y);
       return this;
     };
 
     Rectangle.prototype.inflateBottomLeft = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
-      this.inflateLeft(x);
-      this.inflateBottom(y);
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.inflateLeft(pt.x);
+      this.inflateBottom(pt.y);
       return this;
     };
 
@@ -1891,14 +1884,14 @@
     };
 
     Triangle.prototype.translate = function(x, y) {
-      var _ref;
-      _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
-      this.a.x += x;
-      this.a.y += y;
-      this.b.x += x;
-      this.b.y += y;
-      this.c.x += x;
-      this.c.y += y;
+      var pt;
+      pt = Point.pointFrom(x, y);
+      this.a.x += pt.x;
+      this.a.y += pt.y;
+      this.b.x += pt.x;
+      this.b.y += pt.y;
+      this.c.x += pt.x;
+      this.c.y += pt.y;
       return this;
     };
 
@@ -2230,9 +2223,9 @@
     };
 
     Circle.prototype.contains = function(xOrPt, y) {
-      var x, _ref;
-      _ref = Point.pointFrom(xOrPt, y, true), x = _ref.x, y = _ref.y;
-      return this.center().subtract(x, y).length() <= this.radius;
+      var pt;
+      pt = Point.pointFrom(xOrPt, y, true);
+      return this.center().subtract(pt).length() <= this.radius;
     };
 
     Circle.prototype.randomPointInSurface = function(random) {
