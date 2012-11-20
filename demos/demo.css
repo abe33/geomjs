@@ -36,6 +36,20 @@ strong {
   padding: 2px 4px 3px 4px;
   border-radius: 2px;
   vertical-align: middle;
+  margin-left: 4px;
+  font-weight: bold;
+}
+emphasis {
+  background: #859900;
+  color: white;
+  font-size: 9px;
+  font-family: Arial;
+  text-transform: uppercase;
+  padding: 2px 4px 3px 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-weight: bold;
 }
 
 input {
@@ -71,15 +85,15 @@ aside p:first-child {
   right: 0;
 }
 #options {
-  text-align: right;
-  width: 200px;
+  text-align: left;
+  width: 250px;
   position: absolute;
-  right: 100%;
+  left: 100%;
   top: 0;
-  padding-right: 10px;
+  padding-left: 10px;
 }
 #options .checkbox {
-  margin-right: 0;
+  margin-right: 10px;
 }
 
 #options p {
