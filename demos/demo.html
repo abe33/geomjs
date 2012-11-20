@@ -20,7 +20,11 @@
       <h1>GeomJS Demo</h1>
     <div id="canvas">
       <canvas width="640" height="480"></canvas>
-      <div class='hint'>Click in the canvas to start/stop animations.</div>
+
+      <div id="controls">
+        <input id='play' type='button' value='Play' class='green'/>
+      </div>
+
       <aside>
         <p>
           <emphasis>Hint</emphasis> When the animation is running, pass the
@@ -103,7 +107,6 @@
           <input id="triangles" type="checkbox" checked/>
           <label for="triangles">Triangles <strong>cpu heavy</strong></label>
         </p>
-
       </div>
     </div>
   </body>

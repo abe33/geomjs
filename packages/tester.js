@@ -280,30 +280,37 @@
       return stats.end();
     };
     initUI = function() {
-      var widgets;
-      canvas.click(function(e) {
-        if (!$('#canvas .hint').hasClass('clicked')) {
-          $('#canvas .hint').addClass('clicked');
-        }
-        if (!animated) {
-          t = new Date().valueOf();
-          requestAnimationFrame(animate);
-          return animated = true;
-        } else {
-          return animated = false;
-        }
-      });
+      var checkboxes, play;
       canvas.mousemove(function(e) {
         mouseX = e.pageX - canvas.offset().left;
         return mouseY = e.pageY - canvas.offset().top;
       });
-      widgets = $('input').widgets();
-      return widgets.forEach(function(widget) {
-        return widget.valueChanged.add(function(w, v) {
+      checkboxes = $('input[type=checkbox]').widgets();
+      checkboxes.forEach(function(checkbox) {
+        return checkbox.valueChanged.add(function(w, v) {
           options[w.jTarget.attr('id')] = v;
           return render();
         });
       });
+      play = $('input[type=button]').widgets()[0];
+      return play.action = {
+        action: function() {
+          if (!$('#canvas .hint').hasClass('clicked')) {
+            $('#canvas .hint').addClass('clicked');
+          }
+          if (!animated) {
+            t = new Date().valueOf();
+            requestAnimationFrame(animate);
+            animated = true;
+            play.set('value', 'Pause');
+            return play.removeClasses('green');
+          } else {
+            animated = false;
+            play.set('value', 'Play');
+            return play.addClasses('green');
+          }
+        }
+      };
     };
     initUI();
     render();

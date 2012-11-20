@@ -27,8 +27,8 @@ h3:first-child {
   margin-top: 0;
   border-top: none;
 }
-strong {
-  background: #cb4b16;
+strong, emphasis {
+
   color: white;
   font-size: 9px;
   font-family: Arial;
@@ -38,18 +38,13 @@ strong {
   vertical-align: middle;
   margin-left: 4px;
   font-weight: bold;
+  margin-right: 4px;
+}
+strong {
+  background: #cb4b16;
 }
 emphasis {
   background: #859900;
-  color: white;
-  font-size: 9px;
-  font-family: Arial;
-  text-transform: uppercase;
-  padding: 2px 4px 3px 4px;
-  border-radius: 2px;
-  vertical-align: middle;
-  margin-left: 4px;
-  font-weight: bold;
 }
 
 input {
@@ -100,17 +95,12 @@ aside p:first-child {
   margin: 0;
 }
 
-.hint {
+#controls {
   position: absolute;
-  top: 440px;
-  width: 340px;
-  left: 50%;
-  margin-left: -170px;
-  -moz-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-  opacity: 1;
+  margin-top: -50px;
+  right: 10px;
 }
-.preload .hint, .hint.clicked {
-  top: 480px;
-  opacity: 0;
+
+#play-widget {
+  outline: none !important;
 }

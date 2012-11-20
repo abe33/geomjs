@@ -143,7 +143,18 @@ $(document).ready ->
     stats.end()
 
   initUI = ->
-    canvas.click (e) ->
+    canvas.mousemove (e) ->
+      mouseX = e.pageX - canvas.offset().left
+      mouseY = e.pageY - canvas.offset().top
+
+    checkboxes = $('input[type=checkbox]').widgets()
+    checkboxes.forEach (checkbox) ->
+      checkbox.valueChanged.add (w,v) ->
+        options[w.jTarget.attr('id')] = v
+        render()
+
+    play = $('input[type=button]').widgets()[0]
+    play.action = action: ->
       unless $('#canvas .hint').hasClass 'clicked'
         $('#canvas .hint').addClass 'clicked'
 
@@ -151,18 +162,13 @@ $(document).ready ->
         t = new Date().valueOf()
         requestAnimationFrame(animate)
         animated = true
+        play.set 'value', 'Pause'
+        play.removeClasses 'green'
       else
         animated = false
+        play.set 'value', 'Play'
+        play.addClasses 'green'
 
-    canvas.mousemove (e) ->
-      mouseX = e.pageX - canvas.offset().left
-      mouseY = e.pageY - canvas.offset().top
-
-    widgets = $('input').widgets()
-    widgets.forEach (widget) ->
-      widget.valueChanged.add (w,v) ->
-        options[w.jTarget.attr('id')] = v
-        render()
 
   initUI()
   render()
