@@ -34,8 +34,8 @@ class Path extends Mixin
   #
   # **Virtual method**
   pathOrientationAt: (n, pathBasedOnLength=true) ->
-    p1 = @pathPointAt n - 0.01
-    p2 = @pathPointAt n + 0.01
+    p1 = @pathPointAt n - 0.01, pathBasedOnLength
+    p2 = @pathPointAt n + 0.01, pathBasedOnLength
     d = p2.subtract p1
 
     return d.angle()
@@ -43,8 +43,8 @@ class Path extends Mixin
   ##### Path::pathTangentAt
   #
   pathTangentAt: (n, accuracy=1 / 100, pathBasedOnLength=true) ->
-    @pathPointAt((n + accuracy) % 1)
-      .subtract(@pathPointAt((1 + n - accuracy) % 1))
+    @pathPointAt((n + accuracy) % 1, pathBasedOnLength)
+      .subtract(@pathPointAt((1 + n - accuracy) % 1), pathBasedOnLength)
       .normalize(1)
 
   ##### Path::walkPathBasedOnLength
@@ -60,7 +60,7 @@ class Path extends Mixin
 
       if walked + stepLength > pos
         innerStepPos = Math.map pos, walked, walked + stepLength, 0, 1
-        return p1.add p2.subtract(p1).scale(innerStepPos)
+        return @pointInSegment innerStepPos, [p1, p2]
 
       walked += stepLength
 
@@ -71,6 +71,12 @@ class Path extends Mixin
     pos = pos * segments
     segment = Math.floor pos
     segment -= 1 if segment is segments
-    Point.interpolate points[segment], points[segment + 1], pos - segment
+    @pointInSegment pos - segment, points[segment..segment+1]
+
+  #### Path::pointInSegment
+  #
+  pointInSegment: (pos, segment) ->
+    segment[0].add segment[1].subtract(segment[0]).scale(pos)
+
 
 module.exports = Path

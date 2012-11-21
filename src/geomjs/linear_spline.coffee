@@ -9,12 +9,14 @@ Path = require './mixins/path'
 
 ## LinearSpline
 class LinearSpline
-  Formattable('LinearSpline').attachTo LinearSpline
-  Sourcable('geomjs.LinearSpline', 'vertices', 'bias').attachTo LinearSpline
-  Geometry.attachTo LinearSpline
-  Path.attachTo LinearSpline
-  Intersections.attachTo LinearSpline
-  Spline(1).attachTo LinearSpline
+  [
+    Formattable('LinearSpline')
+    Sourcable('geomjs.LinearSpline', 'vertices', 'bias')
+    Geometry
+    Path
+    Intersections
+    Spline(1)
+  ].forEach (mixin) -> mixin.attachTo LinearSpline
 
   ##### LinearSpline::constructor
   #
@@ -37,19 +39,8 @@ class LinearSpline
   #
   validateVertices: (vertices) -> vertices.length >= 2
 
-  #### Drawing API
-
-  ##### LinearSpline::fill
+  ##### LinearSpline::drawVerticesConnections
   #
-  fill: ->
-
-  ##### LinearSpline::drawPath
-  #
-  drawPath: (context) ->
-    points = @points()
-    start = points.shift()
-    context.beginPath()
-    context.moveTo(start.x,start.y)
-    context.lineTo(p.x,p.y) for p in points
+  drawVerticesConnections: ->
 
 module.exports = LinearSpline
