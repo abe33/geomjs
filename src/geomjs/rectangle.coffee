@@ -16,23 +16,24 @@ chancejs = require 'chancejs'
 class Rectangle
   PROPERTIES = ['x','y','width','height','rotation']
 
-  Equatable.apply(null, PROPERTIES).attachTo Rectangle
-  Formattable.apply(null, ['Rectangle'].concat PROPERTIES).attachTo Rectangle
-  Parameterizable('rectangleFrom', {
-    x: NaN
-    y: NaN
-    width: NaN
-    height: NaN
-    rotation: NaN
-  }).attachTo Rectangle
-  Sourcable.apply(null, ['geomjs.Rectangle'].concat PROPERTIES)
-    .attachTo Rectangle
-  Cloneable.attachTo Rectangle
-  Geometry.attachTo Rectangle
-  Surface.attachTo Rectangle
-  Path.attachTo Rectangle
-  Triangulable.attachTo Rectangle
-  Intersections.attachTo Rectangle
+  [
+    Equatable.apply(null, PROPERTIES)
+    Formattable.apply(null, ['Rectangle'].concat PROPERTIES)
+    Sourcable.apply(null, ['geomjs.Rectangle'].concat PROPERTIES)
+    Parameterizable('rectangleFrom', {
+      x: NaN
+      y: NaN
+      width: NaN
+      height: NaN
+      rotation: NaN
+    })
+    Cloneable
+    Geometry
+    Surface
+    Path
+    Triangulable
+    Intersections
+  ].forEach (mixin) -> mixin.attachTo Rectangle
 
   ##### Rectangle.eachRectangleRectangleIntersections
   #
@@ -80,7 +81,7 @@ class Rectangle
 
   ##### Rectangle::center
   #
-  center: -> @topLeft().add(@topEdge().scale(0.5)).add(@leftEdge().scale(0.5))
+  center: -> @topLeft().add(@diagonal().scale(0.5))
 
   ##### Rectangle::topEdgeCenter
   #
@@ -122,6 +123,10 @@ class Rectangle
   ##### Rectangle::rightEdge
   #
   rightEdge: -> @leftEdge()
+
+  ##### Rectangle::diagonal
+  #
+  diagonal: -> @leftEdge().add(@topEdge())
 
   #### Bounds
 

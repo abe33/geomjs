@@ -34,6 +34,7 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
     'bottomEdgeCenter'
     'leftEdgeCenter'
     'rightEdgeCenter'
+    'diagonal'
   ]
   bounds = [
     'top'
@@ -73,6 +74,9 @@ global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
   rightEdge:
     x: xLeftEdge
     y: yLeftEdge
+  diagonal:
+    x: xLeftEdge + xTopEdge
+    y: yLeftEdge + yTopEdge
   topLeft:
     x: x
     y: y
