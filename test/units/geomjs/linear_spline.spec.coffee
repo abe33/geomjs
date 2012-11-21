@@ -56,5 +56,8 @@ describe 'LinearSpline', ->
       describe 'called with 0.5', ->
         it 'should return the middle of the second segment', ->
           expect(@spline.pathPointAt 0.5).toBePoint(3, 1.5)
+
+      describe 'called with 0.5 and false', ->
+        it 'should return the middle of the second segment', ->
           expect(@spline.pathPointAt 0.5, false).toBePoint(3, 1.5)
 
