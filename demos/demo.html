@@ -27,11 +27,11 @@
 
       <aside>
         <p>
-          <emphasis>Hint</emphasis> When the animation is running, pass the
+          <span class='hint'>Hint</span> When the animation is running, pass the
           mouse over the geometries to turn them green.
         </p>
         <p>
-          <strong>CPU Heavy</strong> In general these features may seriously lower the framerate.
+          <span class='heavy'>CPU Heavy</span> In general these features may seriously lower the framerate.
         </p>
       </aside>
 
@@ -57,19 +57,26 @@
           <label for="triangle">Triangle</label>
         </p>
 
-        <p>
+        <p title='Relies on triangulation for all surface computation'>
           <input id="diamond" type="checkbox" checked/>
-          <label for="diamond">Diamond <strong>cpu heavy</strong></label>
+          <label for="diamond">Diamond
+            <span class='heavy'>cpu heavy</span>
+          </label>
         </p>
 
-        <p>
+        <p title='Relies on triangulation for all surface computation'>
           <input id="polygon" type="checkbox" checked/>
-          <label for="polygon">Polygon <strong>cpu heavy</strong></label>
+          <label for="polygon">Polygon <span class='heavy'>cpu heavy</span></label>
         </p>
 
         <p>
           <input id="linearspline" type="checkbox" checked/>
           <label for="linearspline">LinearSpline</label>
+        </p>
+
+        <p title='Intersections with curves imply testing as many segments as the curve bias'>
+          <input id="cubicbezier" type="checkbox" checked/>
+          <label for="cubicbezier">CubicBezier <span class='heavy'>cpu heavy</span></label>
         </p>
 
         <h3>Display</h3>
@@ -83,9 +90,9 @@
           <label for="path">Path Dummy</label>
         </p>
 
-        <p>
+        <p title='An evenly surface distribution imply a lot of surface computation for geometries such Polygon or Diamond'>
           <input id="surface" type="checkbox" checked/>
-          <label for="surface">Surface Random <strong>cpu heavy</strong></label>
+          <label for="surface">Surface Random <span class='heavy'>cpu heavy</span></label>
         </p>
 
         <p>
@@ -93,9 +100,9 @@
           <label for="angle">Radial Intersections</label>
         </p>
 
-        <p>
+        <p title='Intersections with curves and polygons imply testing all their displayed segments combinations'>
           <input id="intersections" type="checkbox" checked/>
-          <label for="intersections">Intersections</label>
+          <label for="intersections">Intersections <span class='heavy'>cpu heavy</span></label>
         </p>
 
         <p>
@@ -103,9 +110,9 @@
           <label for="vertices">Splines Vertices</label>
         </p>
 
-        <p>
+        <p title='Triangulation of complex polygons is a framerate killer'>
           <input id="triangles" type="checkbox" checked/>
-          <label for="triangles">Triangles <strong>cpu heavy</strong></label>
+          <label for="triangles">Triangles <span class='heavy'>cpu heavy</span></label>
         </p>
       </div>
     </div>

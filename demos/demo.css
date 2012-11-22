@@ -27,7 +27,7 @@ h3:first-child {
   margin-top: 0;
   border-top: none;
 }
-strong, emphasis {
+.heavy, .hint {
 
   color: white;
   font-size: 9px;
@@ -40,10 +40,10 @@ strong, emphasis {
   font-weight: bold;
   margin-right: 4px;
 }
-strong {
+.heavy {
   background: #cb4b16;
 }
-emphasis {
+.hint {
   background: #859900;
 }
 
