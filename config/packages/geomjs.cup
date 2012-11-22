@@ -24,10 +24,10 @@ includes: [
   'src/geomjs/diamond'
   'src/geomjs/polygon'
   'src/geomjs/linear_spline'
+  'src/geomjs/cubic_bezier'
 ]
 operators: [
   'strip:requires'
-  # 'annotate:class'
   'annotate:file'
   'join'
   'exports:package'

@@ -41,6 +41,16 @@ $(document).ready ->
       new geomjs.Point(340, 380)
       new geomjs.Point(380, 290)
     ])
+
+    new geomjs.CubicBezier([
+      new geomjs.Point(120, 300)
+      new geomjs.Point(100, 350)
+      new geomjs.Point(280, 420)
+      new geomjs.Point(120, 420)
+      new geomjs.Point(40, 420)
+      new geomjs.Point(100, 240)
+      new geomjs.Point(180, 200)
+    ])
   ]
 
   options =
@@ -89,16 +99,18 @@ $(document).ready ->
         context.fillRect intersection.x-2, intersection.y-2, 4, 4
 
   [
-    rectangle,
-    triangle,
-    circle,
-    ellipsis,
-    diamond,
-    polygon,
+    rectangle
+    triangle
+    circle
+    ellipsis
+    diamond
+    polygon
     linearSpline
+    cubicBezier
   ] = geometries
 
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)
+  cubicBezierPoints = (pt.clone() for pt in cubicBezier.vertices)
 
   animate = (n) ->
     n = new Date().valueOf() if isNaN n
@@ -132,8 +144,14 @@ $(document).ready ->
     linearSpline.vertices.forEach (vertex, i) ->
       v = linearSplinePoints[i]
       i += 1
-      vertex.x = v.x + Math.cos(Math.degToRad(Math.PI * 1.5 + t / (5*i))) * 20
-      vertex.y = v.y + Math.sin(Math.degToRad(Math.PI * 1.5 + t / (5*i))) * 20
+      vertex.x = v.x + Math.cos(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+      vertex.y = v.y + Math.sin(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+
+    cubicBezier.vertices.forEach (vertex, i) ->
+      v = cubicBezierPoints[i]
+      i += 1
+      vertex.x = v.x + Math.cos(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+      vertex.y = v.y + Math.sin(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
 
     polygon.rotateAroundCenter(d / 80)
     polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120)

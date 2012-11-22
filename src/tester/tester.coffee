@@ -11,6 +11,7 @@ class Tester
     text: '#93a1a1'
     mobile: '#b58900'
     vertices: '#d33682'
+    verticesConnections: 'rgba(211,54,130,0.5)'
 
   constructor: (@geometry, @options) ->
     @pathPosition = 0
@@ -40,8 +41,8 @@ class Tester
     @geometry.stroke(context, @strokeColor)
 
   renderPath: (context) ->
-    pt = @geometry.pathPointAt(@pathPosition / 10000)
-    tan = @geometry.pathOrientationAt(@pathPosition / 10000)
+    pt = @geometry.pathPointAt(@pathPosition / 10000, false)
+    tan = @geometry.pathOrientationAt(@pathPosition / 10000, false)
 
     if pt? and tan?
       tr = new geomjs.Rectangle(pt.x,pt.y,6,6,tan)
@@ -87,6 +88,7 @@ class Tester
 
   renderVertices: (context) ->
     @geometry.drawVertices context, colorPalette.vertices
+    @geometry.drawVerticesConnections context, colorPalette.verticesConnections
 
 
   render: (context) ->

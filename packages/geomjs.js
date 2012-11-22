@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -559,7 +559,7 @@
         stepLength = p1.distance(p2) / length;
         if (walked + stepLength > pos) {
           innerStepPos = Math.map(pos, walked, walked + stepLength, 0, 1);
-          return p1.add(p2.subtract(p1).scale(innerStepPos));
+          return this.pointInSegment(innerStepPos, [p1, p2]);
         }
         walked += stepLength;
       }
@@ -573,7 +573,11 @@
       if (segment === segments) {
         segment -= 1;
       }
-      return Point.interpolate(points[segment], points[segment + 1], pos - segment);
+      return this.pointInSegment(pos - segment, points.slice(segment, +(segment + 1) + 1 || 9e9));
+    };
+
+    Path.prototype.pointInSegment = function(pos, segment) {
+      return segment[0].add(segment[1].subtract(segment[0]).scale(pos));
     };
 
     return Path;
@@ -863,8 +867,35 @@
         }
       };
 
-      ConcretSpline.prototype.validateVertices = function() {
-        return true;
+      ConcretSpline.prototype.points = function() {
+        var i, points, segments;
+        if (this.memoized('points')) {
+          return this.memoFor('points').concat();
+        }
+        segments = this.segments() * this.bias;
+        points = (function() {
+          var _i, _results;
+          _results = [];
+          for (i = _i = 0; 0 <= segments ? _i <= segments : _i >= segments; i = 0 <= segments ? ++_i : --_i) {
+            _results.push(this.pathPointAt(i / segments));
+          }
+          return _results;
+        }).call(this);
+        return this.memoize('points', points).concat();
+      };
+
+      ConcretSpline.prototype.validateVertices = function(vertices) {
+        return vertices.length % segmentSize === 1 && vertices.length >= segmentSize + 1;
+      };
+
+      ConcretSpline.prototype.segments = function() {
+        if (!(this.vertices != null) || this.vertices.length === 0) {
+          return 0;
+        }
+        if (this.memoized('segments')) {
+          return this.memoFor('segments');
+        }
+        return this.memoize('segments', (this.vertices.length - 1) / segmentSize);
       };
 
       ConcretSpline.prototype.segmentSize = function() {
@@ -872,19 +903,23 @@
       };
 
       ConcretSpline.prototype.segment = function(index) {
+        var k;
         if (index < this.segments()) {
-          return this.vertices.concat().slice(index * segmentSize, (index + 1) * segmentSize + 1);
+          k = "segment" + index;
+          if (this.memoized(k)) {
+            return this.memoFor(k);
+          }
+          return this.memoize(k, this.vertices.concat().slice(index * segmentSize, (index + 1) * segmentSize + 1));
         } else {
           return null;
         }
       };
 
-      ConcretSpline.prototype.pointInSegment = function(position, segment) {
-        return Point.interpolate(segment[0], segment[1], position);
-      };
-
       ConcretSpline.prototype.length = function() {
-        return this.measure(this.bias);
+        if (this.memoized('length')) {
+          return this.memoFor('length');
+        }
+        return this.memoize('length', this.measure(this.bias));
       };
 
       ConcretSpline.prototype.measure = function(bias) {
@@ -897,13 +932,17 @@
       };
 
       ConcretSpline.prototype.measureSegment = function(segment, bias) {
-        var i, length, step, _i;
+        var i, k, length, step, _i;
+        k = "segment" + segment + "_" + bias + "Length";
+        if (this.memoized(k)) {
+          return this.memoFor(k);
+        }
         step = 1 / bias;
         length = 0;
         for (i = _i = 1; 1 <= bias ? _i <= bias : _i >= bias; i = 1 <= bias ? ++_i : --_i) {
           length += this.pointInSegment((i - 1) * step, segment).distance(this.pointInSegment(i * step, segment));
         }
-        return length;
+        return this.memoize(k, length);
       };
 
       ConcretSpline.prototype.pathPointAt = function(pos, pathBasedOnLength) {
@@ -923,10 +962,53 @@
           return this.vertices[this.vertices.length - 1];
         }
         if (pathBasedOnLength) {
-          return this.walkPathBasedOnLength(pos, this.vertices);
+          return this.walkPathBasedOnLength(pos);
         } else {
-          return this.walkPathBasedOnSegments(pos, this.vertices);
+          return this.walkPathBasedOnSegments(pos);
         }
+      };
+
+      ConcretSpline.prototype.walkPathBasedOnLength = function(pos) {
+        var i, innerStepPos, length, segment, segments, stepLength, walked, _i, _ref;
+        walked = 0;
+        length = this.length();
+        segments = this.segments();
+        for (i = _i = 0, _ref = segments - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+          segment = this.segment(i);
+          stepLength = this.measureSegment(segment, this.bias) / length;
+          if (walked + stepLength > pos) {
+            innerStepPos = Math.map(pos, walked, walked + stepLength, 0, 1);
+            return this.pointInSegment(innerStepPos, segment);
+          }
+          walked += stepLength;
+        }
+      };
+
+      ConcretSpline.prototype.walkPathBasedOnSegments = function(pos) {
+        var segment, segments;
+        segments = this.segments();
+        pos = pos * segments;
+        segment = Math.floor(pos);
+        if (segment === segments) {
+          segment -= 1;
+        }
+        return this.pointInSegment(pos - segment, this.segment(segment));
+      };
+
+      ConcretSpline.prototype.fill = function() {};
+
+      ConcretSpline.prototype.drawPath = function(context) {
+        var p, points, start, _i, _len, _results;
+        points = this.points();
+        start = points.shift();
+        context.beginPath();
+        context.moveTo(start.x, start.y);
+        _results = [];
+        for (_i = 0, _len = points.length; _i < _len; _i++) {
+          p = points[_i];
+          _results.push(context.lineTo(p.x, p.y));
+        }
+        return _results;
       };
 
       ConcretSpline.prototype.drawVertices = function(context, color) {
@@ -942,6 +1024,28 @@
           _results.push(context.closePath());
         }
         return _results;
+      };
+
+      ConcretSpline.prototype.drawVerticesConnections = function(context, color) {
+        var i, vertexEnd, vertexStart, _i, _ref, _results;
+        context.strokeStyle = color;
+        _results = [];
+        for (i = _i = 1, _ref = this.vertices.length - 1; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+          vertexStart = this.vertices[i - 1];
+          vertexEnd = this.vertices[i];
+          context.beginPath();
+          context.moveTo(vertexStart.x, vertexStart.y);
+          context.lineTo(vertexEnd.x, vertexEnd.y);
+          context.stroke();
+          _results.push(context.closePath());
+        }
+        return _results;
+      };
+
+      ConcretSpline.prototype.memoizationKey = function() {
+        return this.vertices.map(function(pt) {
+          return "" + pt.x + ";" + pt.y;
+        }).join(';');
       };
 
       return ConcretSpline;
@@ -1422,31 +1526,17 @@
 
     PROPERTIES = ['x', 'y', 'width', 'height', 'rotation'];
 
-    Equatable.apply(null, PROPERTIES).attachTo(Rectangle);
-
-    Formattable.apply(null, ['Rectangle'].concat(PROPERTIES)).attachTo(Rectangle);
-
-    Parameterizable('rectangleFrom', {
-      x: NaN,
-      y: NaN,
-      width: NaN,
-      height: NaN,
-      rotation: NaN
-    }).attachTo(Rectangle);
-
-    Sourcable.apply(null, ['geomjs.Rectangle'].concat(PROPERTIES)).attachTo(Rectangle);
-
-    Cloneable.attachTo(Rectangle);
-
-    Geometry.attachTo(Rectangle);
-
-    Surface.attachTo(Rectangle);
-
-    Path.attachTo(Rectangle);
-
-    Triangulable.attachTo(Rectangle);
-
-    Intersections.attachTo(Rectangle);
+    [
+      Equatable.apply(null, PROPERTIES), Formattable.apply(null, ['Rectangle'].concat(PROPERTIES)), Sourcable.apply(null, ['geomjs.Rectangle'].concat(PROPERTIES)), Parameterizable('rectangleFrom', {
+        x: NaN,
+        y: NaN,
+        width: NaN,
+        height: NaN,
+        rotation: NaN
+      }), Cloneable, Geometry, Surface, Path, Triangulable, Intersections
+    ].forEach(function(mixin) {
+      return mixin.attachTo(Rectangle);
+    });
 
     Rectangle.eachRectangleRectangleIntersections = function(geom1, geom2, block, data) {
       var p, _i, _len, _ref;
@@ -1499,7 +1589,7 @@
     };
 
     Rectangle.prototype.center = function() {
-      return this.topLeft().add(this.topEdge().scale(0.5)).add(this.leftEdge().scale(0.5));
+      return this.topLeft().add(this.diagonal().scale(0.5));
     };
 
     Rectangle.prototype.topEdgeCenter = function() {
@@ -1536,6 +1626,10 @@
 
     Rectangle.prototype.rightEdge = function() {
       return this.leftEdge();
+    };
+
+    Rectangle.prototype.diagonal = function() {
+      return this.leftEdge().add(this.topEdge());
     };
 
     Rectangle.prototype.top = function() {
@@ -2923,17 +3017,9 @@
 
   LinearSpline = (function() {
 
-    Formattable('LinearSpline').attachTo(LinearSpline);
-
-    Sourcable('geomjs.LinearSpline', 'vertices', 'bias').attachTo(LinearSpline);
-
-    Geometry.attachTo(LinearSpline);
-
-    Path.attachTo(LinearSpline);
-
-    Intersections.attachTo(LinearSpline);
-
-    Spline(1).attachTo(LinearSpline);
+    [Formattable('LinearSpline'), Sourcable('geomjs.LinearSpline', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(1)].forEach(function(mixin) {
+      return mixin.attachTo(LinearSpline);
+    });
 
     function LinearSpline(vertices, bias) {
       this.initSpline(vertices, bias);
@@ -2951,23 +3037,53 @@
       return vertices.length >= 2;
     };
 
-    LinearSpline.prototype.fill = function() {};
-
-    LinearSpline.prototype.drawPath = function(context) {
-      var p, points, start, _i, _len, _results;
-      points = this.points();
-      start = points.shift();
-      context.beginPath();
-      context.moveTo(start.x, start.y);
-      _results = [];
-      for (_i = 0, _len = points.length; _i < _len; _i++) {
-        p = points[_i];
-        _results.push(context.lineTo(p.x, p.y));
-      }
-      return _results;
-    };
+    LinearSpline.prototype.drawVerticesConnections = function() {};
 
     return LinearSpline;
+
+  })();
+
+  /* src/geomjs/cubic_bezier.coffee */;
+
+
+  CubicBezier = (function() {
+
+    [Formattable('CubicBezier'), Sourcable('geomjs.CubicBezier', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(3)].forEach(function(mixin) {
+      return mixin.attachTo(CubicBezier);
+    });
+
+    function CubicBezier(vertices, bias) {
+      if (bias == null) {
+        bias = 20;
+      }
+      this.initSpline(vertices, bias);
+    }
+
+    CubicBezier.prototype.pointInSegment = function(t, seg) {
+      var pt;
+      pt = new Point();
+      pt.x = (seg[0].x * this.b1(t)) + (seg[1].x * this.b2(t)) + (seg[2].x * this.b3(t)) + (seg[3].x * this.b4(t));
+      pt.y = (seg[0].y * this.b1(t)) + (seg[1].y * this.b2(t)) + (seg[2].y * this.b3(t)) + (seg[3].y * this.b4(t));
+      return pt;
+    };
+
+    CubicBezier.prototype.b1 = function(t) {
+      return (1 - t) * (1 - t) * (1 - t);
+    };
+
+    CubicBezier.prototype.b2 = function(t) {
+      return 3 * t * (1 - t) * (1 - t);
+    };
+
+    CubicBezier.prototype.b3 = function(t) {
+      return 3 * t * t * (1 - t);
+    };
+
+    CubicBezier.prototype.b4 = function(t) {
+      return t * t * t;
+    };
+
+    return CubicBezier;
 
   })();
 
@@ -3014,5 +3130,7 @@
   this.geomjs.Polygon = Polygon;
 
   this.geomjs.LinearSpline = LinearSpline;
+
+  this.geomjs.CubicBezier = CubicBezier;
 
 }).call(this);
