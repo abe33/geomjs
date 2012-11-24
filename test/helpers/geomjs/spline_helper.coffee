@@ -31,6 +31,38 @@ testPropertyLength = (property, source, expected) ->
     it "should have #{expected} elements", ->
       expect(this[source][property].length).toBeClose(expected)
 
+global.testIntersectionsMethodsOf = (klass) ->
+  vertices = (point(i,0) for i in [0..3])
+  describe "when instanciated with #{vertices}", ->
+    beforeEach ->
+      addPointMatchers this
+      @spline = construct klass, [vertices]
+
+    describe 'its intersects method', ->
+      describe 'called with a simple line crossing it in the middle', ->
+        it 'should return true', ->
+          expect(@spline.intersects points: -> [point(1.5,-1),point(1.5,1)])
+          .toBeTruthy()
+
+      describe 'called with a simple line not crossing it', ->
+        it 'should return false', ->
+          expect(@spline.intersects points: -> [point(-2,-1),point(-2,1)])
+          .toBeFalsy()
+
+    describe 'its intersections method', ->
+      describe 'called with a simple line crossing it in the middle', ->
+        it 'should return true', ->
+          intersections = @spline.intersections points: -> [ point(1.5,-1),
+                                                             point(1.5,1) ]
+          expect(intersections.length).toBe(1)
+          expect(intersections[0]).toBePoint(1.5,0)
+
+      describe 'called with a simple line not crossing it', ->
+        it 'should return false', ->
+          intersections = @spline.intersections points: -> [ point(-2,-1),
+                                                             point(-2,1) ]
+          expect(intersections).toBeNull()
+
 global.testPathMethodsOf = (klass) ->
   hpoints = (point(i,0) for i in [0..3])
   vpoints = (point(0,i) for i in [0..3])
@@ -88,7 +120,7 @@ global.spline = (source) ->
           result = target.toSource()
           verticesSource = target.vertices.map (p) -> p.toSource()
           expect(result)
-            .toBe("new #{pkg}([#{verticesSource.join ','}],#{target.bias})")
+          .toBe("new #{pkg}([#{verticesSource.join ','}],#{target.bias})")
 
   shouldHave: (expected) ->
     segments: -> testMethod 'segments', source, expected

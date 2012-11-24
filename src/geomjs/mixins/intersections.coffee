@@ -66,7 +66,7 @@ class Intersections extends Mixin
     points2 = geom2.points()
     length1 = points1.length
     length2 = points2.length
-    output = []
+    lastIntersection = null
 
     for i in [0..length1-2]
       sv1 = points1[i]
@@ -89,6 +89,10 @@ class Intersections extends Mixin
            d3.length() <= dif2.length() and
            d4.length() <= dif2.length()
 
+          if cross.equals lastIntersection
+            lastIntersection = cross
+            continue
+
           if providesDataInCallback
             context =
               segment1: dif1
@@ -101,6 +105,7 @@ class Intersections extends Mixin
               segmentEnd2: ev2
 
           return if block.call this, cross, context
+          lastIntersection = cross
 
   ##### Intersections::perCrossing
   #

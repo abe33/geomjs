@@ -29,3 +29,5 @@ describe 'CubicBezier', ->
     spline(source).shouldValidateWith(4).vertices()
 
   testPathMethodsOf(CubicBezier)
+  testIntersectionsMethodsOf(CubicBezier)
+

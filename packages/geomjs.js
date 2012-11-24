@@ -647,7 +647,7 @@
     };
 
     Intersections.prototype.eachIntersections = function(geom1, geom2, block, providesDataInCallback) {
-      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, length1, length2, output, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
+      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, lastIntersection, length1, length2, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
       if (providesDataInCallback == null) {
         providesDataInCallback = false;
       }
@@ -655,7 +655,7 @@
       points2 = geom2.points();
       length1 = points1.length;
       length2 = points2.length;
-      output = [];
+      lastIntersection = null;
       for (i = _i = 0, _ref = length1 - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         sv1 = points1[i];
         ev1 = points1[i + 1];
@@ -670,6 +670,10 @@
           d3 = cross.subtract(ev2);
           d4 = cross.subtract(sv2);
           if (d1.length() <= dif1.length() && d2.length() <= dif1.length() && d3.length() <= dif2.length() && d4.length() <= dif2.length()) {
+            if (cross.equals(lastIntersection)) {
+              lastIntersection = cross;
+              continue;
+            }
             if (providesDataInCallback) {
               context = {
                 segment1: dif1,
@@ -685,6 +689,7 @@
             if (block.call(this, cross, context)) {
               return;
             }
+            lastIntersection = cross;
           }
         }
       }
@@ -916,19 +921,19 @@
       };
 
       ConcretSpline.prototype.length = function() {
-        if (this.memoized('length')) {
-          return this.memoFor('length');
-        }
-        return this.memoize('length', this.measure(this.bias));
+        return this.measure(this.bias);
       };
 
       ConcretSpline.prototype.measure = function(bias) {
         var i, length, _i, _ref;
+        if (this.memoized('measure')) {
+          return this.memoFor('measure');
+        }
         length = 0;
         for (i = _i = 0, _ref = this.segments() - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
           length += this.measureSegment(this.segment(i), bias);
         }
-        return length;
+        return this.memoize('measure', length);
       };
 
       ConcretSpline.prototype.measureSegment = function(segment, bias) {

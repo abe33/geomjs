@@ -37,3 +37,4 @@ describe 'LinearSpline', ->
     lengthOf(source).shouldBe(9)
 
   testPathMethodsOf(LinearSpline)
+  testIntersectionsMethodsOf(LinearSpline)

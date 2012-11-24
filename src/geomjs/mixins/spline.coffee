@@ -65,16 +65,15 @@ Spline = (segmentSize) ->
 
     ##### Spline::length
     #
-    length: ->
-      return @memoFor 'length' if @memoized 'length'
-      @memoize 'length', @measure @bias
+    length: -> @measure @bias
 
     ##### Spline::measure
     #
     measure: (bias) ->
+      return @memoFor 'measure' if @memoized 'measure'
       length = 0
       length += @measureSegment @segment(i), bias for i in [0..@segments()-1]
-      length
+      @memoize 'measure', length
 
     ##### Spline::measureSegment
     #
