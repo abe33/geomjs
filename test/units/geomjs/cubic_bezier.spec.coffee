@@ -4,7 +4,10 @@ CubicBezier = require '../../../lib/geomjs/cubic_bezier'
 
 describe 'CubicBezier', ->
   describe 'when called with four vertices', ->
+    source = 'curve'
+
     beforeEach ->
+      addPointMatchers this
       @curve = new CubicBezier([
         point(0,0)
         point(4,0)
@@ -12,9 +15,17 @@ describe 'CubicBezier', ->
         point(0,4)
       ], 20)
 
-    it 'should exist', ->
-      expect(@curve).toBeDefined()
+    spline(source).shouldBe.cloneable()
+    spline(source).shouldBe.formattable('CubicBezier')
+    spline(source).shouldBe.sourcable('geomjs.CubicBezier')
 
-    describe 'its points method', ->
-      it 'should return as many points as its bias plus one', ->
-        expect(@curve.points().length).toBe(@curve.bias + 1)
+    spline(source).shouldHave(4).vertices()
+    spline(source).shouldHave(1).segments()
+    spline(source).shouldHave(21).points()
+
+    spline(source).segmentSize.shouldBe(3)
+    spline(source).bias.shouldBe(20)
+
+    spline(source).shouldValidateWith(4).vertices()
+
+  testPathMethodsOf(CubicBezier)

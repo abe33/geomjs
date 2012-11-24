@@ -533,8 +533,8 @@
       if (pathBasedOnLength == null) {
         pathBasedOnLength = true;
       }
-      p1 = this.pathPointAt(n - 0.01);
-      p2 = this.pathPointAt(n + 0.01);
+      p1 = this.pathPointAt(n - 0.01, pathBasedOnLength);
+      p2 = this.pathPointAt(n + 0.01, pathBasedOnLength);
       d = p2.subtract(p1);
       return d.angle();
     };
@@ -546,7 +546,7 @@
       if (pathBasedOnLength == null) {
         pathBasedOnLength = true;
       }
-      return this.pathPointAt((n + accuracy) % 1).subtract(this.pathPointAt((1 + n - accuracy) % 1)).normalize(1);
+      return this.pathPointAt((n + accuracy) % 1, pathBasedOnLength).subtract(this.pathPointAt((1 + n - accuracy) % 1), pathBasedOnLength).normalize(1);
     };
 
     Path.prototype.walkPathBasedOnLength = function(pos, points) {

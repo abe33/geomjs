@@ -8,56 +8,32 @@ describe 'LinearSpline', ->
       expect(-> new LinearSpline [point()] ).toThrow()
 
   describe 'when instanciated with four points', ->
+    source = 'spline'
+
     beforeEach ->
       addPointMatchers this
       @spline = new LinearSpline [ point(0,3), point(3,3),
                                    point(3,0), point(6,0) ]
-    it 'should exist', ->
-      expect(@spline).toBeDefined()
-
-    describe 'its bias property', ->
-      it 'should be the default', ->
-        expect(@spline.bias).toBe(20)
 
     it 'should have registered the points as its vertices', ->
-      expect(@spline.vertices.length).toBe(4)
       expect(@spline.vertices[0]).toBePoint(0,3)
       expect(@spline.vertices[1]).toBePoint(3,3)
       expect(@spline.vertices[2]).toBePoint(3,0)
       expect(@spline.vertices[3]).toBePoint(6,0)
 
-    describe 'its segments method', ->
-      it 'should return 3', ->
-        expect(@spline.segments()).toBe(3)
+    spline(source).shouldBe.cloneable()
+    spline(source).shouldBe.formattable('LinearSpline')
+    spline(source).shouldBe.sourcable('geomjs.LinearSpline')
 
-    describe 'its segmentSize method', ->
-      it 'should return 1', ->
-        expect(@spline.segmentSize()).toBe(1)
+    spline(source).shouldHave(4).vertices()
+    spline(source).shouldHave(3).segments()
+    spline(source).shouldHave(4).points()
 
-    describe 'its points method', ->
-      it 'should return the vertices', ->
-        expect(@spline.points()).toEqual(@spline.vertices)
+    spline(source).segmentSize.shouldBe(1)
+    spline(source).bias.shouldBe(20)
 
-    describe 'its length method', ->
-      it 'should return 12', ->
-        expect(@spline.length()).toBeClose(9)
+    spline(source).shouldValidateWith(2).vertices()
 
-    describe 'its pathPointAt method', ->
-      describe 'called with 0', ->
-        it 'should return the first vertice', ->
-          expect(@spline.pathPointAt 0)
-            .toBeSamePoint(@spline.vertices[0])
+    lengthOf(source).shouldBe(9)
 
-      describe 'called with 1', ->
-        it 'should return the last vertice', ->
-          expect(@spline.pathPointAt 1)
-            .toBeSamePoint(@spline.vertices[@spline.vertices.length - 1])
-
-      describe 'called with 0.5', ->
-        it 'should return the middle of the second segment', ->
-          expect(@spline.pathPointAt 0.5).toBePoint(3, 1.5)
-
-      describe 'called with 0.5 and false', ->
-        it 'should return the middle of the second segment', ->
-          expect(@spline.pathPointAt 0.5, false).toBePoint(3, 1.5)
-
+  testPathMethodsOf(LinearSpline)
