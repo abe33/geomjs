@@ -59,6 +59,14 @@ $(document).ready ->
       new geomjs.Point(300,410)
       new geomjs.Point(360,350)
     ])
+
+    new geomjs.QuintBezier([
+      new geomjs.Point(380,350)
+      new geomjs.Point(420,290)
+      new geomjs.Point(460,340)
+      new geomjs.Point(500,290)
+      new geomjs.Point(560,350)
+    ])
   ]
 
   options =
@@ -116,6 +124,7 @@ $(document).ready ->
     linearSpline
     cubicBezier
     quadBezier
+    quintBezier
   ] = geometries
 
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)

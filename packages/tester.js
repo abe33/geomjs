@@ -155,7 +155,7 @@
   })();
 
   $(document).ready(function() {
-    var animate, animated, canvas, circle, context, cubicBezier, cubicBezierPoints, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, mouseX, mouseY, options, polygon, pt, quadBezier, quadBezierPoints, rectangle, render, requestAnimationFrame, stats, t, testers, triangle;
+    var animate, animated, canvas, circle, context, cubicBezier, cubicBezierPoints, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, mouseX, mouseY, options, polygon, pt, quadBezier, quadBezierPoints, quintBezier, rectangle, render, requestAnimationFrame, stats, t, testers, triangle;
     stats = new Stats;
     stats.setMode(0);
     $('#canvas').prepend(stats.domElement);
@@ -165,7 +165,7 @@
     canvas = $('canvas');
     context = canvas[0].getContext('2d');
     animated = false;
-    geometries = [new geomjs.Rectangle(250, 40, 180, 100, 16), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)])];
+    geometries = [new geomjs.Rectangle(250, 40, 180, 100, 16), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)]), new geomjs.QuintBezier([new geomjs.Point(380, 350), new geomjs.Point(420, 290), new geomjs.Point(460, 340), new geomjs.Point(500, 290), new geomjs.Point(560, 350)])];
     options = {
       bounds: true,
       path: true,
@@ -229,7 +229,7 @@
         return _results;
       }
     };
-    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], polygon = geometries[5], linearSpline = geometries[6], cubicBezier = geometries[7], quadBezier = geometries[8];
+    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], polygon = geometries[5], linearSpline = geometries[6], cubicBezier = geometries[7], quadBezier = geometries[8], quintBezier = geometries[9];
     linearSplinePoints = (function() {
       var _i, _len, _ref, _results;
       _ref = linearSpline.vertices;

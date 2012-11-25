@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, QuintBezier, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -3135,6 +3135,54 @@
 
   })();
 
+  /* src/geomjs/quint_bezier.coffee */;
+
+
+  QuintBezier = (function() {
+
+    [Formattable('QuintBezier'), Sourcable('geomjs.QuintBezier', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(4)].forEach(function(mixin) {
+      return mixin.attachTo(QuintBezier);
+    });
+
+    function QuintBezier(vertices, bias) {
+      if (bias == null) {
+        bias = 20;
+      }
+      this.initSpline(vertices, bias);
+    }
+
+    QuintBezier.prototype.pointInSegment = function(t, seg) {
+      var pt;
+      pt = new Point();
+      pt.x = (seg[0].x * this.b1(t)) + (seg[1].x * this.b2(t)) + (seg[2].x * this.b3(t)) + (seg[3].x * this.b4(t)) + (seg[4].x * this.b5(t));
+      pt.y = (seg[0].y * this.b1(t)) + (seg[1].y * this.b2(t)) + (seg[2].y * this.b3(t)) + (seg[3].y * this.b4(t)) + (seg[4].y * this.b5(t));
+      return pt;
+    };
+
+    QuintBezier.prototype.b1 = function(t) {
+      return (1 - t) * (1 - t) * (1 - t) * (1 - t);
+    };
+
+    QuintBezier.prototype.b2 = function(t) {
+      return 4 * t * (1 - t) * (1 - t) * (1 - t);
+    };
+
+    QuintBezier.prototype.b3 = function(t) {
+      return 6 * t * t * (1 - t) * (1 - t);
+    };
+
+    QuintBezier.prototype.b4 = function(t) {
+      return 4 * t * t * t * (1 - t);
+    };
+
+    QuintBezier.prototype.b5 = function(t) {
+      return t * t * t * t;
+    };
+
+    return QuintBezier;
+
+  })();
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -3182,5 +3230,7 @@
   this.geomjs.CubicBezier = CubicBezier;
 
   this.geomjs.QuadBezier = QuadBezier;
+
+  this.geomjs.QuintBezier = QuintBezier;
 
 }).call(this);
