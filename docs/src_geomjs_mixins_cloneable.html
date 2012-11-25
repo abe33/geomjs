@@ -1,0 +1,117 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/cloneable.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/cloneable.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>cloneable.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#cloneable'>Cloneable</a>
+  </li>
+  <li class='level1'>
+    <a href='#cloneableattachto'>Cloneable.attachTo</a>
+  </li>
+  <li class='level1'>
+    <a href='#cloneableincluded'>Cloneable.included</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='cloneable'>Cloneable</h1></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>A <code>Cloneable</code> object has two caracteristics, it can return a copy
+of itself with the method <code>clone</code>, and it can initialize itself
+with an object passed to its constructor (a copy constructor).</p>
+
+<p>The <code>Cloneable</code> mixin provides the <code>clone</code> method implementation,
+the copy constructor have to be implemented by the class willing
+to implement <code>Cloneable</code> interface.</p>
+
+<pre><code><span class="class"><span class="keyword">class</span> <span class='title'>Dummy</span></span>
+  <span class="constant">Cloneable</span><span class="punctuation">.</span>attachTo <span class="constant">Dummy</span>
+
+  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span><span class="property">@p1</span><span class="punctuation">,</span> <span class="property">@p2</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">if</span> <span class="keyword">typeof</span> <span class="property">@p1</span> <span class="keyword">is</span> <span class="string"><span class="string_begin">'</span>object<span class="string_end">'</span></span>
+      <span class="hash"><span class="hash_begin">{</span><span class="property">@p1</span><span class="punctuation">,</span> <span class="property">@p2</span><span class="hash_end">}</span></span> <span class="operators">=</span> <span class="property">@p1</span>
+    <span class="comment"># ...</span></code></pre></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Cloneable</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='cloneableattachto'>Cloneable.attachTo</h4>
+
+<p>See <a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='cloneableincluded'>Cloneable.included</h4>
+
+<p>Defines on the passed-in class prototype a <code>clone</code> method
+that will return a copy of the current object when called.</p>
+
+<pre><code>dummy1 <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Dummy</span><span class="group"><span class="group_begin">(</span><span class="number">5</span><span class="punctuation">,</span><span class="number">6</span><span class="group_end">)</span></span>
+dummy2 <span class="operators">=</span> dummy1<span class="punctuation">.</span>clone<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="comment"># [Dummy(p1=5,p2=6)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">@included<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>klass<span class="group_end">)</span></span> <span class="function">-></span> <span class="property">klass<span class='punctuation'>:</span></span><span class="punctuation">:</span>clone <span class="operators">=</span> <span class="function">-></span> <span class="keyword">new</span> klass <span class="keyword">this</span>
+
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Cloneable</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

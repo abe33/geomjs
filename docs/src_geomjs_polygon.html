@@ -1,0 +1,605 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/polygon.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/polygon.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>polygon.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#polygon'>Polygon</a>
+  </li>
+  <li class='level1'>
+    <a href='#class-methods'>Class Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpolygonfrom'>Polygon.polygonFrom</a>
+  </li>
+  <li class='level1'>
+    <a href='#instances-methods'>Instances Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonconstructor'>Polygon::constructor</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygoncenter'>Polygon::center</a>
+  </li>
+  <li class='level1'>
+    <a href='#polygon-manipulation'>Polygon Manipulation</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygontranslate'>Polygon::translate</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonrotatearoundcenter'>Polygon::rotateAroundCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonscalearoundcenter'>Polygon::scaleAroundCenter</a>
+  </li>
+  <li class='level1'>
+    <a href='#bounds'>Bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygontop'>Polygon::top</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonbottom'>Polygon::bottom</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonleft'>Polygon::left</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonright'>Polygon::right</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonbounds'>Polygon::bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonboundingbox'>Polygon::boundingBox</a>
+  </li>
+  <li class='level1'>
+    <a href='#geometry-api'>Geometry API</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpoints'>Polygon::points</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygontriangles'>Polygon::triangles</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonclosedgeometry'>Polygon::closedGeometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonintersects'>Polygon::intersects</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonintersections'>Polygon::intersections</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpointatangle'>Polygon::pointAtAngle</a>
+  </li>
+  <li class='level1'>
+    <a href='#surface-api'>Surface API</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonacreage'>Polygon::acreage</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygoncontains'>Polygon::contains</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygoncontainsgeometry'>Polygon::containsGeometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonrandompointinsurface'>Polygon::randomPointInSurface</a>
+  </li>
+  <li class='level1'>
+    <a href='#path-api'>Path API</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonlength'>Polygon::length</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpathpointat'>Polygon::pathPointAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpathorientationat'>Polygon::pathOrientationAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpathtangentat'>Polygon::pathTangentAt</a>
+  </li>
+  <li class='level1'>
+    <a href='#drawing-api'>Drawing API</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonstroke'>Polygon::stroke</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonfill'>Polygon::fill</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygondrawpath'>Polygon::drawPath</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoization'>Memoization</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonmemoizationkey'>Polygon::memoizationKey</a>
+  </li>
+  <li class='level1'>
+    <a href='#utilities'>Utilities</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonpolygonfrom'>Polygon::polygonFrom</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygontostring'>Polygon::toString</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonclone'>Polygon::clone</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonequals'>Polygon::equals</a>
+  </li>
+  <li class='level1'>
+    <a href='#instance-errors-methods'>Instance Errors Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonnovertices'>Polygon::noVertices</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygonnotenougthvertices'>Polygon::notEnougthVertices</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
+<span class="constant">Equatable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/equatable<span class="string_end">'</span></span>
+<span class="constant">Cloneable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/cloneable<span class="string_end">'</span></span>
+<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
+<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
+<span class="constant">Triangulable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/triangulable<span class="string_end">'</span></span>
+<span class="constant">Geometry</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/geometry<span class="string_end">'</span></span>
+<span class="constant">Surface</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/surface<span class="string_end">'</span></span>
+<span class="constant">Path</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/path<span class="string_end">'</span></span>
+<span class="constant">Intersections</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/intersections<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='polygon'>Polygon</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Polygon</span></span>
+  include<span class="group"><span class="group_begin">(</span><span class="punctuation">[</span>
+    <span class="constant">Formattable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>Polygon<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>vertices<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Sourcable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>geomjs.Polygon<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>vertices<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Cloneable</span>
+    <span class="constant">Geometry</span>
+    <span class="constant">Intersections</span>
+    <span class="constant">Triangulable</span>
+    <span class="constant">Surface</span>
+    <span class="constant">Path</span>
+  <span class="punctuation">]</span><span class="group_end">)</span></span><span class="punctuation">.</span><span class="keyword">in</span> <span class="constant">Polygon</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='class-methods'>Class Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpolygonfrom'>Polygon.polygonFrom</h4></td>
+          <td class='code'><pre>  <span class="property">@polygonFrom<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">if</span> vertices<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">typeof</span> vertices <span class="keyword">is</span> <span class="string"><span class="string_begin">'</span>object<span class="string_end">'</span></span>
+      isArray <span class="operators">=</span> <span class="property">Object<span class='punctuation'>:</span></span><span class="punctuation">:</span>toString<span class="punctuation">.</span>call<span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span><span class="punctuation">.</span>indexOf<span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>Array<span class="string_end">'</span></span><span class="group_end">)</span></span> <span class="keyword">isnt</span> <span class="operators">-</span><span class="number">1</span>
+      <span class="keyword">return</span> vertices <span class="keyword">unless</span> isArray
+      <span class="hash"><span class="hash_begin">{</span>vertices<span class="hash_end">}</span></span>
+    <span class="keyword">else</span>
+      <span class="property">vertices<span class='punctuation'>:</span></span> <span class="literal">null</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='instances-methods'>Instances Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonconstructor'>Polygon::constructor</h4></td>
+          <td class='code'><pre>  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="hash"><span class="hash_begin">{</span>vertices<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="property">@polygonFrom</span> vertices
+
+    <span class="property">@noVertices</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">unless</span> vertices<span class="operators">?</span>
+    <span class="property">@notEnougthVertices</span> vertices <span class="keyword">if</span> vertices<span class="punctuation">.</span>length &lt; <span class="number">3</span>
+    <span class="property">@vertices</span> <span class="operators">=</span> vertices
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygoncenter'>Polygon::center</h4></td>
+          <td class='code'><pre>  <span class="property">center<span class='punctuation'>:</span></span> <span class="function">-></span>
+    x <span class="operators">=</span> y <span class="operators">=</span> <span class="number">0</span>
+
+    <span class="keyword">for</span> vertex <span class="keyword">in</span> <span class="property">@vertices</span>
+      x <span class="operators">+</span><span class="operators">=</span> vertex<span class="punctuation">.</span>x
+      y <span class="operators">+</span><span class="operators">=</span> vertex<span class="punctuation">.</span>y
+
+    x <span class="operators">=</span> x <span class="operators">/</span> <span class="property">@vertices</span><span class="punctuation">.</span>length
+    y <span class="operators">=</span> y <span class="operators">/</span> <span class="property">@vertices</span><span class="punctuation">.</span>length
+
+    <span class="keyword">new</span> <span class="constant">Point</span> x<span class="punctuation">,</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='polygon-manipulation'>Polygon Manipulation</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygontranslate'>Polygon::translate</h4></td>
+          <td class='code'><pre>  <span class="property">translate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="hash"><span class="hash_begin">{</span>x<span class="punctuation">,</span>y<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom x<span class="punctuation">,</span>y
+    <span class="keyword">for</span> vertex <span class="keyword">in</span> <span class="property">@vertices</span>
+      vertex<span class="punctuation">.</span>x <span class="operators">+</span><span class="operators">=</span> x
+      vertex<span class="punctuation">.</span>y <span class="operators">+</span><span class="operators">=</span> y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonrotatearoundcenter'>Polygon::rotateAroundCenter</h4></td>
+          <td class='code'><pre>  <span class="property">rotateAroundCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>rotation<span class="operators">=</span><span class="number">0</span><span class="group_end">)</span></span> <span class="function">-></span>
+    center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">for</span> vertex<span class="punctuation">,</span>i <span class="keyword">in</span> <span class="property">@vertices</span>
+      <span class="property">@vertices</span><span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> vertex<span class="punctuation">.</span>rotateAround center<span class="punctuation">,</span> rotation
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonscalearoundcenter'>Polygon::scaleAroundCenter</h4></td>
+          <td class='code'><pre>  <span class="property">scaleAroundCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>scale<span class="group_end">)</span></span> <span class="function">-></span>
+    center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">for</span> vertex<span class="punctuation">,</span>i <span class="keyword">in</span> <span class="property">@vertices</span>
+      <span class="property">@vertices</span><span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> center<span class="punctuation">.</span>add vertex<span class="punctuation">.</span>subtract<span class="group"><span class="group_begin">(</span>center<span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span>scale<span class="group_end">)</span></span>
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='bounds'>Bounds</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygontop'>Polygon::top</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometrytop">Geometry.top</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonbottom'>Polygon::bottom</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometrybottom">Geometry.bottom</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonleft'>Polygon::left</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometryleft">Geometry.left</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonright'>Polygon::right</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometryright">Geometry.right</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonbounds'>Polygon::bounds</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometrybounds">Geometry.bounds</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonboundingbox'>Polygon::boundingBox</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometryboundingbox">Geometry.boundingbox</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='geometry-api'>Geometry API</h3></td>
+          <td class='code'><pre>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpoints'>Polygon::points</h4></td>
+          <td class='code'><pre>  <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@vertices</span><span class="punctuation">.</span>concat <span class="property">@vertices</span><span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygontriangles'>Polygon::triangles</h4>
+
+<p>See
+<a href="src_geomjs_mixins_triangulable.html#triangulabletriangles">Triangulable.triangles</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonclosedgeometry'>Polygon::closedGeometry</h4></td>
+          <td class='code'><pre>  <span class="property">closedGeometry<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="literal">true</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonintersects'>Polygon::intersects</h4>
+
+<p>See
+<a href="src_geomjs_mixins_intersections.html#intersectionsintersects">Intersections.intersects</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonintersections'>Polygon::intersections</h4>
+
+<p>See
+<a href="src_geomjs_mixins_intersections.html#intersectionsintersections">Intersections.intersections</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpointatangle'>Polygon::pointAtAngle</h4></td>
+          <td class='code'><pre>  <span class="property">pointAtAngle<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span> <span class="function">-></span>
+    center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    distance <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>a<span class="punctuation">,</span>b<span class="group_end">)</span></span> <span class="function">-></span> a<span class="punctuation">.</span>distance<span class="group"><span class="group_begin">(</span>center<span class="group_end">)</span></span> <span class="operators">-</span> b<span class="punctuation">.</span>distance<span class="group"><span class="group_begin">(</span>center<span class="group_end">)</span></span>
+    vec <span class="operators">=</span> center<span class="punctuation">.</span>add <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="group_end">)</span></span><span class="operators">*</span><span class="number">10000</span><span class="punctuation">,</span>
+                     <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="group_end">)</span></span><span class="operators">*</span><span class="number">10000</span>
+    <span class="property">@intersections</span><span class="group"><span class="group_begin">(</span><span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="punctuation">[</span>center<span class="punctuation">,</span> vec<span class="punctuation">]</span><span class="group_end">)</span></span><span class="operators">?</span><span class="punctuation">.</span>sort<span class="group"><span class="group_begin">(</span>distance<span class="group_end">)</span></span><span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='surface-api'>Surface API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonacreage'>Polygon::acreage</h4></td>
+          <td class='code'><pre>  <span class="property">acreage<span class='punctuation'>:</span></span> <span class="function">-></span>
+    acreage <span class="operators">=</span> <span class="number">0</span>
+    acreage <span class="operators">+</span><span class="operators">=</span> tri<span class="punctuation">.</span>acreage<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">for</span> tri <span class="keyword">in</span> <span class="property">@triangles</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    acreage
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygoncontains'>Polygon::contains</h4></td>
+          <td class='code'><pre>  <span class="property">contains<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="literal">true</span> <span class="keyword">for</span> tri <span class="keyword">in</span> <span class="property">@triangles</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">when</span> tri<span class="punctuation">.</span>contains x<span class="punctuation">,</span>y
+    <span class="literal">false</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygoncontainsgeometry'>Polygon::containsGeometry</h4>
+
+<p>See
+<a href="src_geomjs_mixins_surface.html#surfacecontainsgeometry">Surface.containsgeometry</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonrandompointinsurface'>Polygon::randomPointInSurface</h4></td>
+          <td class='code'><pre>  <span class="property">randomPointInSurface<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>random<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">unless</span> random<span class="operators">?</span>
+      random <span class="operators">=</span> <span class="keyword">new</span> chancejs<span class="punctuation">.</span><span class="constant">Random</span> <span class="keyword">new</span> chancejs<span class="punctuation">.</span><span class="constant">MathRandom</span>
+
+    acreage <span class="operators">=</span> <span class="property">@acreage</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    triangles <span class="operators">=</span> <span class="property">@triangles</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    ratios <span class="operators">=</span> triangles<span class="punctuation">.</span>map <span class="group"><span class="group_begin">(</span>t<span class="punctuation">,</span> i<span class="group_end">)</span></span> <span class="function">-></span> t<span class="punctuation">.</span>acreage<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="operators">/</span> acreage
+    ratios<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">+</span><span class="operators">=</span> ratios<span class="punctuation">[</span>i<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span> <span class="keyword">for</span> n<span class="punctuation">,</span>i <span class="keyword">in</span> ratios <span class="keyword">when</span> i > <span class="number">0</span>
+
+    random<span class="punctuation">.</span>inArray<span class="group"><span class="group_begin">(</span>triangles<span class="punctuation">,</span> ratios<span class="punctuation">,</span> <span class="literal">true</span><span class="group_end">)</span></span><span class="punctuation">.</span>randomPointInSurface random
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='path-api'>Path API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonlength'>Polygon::length</h4></td>
+          <td class='code'><pre>  <span class="property">length<span class='punctuation'>:</span></span> <span class="function">-></span>
+    length <span class="operators">=</span> <span class="number">0</span>
+    points <span class="operators">=</span> <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1.</span><span class="punctuation">.</span>points<span class="punctuation">.</span>length<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+      length <span class="operators">+</span><span class="operators">=</span> points<span class="punctuation">[</span>i<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span><span class="punctuation">.</span>distance<span class="group"><span class="group_begin">(</span>points<span class="punctuation">[</span>i<span class="punctuation">]</span><span class="group_end">)</span></span>
+    length
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpathpointat'>Polygon::pathPointAt</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#pathpathpointat">Path.pathPointAt</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpathorientationat'>Polygon::pathOrientationAt</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#pathpathorientationat">Path.pathOrientationAt</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpathtangentat'>Polygon::pathTangentAt</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#pathpathtangentat">Path.pathTangentAt</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='drawing-api'>Drawing API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonstroke'>Polygon::stroke</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometrystroke">Geometry.stroke</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonfill'>Polygon::fill</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometryfill">Geometry.fill</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygondrawpath'>Polygon::drawPath</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometrydrawpath">Geometry.drawPath</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='memoization'>Memoization</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonmemoizationkey'>Polygon::memoizationKey</h4></td>
+          <td class='code'><pre>  <span class="property">memoizationKey<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@vertices</span><span class="punctuation">.</span>map<span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">-></span> <span class="string"><span class="string_begin">"</span><span class="subst"><span class="subst_begin">#{</span>pt<span class="punctuation">.</span>x<span class="subst_end">}</span></span>,<span class="subst"><span class="subst_begin">#{</span>pt<span class="punctuation">.</span>y<span class="subst_end">}</span></span><span class="string_end">"</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>join <span class="string"><span class="string_begin">"</span>;<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='utilities'>Utilities</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonpolygonfrom'>Polygon::polygonFrom</h4></td>
+          <td class='code'><pre>  <span class="property">polygonFrom<span class='punctuation'>:</span></span> <span class="constant">Polygon</span><span class="punctuation">.</span>polygonFrom
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygontostring'>Polygon::toString</h4>
+
+<p>See
+<a href="src_geomjs_mixins_formattable.html#formattabletostring">Formattable.toString</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonclone'>Polygon::clone</h4>
+
+<p>See
+<a href="src_geomjs_mixins_cloneable.html#cloneableclone">Cloneable.clone</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonequals'>Polygon::equals</h4>
+
+<p>See
+<a href="src_geomjs_mixins_equatable.html#equatableequals">Equatable.equals</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='instance-errors-methods'>Instance Errors Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonnovertices'>Polygon::noVertices</h4></td>
+          <td class='code'><pre>  <span class="property">noVertices<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">'</span>No vertices provided to Polygon<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polygonnotenougthvertices'>Polygon::notEnougthVertices</h4></td>
+          <td class='code'><pre>  <span class="property">notEnougthVertices<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span>
+    length <span class="operators">=</span> vertices<span class="punctuation">.</span>length
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>Polygon must have at least 3 vertices, was <span class="subst"><span class="subst_begin">#{</span>length<span class="subst_end">}</span></span><span class="string_end">"</span></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Polygon</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,849 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/rectangle.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/rectangle.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>rectangle.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#rectangle'>Rectangle</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleeachrectanglerectangleintersections'>Rectangle.eachRectangleRectangleIntersections</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleconstructor'>Rectangle::constructor</a>
+  </li>
+  <li class='level1'>
+    <a href='#corners'>Corners</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglecorners'>Rectangle::corners</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletopleft'>Rectangle::topLeft</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletopright'>Rectangle::topRight</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebottomleft'>Rectangle::bottomLeft</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebottomright'>Rectangle::bottomRight</a>
+  </li>
+  <li class='level1'>
+    <a href='#centers'>Centers</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglecenter'>Rectangle::center</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletopedgecenter'>Rectangle::topEdgeCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebottomedgecenter'>Rectangle::bottomEdgeCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleleftedgecenter'>Rectangle::leftEdgeCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglerightedgecenter'>Rectangle::rightEdgeCenter</a>
+  </li>
+  <li class='level1'>
+    <a href='#edges'>Edges</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleedges'>Rectangle::edges</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletopedge'>Rectangle::topEdge</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleleftedge'>Rectangle::leftEdge</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebottomedge'>Rectangle::bottomEdge</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglerightedge'>Rectangle::rightEdge</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglediagonal'>Rectangle::diagonal</a>
+  </li>
+  <li class='level1'>
+    <a href='#bounds'>Bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletop'>Rectangle::top</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebottom'>Rectangle::bottom</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleleft'>Rectangle::left</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleright'>Rectangle::right</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglebounds'>Rectangle::bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleboundingbox'>Rectangle::boundingBox</a>
+  </li>
+  <li class='level1'>
+    <a href='#rectangle-manipulation'>Rectangle Manipulation</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglesetcenter'>Rectangle::setCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglerotatearoundcenter'>Rectangle::rotateAroundCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglescalearoundcenter'>Rectangle::scaleAroundCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatearoundcenter'>Rectangle::inflateAroundCenter</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflate'>Rectangle::inflate</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflateleft'>Rectangle::inflateLeft</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflateright'>Rectangle::inflateRight</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatetop'>Rectangle::inflateTop</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatebottom'>Rectangle::inflateBottom</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatetopleft'>Rectangle::inflateTopLeft</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatetopright'>Rectangle::inflateTopRight</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatebottomleft'>Rectangle::inflateBottomLeft</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleinflatebottomright'>Rectangle::inflateBottomRight</a>
+  </li>
+  <li class='level1'>
+    <a href='#geometry-api'>Geometry API</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleclosedgeometry'>Rectangle::closedGeometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepoints'>Rectangle::points</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleintersects'>Rectangle::intersects</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleintersections'>Rectangle::intersections</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepointatangle'>Rectangle::pointAtAngle</a>
+  </li>
+  <li class='level1'>
+    <a href='#surface-api'>Surface API</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleacreage'>Rectangle::acreage</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglecontains'>Rectangle::contains</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglecontainsgeometry'>Rectangle::containsGeometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglerandompointinsurface'>Rectangle::randomPointInSurface</a>
+  </li>
+  <li class='level1'>
+    <a href='#path-api'>Path API</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglelength'>Rectangle::length</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepathpointat'>Rectangle::pathPointAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepathorientationat'>Rectangle::pathOrientationAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepathtangentat'>Rectangle::pathTangentAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepathsteps'>Rectangle::pathSteps</a>
+  </li>
+  <li class='level1'>
+    <a href='#drawing-api'>Drawing API</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglestroke'>Rectangle::stroke</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglefill'>Rectangle::fill</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangledrawpath'>Rectangle::drawPath</a>
+  </li>
+  <li class='level1'>
+    <a href='#utilities'>Utilities</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangletostring'>Rectangle::toString</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleclone'>Rectangle::clone</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangleequals'>Rectangle::equals</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectanglepaste'>Rectangle::paste</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangledefaulttozero'>Rectangle::defaultToZero</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
+<span class="constant">Equatable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/equatable<span class="string_end">'</span></span>
+<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
+<span class="constant">Cloneable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/cloneable<span class="string_end">'</span></span>
+<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
+<span class="constant">Triangulable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/triangulable<span class="string_end">'</span></span>
+<span class="constant">Parameterizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/parameterizable<span class="string_end">'</span></span>
+<span class="constant">Geometry</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/geometry<span class="string_end">'</span></span>
+<span class="constant">Surface</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/surface<span class="string_end">'</span></span>
+<span class="constant">Path</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/path<span class="string_end">'</span></span>
+<span class="constant">Intersections</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/intersections<span class="string_end">'</span></span>
+chancejs <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>chancejs<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='rectangle'>Rectangle</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Rectangle</span></span>
+  <span class="constant">PROPERTIES</span> <span class="operators">=</span> <span class="punctuation">[</span><span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span><span class="punctuation">,</span><span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span><span class="punctuation">,</span><span class="string"><span class="string_begin">'</span>width<span class="string_end">'</span></span><span class="punctuation">,</span><span class="string"><span class="string_begin">'</span>height<span class="string_end">'</span></span><span class="punctuation">,</span><span class="string"><span class="string_begin">'</span>rotation<span class="string_end">'</span></span><span class="punctuation">]</span>
+
+  include<span class="group"><span class="group_begin">(</span><span class="punctuation">[</span>
+    <span class="constant">Equatable</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="literal">null</span><span class="punctuation">,</span> <span class="constant">PROPERTIES</span><span class="group_end">)</span></span>
+    <span class="constant">Formattable</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="literal">null</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="string"><span class="string_begin">'</span>Rectangle<span class="string_end">'</span></span><span class="punctuation">]</span><span class="punctuation">.</span>concat <span class="constant">PROPERTIES</span><span class="group_end">)</span></span>
+    <span class="constant">Sourcable</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="literal">null</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="string"><span class="string_begin">'</span>geomjs.Rectangle<span class="string_end">'</span></span><span class="punctuation">]</span><span class="punctuation">.</span>concat <span class="constant">PROPERTIES</span><span class="group_end">)</span></span>
+    <span class="constant">Parameterizable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>rectangleFrom<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="hash"><span class="hash_begin">{</span>
+      <span class="property">x<span class='punctuation'>:</span></span> <span class="constant">NaN</span>
+      <span class="property">y<span class='punctuation'>:</span></span> <span class="constant">NaN</span>
+      <span class="property">width<span class='punctuation'>:</span></span> <span class="constant">NaN</span>
+      <span class="property">height<span class='punctuation'>:</span></span> <span class="constant">NaN</span>
+      <span class="property">rotation<span class='punctuation'>:</span></span> <span class="constant">NaN</span>
+    <span class="hash_end">}</span></span><span class="group_end">)</span></span>
+    <span class="constant">Cloneable</span>
+    <span class="constant">Geometry</span>
+    <span class="constant">Surface</span>
+    <span class="constant">Path</span>
+    <span class="constant">Triangulable</span>
+    <span class="constant">Intersections</span>
+  <span class="punctuation">]</span><span class="group_end">)</span></span><span class="punctuation">.</span><span class="keyword">in</span> <span class="constant">Rectangle</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleeachrectanglerectangleintersections'>Rectangle.eachRectangleRectangleIntersections</h4></td>
+          <td class='code'><pre>  <span class="property">@eachRectangleRectangleIntersections<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geom1<span class="punctuation">,</span> geom2<span class="punctuation">,</span> block<span class="punctuation">,</span> data<span class="operators">=</span><span class="literal">false</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">if</span> geom1<span class="punctuation">.</span>equals geom2
+      <span class="keyword">for</span> p <span class="keyword">in</span> geom1<span class="punctuation">.</span>points<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        <span class="keyword">return</span> <span class="keyword">if</span> block<span class="punctuation">.</span>call <span class="keyword">this</span><span class="punctuation">,</span> p
+    <span class="keyword">else</span>
+      <span class="property">@eachIntersections</span> geom1<span class="punctuation">,</span> geom2<span class="punctuation">,</span> block<span class="punctuation">,</span> data
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>Registers the fast intersections iterators for the Rectangle class</p></td>
+          <td class='code'><pre>  iterators <span class="operators">=</span> <span class="constant">Intersections</span><span class="punctuation">.</span>iterators
+  k <span class="operators">=</span> <span class="string"><span class="string_begin">'</span>RectangleRectangle<span class="string_end">'</span></span>
+  iterators<span class="punctuation">[</span>k<span class="punctuation">]</span> <span class="operators">=</span> <span class="constant">Rectangle</span><span class="punctuation">.</span>eachRectangleRectangleIntersections
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleconstructor'>Rectangle::constructor</h4></td>
+          <td class='code'><pre>  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="punctuation">,</span> width<span class="punctuation">,</span> height<span class="punctuation">,</span> rotation<span class="group_end">)</span></span> <span class="function">-></span>
+    args <span class="operators">=</span> <span class="property">@defaultToZero</span> <span class="property">@rectangleFrom</span><span class="punctuation">.</span>apply <span class="keyword">this</span><span class="punctuation">,</span> arguments
+    <span class="hash"><span class="hash_begin">{</span><span class="property">@x</span><span class="punctuation">,</span><span class="property">@y</span><span class="punctuation">,</span><span class="property">@width</span><span class="punctuation">,</span><span class="property">@height</span><span class="punctuation">,</span><span class="property">@rotation</span><span class="hash_end">}</span></span> <span class="operators">=</span> args
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='corners'>Corners</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglecorners'>Rectangle::corners</h4></td>
+          <td class='code'><pre>  <span class="property">corners<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="punctuation">[</span><span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletopleft'>Rectangle::topLeft</h4></td>
+          <td class='code'><pre>  <span class="property">topLeft<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="keyword">new</span> <span class="constant">Point</span><span class="group"><span class="group_begin">(</span><span class="property">@x</span><span class="punctuation">,</span> <span class="property">@y</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletopright'>Rectangle::topRight</h4></td>
+          <td class='code'><pre>  <span class="property">topRight<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebottomleft'>Rectangle::bottomLeft</h4></td>
+          <td class='code'><pre>  <span class="property">bottomLeft<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebottomright'>Rectangle::bottomRight</h4></td>
+          <td class='code'><pre>  <span class="property">bottomRight<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='centers'>Centers</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglecenter'>Rectangle::center</h4></td>
+          <td class='code'><pre>  <span class="property">center<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@diagonal</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">0.5</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletopedgecenter'>Rectangle::topEdgeCenter</h4></td>
+          <td class='code'><pre>  <span class="property">topEdgeCenter<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">0.5</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebottomedgecenter'>Rectangle::bottomEdgeCenter</h4></td>
+          <td class='code'><pre>  <span class="property">bottomEdgeCenter<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">0.5</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleleftedgecenter'>Rectangle::leftEdgeCenter</h4></td>
+          <td class='code'><pre>  <span class="property">leftEdgeCenter<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">0.5</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglerightedgecenter'>Rectangle::rightEdgeCenter</h4></td>
+          <td class='code'><pre>  <span class="property">rightEdgeCenter<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">0.5</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='edges'>Edges</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleedges'>Rectangle::edges</h4></td>
+          <td class='code'><pre>  <span class="property">edges<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="punctuation">[</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletopedge'>Rectangle::topEdge</h4></td>
+          <td class='code'><pre>  <span class="property">topEdge<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@width</span> <span class="operators">*</span> <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span><span class="property">@rotation</span><span class="group_end">)</span></span><span class="group_end">)</span></span><span class="punctuation">,</span>
+                        <span class="property">@width</span> <span class="operators">*</span> <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span><span class="property">@rotation</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleleftedge'>Rectangle::leftEdge</h4></td>
+          <td class='code'><pre>  <span class="property">leftEdge<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@height</span> <span class="operators">*</span> <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span><span class="property">@rotation</span><span class="group_end">)</span></span> <span class="operators">+</span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span> <span class="operators">/</span> <span class="number">2</span><span class="group_end">)</span></span><span class="punctuation">,</span>
+              <span class="property">@height</span> <span class="operators">*</span> <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span><span class="property">@rotation</span><span class="group_end">)</span></span> <span class="operators">+</span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span> <span class="operators">/</span> <span class="number">2</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebottomedge'>Rectangle::bottomEdge</h4></td>
+          <td class='code'><pre>  <span class="property">bottomEdge<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglerightedge'>Rectangle::rightEdge</h4></td>
+          <td class='code'><pre>  <span class="property">rightEdge<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglediagonal'>Rectangle::diagonal</h4></td>
+          <td class='code'><pre>  <span class="property">diagonal<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='bounds'>Bounds</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletop'>Rectangle::top</h4></td>
+          <td class='code'><pre>  <span class="property">top<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>min <span class="property">@y</span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebottom'>Rectangle::bottom</h4></td>
+          <td class='code'><pre>  <span class="property">bottom<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>max <span class="property">@y</span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleleft'>Rectangle::left</h4></td>
+          <td class='code'><pre>  <span class="property">left<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>min <span class="property">@x</span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleright'>Rectangle::right</h4></td>
+          <td class='code'><pre>  <span class="property">right<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>max <span class="property">@x</span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglebounds'>Rectangle::bounds</h4>
+
+<p>See <a href="src_geomjs_mixins_geometry.html#geometrybounds">Geometry.bounds</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleboundingbox'>Rectangle::boundingBox</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#geometryboundingbox">Geometry.boundingbox</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='rectangle-manipulation'>Rectangle Manipulation</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglesetcenter'>Rectangle::setCenter</h4></td>
+          <td class='code'><pre>  <span class="property">setCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom<span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span><span class="punctuation">.</span>subtract<span class="group"><span class="group_begin">(</span><span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+    <span class="property">@x</span> <span class="operators">+</span><span class="operators">=</span> pt<span class="punctuation">.</span>x
+    <span class="property">@y</span> <span class="operators">+</span><span class="operators">=</span> pt<span class="punctuation">.</span>y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglerotatearoundcenter'>Rectangle::rotateAroundCenter</h4></td>
+          <td class='code'><pre>  <span class="property">rotateAroundCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>rotation<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="hash"><span class="hash_begin">{</span><span class="property">@x</span><span class="punctuation">,</span><span class="property">@y</span><span class="hash_end">}</span></span> <span class="operators">=</span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>rotateAround<span class="group"><span class="group_begin">(</span><span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> rotation<span class="group_end">)</span></span>
+    <span class="property">@rotation</span> <span class="operators">+</span><span class="operators">=</span> rotation
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglescalearoundcenter'>Rectangle::scaleAroundCenter</h4></td>
+          <td class='code'><pre>  <span class="property">scaleAroundCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>scale<span class="group_end">)</span></span> <span class="function">-></span>
+    topLeft <span class="operators">=</span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    dif <span class="operators">=</span> topLeft<span class="punctuation">.</span>subtract<span class="group"><span class="group_begin">(</span><span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span>scale<span class="group_end">)</span></span>
+    <span class="hash"><span class="hash_begin">{</span><span class="property">@x</span><span class="punctuation">,</span><span class="property">@y</span><span class="hash_end">}</span></span> <span class="operators">=</span> topLeft<span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span>dif<span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">1 <span class='operators'>/</span></span> <span class="number">2</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+    <span class="property">@width</span> <span class="operators">*</span><span class="operators">=</span> scale
+    <span class="property">@height</span> <span class="operators">*</span><span class="operators">=</span> scale
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatearoundcenter'>Rectangle::inflateAroundCenter</h4></td>
+          <td class='code'><pre>  <span class="property">inflateAroundCenter<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">@inflate</span> xOrPt<span class="punctuation">,</span> y
+    <span class="property">@setCenter</span> center
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflate'>Rectangle::inflate</h4></td>
+          <td class='code'><pre>  <span class="property">inflate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom xOrPt<span class="punctuation">,</span> y
+    <span class="property">@width</span> <span class="operators">+</span><span class="operators">=</span> pt<span class="punctuation">.</span>x
+    <span class="property">@height</span> <span class="operators">+</span><span class="operators">=</span> pt<span class="punctuation">.</span>y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflateleft'>Rectangle::inflateLeft</h4></td>
+          <td class='code'><pre>  <span class="property">inflateLeft<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>inflate<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@width</span> <span class="operators">+</span><span class="operators">=</span> inflate
+    offset <span class="operators">=</span> <span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span><span class="operators">-</span>inflate<span class="group_end">)</span></span>
+    <span class="hash"><span class="hash_begin">{</span><span class="property">@x</span><span class="punctuation">,</span><span class="property">@y</span><span class="hash_end">}</span></span> <span class="operators">=</span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span>offset<span class="group_end">)</span></span>
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflateright'>Rectangle::inflateRight</h4></td>
+          <td class='code'><pre>  <span class="property">inflateRight<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>inflate<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@width</span> <span class="operators">+</span><span class="operators">=</span> inflate
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatetop'>Rectangle::inflateTop</h4></td>
+          <td class='code'><pre>  <span class="property">inflateTop<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>inflate<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@height</span> <span class="operators">+</span><span class="operators">=</span> inflate
+    offset <span class="operators">=</span> <span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span><span class="operators">-</span>inflate<span class="group_end">)</span></span>
+    <span class="hash"><span class="hash_begin">{</span><span class="property">@x</span><span class="punctuation">,</span><span class="property">@y</span><span class="hash_end">}</span></span> <span class="operators">=</span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span>offset<span class="group_end">)</span></span>
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatebottom'>Rectangle::inflateBottom</h4></td>
+          <td class='code'><pre>  <span class="property">inflateBottom<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>inflate<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@height</span> <span class="operators">+</span><span class="operators">=</span> inflate
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatetopleft'>Rectangle::inflateTopLeft</h4></td>
+          <td class='code'><pre>  <span class="property">inflateTopLeft<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom xOrPt<span class="punctuation">,</span> y
+    <span class="property">@inflateLeft</span> pt<span class="punctuation">.</span>x
+    <span class="property">@inflateTop</span> pt<span class="punctuation">.</span>y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatetopright'>Rectangle::inflateTopRight</h4></td>
+          <td class='code'><pre>  <span class="property">inflateTopRight<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom xOrPt<span class="punctuation">,</span> y
+    <span class="property">@inflateRight</span> pt<span class="punctuation">.</span>x
+    <span class="property">@inflateTop</span> pt<span class="punctuation">.</span>y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatebottomleft'>Rectangle::inflateBottomLeft</h4></td>
+          <td class='code'><pre>  <span class="property">inflateBottomLeft<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom xOrPt<span class="punctuation">,</span> y
+    <span class="property">@inflateLeft</span> pt<span class="punctuation">.</span>x
+    <span class="property">@inflateBottom</span> pt<span class="punctuation">.</span>y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleinflatebottomright'>Rectangle::inflateBottomRight</h4></td>
+          <td class='code'><pre>  <span class="property">inflateBottomRight<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span> <span class="property">@inflate</span> xOrPt<span class="punctuation">,</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='geometry-api'>Geometry API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleclosedgeometry'>Rectangle::closedGeometry</h4></td>
+          <td class='code'><pre>  <span class="property">closedGeometry<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="literal">true</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepoints'>Rectangle::points</h4></td>
+          <td class='code'><pre>  <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="punctuation">[</span><span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleintersects'>Rectangle::intersects</h4>
+
+<p>See <a href="src_geomjs_mixins_intersections.html#intersectionsintersects">Intersections.intersects</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleintersections'>Rectangle::intersections</h4>
+
+<p>See <a href="src_geomjs_mixins_intersections.html#intersectionsintersections">Intersections.intersections</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepointatangle'>Rectangle::pointAtAngle</h4></td>
+          <td class='code'><pre>  <span class="property">pointAtAngle<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span> <span class="function">-></span>
+    center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    vec <span class="operators">=</span> center<span class="punctuation">.</span>add <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="group_end">)</span></span><span class="operators">*</span><span class="number">10000</span><span class="punctuation">,</span>
+                     <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="group_end">)</span></span><span class="operators">*</span><span class="number">10000</span>
+    <span class="property">@intersections</span><span class="group"><span class="group_begin">(</span><span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="punctuation">[</span>center<span class="punctuation">,</span> vec<span class="punctuation">]</span><span class="group_end">)</span></span><span class="operators">?</span><span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='surface-api'>Surface API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleacreage'>Rectangle::acreage</h4></td>
+          <td class='code'><pre>  <span class="property">acreage<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@width</span> <span class="operators">*</span> <span class="property">@height</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglecontains'>Rectangle::contains</h4></td>
+          <td class='code'><pre>  <span class="property">contains<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="hash"><span class="hash_begin">{</span>x<span class="punctuation">,</span>y<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span><span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span><span class="punctuation">.</span>rotateAround<span class="group"><span class="group_begin">(</span><span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="operators">-</span><span class="property">@rotation</span><span class="group_end">)</span></span>
+    <span class="group"><span class="group_begin">(</span><span class="property">@x</span> &lt;<span class="operators">=</span> x &lt;<span class="operators">=</span> <span class="property">@x</span> <span class="operators">+</span> <span class="property">@width</span><span class="group_end">)</span></span> <span class="keyword">and</span> <span class="group"><span class="group_begin">(</span><span class="property">@y</span> &lt;<span class="operators">=</span> y &lt;<span class="operators">=</span> <span class="property">@y</span> <span class="operators">+</span> <span class="property">@height</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglecontainsgeometry'>Rectangle::containsGeometry</h4>
+
+<p>See <a href="src_geomjs_mixins_surface.html#surfacecontainsgeometry">Surface.containsgeometry</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglerandompointinsurface'>Rectangle::randomPointInSurface</h4></td>
+          <td class='code'><pre>  <span class="property">randomPointInSurface<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>random<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">unless</span> random<span class="operators">?</span>
+      random <span class="operators">=</span> <span class="keyword">new</span> chancejs<span class="punctuation">.</span><span class="constant">Random</span> <span class="keyword">new</span> chancejs<span class="punctuation">.</span><span class="constant">MathRandom</span>
+    <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      <span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale random<span class="punctuation">.</span>get<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+      <span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span><span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale random<span class="punctuation">.</span>get<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='path-api'>Path API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglelength'>Rectangle::length</h4></td>
+          <td class='code'><pre>  <span class="property">length<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@width</span> <span class="operators">*</span> <span class="number">2</span> <span class="operators">+</span> <span class="property">@height</span> <span class="operators">*</span> <span class="number">2</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepathpointat'>Rectangle::pathPointAt</h4></td>
+          <td class='code'><pre>  <span class="property">pathPointAt<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>n<span class="punctuation">,</span> pathBasedOnLength<span class="operators">=</span><span class="literal">true</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="punctuation">[</span>p1<span class="punctuation">,</span>p2<span class="punctuation">,</span>p3<span class="punctuation">]</span> <span class="operators">=</span> <span class="property">@pathSteps</span> pathBasedOnLength
+
+    <span class="keyword">if</span> n &lt; p1
+      <span class="property">@topLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add <span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="constant">Math</span><span class="punctuation">.</span>map n<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> p1<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span>
+    <span class="keyword">else</span> <span class="keyword">if</span> n &lt; p2
+      <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add <span class="property">@rightEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="constant">Math</span><span class="punctuation">.</span>map n<span class="punctuation">,</span> p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span>
+    <span class="keyword">else</span> <span class="keyword">if</span> n &lt; p3
+      <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add <span class="property">@bottomEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="constant">Math</span><span class="punctuation">.</span>map<span class="group"><span class="group_begin">(</span>n<span class="punctuation">,</span> p2<span class="punctuation">,</span> p3<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="group_end">)</span></span> <span class="operators">*</span> <span class="operators">-</span><span class="number">1</span>
+    <span class="keyword">else</span>
+      <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>add <span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="constant">Math</span><span class="punctuation">.</span>map<span class="group"><span class="group_begin">(</span>n<span class="punctuation">,</span> p3<span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="group_end">)</span></span> <span class="operators">*</span> <span class="operators">-</span><span class="number">1</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepathorientationat'>Rectangle::pathOrientationAt</h4></td>
+          <td class='code'><pre>  <span class="property">pathOrientationAt<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>n<span class="punctuation">,</span> pathBasedOnLength<span class="operators">=</span><span class="literal">true</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="punctuation">[</span>p1<span class="punctuation">,</span>p2<span class="punctuation">,</span>p3<span class="punctuation">]</span> <span class="operators">=</span> <span class="property">@pathSteps</span> pathBasedOnLength
+
+    <span class="keyword">if</span> n &lt; p1
+      p <span class="operators">=</span> <span class="property">@topEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">else</span> <span class="keyword">if</span> n &lt; p2
+      p <span class="operators">=</span> <span class="property">@rightEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">else</span> <span class="keyword">if</span> n &lt; p3
+      p <span class="operators">=</span> <span class="property">@bottomEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="operators">-</span><span class="number">1</span>
+    <span class="keyword">else</span>
+      p <span class="operators">=</span> <span class="property">@leftEdge</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale <span class="operators">-</span><span class="number">1</span>
+
+    p<span class="punctuation">.</span>angle<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepathtangentat'>Rectangle::pathTangentAt</h4>
+
+<p>See
+<a href="src_geomjs_mixins_geometry.html#pathpathtangentat">Path.pathTangentAt</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepathsteps'>Rectangle::pathSteps</h4></td>
+          <td class='code'><pre>  <span class="property">pathSteps<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pathBasedOnLength<span class="operators">=</span><span class="literal">true</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">if</span> pathBasedOnLength
+      l <span class="operators">=</span> <span class="property">@length</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      p1 <span class="operators">=</span> <span class="property">@width</span> <span class="operators">/</span> l
+      p2 <span class="operators">=</span> <span class="group"><span class="group_begin">(</span><span class="property">@width</span> <span class="operators">+</span> <span class="property">@height</span><span class="group_end">)</span></span> <span class="operators">/</span> l
+      p3 <span class="operators">=</span> p1 <span class="operators">+</span> p2
+    <span class="keyword">else</span>
+      p1 <span class="operators">=</span> <span class="number">1 <span class='operators'>/</span></span> <span class="number">4</span>
+      p2 <span class="operators">=</span> <span class="number">1 <span class='operators'>/</span></span> <span class="number">2</span>
+      p3 <span class="operators">=</span> <span class="number">3 <span class='operators'>/</span></span> <span class="number">4</span>
+
+    <span class="punctuation">[</span>p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> p3<span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='drawing-api'>Drawing API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglestroke'>Rectangle::stroke</h4>
+
+<p>See <a href="src_geomjs_mixins_geometry.html#geometrystroke">Geometry.stroke</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglefill'>Rectangle::fill</h4>
+
+<p>See <a href="src_geomjs_mixins_geometry.html#geometryfill">Geometry.fill</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangledrawpath'>Rectangle::drawPath</h4></td>
+          <td class='code'><pre>  <span class="property">drawPath<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="group_end">)</span></span> <span class="function">-></span>
+    context<span class="punctuation">.</span>beginPath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>moveTo<span class="group"><span class="group_begin">(</span><span class="property">@x</span><span class="punctuation">,</span> <span class="property">@y</span><span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span><span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@topRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span><span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomRight</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span><span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>x<span class="punctuation">,</span> <span class="property">@bottomLeft</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>y<span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span><span class="property">@x</span><span class="punctuation">,</span> <span class="property">@y</span><span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>closePath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='utilities'>Utilities</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangletostring'>Rectangle::toString</h4>
+
+<p>See <a href="src_geomjs_mixins_formattable.html#formattabletostring">Formattable.toString</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleclone'>Rectangle::clone</h4>
+
+<p>See <a href="src_geomjs_mixins_cloneable.html#cloneableclone">Cloneable.clone</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangleequals'>Rectangle::equals</h4>
+
+<p>See <a href="src_geomjs_mixins_equatable.html#equatableequals">Equatable.equals</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectanglepaste'>Rectangle::paste</h4></td>
+          <td class='code'><pre>  <span class="property">paste<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="punctuation">,</span> width<span class="punctuation">,</span> height<span class="punctuation">,</span> rotation<span class="group_end">)</span></span> <span class="function">-></span>
+    values <span class="operators">=</span> <span class="property">@rectangleFrom</span> x<span class="punctuation">,</span> y<span class="punctuation">,</span> width<span class="punctuation">,</span> height<span class="punctuation">,</span> rotation
+    <span class="property">@</span><span class="punctuation">[</span>k<span class="punctuation">]</span> <span class="operators">=</span> <span class="top_level">parseFloat</span> v <span class="keyword">for</span> k<span class="punctuation">,</span>v <span class="keyword">of</span> values <span class="keyword">when</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat v
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='rectangledefaulttozero'>Rectangle::defaultToZero</h4></td>
+          <td class='code'><pre>  <span class="property">defaultToZero<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>values<span class="group_end">)</span></span> <span class="function">-></span>
+    values<span class="punctuation">[</span>k<span class="punctuation">]</span> <span class="operators">=</span> <span class="number">0</span> <span class="keyword">for</span> k<span class="punctuation">,</span>v <span class="keyword">of</span> values <span class="keyword">when</span> <span class="keyword">not</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat v
+    values
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Rectangle</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

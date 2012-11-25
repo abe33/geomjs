@@ -1,0 +1,249 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/geometry.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/geometry.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>geometry.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#geometry'>Geometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryattachto'>Geometry.attachTo</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrypoints'>Geometry::points</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryclosedgeometry'>Geometry::closedGeometry</a>
+  </li>
+  <li class='level1'>
+    <a href='#bounds'>Bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrytop'>Geometry::top</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrybottom'>Geometry::bottom</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryleft'>Geometry::left</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryright'>Geometry::right</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrybounds'>Geometry::bounds</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryboundingbox'>Geometry::boundingBox</a>
+  </li>
+  <li class='level1'>
+    <a href='#drawing-api'>Drawing API</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrystroke'>Geometry::stroke</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometryfill'>Geometry::fill</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometrydrawpath'>Geometry::drawPath</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../point<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='geometry'>Geometry</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Geometry</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryattachto'>Geometry.attachTo</h4>
+
+<p>See
+<a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrypoints'>Geometry::points</h4>
+
+<p><strong>Virtual method</strong></p></td>
+          <td class='code'><pre>  <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryclosedgeometry'>Geometry::closedGeometry</h4>
+
+<p><strong>Virtual method</strong></p></td>
+          <td class='code'><pre>  <span class="property">closedGeometry<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="literal">false</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='bounds'>Bounds</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>The <code>pointsBounds</code> private utility is meant to provides the default
+bounds computation for a geometry, subclasses should implements their
+own bounds methods if a faster implementation exist.</p></td>
+          <td class='code'><pre>  pointsBounds <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>points<span class="punctuation">,</span> mode<span class="punctuation">,</span> axis<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="constant">Math</span><span class="punctuation">[</span>mode<span class="punctuation">]</span><span class="punctuation">.</span>apply <span class="constant">Math</span><span class="punctuation">,</span> points<span class="punctuation">.</span>map <span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">-></span> pt<span class="punctuation">[</span>axis<span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrytop'>Geometry::top</h4></td>
+          <td class='code'><pre>  <span class="property">top<span class='punctuation'>:</span></span> <span class="function">-></span> pointsBounds <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>min<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrybottom'>Geometry::bottom</h4></td>
+          <td class='code'><pre>  <span class="property">bottom<span class='punctuation'>:</span></span> <span class="function">-></span> pointsBounds <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>max<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryleft'>Geometry::left</h4></td>
+          <td class='code'><pre>  <span class="property">left<span class='punctuation'>:</span></span> <span class="function">-></span> pointsBounds <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>min<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryright'>Geometry::right</h4></td>
+          <td class='code'><pre>  <span class="property">right<span class='punctuation'>:</span></span> <span class="function">-></span> pointsBounds <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>max<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrybounds'>Geometry::bounds</h4></td>
+          <td class='code'><pre>  <span class="property">bounds<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="property">top<span class='punctuation'>:</span></span> <span class="property">@top</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">left<span class='punctuation'>:</span></span> <span class="property">@left</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">right<span class='punctuation'>:</span></span> <span class="property">@right</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">bottom<span class='punctuation'>:</span></span> <span class="property">@bottom</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryboundingbox'>Geometry::boundingBox</h4></td>
+          <td class='code'><pre>  <span class="property">boundingBox<span class='punctuation'>:</span></span> <span class="function">-></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>When running in nodejs, to avoid circular dependecies hell,
+the <code>Rectangle</code> class is required lazily. In a browser this
+case will never occurs since <code>Geometry</code> and <code>Rectangle</code> will
+be both defined in the same scope.</p>
+
+<p><strong>Note:</strong> The require call is removed as any other requires
+when packaged for browsers.</p></td>
+          <td class='code'><pre>    <span class="constant">Rectangle</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../rectangle<span class="string_end">'</span></span>
+    <span class="keyword">new</span> <span class="constant">Rectangle</span><span class="group"><span class="group_begin">(</span>
+      <span class="property">@left</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span>
+      <span class="property">@top</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span>
+      <span class="property">@right</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="operators">-</span> <span class="property">@left</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">,</span>
+      <span class="property">@bottom</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="operators">-</span> <span class="property">@top</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='drawing-api'>Drawing API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrystroke'>Geometry::stroke</h4></td>
+          <td class='code'><pre>  <span class="property">stroke<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="punctuation">,</span> color<span class="operators">=</span><span class="string"><span class="string_begin">'</span>#ff0000<span class="string_end">'</span></span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="keyword">unless</span> context<span class="operators">?</span>
+
+    context<span class="punctuation">.</span>strokeStyle <span class="operators">=</span> color
+    <span class="property">@drawPath</span> context
+    context<span class="punctuation">.</span>stroke<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometryfill'>Geometry::fill</h4></td>
+          <td class='code'><pre>  <span class="property">fill<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="punctuation">,</span> color<span class="operators">=</span><span class="string"><span class="string_begin">'</span>#ff0000<span class="string_end">'</span></span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="keyword">unless</span> context<span class="operators">?</span>
+
+    context<span class="punctuation">.</span>fillStyle <span class="operators">=</span> color
+    <span class="property">@drawPath</span> context
+    context<span class="punctuation">.</span>fill<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='geometrydrawpath'>Geometry::drawPath</h4></td>
+          <td class='code'><pre>  <span class="property">drawPath<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="group_end">)</span></span> <span class="function">-></span>
+    points <span class="operators">=</span> <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    start <span class="operators">=</span> points<span class="punctuation">.</span>shift<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>beginPath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>moveTo<span class="group"><span class="group_begin">(</span>start<span class="punctuation">.</span>x<span class="punctuation">,</span>start<span class="punctuation">.</span>y<span class="group_end">)</span></span>
+    context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span>p<span class="punctuation">.</span>x<span class="punctuation">,</span>p<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="keyword">for</span> p <span class="keyword">in</span> points
+    context<span class="punctuation">.</span>closePath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Geometry</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

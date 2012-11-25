@@ -1,0 +1,112 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/math.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/math.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>math.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'></td>
+          <td class='code'><pre>
+<span class="constant">Math</span><span class="punctuation">.</span>degToRad <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>n<span class="group_end">)</span></span> <span class="function">-></span> n <span class="operators">*</span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span> <span class="operators">/</span> <span class="number">180</span>
+
+<span class="constant">Math</span><span class="punctuation">.</span>radToDeg <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>n<span class="group_end">)</span></span> <span class="function">-></span> n <span class="operators">*</span> <span class="number">180 <span class='operators'>/</span></span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span>
+
+<span class="constant">Math</span><span class="punctuation">.</span>normalize <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>value<span class="punctuation">,</span> minimum<span class="punctuation">,</span> maximum<span class="group_end">)</span></span> <span class="function">-></span>
+  <span class="group"><span class="group_begin">(</span>value <span class="operators">-</span> minimum<span class="group_end">)</span></span> <span class="operators">/</span> <span class="group"><span class="group_begin">(</span>maximum <span class="operators">-</span> minimum<span class="group_end">)</span></span>
+
+<span class="constant">Math</span><span class="punctuation">.</span>interpolate <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>normValue<span class="punctuation">,</span> minimum<span class="punctuation">,</span> maximum<span class="group_end">)</span></span> <span class="function">-></span>
+  minimum <span class="operators">+</span> <span class="group"><span class="group_begin">(</span>maximum <span class="operators">-</span> minimum<span class="group_end">)</span></span> <span class="operators">*</span> normValue
+
+<span class="constant">Math</span><span class="punctuation">.</span>deltaBelowRatio <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>a<span class="punctuation">,</span> b<span class="punctuation">,</span> ratio<span class="operators">=</span><span class="number">10000000000</span><span class="group_end">)</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>abs<span class="group"><span class="group_begin">(</span>a <span class="operators">-</span> b<span class="group_end">)</span></span> &lt; <span class="number">1 <span class='operators'>/</span></span> ratio
+
+<span class="constant">Math</span><span class="punctuation">.</span>map <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>value<span class="punctuation">,</span> min1<span class="punctuation">,</span> max1<span class="punctuation">,</span> min2<span class="punctuation">,</span> max2<span class="group_end">)</span></span> <span class="function">-></span>
+  <span class="constant">Math</span><span class="punctuation">.</span>interpolate <span class="constant">Math</span><span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span>value<span class="punctuation">,</span> min1<span class="punctuation">,</span> max1<span class="group_end">)</span></span><span class="punctuation">,</span> min2<span class="punctuation">,</span> max2
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='mathisfloat'>Math.isFloat</h4>
+
+<p>Returns true if the passed-in argument can be casted to a number.</p>
+
+<pre><code><span class="constant">Math</span><span class="punctuation">.</span>isFloat <span class="number">0.245</span> <span class="comment"># true</span>
+<span class="constant">Math</span><span class="punctuation">.</span>isFloat <span class="string"><span class="string_begin">'</span>12<span class="string_end">'</span></span>  <span class="comment"># true</span>
+<span class="constant">Math</span><span class="punctuation">.</span>isFloat <span class="string"><span class="string_begin">'</span>foo<span class="string_end">'</span></span> <span class="comment"># false</span></code></pre></td>
+          <td class='code'><pre><span class="constant">Math</span><span class="punctuation">.</span>isFloat <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>floats<span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="group_end">)</span></span> <span class="function">-></span>
+  <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">for</span> float <span class="keyword">in</span> floats <span class="keyword">when</span> <span class="top_level">isNaN</span> <span class="top_level">parseFloat</span> float
+  <span class="literal">true</span>
+
+<span class="constant">Math</span><span class="punctuation">.</span>isInt <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>ints<span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="group_end">)</span></span> <span class="function">-></span>
+  <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">for</span> int <span class="keyword">in</span> ints <span class="keyword">when</span> <span class="top_level">isNaN</span> <span class="top_level">parseInt</span> int
+  <span class="literal">true</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='mathasfloat'>Math::asFloat</h4>
+
+<p>Returns the passed-in arguments casted into floats.</p></td>
+          <td class='code'><pre><span class="constant">Math</span><span class="punctuation">.</span>asFloat <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>floats<span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="group_end">)</span></span> <span class="function">-></span>
+  floats<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> <span class="top_level">parseFloat</span> n <span class="keyword">for</span> n<span class="punctuation">,</span>i <span class="keyword">in</span> floats
+  floats
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='mathasint'>Math::asInt</h4>
+
+<p>Returns the passed-in arguments casted into floats.</p></td>
+          <td class='code'><pre><span class="constant">Math</span><span class="punctuation">.</span>asInt <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>ints<span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="group_end">)</span></span> <span class="function">-></span>
+  ints<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> <span class="top_level">parseInt</span> n <span class="keyword">for</span> n<span class="punctuation">,</span>i <span class="keyword">in</span> ints
+  ints
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

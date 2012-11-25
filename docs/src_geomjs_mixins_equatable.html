@@ -1,0 +1,123 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/equatable.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/equatable.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>equatable.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#equatable'>Equatable</a>
+  </li>
+  <li class='level1'>
+    <a href='#equatableattachto'>Equatable.attachTo</a>
+  </li>
+  <li class='level1'>
+    <a href='#equatableequals'>Equatable::equals</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='equatable'>Equatable</h1></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>An <code>Equatable</code> object can be compared in equality with another object.
+Objects are considered as equals if all the listed properties are equal.</p>
+
+<pre><code><span class="class"><span class="keyword">class</span> <span class='title'>Dummy</span></span>
+  <span class="constant">Equatable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>p1<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>p2<span class="string_end">'</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>attachTo <span class="constant">Dummy</span>
+
+  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span><span class="property">@p1</span><span class="punctuation">,</span> <span class="property">@p2</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="comment"># ...</span>
+
+dummy <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Dummy</span><span class="group"><span class="group_begin">(</span><span class="number">10</span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>foo<span class="string_end">'</span></span><span class="group_end">)</span></span>
+dummy<span class="punctuation">.</span>equals <span class="property">p1<span class='punctuation'>:</span></span> <span class="number">10</span><span class="punctuation">,</span> <span class="property">p2<span class='punctuation'>:</span></span> <span class="string"><span class="string_begin">'</span>foo<span class="string_end">'</span></span>   <span class="comment"># true</span>
+dummy<span class="punctuation">.</span>equals <span class="keyword">new</span> <span class="constant">Dummy</span><span class="group"><span class="group_begin">(</span><span class="number">5</span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>bar<span class="string_end">'</span></span><span class="group_end">)</span></span> <span class="comment"># false</span></code></pre>
+
+<p>The <code>Equatable</code> mixin is called a parameterized mixin as
+it's in fact a function that will generate a mixin based
+on its arguments.</p></td>
+          <td class='code'><pre><span class="constant">Equatable</span> <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>properties<span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="group_end">)</span></span> <span class="function">-></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>A concrete class is generated and returned by <code>Equatable</code>.
+This class extends <code>Mixin</code> and can be attached as any other
+mixin with the <code>attachTo</code> method.</p></td>
+          <td class='code'><pre>  <span class="class"><span class="keyword">class</span> <span class='title'>ConcretEquatable</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='equatableattachto'>Equatable.attachTo</h4>
+
+<p>See <a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='equatableequals'>Equatable::equals</h4>
+
+<p>Compares the <code>properties</code> of the passed-in object with the current
+object and return <code>true</code> if all the values are equal.</p></td>
+          <td class='code'><pre>    <span class="property">equals<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>o<span class="group_end">)</span></span> <span class="function">-></span> o<span class="operators">?</span> <span class="keyword">and</span> properties<span class="punctuation">.</span>every <span class="group"><span class="group_begin">(</span>p<span class="group_end">)</span></span> <span class="function">=></span>
+      <span class="keyword">if</span> <span class="property">@</span><span class="punctuation">[</span>p<span class="punctuation">]</span><span class="punctuation">.</span>equals<span class="operators">?</span> <span class="keyword">then</span> <span class="property">@</span><span class="punctuation">[</span>p<span class="punctuation">]</span><span class="punctuation">.</span>equals o<span class="punctuation">[</span>p<span class="punctuation">]</span> <span class="keyword">else</span> o<span class="punctuation">[</span>p<span class="punctuation">]</span> <span class="keyword">is</span> <span class="property">@</span><span class="punctuation">[</span>p<span class="punctuation">]</span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Equatable</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

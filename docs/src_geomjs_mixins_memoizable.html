@@ -1,0 +1,167 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/memoizable.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/memoizable.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>memoizable.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#memoizable'>Memoizable</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoizableattachto'>Memoizable.attachTo</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoizablememoized'>Memoizable::memoized</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoizablememofor'>Memoizable::memoFor</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoizablememoize'>Memoizable::memoize</a>
+  </li>
+  <li class='level1'>
+    <a href='#memoizablememoizationkey'>Memoizable::memoizationKey</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='memoizable'>Memoizable</h1></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>A <code>Memoizable</code> object can store data resulting of heavy methods
+in order to speed up further call to that method.</p>
+
+<p>The invalidation of the memoized data is defined using a <code>memoizationKey</code>.
+That key should be generated based on the data that may induce changes
+in the functions's results.</p>
+
+<pre><code><span class="class"><span class="keyword">class</span> <span class='title'>Dummy</span></span>
+  <span class="constant">Memoizable</span><span class="punctuation">.</span>attachTo <span class="constant">Dummy</span>
+
+  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span><span class="property">@p1</span><span class="punctuation">,</span> <span class="property">@p2</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="comment"># ...</span>
+
+  <span class="comment"># no arguments, this is not a cache!</span>
+  <span class="property">heavyMethod<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="property">@memoFor</span> <span class="string"><span class="string_begin">'</span>heavyMethod<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>heavyMethod<span class="string_end">'</span></span>
+
+    <span class="comment"># do costly computation</span>
+    <span class="property">@memoize</span> <span class="string"><span class="string_begin">'</span>heavyMethod<span class="string_end">'</span></span><span class="punctuation">,</span> result
+
+  <span class="property">memoizationKey<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="string"><span class="string_begin">"</span><span class="subst"><span class="subst_begin">#{</span>p1<span class="subst_end">}</span></span>;<span class="subst"><span class="subst_begin">#{</span>p2<span class="subst_end">}</span></span><span class="string_end">"</span></span></code></pre></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Memoizable</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='memoizableattachto'>Memoizable.attachTo</h4>
+
+<p>See
+<a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='memoizablememoized'>Memoizable::memoized</h4>
+
+<p>Returns <code>true</code> if data are available for the given <code>prop</code>.</p>
+
+<p>When the current state of the object don't match the stored
+memoization key, the whole data stored in the memo are cleared.</p></td>
+          <td class='code'><pre>  <span class="property">memoized<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>prop<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">if</span> <span class="property">@memoizationKey</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">is</span> <span class="property">@__memoizationKey__</span>
+      <span class="property">@__memo__</span><span class="operators">?</span><span class="punctuation">[</span>prop<span class="punctuation">]</span><span class="operators">?</span>
+    <span class="keyword">else</span>
+      <span class="property">@__memo__</span> <span class="operators">=</span> <span class="hash"><span class="hash_begin">{</span><span class="hash_end">}</span></span>
+      <span class="literal">false</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='memoizablememofor'>Memoizable::memoFor</h4>
+
+<p>Returns the memoized data for the given <code>prop</code>.</p></td>
+          <td class='code'><pre>  <span class="property">memoFor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>prop<span class="group_end">)</span></span> <span class="function">-></span> <span class="property">@__memo__</span><span class="punctuation">[</span>prop<span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='memoizablememoize'>Memoizable::memoize</h4>
+
+<p>Register a memo in the current object for the given <code>prop</code>.
+The memoization key is updated with the current state of the
+object.</p></td>
+          <td class='code'><pre>  <span class="property">memoize<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>prop<span class="punctuation">,</span> value<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@__memo__</span> <span class="operators">|</span><span class="operators">|</span><span class="operators">=</span> <span class="hash"><span class="hash_begin">{</span><span class="hash_end">}</span></span>
+    <span class="property">@__memoizationKey__</span> <span class="operators">=</span> <span class="property">@memoizationKey</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">@__memo__</span><span class="punctuation">[</span>prop<span class="punctuation">]</span> <span class="operators">=</span> value
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='memoizablememoizationkey'>Memoizable::memoizationKey</h4>
+
+<p><strong>Virtual Method</strong></p>
+
+<p>Generates the memoization key for this instance's state.</p></td>
+          <td class='code'><pre>  <span class="property">memoizationKey<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@toString</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Memoizable</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

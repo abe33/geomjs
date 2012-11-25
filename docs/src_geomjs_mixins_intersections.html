@@ -1,0 +1,232 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/intersections.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/intersections.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>intersections.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#intersections'>Intersections</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsattachto'>Intersections.attachTo</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsiterators'>Intersections.iterators</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsintersects'>Intersections::intersects</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsintersections'>Intersections::intersections</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsboundscollide'>Intersections::boundsCollide</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionsintersectionsiterator'>Intersections::intersectionsIterator</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionseachintersections'>Intersections::eachIntersections</a>
+  </li>
+  <li class='level1'>
+    <a href='#intersectionspercrossing'>Intersections::perCrossing</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../point<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='intersections'>Intersections</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Intersections</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsattachto'>Intersections.attachTo</h4>
+
+<p>See
+<a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsiterators'>Intersections.iterators</h4></td>
+          <td class='code'><pre>  <span class="property">@iterators<span class='punctuation'>:</span></span> <span class="hash"><span class="hash_begin">{</span><span class="hash_end">}</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsintersects'>Intersections::intersects</h4></td>
+          <td class='code'><pre>  <span class="property">intersects<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geometry<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">if</span> geometry<span class="punctuation">.</span>bounds<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="property">@boundsCollide</span> geometry
+    output <span class="operators">=</span> <span class="literal">false</span>
+    iterator <span class="operators">=</span> <span class="property">@intersectionsIterator</span> <span class="keyword">this</span><span class="punctuation">,</span> geometry
+    iterator<span class="punctuation">.</span>call <span class="keyword">this</span><span class="punctuation">,</span> <span class="keyword">this</span><span class="punctuation">,</span> geometry<span class="punctuation">,</span> <span class="function">-></span> output <span class="operators">=</span> <span class="literal">true</span>
+
+    output
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsintersections'>Intersections::intersections</h4></td>
+          <td class='code'><pre>  <span class="property">intersections<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geometry<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="literal">null</span> <span class="keyword">if</span> geometry<span class="punctuation">.</span>bounds<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="property">@boundsCollide</span> geometry
+    output <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>
+    iterator <span class="operators">=</span> <span class="property">@intersectionsIterator</span> <span class="keyword">this</span><span class="punctuation">,</span> geometry
+    iterator<span class="punctuation">.</span>call <span class="keyword">this</span><span class="punctuation">,</span> <span class="keyword">this</span><span class="punctuation">,</span> geometry<span class="punctuation">,</span> <span class="group"><span class="group_begin">(</span>intersection<span class="group_end">)</span></span> <span class="function">-></span>
+      output<span class="punctuation">.</span>push intersection
+      <span class="literal">false</span>
+
+    <span class="keyword">if</span> output<span class="punctuation">.</span>length > <span class="number">0</span> <span class="keyword">then</span> output <span class="keyword">else</span> <span class="literal">null</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsboundscollide'>Intersections::boundsCollide</h4></td>
+          <td class='code'><pre>  <span class="property">boundsCollide<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geometry<span class="group_end">)</span></span> <span class="function">-></span>
+    bounds1 <span class="operators">=</span> <span class="property">@bounds</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    bounds2 <span class="operators">=</span> geometry<span class="punctuation">.</span>bounds<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+    <span class="keyword">not</span> <span class="group"><span class="group_begin">(</span>
+      bounds1<span class="punctuation">.</span>top > bounds2<span class="punctuation">.</span>bottom <span class="keyword">or</span>
+      bounds1<span class="punctuation">.</span>left > bounds2<span class="punctuation">.</span>right <span class="keyword">or</span>
+      bounds1<span class="punctuation">.</span>bottom &lt; bounds2<span class="punctuation">.</span>top <span class="keyword">or</span>
+      bounds1<span class="punctuation">.</span>right &lt; bounds2<span class="punctuation">.</span>left
+    <span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionsintersectionsiterator'>Intersections::intersectionsIterator</h4></td>
+          <td class='code'><pre>  <span class="property">intersectionsIterator<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geom1<span class="punctuation">,</span> geom2<span class="group_end">)</span></span> <span class="function">-></span>
+    c1 <span class="operators">=</span> <span class="keyword">if</span> geom1<span class="punctuation">.</span>classname <span class="keyword">then</span> geom1<span class="punctuation">.</span>classname<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">else</span> <span class="string"><span class="string_begin">'</span><span class="string_end">'</span></span>
+    c2 <span class="operators">=</span> <span class="keyword">if</span> geom2<span class="punctuation">.</span>classname <span class="keyword">then</span> geom2<span class="punctuation">.</span>classname<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">else</span> <span class="string"><span class="string_begin">'</span><span class="string_end">'</span></span>
+    iterator <span class="operators">=</span> <span class="literal">null</span>
+    iterator <span class="operators">=</span> <span class="constant">Intersections</span><span class="punctuation">.</span>iterators<span class="punctuation">[</span>c1 <span class="operators">+</span> c2<span class="punctuation">]</span>
+    iterator <span class="operators">|</span><span class="operators">|</span><span class="operators">=</span> <span class="constant">Intersections</span><span class="punctuation">.</span>iterators<span class="punctuation">[</span>c1<span class="punctuation">]</span>
+    iterator <span class="operators">|</span><span class="operators">|</span><span class="operators">=</span> <span class="constant">Intersections</span><span class="punctuation">.</span>iterators<span class="punctuation">[</span>c2<span class="punctuation">]</span>
+    iterator <span class="operators">|</span><span class="operators">|</span> <span class="property">@eachIntersections</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionseachintersections'>Intersections::eachIntersections</h4></td>
+          <td class='code'><pre>  <span class="property">eachIntersections<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geom1<span class="punctuation">,</span> geom2<span class="punctuation">,</span> block<span class="punctuation">,</span> providesDataInCallback<span class="operators">=</span><span class="literal">false</span><span class="group_end">)</span></span> <span class="function">-></span>
+    points1 <span class="operators">=</span> geom1<span class="punctuation">.</span>points<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    points2 <span class="operators">=</span> geom2<span class="punctuation">.</span>points<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    length1 <span class="operators">=</span> points1<span class="punctuation">.</span>length
+    length2 <span class="operators">=</span> points2<span class="punctuation">.</span>length
+    lastIntersection <span class="operators">=</span> <span class="literal">null</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>length1<span class="operators">-</span><span class="number">2</span><span class="punctuation">]</span>
+      sv1 <span class="operators">=</span> points1<span class="punctuation">[</span>i<span class="punctuation">]</span>
+      ev1 <span class="operators">=</span> points1<span class="punctuation">[</span>i<span class="operators">+</span><span class="number">1</span><span class="punctuation">]</span>
+      dif1 <span class="operators">=</span> ev1<span class="punctuation">.</span>subtract sv1
+
+      <span class="keyword">for</span> j <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>length2<span class="operators">-</span><span class="number">2</span><span class="punctuation">]</span>
+        sv2 <span class="operators">=</span> points2<span class="punctuation">[</span>j<span class="punctuation">]</span>
+        ev2 <span class="operators">=</span> points2<span class="punctuation">[</span>j<span class="operators">+</span><span class="number">1</span><span class="punctuation">]</span>
+        dif2 <span class="operators">=</span> ev2<span class="punctuation">.</span>subtract sv2
+
+        cross <span class="operators">=</span> <span class="property">@perCrossing</span> sv1<span class="punctuation">,</span> dif1<span class="punctuation">,</span> sv2<span class="punctuation">,</span> dif2
+        d1 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract ev1
+        d2 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract sv1
+        d3 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract ev2
+        d4 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract sv2
+
+        <span class="keyword">if</span> d1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
+           d2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
+           d3<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
+           d4<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+          <span class="keyword">if</span> cross<span class="punctuation">.</span>equals lastIntersection
+            lastIntersection <span class="operators">=</span> cross
+            <span class="keyword">continue</span>
+
+          <span class="keyword">if</span> providesDataInCallback
+            context <span class="operators">=</span>
+              <span class="property">segment1<span class='punctuation'>:</span></span> dif1
+              <span class="property">segmentIndex1<span class='punctuation'>:</span></span> i
+              <span class="property">segmentStart1<span class='punctuation'>:</span></span> sv1
+              <span class="property">segmentEnd1<span class='punctuation'>:</span></span> ev1
+              <span class="property">segment2<span class='punctuation'>:</span></span> dif2
+              <span class="property">segmentIndex2<span class='punctuation'>:</span></span> j
+              <span class="property">segmentStart2<span class='punctuation'>:</span></span> sv2
+              <span class="property">segmentEnd2<span class='punctuation'>:</span></span> ev2
+
+          <span class="keyword">return</span> <span class="keyword">if</span> block<span class="punctuation">.</span>call <span class="keyword">this</span><span class="punctuation">,</span> cross<span class="punctuation">,</span> context
+          lastIntersection <span class="operators">=</span> cross
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='intersectionspercrossing'>Intersections::perCrossing</h4></td>
+          <td class='code'><pre>  <span class="property">perCrossing<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>start1<span class="punctuation">,</span> dir1<span class="punctuation">,</span> start2<span class="punctuation">,</span> dir2<span class="group_end">)</span></span> <span class="function">-></span>
+    v3bx <span class="operators">=</span> start2<span class="punctuation">.</span>x <span class="operators">-</span> start1<span class="punctuation">.</span>x
+    v3by <span class="operators">=</span> start2<span class="punctuation">.</span>y <span class="operators">-</span> start1<span class="punctuation">.</span>y
+    perP1 <span class="operators">=</span> v3bx<span class="operators">*</span>dir2<span class="punctuation">.</span>y <span class="operators">-</span> v3by<span class="operators">*</span>dir2<span class="punctuation">.</span>x
+    perP2 <span class="operators">=</span> dir1<span class="punctuation">.</span>x<span class="operators">*</span>dir2<span class="punctuation">.</span>y <span class="operators">-</span> dir1<span class="punctuation">.</span>y<span class="operators">*</span>dir2<span class="punctuation">.</span>x
+
+    t <span class="operators">=</span> perP1 <span class="operators">/</span> perP2
+
+    cx <span class="operators">=</span> start1<span class="punctuation">.</span>x <span class="operators">+</span> dir1<span class="punctuation">.</span>x<span class="operators">*</span>t
+    cy <span class="operators">=</span> start1<span class="punctuation">.</span>y <span class="operators">+</span> dir1<span class="punctuation">.</span>y<span class="operators">*</span>t
+
+    <span class="keyword">new</span> <span class="constant">Point</span> cx<span class="punctuation">,</span> cy
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Intersections</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

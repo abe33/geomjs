@@ -1,0 +1,218 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/triangulable.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/triangulable.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>triangulable.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#triangulable'>Triangulable</a>
+  </li>
+  <li class='level1'>
+    <a href='#private-utilities'>Private Utilities</a>
+  </li>
+  <li class='level2'>
+    <a href='#arraycopy'>arrayCopy</a>
+  </li>
+  <li class='level2'>
+    <a href='#ptintri'>ptInTri</a>
+  </li>
+  <li class='level2'>
+    <a href='#polyarea'>polyArea</a>
+  </li>
+  <li class='level2'>
+    <a href='#triangulate'>triangulate</a>
+  </li>
+  <li class='level1'>
+    <a href='#mixin-methods'>Mixin Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#triangulabletriangles'>Triangulable::triangles</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+<span class="constant">Memoizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./memoizable<span class="string_end">'</span></span>
+<span class="constant">Triangle</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../triangle<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../point<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='triangulable'>Triangulable</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Triangulable</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+  <span class="constant">Memoizable</span><span class="punctuation">.</span>attachTo <span class="constant">Triangulable</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='private-utilities'>Private Utilities</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='arraycopy'>arrayCopy</h4></td>
+          <td class='code'><pre>  arrayCopy <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>arrayTo<span class="punctuation">,</span> arrayFrom<span class="group_end">)</span></span> <span class="function">-></span> arrayTo<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> n <span class="keyword">for</span> n<span class="punctuation">,</span>i <span class="keyword">in</span> arrayFrom
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='ptintri'>ptInTri</h4></td>
+          <td class='code'><pre>  pointInTriangle <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>pt<span class="punctuation">,</span> v1<span class="punctuation">,</span> v2<span class="punctuation">,</span> v3<span class="group_end">)</span></span> <span class="function">-></span>
+    denom <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>v1<span class="punctuation">.</span>y <span class="operators">-</span> v3<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v2<span class="punctuation">.</span>x <span class="operators">-</span> v3<span class="punctuation">.</span>x<span class="group_end">)</span></span> <span class="operators">+</span>
+            <span class="group"><span class="group_begin">(</span>v2<span class="punctuation">.</span>y <span class="operators">-</span> v3<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v3<span class="punctuation">.</span>x <span class="operators">-</span> v1<span class="punctuation">.</span>x<span class="group_end">)</span></span>
+    b1 <span class="operators">=</span> <span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>y <span class="operators">-</span> v3<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v2<span class="punctuation">.</span>x <span class="operators">-</span> v3<span class="punctuation">.</span>x<span class="group_end">)</span></span> <span class="operators">+</span>
+          <span class="group"><span class="group_begin">(</span>v2<span class="punctuation">.</span>y <span class="operators">-</span> v3<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v3<span class="punctuation">.</span>x <span class="operators">-</span> pt<span class="punctuation">.</span>x<span class="group_end">)</span></span><span class="group_end">)</span></span> <span class="operators">/</span> denom
+    b2 <span class="operators">=</span> <span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>y <span class="operators">-</span> v1<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v3<span class="punctuation">.</span>x <span class="operators">-</span> v1<span class="punctuation">.</span>x<span class="group_end">)</span></span> <span class="operators">+</span>
+          <span class="group"><span class="group_begin">(</span>v3<span class="punctuation">.</span>y <span class="operators">-</span> v1<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v1<span class="punctuation">.</span>x <span class="operators">-</span> pt<span class="punctuation">.</span>x<span class="group_end">)</span></span><span class="group_end">)</span></span> <span class="operators">/</span> denom
+    b3 <span class="operators">=</span> <span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>y <span class="operators">-</span> v2<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v1<span class="punctuation">.</span>x <span class="operators">-</span> v2<span class="punctuation">.</span>x<span class="group_end">)</span></span> <span class="operators">+</span>
+          <span class="group"><span class="group_begin">(</span>v1<span class="punctuation">.</span>y <span class="operators">-</span> v2<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span>v2<span class="punctuation">.</span>x <span class="operators">-</span> pt<span class="punctuation">.</span>x<span class="group_end">)</span></span><span class="group_end">)</span></span> <span class="operators">/</span> denom
+    <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">if</span> b1 &lt; <span class="number">0</span> <span class="keyword">or</span> b2 &lt; <span class="number">0</span> <span class="keyword">or</span> b3 &lt; <span class="number">0</span>
+    <span class="literal">true</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='polyarea'>polyArea</h4></td>
+          <td class='code'><pre>  polyArea <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>pts<span class="group_end">)</span></span> <span class="function">-></span>
+    sum <span class="operators">=</span> <span class="number">0</span>
+    i <span class="operators">=</span> <span class="number">0</span>
+    l <span class="operators">=</span> pts<span class="punctuation">.</span>length
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>l<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+      sum <span class="operators">+</span><span class="operators">=</span> pts<span class="punctuation">[</span>i<span class="punctuation">]</span><span class="punctuation">.</span>x <span class="operators">*</span> pts<span class="punctuation">[</span><span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> % l<span class="punctuation">]</span><span class="punctuation">.</span>y <span class="operators">-</span> pts<span class="punctuation">[</span><span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> % l<span class="punctuation">]</span><span class="punctuation">.</span>x <span class="operators">*</span> pts<span class="punctuation">[</span>i<span class="punctuation">]</span><span class="punctuation">.</span>y
+
+    sum <span class="operators">/</span> <span class="number">2</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='triangulate'>triangulate</h4></td>
+          <td class='code'><pre>  triangulate <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="keyword">if</span> vertices<span class="punctuation">.</span>length &lt; <span class="number">4</span>
+
+    pts <span class="operators">=</span> vertices
+    refs <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>i <span class="keyword">for</span> n<span class="punctuation">,</span>i <span class="keyword">in</span> pts<span class="group_end">)</span></span>
+    ptsArea <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>
+    i <span class="operators">=</span> <span class="number">0</span>
+    l <span class="operators">=</span> refs<span class="punctuation">.</span>length
+
+    <span class="keyword">while</span> i &lt; l
+      ptsArea<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> pts<span class="punctuation">[</span>refs<span class="punctuation">[</span>i<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">.</span>clone<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      <span class="operators">+</span><span class="operators">+</span>i
+    pArea <span class="operators">=</span> polyArea<span class="group"><span class="group_begin">(</span>ptsArea<span class="group_end">)</span></span>
+    cr <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>
+    nr <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>
+    arrayCopy cr<span class="punctuation">,</span> refs
+    <span class="keyword">while</span> cr<span class="punctuation">.</span>length > <span class="number">3</span>
+      i <span class="operators">=</span> <span class="number">0</span>
+      l <span class="operators">=</span> cr<span class="punctuation">.</span>length
+
+      <span class="keyword">while</span> i &lt; l
+        r1 <span class="operators">=</span> cr<span class="punctuation">[</span>i % l<span class="punctuation">]</span>
+        r2 <span class="operators">=</span> cr<span class="punctuation">[</span><span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> % l<span class="punctuation">]</span>
+        r3 <span class="operators">=</span> cr<span class="punctuation">[</span><span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">2</span><span class="group_end">)</span></span> % l<span class="punctuation">]</span>
+        v1 <span class="operators">=</span> pts<span class="punctuation">[</span>r1<span class="punctuation">]</span>
+        v2 <span class="operators">=</span> pts<span class="punctuation">[</span>r2<span class="punctuation">]</span>
+        v3 <span class="operators">=</span> pts<span class="punctuation">[</span>r3<span class="punctuation">]</span>
+        ok <span class="operators">=</span> <span class="literal">true</span>
+        j <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">3</span><span class="group_end">)</span></span> % l
+
+        <span class="keyword">while</span> j <span class="keyword">isnt</span> i
+          ptsArea <span class="operators">=</span> <span class="punctuation">[</span>v1<span class="punctuation">,</span> v2<span class="punctuation">,</span> v3<span class="punctuation">]</span>
+          tArea <span class="operators">=</span> polyArea<span class="group"><span class="group_begin">(</span>ptsArea<span class="group_end">)</span></span>
+          <span class="keyword">if</span> <span class="group"><span class="group_begin">(</span>pArea &lt; <span class="number">0</span> <span class="keyword">and</span> tArea > <span class="number">0</span><span class="group_end">)</span></span> <span class="keyword">or</span>
+             <span class="group"><span class="group_begin">(</span>pArea > <span class="number">0</span> <span class="keyword">and</span> tArea &lt; <span class="number">0</span><span class="group_end">)</span></span> <span class="keyword">or</span>
+             pointInTriangle<span class="group"><span class="group_begin">(</span>pts<span class="punctuation">[</span>cr<span class="punctuation">[</span>j<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">,</span> v1<span class="punctuation">,</span> v2<span class="punctuation">,</span> v3<span class="group_end">)</span></span>
+            ok <span class="operators">=</span> <span class="literal">false</span>
+            <span class="keyword">break</span>
+          j <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>j <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> % l
+        <span class="keyword">if</span> ok
+          nr<span class="punctuation">.</span>push r1<span class="punctuation">,</span> r2<span class="punctuation">,</span> r3
+          cr<span class="punctuation">.</span>splice <span class="group"><span class="group_begin">(</span>i <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> % l<span class="punctuation">,</span> <span class="number">1</span>
+          <span class="keyword">break</span>
+        <span class="operators">+</span><span class="operators">+</span>i
+    nr<span class="punctuation">.</span>push<span class="punctuation">.</span>apply nr<span class="punctuation">,</span> cr<span class="punctuation">[</span><span class="number">0.</span><span class="number">.2</span><span class="punctuation">]</span>
+    triangulated <span class="operators">=</span> <span class="literal">true</span>
+
+    <span class="keyword">return</span> nr
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='mixin-methods'>Mixin Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='triangulabletriangles'>Triangulable::triangles</h4></td>
+          <td class='code'><pre>  <span class="property">triangles<span class='punctuation'>:</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="property">@memoFor</span> <span class="string"><span class="string_begin">'</span>triangles<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>triangles<span class="string_end">'</span></span>
+
+    vertices <span class="operators">=</span> <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    vertices<span class="punctuation">.</span>pop<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    indices <span class="operators">=</span> triangulate vertices
+    triangles <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>indices<span class="punctuation">.</span>length <span class="operators">/</span> <span class="number">3</span> <span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+      index <span class="operators">=</span> i <span class="operators">*</span> <span class="number">3</span>
+      a <span class="operators">=</span> vertices<span class="punctuation">[</span>indices<span class="punctuation">[</span>index<span class="punctuation">]</span><span class="punctuation">]</span>
+      b <span class="operators">=</span> vertices<span class="punctuation">[</span>indices<span class="punctuation">[</span>index<span class="operators">+</span><span class="number">1</span><span class="punctuation">]</span><span class="punctuation">]</span>
+      c <span class="operators">=</span> vertices<span class="punctuation">[</span>indices<span class="punctuation">[</span>index<span class="operators">+</span><span class="number">2</span><span class="punctuation">]</span><span class="punctuation">]</span>
+      triangles<span class="punctuation">.</span>push <span class="keyword">new</span> <span class="constant">Triangle</span> a<span class="punctuation">,</span> b<span class="punctuation">,</span> c
+
+    <span class="property">@memoize</span> <span class="string"><span class="string_begin">'</span>triangles<span class="string_end">'</span></span><span class="punctuation">,</span> triangles
+
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Triangulable</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

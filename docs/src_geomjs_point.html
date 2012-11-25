@@ -1,0 +1,670 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/point.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/point.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>point.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p>This file define the <code>Point</code> primitive used by various entites of geomjs.
+<h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#point'>Point</a>
+  </li>
+  <li class='level1'>
+    <a href='#class-methods'>Class Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointispoint'>Point.isPoint</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointpointfrom'>Point.pointFrom</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointpolar'>Point.polar</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointinterpolate'>Point.interpolate</a>
+  </li>
+  <li class='level1'>
+    <a href='#class-error-methods'>Class Error Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointmissingposition'>Point.missingPosition</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointmissingpoint'>Point.missingPoint</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointnotapoint'>Point.notAPoint</a>
+  </li>
+  <li class='level1'>
+    <a href='#instances-methods'>Instances Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointconstructor'>Point::constructor</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointlength'>Point::length</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointangle'>Point::angle</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointanglewith'>Point::angleWith</a>
+  </li>
+  <li class='level1'>
+    <a href='#point-manipulation'>Point Manipulation</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointnormalize'>Point::normalize</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointadd'>Point::add</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointsubtract'>Point::subtract</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointdot'>Point::dot</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointdistance'>Point::distance</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointscale'>Point::scale</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointrotate'>Point::rotate</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointrotatearound'>Point::rotateAround</a>
+  </li>
+  <li class='level1'>
+    <a href='#utilities'>Utilities</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointispoint'>Point::isPoint</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointpointfrom'>Point::pointFrom</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointdefaulttozero'>Point::defaultToZero</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointpaste'>Point::paste</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointequals'>Point::equals</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointtostring'>Point::toString</a>
+  </li>
+  <li class='level1'>
+    <a href='#instances-error-methods'>Instances Error Methods</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointnopoint'>Point::noPoint</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointinvalidlength'>Point::invalidLength</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointinvalidscale'>Point::invalidScale</a>
+  </li>
+  <li class='level2'>
+    <a href='#pointinvalidrotation'>Point::invalidRotation</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="global">require</span> <span class="string"><span class="string_begin">'</span>./math<span class="string_end">'</span></span>
+<span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+<span class="constant">Cloneable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/cloneable<span class="string_end">'</span></span>
+<span class="constant">Equatable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/equatable<span class="string_end">'</span></span>
+<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
+<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='point'>Point</h1></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>A <code>Point</code> represent a location in a two-dimensional space.</p>
+
+<p>A point with coordinates (0,0) can be constructed with:</p>
+
+<pre><code><span class="keyword">new</span> <span class="constant">Point</span>
+<span class="keyword">new</span> <span class="constant">Point</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span>
+<span class="keyword">new</span> <span class="constant">Point</span> <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0</span><span class="punctuation">,</span> <span class="property">y<span class='punctuation'>:</span></span> <span class="number">0</span></code></pre>
+
+<p><strong>Note:</strong> Any functions in geomjs that accept a <code>Point</code> object also allow
+to use numbers instead, this is obviously also the case in the <code>Point</code>
+class. For more details about how to achieve the same behavior in your own
+functions please refer to the <a href="#pointcoordsfrom"><code>Point.pointFrom</code></a> method.</p></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>Point</span></span>
+  include<span class="group"><span class="group_begin">(</span><span class="punctuation">[</span>
+    <span class="constant">Equatable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Formattable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>Point<span class="string_end">'</span></span><span class="punctuation">,</span><span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Sourcable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>geomjs.Point<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>x<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>y<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Cloneable</span>
+  <span class="punctuation">]</span><span class="group_end">)</span></span><span class="punctuation">.</span><span class="keyword">in</span> <span class="constant">Point</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='class-methods'>Class Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointispoint'>Point.isPoint</h4>
+
+<p>Returns <code>true</code> if the passed-in object pass the requirments
+to be a point. Valid points are objects that possess a x and
+a y property.</p>
+
+<pre><code><span class="constant">Point</span><span class="punctuation">.</span>isPoint <span class="keyword">new</span> <span class="constant">Point</span>  <span class="comment"># true</span>
+<span class="constant">Point</span><span class="punctuation">.</span>isPoint <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0</span><span class="punctuation">,</span> <span class="property">y<span class='punctuation'>:</span></span> <span class="number">0</span> <span class="comment"># true</span>
+<span class="constant">Point</span><span class="punctuation">.</span>isPoint <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0</span>       <span class="comment"># false</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">@isPoint<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">-></span> pt<span class="operators">?</span> <span class="keyword">and</span> pt<span class="punctuation">.</span>x<span class="operators">?</span> <span class="keyword">and</span> pt<span class="punctuation">.</span>y<span class="operators">?</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointpointfrom'>Point.pointFrom</h4>
+
+<p>Returns a point according to the provided arguments:</p>
+
+<pre><code>translate <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+  point <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom xOrPt<span class="punctuation">,</span> y
+  <span class="comment"># ...</span></code></pre>
+
+<p>The first argument can be either an object or a number.
+In the case the argument is an object, the function will
+extract the x and y values from it. However, if the <code>strict</code>
+argument is <code>true</code>, the function will throw an error if
+the object does not have either x or y property:</p>
+
+<pre><code><span class="constant">Point</span><span class="punctuation">.</span>pointFrom <span class="property">x<span class='punctuation'>:</span></span> <span class="number">10</span>            <span class="comment"># will not throw</span>
+<span class="constant">Point</span><span class="punctuation">.</span>pointFrom <span class="property">x<span class='punctuation'>:</span></span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="literal">true</span>   <span class="comment"># will throw</span></code></pre>
+
+<p>In the case the object is incomplete or empty, and with
+the strict mode disabled, the missing property will end
+being set to <code>0</code>.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom <span class="property">x<span class='punctuation'>:</span></span> <span class="number">10</span> <span class="comment"># {x: 10, y: NaN}</span></code></pre>
+
+<p>For further examples, feel free to take a look at the
+methods of the <code>Point</code> class.</p></td>
+          <td class='code'><pre>  <span class="property">@pointFrom<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="punctuation">,</span> strict<span class="operators">=</span><span class="literal">false</span><span class="group_end">)</span></span> <span class="function">-></span>
+    x <span class="operators">=</span> xOrPt
+    <span class="hash"><span class="hash_begin">{</span>x<span class="punctuation">,</span>y<span class="hash_end">}</span></span> <span class="operators">=</span> xOrPt <span class="keyword">if</span> xOrPt<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">typeof</span> xOrPt <span class="keyword">is</span> <span class="string"><span class="string_begin">'</span>object<span class="string_end">'</span></span>
+    <span class="property">@notAPoint</span> <span class="punctuation">[</span>x<span class="punctuation">,</span>y<span class="punctuation">]</span> <span class="keyword">if</span> strict <span class="keyword">and</span> <span class="group"><span class="group_begin">(</span><span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>x<span class="group_end">)</span></span> <span class="keyword">or</span> <span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>y<span class="group_end">)</span></span><span class="group_end">)</span></span>
+    <span class="keyword">new</span> <span class="constant">Point</span> x<span class="punctuation">,</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointpolar'>Point.polar</h4>
+
+<p>Converts polar coordinates in cartesian coordinates.</p>
+
+<pre><code><span class="constant">Point</span><span class="punctuation">.</span>polar <span class="number">90</span><span class="punctuation">,</span> <span class="number">10</span> <span class="comment"># [Point(x=0,y=10)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">@polar<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>angle<span class="punctuation">,</span> length<span class="operators">=</span><span class="number">1</span><span class="group_end">)</span></span> <span class="function">-></span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span> <span class="operators">*</span> length<span class="punctuation">,</span>
+                                         <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span> <span class="operators">*</span> length
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointinterpolate'>Point.interpolate</h4>
+
+<p>Returns a point between <code>pt1</code> and <code>pt2</code> at a ratio corresponding to <code>pos</code>.</p>
+
+<p>The <code>Point.interpolate</code> method supports all the following forms:</p>
+
+<pre><code><span class="constant">Point</span><span class="punctuation">.</span>interpolate pt1<span class="punctuation">,</span> pt2<span class="punctuation">,</span> pos
+<span class="constant">Point</span><span class="punctuation">.</span>interpolate x1<span class="punctuation">,</span> y1<span class="punctuation">,</span> pt2<span class="punctuation">,</span> pos
+<span class="constant">Point</span><span class="punctuation">.</span>interpolate pt1<span class="punctuation">,</span> x2<span class="punctuation">,</span> y2<span class="punctuation">,</span> pos
+<span class="constant">Point</span><span class="punctuation">.</span>interpolate x1<span class="punctuation">,</span> x2<span class="punctuation">,</span> x2<span class="punctuation">,</span> y2<span class="punctuation">,</span> pos</code></pre></td>
+          <td class='code'><pre>  <span class="property">@interpolate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pt1<span class="punctuation">,</span> pt2<span class="punctuation">,</span> pos<span class="group_end">)</span></span> <span class="function">-></span>
+    args <span class="operators">=</span> <span class="punctuation">[</span><span class="punctuation">]</span>; args<span class="punctuation">[</span>i<span class="punctuation">]</span> <span class="operators">=</span> v <span class="keyword">for</span> v<span class="punctuation">,</span>i <span class="keyword">in</span> arguments
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><p>Utility function that extract a point from <code>args</code>
+and removes the values it used from it.</p></td>
+          <td class='code'><pre>    extract <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>args<span class="punctuation">,</span> name<span class="group_end">)</span></span> <span class="function">=></span>
+      pt <span class="operators">=</span> <span class="literal">null</span>
+      <span class="keyword">if</span> <span class="property">@isPoint</span> args<span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span> <span class="keyword">then</span> pt <span class="operators">=</span> args<span class="punctuation">.</span>shift<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      <span class="keyword">else</span> <span class="keyword">if</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat<span class="group"><span class="group_begin">(</span>args<span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span><span class="group_end">)</span></span> <span class="keyword">and</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat<span class="group"><span class="group_begin">(</span>args<span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span><span class="group_end">)</span></span>
+        pt <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> args<span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span><span class="punctuation">,</span> args<span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span>
+        args<span class="punctuation">.</span>splice <span class="number">0</span><span class="punctuation">,</span> <span class="number">2</span>
+      <span class="keyword">else</span> <span class="property">@missingPoint</span> args<span class="punctuation">,</span> name
+      pt
+
+    pt1 <span class="operators">=</span> extract args<span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>first<span class="string_end">'</span></span>
+    pt2 <span class="operators">=</span> extract args<span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>second<span class="string_end">'</span></span>
+    pos <span class="operators">=</span> <span class="top_level">parseFloat</span> args<span class="punctuation">.</span>shift<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="property">@missingPosition</span> pos <span class="keyword">if</span> <span class="top_level">isNaN</span> pos
+
+    dif <span class="operators">=</span> pt2<span class="punctuation">.</span>subtract<span class="group"><span class="group_begin">(</span>pt1<span class="group_end">)</span></span>
+    <span class="keyword">new</span> <span class="constant">Point</span> pt1<span class="punctuation">.</span>x <span class="operators">+</span> dif<span class="punctuation">.</span>x <span class="operators">*</span> pos<span class="punctuation">,</span>
+              pt1<span class="punctuation">.</span>y <span class="operators">+</span> dif<span class="punctuation">.</span>y <span class="operators">*</span> pos
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='class-error-methods'>Class Error Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointmissingposition'>Point.missingPosition</h4>
+
+<p>Throws an error for a missing position in <code>Point.interpolate</code>.</p></td>
+          <td class='code'><pre>  <span class="property">@missingPosition<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pos<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>Point.interpolate require a position but <span class="subst"><span class="subst_begin">#{</span>pos<span class="subst_end">}</span></span> was given<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointmissingpoint'>Point.missingPoint</h4>
+
+<p>Throws an error for a missing point in <code>Point.interpolate</code>.</p></td>
+          <td class='code'><pre>  <span class="property">@missingPoint<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>args<span class="punctuation">,</span> pos<span class="group_end">)</span></span> <span class="function">-></span>
+    msg <span class="operators">=</span> <span class="string"><span class="string_begin">"</span>Can't find the <span class="subst"><span class="subst_begin">#{</span>pos<span class="subst_end">}</span></span> point in Point.interpolate arguments <span class="subst"><span class="subst_begin">#{</span>args<span class="subst_end">}</span></span><span class="string_end">"</span></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> msg
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointnotapoint'>Point.notAPoint</h4>
+
+<p>Throws an error for an invalid point in <code>Point.pointFrom</code>.</p></td>
+          <td class='code'><pre>  <span class="property">@notAPoint<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>args<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span><span class="subst"><span class="subst_begin">#{</span>args<span class="subst_end">}</span></span> is not a point<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='instances-methods'>Instances Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointconstructor'>Point::constructor</h4>
+
+<p>Whatever is passed to the <code>Point</code> constructor, a valid point
+is always returned. All invalid properties will be default to <code>0</code>.</p>
+
+<p>A point be constructed with the following forms:</p>
+
+<pre><code><span class="keyword">new</span> <span class="constant">Point</span>
+<span class="keyword">new</span> <span class="constant">Point</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span>
+<span class="keyword">new</span> <span class="constant">Point</span> <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0</span><span class="punctuation">,</span> <span class="property">y<span class='punctuation'>:</span></span> <span class="number">0</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    y <span class="operators">=</span> x<span class="punctuation">.</span>y <span class="keyword">or</span> y <span class="keyword">if</span> x<span class="operators">?</span>; y <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> y
+    x <span class="operators">=</span> x<span class="punctuation">.</span>x <span class="keyword">or</span> x <span class="keyword">if</span> x<span class="operators">?</span>; x <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> x
+    <span class="property">@x</span> <span class="operators">=</span> x
+    <span class="property">@y</span> <span class="operators">=</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointlength'>Point::length</h4>
+
+<p>Returns the length of the current vector represented by this point.</p>
+
+<pre><code>length <span class="operators">=</span> point<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span></code></pre></td>
+          <td class='code'><pre>  <span class="property">length<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>sqrt <span class="group"><span class="group_begin">(</span><span class="property">@x</span> <span class="operators">*</span> <span class="property">@x</span><span class="group_end">)</span></span> <span class="operators">+</span> <span class="group"><span class="group_begin">(</span><span class="property">@y</span> <span class="operators">*</span> <span class="property">@y</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointangle'>Point::angle</h4>
+
+<p>Returns the angle in degrees formed by the vector.</p>
+
+<pre><code>angle <span class="operators">=</span> point<span class="punctuation">.</span>angle<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span></code></pre></td>
+          <td class='code'><pre>  <span class="property">angle<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="constant">Math</span><span class="punctuation">.</span>radToDeg <span class="constant">Math</span><span class="punctuation">.</span>atan2 <span class="property">@y</span><span class="punctuation">,</span> <span class="property">@x</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointanglewith'>Point::angleWith</h4>
+
+<p>Given a triangle formed by this point, the passed-in point
+and the origin (0,0), the <code>Point::angleWith</code> method will
+return the angle in degrees formed by the two vectors at
+the origin.</p>
+
+<pre><code>point1 <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span>
+point2 <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">10</span>
+angle <span class="operators">=</span> point1<span class="punctuation">.</span>angleWith point2
+<span class="comment"># angle = 45</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">angleWith<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@noPoint</span> <span class="string"><span class="string_begin">'</span>dot<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="keyword">not</span> x<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> y<span class="operators">?</span>
+    isPoint <span class="operators">=</span> <span class="property">@isPoint</span> x
+    y <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>y <span class="keyword">else</span> y
+    x <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>x <span class="keyword">else</span> x
+    <span class="constant">Point</span><span class="punctuation">.</span>notAPoint <span class="punctuation">[</span>x<span class="punctuation">,</span>y<span class="punctuation">]</span> <span class="keyword">if</span> <span class="group"><span class="group_begin">(</span><span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>x<span class="group_end">)</span></span> <span class="keyword">or</span> <span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>y<span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+    d <span class="operators">=</span> <span class="property">@normalize</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>dot <span class="keyword">new</span> <span class="constant">Point</span><span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span><span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+    <span class="constant">Math</span><span class="punctuation">.</span>radToDeg <span class="constant">Math</span><span class="punctuation">.</span>acos<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span>abs<span class="group"><span class="group_begin">(</span>d<span class="group_end">)</span></span><span class="group_end">)</span></span> <span class="operators">*</span> <span class="group"><span class="group_begin">(</span><span class="keyword">if</span> d &lt; <span class="number">0</span> <span class="keyword">then</span> <span class="operators">-</span><span class="number">1</span> <span class="keyword">else</span> <span class="number">1</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='point-manipulation'>Point Manipulation</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointnormalize'>Point::normalize</h4>
+
+<p>Returns a new point of length <code>length</code>.</p>
+
+<pre><code>normalized <span class="operators">=</span> point<span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+normalized<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="comment"># 1</span>
+
+normalized <span class="operators">=</span> point<span class="punctuation">.</span>normalize<span class="group"><span class="group_begin">(</span><span class="number">6</span><span class="group_end">)</span></span>
+normalized<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="comment"># 6</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">normalize<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>length<span class="operators">=</span><span class="number">1</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@invalidLength</span> length <span class="keyword">unless</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat length
+    l <span class="operators">=</span> <span class="property">@length</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@x</span> <span class="operators">/</span> l <span class="operators">*</span> length<span class="punctuation">,</span> <span class="property">@y</span> <span class="operators">/</span> l <span class="operators">*</span> length
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointadd'>Point::add</h4>
+
+<p>Returns a new point resulting of the addition of the
+passed-in point to this point.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">4</span><span class="punctuation">,</span> <span class="number">4</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>add <span class="number">1</span><span class="punctuation">,</span> <span class="number">5</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>add <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0.2</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>add <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">1.8</span><span class="punctuation">,</span> <span class="number">8</span>
+<span class="comment"># inc = [Point(x=7,y=17)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">add<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    y <span class="operators">=</span> x<span class="punctuation">.</span>y <span class="keyword">or</span> y <span class="keyword">if</span> x<span class="operators">?</span>; y <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> y
+    x <span class="operators">=</span> x<span class="punctuation">.</span>x <span class="keyword">or</span> x <span class="keyword">if</span> x<span class="operators">?</span>; x <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> x
+    <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@x</span> <span class="operators">+</span> x<span class="punctuation">,</span> <span class="property">@y</span> <span class="operators">+</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointsubtract'>Point::subtract</h4>
+
+<p>Returns a new point resulting of the subtraction of the
+passed-in point to this point.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">4</span><span class="punctuation">,</span> <span class="number">4</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>subtract <span class="number">1</span><span class="punctuation">,</span> <span class="number">5</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>subtract <span class="property">x<span class='punctuation'>:</span></span> <span class="number">0.2</span>
+inc <span class="operators">=</span> point<span class="punctuation">.</span>subtract <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">1.8</span><span class="punctuation">,</span> <span class="number">8</span>
+<span class="comment"># inc = [Point(x=2,y=-9)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">subtract<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    y <span class="operators">=</span> x<span class="punctuation">.</span>y <span class="keyword">or</span> y <span class="keyword">if</span> x<span class="operators">?</span>; y <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> y
+    x <span class="operators">=</span> x<span class="punctuation">.</span>x <span class="keyword">or</span> x <span class="keyword">if</span> x<span class="operators">?</span>; x <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> x
+    <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@x</span> <span class="operators">-</span> x<span class="punctuation">,</span> <span class="property">@y</span> <span class="operators">-</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointdot'>Point::dot</h4>
+
+<p>Returns the dot product of this point and the passed-in point.</p>
+
+<pre><code>dot <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span><span class="group"><span class="group_begin">(</span><span class="number">5</span><span class="punctuation">,</span><span class="number">6</span><span class="group_end">)</span></span><span class="punctuation">.</span>dot<span class="group"><span class="group_begin">(</span><span class="number">7</span><span class="punctuation">,</span><span class="number">8</span><span class="group_end">)</span></span>
+<span class="comment"># dot = 83</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">dot<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@noPoint</span> <span class="string"><span class="string_begin">'</span>dot<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="keyword">not</span> x<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> y<span class="operators">?</span>
+    isPoint <span class="operators">=</span> <span class="property">@isPoint</span> x
+    y <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>y <span class="keyword">else</span> y
+    x <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>x <span class="keyword">else</span> x
+    <span class="constant">Point</span><span class="punctuation">.</span>notAPoint <span class="punctuation">[</span>x<span class="punctuation">,</span>y<span class="punctuation">]</span> <span class="keyword">if</span> <span class="group"><span class="group_begin">(</span><span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>x<span class="group_end">)</span></span> <span class="keyword">or</span> <span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>y<span class="group_end">)</span></span><span class="group_end">)</span></span>
+    <span class="property">@x</span> <span class="operators">*</span> x <span class="operators">+</span> <span class="property">@y</span> <span class="operators">*</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointdistance'>Point::distance</h4>
+
+<p>Returns the distance between this point and the passed-in point.</p>
+
+<pre><code>distance <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span><span class="group"><span class="group_begin">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">2</span><span class="group_end">)</span></span><span class="punctuation">.</span>distance<span class="group"><span class="group_begin">(</span><span class="number">2</span><span class="punctuation">,</span><span class="number">2</span><span class="group_end">)</span></span>
+<span class="comment"># distance = 2</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">distance<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@noPoint</span> <span class="string"><span class="string_begin">'</span>distance<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="keyword">not</span> x<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> y<span class="operators">?</span>
+    isPoint <span class="operators">=</span> <span class="property">@isPoint</span> x
+    y <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>y <span class="keyword">else</span> y
+    x <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>x <span class="keyword">else</span> x
+    <span class="constant">Point</span><span class="punctuation">.</span>notAPoint <span class="punctuation">[</span>x<span class="punctuation">,</span>y<span class="punctuation">]</span> <span class="keyword">if</span> <span class="group"><span class="group_begin">(</span><span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>x<span class="group_end">)</span></span> <span class="keyword">or</span> <span class="top_level">isNaN</span><span class="group"><span class="group_begin">(</span>y<span class="group_end">)</span></span><span class="group_end">)</span></span>
+    <span class="property">@subtract</span><span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span><span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointscale'>Point::scale</h4>
+
+<p>Returns a new point which is a scaled copy of the current point.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span>
+scaled <span class="operators">=</span> point<span class="punctuation">.</span>scale <span class="number">2</span>
+<span class="comment"># scaled = [Point(x=2,y=2)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">scale<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>n<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@invalidScale</span> n <span class="keyword">unless</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat n
+    <span class="keyword">new</span> <span class="constant">Point</span> <span class="property">@x</span> <span class="operators">*</span> n<span class="punctuation">,</span> <span class="property">@y</span> <span class="operators">*</span> n
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointrotate'>Point::rotate</h4>
+
+<p>Returns a new point which is the result of rotating the
+current point around the origin (0,0).</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span>
+rotated <span class="operators">=</span> point<span class="punctuation">.</span>rotate <span class="number">90</span>
+<span class="comment"># rotated = [Point(x=0,y=10)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">rotate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>n<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@invalidRotation</span> n <span class="keyword">unless</span> <span class="constant">Math</span><span class="punctuation">.</span>isFloat n
+    l <span class="operators">=</span> <span class="property">@length</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+    a <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>atan2<span class="group"><span class="group_begin">(</span><span class="property">@y</span><span class="punctuation">,</span> <span class="property">@x</span><span class="group_end">)</span></span> <span class="operators">+</span> <span class="constant">Math</span><span class="punctuation">.</span>degToRad<span class="group"><span class="group_begin">(</span>n<span class="group_end">)</span></span>
+    x <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span>a<span class="group_end">)</span></span> <span class="operators">*</span> l
+    y <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span>a<span class="group_end">)</span></span> <span class="operators">*</span> l
+    <span class="keyword">new</span> <span class="constant">Point</span> x<span class="punctuation">,</span> y
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointrotatearound'>Point::rotateAround</h4>
+
+<p>Returns a new point which is the result of rotating the
+current point around the passed-in point.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span>
+origin <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">20</span><span class="punctuation">,</span> <span class="number">0</span>
+rotated <span class="operators">=</span> point<span class="punctuation">.</span>rotateAround origin<span class="punctuation">,</span> <span class="number">90</span>
+<span class="comment"># rotated = [Point(x=20,y=-10)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">rotateAround<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="punctuation">,</span> a<span class="group_end">)</span></span> <span class="function">-></span>
+    isPoint <span class="operators">=</span> <span class="property">@isPoint</span> x
+    a <span class="operators">=</span> y <span class="keyword">if</span> isPoint
+    y <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>y <span class="keyword">else</span> y
+    x <span class="operators">=</span> <span class="keyword">if</span> isPoint <span class="keyword">then</span> x<span class="punctuation">.</span>x <span class="keyword">else</span> x
+
+    <span class="property">@subtract</span><span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span><span class="punctuation">.</span>rotate<span class="group"><span class="group_begin">(</span>a<span class="group_end">)</span></span><span class="punctuation">.</span>add<span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='utilities'>Utilities</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointispoint'>Point::isPoint</h4>
+
+<p>Alias the <code>Point.isPoint</code> method in instances.</p></td>
+          <td class='code'><pre>  <span class="property">isPoint<span class='punctuation'>:</span></span> <span class="constant">Point</span><span class="punctuation">.</span>isPoint
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointpointfrom'>Point::pointFrom</h4>
+
+<p>Alias the <code>Point.pointFrom</code> method in instances.</p></td>
+          <td class='code'><pre>  <span class="property">pointFrom<span class='punctuation'>:</span></span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointdefaulttozero'>Point::defaultToZero</h4>
+
+<p>Returns the two arguments x and y in an array where arguments
+that were <code>NaN</code> are replaced by <code>0</code>.</p></td>
+          <td class='code'><pre>  <span class="property">defaultToZero<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    x <span class="operators">=</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> x <span class="keyword">then</span> <span class="number">0</span> <span class="keyword">else</span> x
+    y <span class="operators">=</span> <span class="keyword">if</span> <span class="top_level">isNaN</span> y <span class="keyword">then</span> <span class="number">0</span> <span class="keyword">else</span> y
+    <span class="punctuation">[</span>x<span class="punctuation">,</span>y<span class="punctuation">]</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointpaste'>Point::paste</h4>
+
+<p>Copy the values of the passed-in point into this point.</p>
+
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span>
+point<span class="punctuation">.</span>paste <span class="number">1</span><span class="punctuation">,</span> <span class="number">7</span>
+<span class="comment"># point = [Point(x=5,y=7)]</span>
+
+point<span class="punctuation">.</span>paste <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">4</span><span class="punctuation">,</span> <span class="number">4</span>
+<span class="comment"># point = [Point(x=4,y=4)]</span></code></pre></td>
+          <td class='code'><pre>  <span class="property">paste<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">return</span> <span class="keyword">this</span> <span class="keyword">if</span> <span class="keyword">not</span> x<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">not</span> y<span class="operators">?</span>
+    isObject <span class="operators">=</span> x<span class="operators">?</span> <span class="keyword">and</span> <span class="keyword">typeof</span> x <span class="keyword">is</span> <span class="string"><span class="string_begin">'</span>object<span class="string_end">'</span></span>
+    y <span class="operators">=</span> <span class="keyword">if</span> isObject <span class="keyword">then</span> x<span class="punctuation">.</span>y <span class="keyword">else</span> y
+    x <span class="operators">=</span> <span class="keyword">if</span> isObject <span class="keyword">then</span> x<span class="punctuation">.</span>x <span class="keyword">else</span> x
+    <span class="property">@x</span> <span class="operators">=</span> x <span class="keyword">unless</span> <span class="top_level">isNaN</span> x
+    <span class="property">@y</span> <span class="operators">=</span> y <span class="keyword">unless</span> <span class="top_level">isNaN</span> y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointequals'>Point::equals</h4>
+
+<p>See
+<a href="src_geomjs_mixins_equatable.html#equatableequals">Equatable.equals</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointtostring'>Point::toString</h4>
+
+<p>See
+<a href="src_geomjs_mixins_formattable.html#formattabletostring">Formattable.toString</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='instances-error-methods'>Instances Error Methods</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointnopoint'>Point::noPoint</h4>
+
+<p>A generic error helper used by methods that require a point argument
+and was called without it.</p></td>
+          <td class='code'><pre>  <span class="property">noPoint<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>method<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span><span class="subst"><span class="subst_begin">#{</span>method<span class="subst_end">}</span></span> was called without arguments<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointinvalidlength'>Point::invalidLength</h4>
+
+<p>Throws an error for an invalid length in <code>Point::normalize</code> method.</p></td>
+          <td class='code'><pre>  <span class="property">invalidLength<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>l<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>Invalid length <span class="subst"><span class="subst_begin">#{</span>l<span class="subst_end">}</span></span> provided<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointinvalidscale'>Point::invalidScale</h4>
+
+<p>Throws an error for an invalid scale in <code>Point::scale</code> method.</p></td>
+          <td class='code'><pre>  <span class="property">invalidScale<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>s<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>Invalid scale <span class="subst"><span class="subst_begin">#{</span>s<span class="subst_end">}</span></span> provided<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='pointinvalidrotation'>Point::invalidRotation</h4>
+
+<p>Throws an error for an invalid rotation in <code>Point::rotate</code>
+and <code>Point::rotateAround</code> method.</p></td>
+          <td class='code'><pre>  <span class="property">invalidRotation<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>a<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>Invalid rotation <span class="subst"><span class="subst_begin">#{</span>a<span class="subst_end">}</span></span> provided<span class="string_end">"</span></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Point</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

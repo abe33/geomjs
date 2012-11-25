@@ -1,0 +1,349 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/mixins/spline.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/mixins/spline.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/mixins/</h3>
+            <h1>spline.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#spline'>Spline</a>
+  </li>
+  <li class='level2'>
+    <a href='#splineattachto'>Spline.attachTo</a>
+  </li>
+  <li class='level2'>
+    <a href='#splineincluded'>Spline.included</a>
+  </li>
+  <li class='level2'>
+    <a href='#splineinitspline'>Spline::initSpline</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinepoints'>Spline::points</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinevalidatevertices'>Spline::validateVertices</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinesegments'>Spline::segments</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinesegmentsize'>Spline::segmentSize</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinesegment'>Spline::segment</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinelength'>Spline::length</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinemeasure'>Spline::measure</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinemeasuresegment'>Spline::measureSegment</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinepathpointat'>Spline::pathPointAt</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinewalkpathbasedonlength'>Spline::walkPathBasedOnLength</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinewalkpathbasedonsegments'>Spline::walkPathBasedOnSegments</a>
+  </li>
+  <li class='level1'>
+    <a href='#drawing-api'>Drawing API</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinefill'>Spline::fill</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinedrawpath'>Spline::drawPath</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinedrawvertices'>Spline::drawVertices</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinedrawverticesconnections'>Spline::drawVerticesConnections</a>
+  </li>
+  <li class='level2'>
+    <a href='#splinememoizationkey'>Spline::memoizationKey</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+<span class="constant">Memoizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./memoizable<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../point<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='spline'>Spline</h1></td>
+          <td class='code'><pre><span class="constant">Spline</span> <span class="operators">=</span> <span class="group"><span class="group_begin">(</span>segmentSize<span class="group_end">)</span></span> <span class="function">-></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'></td>
+          <td class='code'><pre>  <span class="class"><span class="keyword">class</span> <span class='title'>ConcretSpline</span></span> <span class="keyword">extends</span> <span class="constant">Mixin</span>
+    <span class="constant">Memoizable</span><span class="punctuation">.</span>attachTo <span class="constant">ConcretSpline</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splineattachto'>Spline.attachTo</h4>
+
+<p>See
+<a href="src_geomjs_mixins_mixin.html#mixinattachto">Mixin.attachTo</a></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splineincluded'>Spline.included</h4></td>
+          <td class='code'><pre>    <span class="property">@included<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>klass<span class="group_end">)</span></span> <span class="function">-></span>
+      <span class="property">klass<span class='punctuation'>:</span></span><span class="punctuation">:</span>clone <span class="operators">=</span> <span class="function">-></span>
+        <span class="keyword">new</span> klass <span class="property">@vertices</span><span class="punctuation">.</span>map<span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">-></span> pt<span class="punctuation">.</span>clone<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="group_end">)</span></span><span class="punctuation">,</span> <span class="property">@bias</span>
+
+      klass<span class="punctuation">.</span>segmentSize <span class="operators">=</span> <span class="function">-></span> segmentSize
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splineinitspline'>Spline::initSpline</h4></td>
+          <td class='code'><pre>    <span class="property">initSpline<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span><span class="property">@vertices</span><span class="punctuation">,</span> <span class="property">@bias</span><span class="operators">=</span><span class="number">20</span><span class="group_end">)</span></span> <span class="function">-></span>
+      <span class="keyword">unless</span> <span class="property">@validateVertices</span> <span class="property">@vertices</span>
+        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="constant">Error</span> <span class="string"><span class="string_begin">"</span>The number of vertices for <span class="subst"><span class="subst_begin">#{</span><span class="keyword">this</span><span class="subst_end">}</span></span> doesn't match<span class="string_end">"</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinepoints'>Spline::points</h4></td>
+          <td class='code'><pre>    <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span>
+      <span class="keyword">return</span> <span class="property">@memoFor</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>points<span class="string_end">'</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>concat<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>points<span class="string_end">'</span></span>
+      segments <span class="operators">=</span> <span class="property">@segments</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="operators">*</span> <span class="property">@bias</span>
+      points <span class="operators">=</span> <span class="group"><span class="group_begin">(</span><span class="property">@pathPointAt</span> i <span class="operators">/</span> segments <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>segments<span class="punctuation">]</span><span class="group_end">)</span></span>
+      <span class="property">@memoize</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>points<span class="string_end">'</span></span><span class="punctuation">,</span> points<span class="group_end">)</span></span><span class="punctuation">.</span>concat<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinevalidatevertices'>Spline::validateVertices</h4></td>
+          <td class='code'><pre>    <span class="property">validateVertices<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span>
+      vertices<span class="punctuation">.</span>length % segmentSize <span class="keyword">is</span> <span class="number">1</span> <span class="keyword">and</span>
+      vertices<span class="punctuation">.</span>length ><span class="operators">=</span> segmentSize <span class="operators">+</span> <span class="number">1</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinesegments'>Spline::segments</h4></td>
+          <td class='code'><pre>    <span class="property">segments<span class='punctuation'>:</span></span> <span class="function">-></span>
+      <span class="keyword">return</span> <span class="number">0</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="property">@vertices</span><span class="operators">?</span> <span class="keyword">or</span> <span class="property">@vertices</span><span class="punctuation">.</span>length <span class="keyword">is</span> <span class="number">0</span>
+      <span class="keyword">return</span> <span class="property">@memoFor</span> <span class="string"><span class="string_begin">'</span>segments<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>segments<span class="string_end">'</span></span>
+      <span class="property">@memoize</span> <span class="string"><span class="string_begin">'</span>segments<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="group"><span class="group_begin">(</span><span class="property">@vertices</span><span class="punctuation">.</span>length <span class="operators">-</span> <span class="number">1</span><span class="group_end">)</span></span> <span class="operators">/</span> segmentSize
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinesegmentsize'>Spline::segmentSize</h4></td>
+          <td class='code'><pre>    <span class="property">segmentSize<span class='punctuation'>:</span></span> <span class="function">-></span> segmentSize
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinesegment'>Spline::segment</h4></td>
+          <td class='code'><pre>    <span class="property">segment<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>index<span class="group_end">)</span></span> <span class="function">-></span>
+      <span class="keyword">if</span> index &lt; <span class="property">@segments</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        k <span class="operators">=</span> <span class="string"><span class="string_begin">"</span>segment<span class="subst"><span class="subst_begin">#{</span>index<span class="subst_end">}</span></span><span class="string_end">"</span></span>
+        <span class="keyword">return</span> <span class="property">@memoFor</span> k <span class="keyword">if</span> <span class="property">@memoized</span> k
+        <span class="property">@memoize</span> k<span class="punctuation">,</span> <span class="property">@vertices</span>
+          <span class="punctuation">.</span>concat<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+          <span class="punctuation">.</span>slice<span class="group"><span class="group_begin">(</span>index <span class="operators">*</span> segmentSize<span class="punctuation">,</span> <span class="group"><span class="group_begin">(</span>index <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span> <span class="operators">*</span> segmentSize <span class="operators">+</span> <span class="number">1</span><span class="group_end">)</span></span>
+      <span class="keyword">else</span>
+        <span class="literal">null</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinelength'>Spline::length</h4></td>
+          <td class='code'><pre>    <span class="property">length<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@measure</span> <span class="property">@bias</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinemeasure'>Spline::measure</h4></td>
+          <td class='code'><pre>    <span class="property">measure<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>bias<span class="group_end">)</span></span> <span class="function">-></span>
+      <span class="keyword">return</span> <span class="property">@memoFor</span> <span class="string"><span class="string_begin">'</span>measure<span class="string_end">'</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>measure<span class="string_end">'</span></span>
+      length <span class="operators">=</span> <span class="number">0</span>
+      length <span class="operators">+</span><span class="operators">=</span> <span class="property">@measureSegment</span> <span class="property">@segment</span><span class="group"><span class="group_begin">(</span>i<span class="group_end">)</span></span><span class="punctuation">,</span> bias <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span><span class="property">@segments</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+      <span class="property">@memoize</span> <span class="string"><span class="string_begin">'</span>measure<span class="string_end">'</span></span><span class="punctuation">,</span> length
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinemeasuresegment'>Spline::measureSegment</h4></td>
+          <td class='code'><pre>    <span class="property">measureSegment<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>segment<span class="punctuation">,</span> bias<span class="group_end">)</span></span> <span class="function">-></span>
+      k <span class="operators">=</span> <span class="string"><span class="string_begin">"</span>segment<span class="subst"><span class="subst_begin">#{</span>segment<span class="subst_end">}</span></span>_<span class="subst"><span class="subst_begin">#{</span>bias<span class="subst_end">}</span></span>Length<span class="string_end">"</span></span>
+      <span class="keyword">return</span> <span class="property">@memoFor</span> k <span class="keyword">if</span> <span class="property">@memoized</span> k
+
+      step <span class="operators">=</span> <span class="number">1 <span class='operators'>/</span></span> bias
+      length <span class="operators">=</span> <span class="number">0</span>
+
+      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1.</span><span class="punctuation">.</span>bias<span class="punctuation">]</span>
+        length <span class="operators">+</span><span class="operators">=</span> <span class="property">@pointInSegment</span><span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>i<span class="operators">-</span><span class="number">1</span><span class="group_end">)</span></span> <span class="operators">*</span> step<span class="punctuation">,</span> segment<span class="group_end">)</span></span>
+                    <span class="punctuation">.</span>distance<span class="group"><span class="group_begin">(</span><span class="property">@pointInSegment</span><span class="group"><span class="group_begin">(</span>i <span class="operators">*</span> step<span class="punctuation">,</span> segment<span class="group_end">)</span></span><span class="group_end">)</span></span>
+
+      <span class="property">@memoize</span> k<span class="punctuation">,</span> length
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinepathpointat'>Spline::pathPointAt</h4></td>
+          <td class='code'><pre>    <span class="property">pathPointAt<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pos<span class="punctuation">,</span> pathBasedOnLength<span class="operators">=</span><span class="literal">true</span><span class="group_end">)</span></span> <span class="function">-></span>
+      pos <span class="operators">=</span> <span class="number">0</span> <span class="keyword">if</span> pos &lt; <span class="number">0</span>
+      pos <span class="operators">=</span> <span class="number">1</span> <span class="keyword">if</span> pos > <span class="number">1</span>
+
+      <span class="keyword">return</span> <span class="property">@vertices</span><span class="punctuation">[</span><span class="number">0</span><span class="punctuation">]</span> <span class="keyword">if</span> pos <span class="keyword">is</span> <span class="number">0</span>
+      <span class="keyword">return</span> <span class="property">@vertices</span><span class="punctuation">[</span><span class="property">@vertices</span><span class="punctuation">.</span>length <span class="operators">-</span> <span class="number">1</span><span class="punctuation">]</span> <span class="keyword">if</span> pos <span class="keyword">is</span> <span class="number">1</span>
+
+      <span class="keyword">if</span> pathBasedOnLength
+        <span class="property">@walkPathBasedOnLength</span> pos
+      <span class="keyword">else</span>
+        <span class="property">@walkPathBasedOnSegments</span> pos
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinewalkpathbasedonlength'>Spline::walkPathBasedOnLength</h4></td>
+          <td class='code'><pre>    <span class="property">walkPathBasedOnLength<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pos<span class="group_end">)</span></span> <span class="function">-></span>
+      walked <span class="operators">=</span> <span class="number">0</span>
+      length <span class="operators">=</span> <span class="property">@length</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      segments <span class="operators">=</span> <span class="property">@segments</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>segments<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+        segment <span class="operators">=</span> <span class="property">@segment</span> i
+        stepLength <span class="operators">=</span> <span class="property">@measureSegment</span><span class="group"><span class="group_begin">(</span>segment<span class="punctuation">,</span> <span class="property">@bias</span><span class="group_end">)</span></span> <span class="operators">/</span> length
+
+        <span class="keyword">if</span> walked <span class="operators">+</span> stepLength > pos
+          innerStepPos <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>map pos<span class="punctuation">,</span> walked<span class="punctuation">,</span> walked <span class="operators">+</span> stepLength<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span>
+          <span class="keyword">return</span> <span class="property">@pointInSegment</span> innerStepPos<span class="punctuation">,</span> segment
+
+        walked <span class="operators">+</span><span class="operators">=</span> stepLength
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinewalkpathbasedonsegments'>Spline::walkPathBasedOnSegments</h4></td>
+          <td class='code'><pre>    <span class="property">walkPathBasedOnSegments<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pos<span class="group_end">)</span></span> <span class="function">-></span>
+      segments <span class="operators">=</span> <span class="property">@segments</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      pos <span class="operators">=</span> pos <span class="operators">*</span> segments
+      segment <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>floor pos
+      segment <span class="operators">-</span><span class="operators">=</span> <span class="number">1</span> <span class="keyword">if</span> segment <span class="keyword">is</span> segments
+      <span class="property">@pointInSegment</span> pos <span class="operators">-</span> segment<span class="punctuation">,</span> <span class="property">@segment</span> segment
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='drawing-api'>Drawing API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinefill'>Spline::fill</h4></td>
+          <td class='code'><pre>    <span class="property">fill<span class='punctuation'>:</span></span> <span class="function">-></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinedrawpath'>Spline::drawPath</h4></td>
+          <td class='code'><pre>    <span class="property">drawPath<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="group_end">)</span></span> <span class="function">-></span>
+      points <span class="operators">=</span> <span class="property">@points</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      start <span class="operators">=</span> points<span class="punctuation">.</span>shift<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      context<span class="punctuation">.</span>beginPath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+      context<span class="punctuation">.</span>moveTo<span class="group"><span class="group_begin">(</span>start<span class="punctuation">.</span>x<span class="punctuation">,</span>start<span class="punctuation">.</span>y<span class="group_end">)</span></span>
+      context<span class="punctuation">.</span>lineTo<span class="group"><span class="group_begin">(</span>p<span class="punctuation">.</span>x<span class="punctuation">,</span>p<span class="punctuation">.</span>y<span class="group_end">)</span></span> <span class="keyword">for</span> p <span class="keyword">in</span> points
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinedrawvertices'>Spline::drawVertices</h4></td>
+          <td class='code'><pre>    <span class="property">drawVertices<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="punctuation">,</span> color<span class="group_end">)</span></span> <span class="function">-></span>
+      context<span class="punctuation">.</span>fillStyle <span class="operators">=</span> color
+      <span class="keyword">for</span> vertex <span class="keyword">in</span> <span class="property">@vertices</span>
+        context<span class="punctuation">.</span>beginPath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        context<span class="punctuation">.</span>arc vertex<span class="punctuation">.</span>x<span class="punctuation">,</span> vertex<span class="punctuation">.</span>y<span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span><span class="operators">*</span><span class="number">2</span>
+        context<span class="punctuation">.</span>fill<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        context<span class="punctuation">.</span>closePath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinedrawverticesconnections'>Spline::drawVerticesConnections</h4></td>
+          <td class='code'><pre>    <span class="property">drawVerticesConnections<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>context<span class="punctuation">,</span> color<span class="group_end">)</span></span> <span class="function">-></span>
+      context<span class="punctuation">.</span>strokeStyle <span class="operators">=</span> color
+      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1.</span><span class="punctuation">.</span><span class="property">@vertices</span><span class="punctuation">.</span>length<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+        vertexStart <span class="operators">=</span> <span class="property">@vertices</span><span class="punctuation">[</span>i<span class="operators">-</span><span class="number">1</span><span class="punctuation">]</span>
+        vertexEnd <span class="operators">=</span> <span class="property">@vertices</span><span class="punctuation">[</span>i<span class="punctuation">]</span>
+        context<span class="punctuation">.</span>beginPath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        context<span class="punctuation">.</span>moveTo vertexStart<span class="punctuation">.</span>x<span class="punctuation">,</span> vertexStart<span class="punctuation">.</span>y
+        context<span class="punctuation">.</span>lineTo vertexEnd<span class="punctuation">.</span>x<span class="punctuation">,</span> vertexEnd<span class="punctuation">.</span>y
+        context<span class="punctuation">.</span>stroke<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        context<span class="punctuation">.</span>closePath<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='splinememoizationkey'>Spline::memoizationKey</h4></td>
+          <td class='code'><pre>    <span class="property">memoizationKey<span class='punctuation'>:</span></span> <span class="function">-></span>
+      <span class="property">@vertices</span><span class="punctuation">.</span>map<span class="group"><span class="group_begin">(</span><span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">-></span> <span class="string"><span class="string_begin">"</span><span class="subst"><span class="subst_begin">#{</span>pt<span class="punctuation">.</span>x<span class="subst_end">}</span></span>;<span class="subst"><span class="subst_begin">#{</span>pt<span class="punctuation">.</span>y<span class="subst_end">}</span></span><span class="string_end">"</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>join<span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>;<span class="string_end">'</span></span><span class="group_end">)</span></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">Spline</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

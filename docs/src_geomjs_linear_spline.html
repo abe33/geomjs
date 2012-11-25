@@ -1,0 +1,150 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/linear_spline.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/linear_spline.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>linear_spline.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#linearspline'>LinearSpline</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearsplineconstructor'>LinearSpline::constructor</a>
+  </li>
+  <li class='level1'>
+    <a href='#geometry-api'>Geometry API</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearsplinepoints'>LinearSpline::points</a>
+  </li>
+  <li class='level1'>
+    <a href='#spline-api'>Spline API</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearsplinesegments'>LinearSpline::segments</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearsplinevalidatevertices'>LinearSpline::validateVertices</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearsplinedrawverticesconnections'>LinearSpline::drawVerticesConnections</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre><span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
+<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
+<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
+<span class="constant">Intersections</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/intersections<span class="string_end">'</span></span>
+<span class="constant">Geometry</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/geometry<span class="string_end">'</span></span>
+<span class="constant">Spline</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/spline<span class="string_end">'</span></span>
+<span class="constant">Path</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/path<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='linearspline'>LinearSpline</h1></td>
+          <td class='code'><pre><span class="class"><span class="keyword">class</span> <span class='title'>LinearSpline</span></span>
+  include<span class="group"><span class="group_begin">(</span><span class="punctuation">[</span>
+    <span class="constant">Formattable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>LinearSpline<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Sourcable</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>geomjs.LinearSpline<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>vertices<span class="string_end">'</span></span><span class="punctuation">,</span> <span class="string"><span class="string_begin">'</span>bias<span class="string_end">'</span></span><span class="group_end">)</span></span>
+    <span class="constant">Geometry</span>
+    <span class="constant">Path</span>
+    <span class="constant">Intersections</span>
+    <span class="constant">Spline</span><span class="group"><span class="group_begin">(</span><span class="number">1</span><span class="group_end">)</span></span>
+  <span class="punctuation">]</span><span class="group_end">)</span></span><span class="punctuation">.</span><span class="keyword">in</span> <span class="constant">LinearSpline</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='linearsplineconstructor'>LinearSpline::constructor</h4></td>
+          <td class='code'><pre>  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="punctuation">,</span> bias<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@initSpline</span> vertices<span class="punctuation">,</span> bias
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='geometry-api'>Geometry API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='linearsplinepoints'>LinearSpline::points</h4></td>
+          <td class='code'><pre>  <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@vertices</span><span class="punctuation">.</span>concat<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='spline-api'>Spline API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='linearsplinesegments'>LinearSpline::segments</h4></td>
+          <td class='code'><pre>  <span class="property">segments<span class='punctuation'>:</span></span> <span class="function">-></span> <span class="property">@vertices</span><span class="punctuation">.</span>length <span class="operators">-</span> <span class="number">1</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='linearsplinevalidatevertices'>LinearSpline::validateVertices</h4></td>
+          <td class='code'><pre>  <span class="property">validateVertices<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>vertices<span class="group_end">)</span></span> <span class="function">-></span> vertices<span class="punctuation">.</span>length ><span class="operators">=</span> <span class="number">2</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='linearsplinedrawverticesconnections'>LinearSpline::drawVerticesConnections</h4></td>
+          <td class='code'><pre>  <span class="property">drawVerticesConnections<span class='punctuation'>:</span></span> <span class="function">-></span>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">LinearSpline</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
