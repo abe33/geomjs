@@ -7,7 +7,9 @@ module.exports = (config) ->
     'src/geomjs'
   ]
 
-  sources = []
+  sources = [
+    'src/index.coffee'
+  ]
   sources = sources.concat findSync('coffee', d)?.sort() for d in dirs
 
   config.docco.paths.sources = sources.compact()
