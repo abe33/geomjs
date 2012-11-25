@@ -67,6 +67,8 @@ $(document).ready ->
       new geomjs.Point(500,290)
       new geomjs.Point(560,350)
     ])
+
+    new geomjs.Spiral(120, 60, 3, 470, 420, 10, 120)
   ]
 
   options =
@@ -125,6 +127,7 @@ $(document).ready ->
     cubicBezier
     quadBezier
     quintBezier
+    spiral
   ] = geometries
 
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)
@@ -151,6 +154,8 @@ $(document).ready ->
     ellipsis.radius1 = 120 + Math.sin(Math.degToRad(t / 17)) * 20
     ellipsis.radius2 = 60 + Math.cos(Math.degToRad(t / 17)) * 20
     ellipsis.rotation += -d / 60
+
+    # spiral.rotation += -d / 60
 
     diamond.topLength = 50 + Math.sin(Math.degToRad(t / 17)) * 20
     diamond.rightLength = 100 +

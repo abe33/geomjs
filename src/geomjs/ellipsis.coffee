@@ -14,9 +14,11 @@ Parameterizable = require './mixins/parameterizable'
 
 ## Ellipsis
 class Ellipsis
+  PROPERTIES = ['radius1', 'radius2', 'x', 'y', 'rotation', 'segments']
+
   include([
-    Equatable('radius1', 'radius2', 'x', 'y', 'rotation')
-    Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation')
+    Equatable.apply(null, PROPERTIES)
+    Formattable.apply(null,['Ellipsis'].concat PROPERTIES)
     Parameterizable('ellipsisFrom', {
       radius1: 1
       radius2: 1
@@ -25,7 +27,7 @@ class Ellipsis
       rotation: 0
       segments: 36
     })
-    Sourcable('geomjs.Ellipsis','radius1','radius2','x','y')
+    Sourcable.apply(null, ['geomjs.Ellipsis'].concat PROPERTIES)
     Cloneable
     Memoizable
     Geometry
@@ -96,7 +98,8 @@ class Ellipsis
   ##### Ellipsis::points
   #
   points: ->
-    @pathPointAt n / @segments for n in [0..@segments]
+    @memoFor('points').concat() if @memoized 'points'
+    @memoize 'points', (@pathPointAt n / @segments for n in [0..@segments])
 
   ##### Ellipsis::triangles
   #

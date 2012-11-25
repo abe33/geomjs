@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, QuintBezier, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, QuintBezier, Rectangle, Sourcable, Spiral, Spline, Surface, Triangle, Triangulable, include,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -83,7 +83,7 @@
   /* src/geomjs/include.coffee */;
 
 
-  this.geomjs.include = function() {
+  include = function() {
     var mixins;
     mixins = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (Object.prototype.toString.call(mixins[0]).indexOf('Array') >= 0) {
@@ -2347,16 +2347,19 @@
 
 
   Ellipsis = (function() {
+    var PROPERTIES;
+
+    PROPERTIES = ['radius1', 'radius2', 'x', 'y', 'rotation', 'segments'];
 
     include([
-      Equatable('radius1', 'radius2', 'x', 'y', 'rotation'), Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation'), Parameterizable('ellipsisFrom', {
+      Equatable.apply(null, PROPERTIES), Formattable.apply(null, ['Ellipsis'].concat(PROPERTIES)), Parameterizable('ellipsisFrom', {
         radius1: 1,
         radius2: 1,
         x: 0,
         y: 0,
         rotation: 0,
         segments: 36
-      }), Sourcable('geomjs.Ellipsis', 'radius1', 'radius2', 'x', 'y'), Cloneable, Memoizable, Geometry, Surface, Path, Intersections
+      }), Sourcable.apply(null, ['geomjs.Ellipsis'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Surface, Path, Intersections
     ])["in"](Ellipsis);
 
     function Ellipsis(r1, r2, x, y, rot, segments) {
@@ -2405,12 +2408,18 @@
     };
 
     Ellipsis.prototype.points = function() {
-      var n, _i, _ref, _results;
-      _results = [];
-      for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
-        _results.push(this.pathPointAt(n / this.segments));
+      var n;
+      if (this.memoized('points')) {
+        this.memoFor('points').concat();
       }
-      return _results;
+      return this.memoize('points', (function() {
+        var _i, _ref, _results;
+        _results = [];
+        for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
+          _results.push(this.pathPointAt(n / this.segments));
+        }
+        return _results;
+      }).call(this));
     };
 
     Ellipsis.prototype.triangles = function() {
@@ -3101,6 +3110,95 @@
 
   })();
 
+  /* src/geomjs/spiral.coffee */;
+
+
+  Spiral = (function() {
+    var PROPERTIES, memoizationKey;
+
+    PROPERTIES = ['radius1', 'radius2', 'twirl', 'x', 'y', 'rotation', 'segments'];
+
+    include([
+      Equatable.apply(null, PROPERTIES), Formattable.apply(null, ['Spiral'].concat(PROPERTIES)), Parameterizable('spiralFrom', {
+        radius1: 1,
+        radius2: 1,
+        twirl: 1,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        segments: 36
+      }), Sourcable.apply(null, ['geomjs.Spiral'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Path, Intersections
+    ])["in"](Spiral);
+
+    function Spiral(r1, r2, twirl, x, y, rot, segments) {
+      var _ref;
+      _ref = this.spiralFrom(r1, r2, twirl, x, y, rot, segments), this.radius1 = _ref.radius1, this.radius2 = _ref.radius2, this.twirl = _ref.twirl, this.x = _ref.x, this.y = _ref.y, this.rotation = _ref.rotation, this.segments = _ref.segments;
+    }
+
+    Spiral.prototype.center = function() {
+      return new Point(this.x, this.y);
+    };
+
+    Spiral.prototype.ellipsis = function() {
+      if (this.memoized('ellipsis')) {
+        return this.memoFor('ellipsis');
+      }
+      return this.memoize('ellipsis', new Ellipsis(this));
+    };
+
+    Spiral.prototype.points = function() {
+      var center, ellipsis, i, p, points, _i, _ref;
+      if (this.memoized('points')) {
+        return this.memoFor('points').concat();
+      }
+      points = [];
+      center = this.center();
+      ellipsis = this.ellipsis();
+      for (i = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        p = i / this.segments;
+        points.push(this.pathPointAt(p));
+      }
+      return this.memoize('points', points);
+    };
+
+    Spiral.prototype.pathPointAt = function(pos, posBasedOnLength) {
+      var angle, center, ellipsis, pt, _ref;
+      if (posBasedOnLength == null) {
+        posBasedOnLength = true;
+      }
+      center = this.center();
+      ellipsis = this.ellipsis();
+      angle = pos * 360 * this.twirl % 360;
+      pt = (_ref = ellipsis.pointAtAngle(angle)) != null ? _ref.subtract(center).scale(pos) : void 0;
+      return center.add(pt);
+    };
+
+    Spiral.prototype.fill = function() {};
+
+    Spiral.prototype.drawPath = function(context) {
+      var p, points, start, _i, _len, _results;
+      points = this.points();
+      start = points.shift();
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      _results = [];
+      for (_i = 0, _len = points.length; _i < _len; _i++) {
+        p = points[_i];
+        _results.push(context.lineTo(p.x, p.y));
+      }
+      return _results;
+    };
+
+    memoizationKey = function() {
+      return "" + this.radius1 + ";" + this.radius2 + ";" + this.twirl + ";" + this.x + ";" + this.y + ";" + this.rotation + ";" + this.segments;
+    };
+
+    return Spiral;
+
+  })();
+
+  this.geomjs.include = include;
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -3150,5 +3248,7 @@
   this.geomjs.QuadBezier = QuadBezier;
 
   this.geomjs.QuintBezier = QuintBezier;
+
+  this.geomjs.Spiral = Spiral;
 
 }).call(this);

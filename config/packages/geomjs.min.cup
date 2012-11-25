@@ -28,6 +28,7 @@ includes: [
   'src/geomjs/cubic_bezier'
   'src/geomjs/quad_bezier'
   'src/geomjs/quint_bezier'
+  'src/geomjs/spiral'
 ]
 operators: [
   'strip:requires'
