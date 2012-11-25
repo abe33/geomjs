@@ -1,0 +1,350 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/index.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/index.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/</h3>
+            <h1>index.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'><p><h3>Table Of Content</h3>
+<ul class='toc'>
+  <li class='level0'>
+    <a href='#geomjs'>GeomJS</a>
+  </li>
+  <li class='level1'>
+    <a href='#geometries'>Geometries</a>
+  </li>
+  <li class='level2'>
+    <a href='#circle'>Circle</a>
+  </li>
+  <li class='level2'>
+    <a href='#cubicbezier'>CubicBezier</a>
+  </li>
+  <li class='level2'>
+    <a href='#diamond'>Diamond</a>
+  </li>
+  <li class='level2'>
+    <a href='#ellipsis'>Ellipsis</a>
+  </li>
+  <li class='level2'>
+    <a href='#matrix'>Matrix</a>
+  </li>
+  <li class='level2'>
+    <a href='#linearspline'>LinearSpline</a>
+  </li>
+  <li class='level2'>
+    <a href='#point'>Point</a>
+  </li>
+  <li class='level2'>
+    <a href='#polygon'>Polygon</a>
+  </li>
+  <li class='level2'>
+    <a href='#quadbezier'>QuadBezier</a>
+  </li>
+  <li class='level2'>
+    <a href='#quintbezier'>QuintBezier</a>
+  </li>
+  <li class='level2'>
+    <a href='#rectangle'>Rectangle</a>
+  </li>
+  <li class='level2'>
+    <a href='#spiral'>Spiral</a>
+  </li>
+  <li class='level2'>
+    <a href='#triangle'>Triangle</a>
+  </li>
+  <li class='level1'>
+    <a href='#mixins'>Mixins</a>
+  </li>
+  <li class='level2'>
+    <a href='#cloneable'>Cloneable</a>
+  </li>
+  <li class='level2'>
+    <a href='#equatable'>Equatable</a>
+  </li>
+  <li class='level2'>
+    <a href='#formattable'>Formattable</a>
+  </li>
+  <li class='level2'>
+    <a href='#geometry'>Geometry</a>
+  </li>
+  <li class='level2'>
+    <a href='#intersections'>Intersections</a>
+  </li>
+  <li class='level2'>
+    <a href='#memoizable'>Memoizable</a>
+  </li>
+  <li class='level2'>
+    <a href='#mixin'>Mixin</a>
+  </li>
+  <li class='level2'>
+    <a href='#parameterizable'>Parameterizable</a>
+  </li>
+  <li class='level2'>
+    <a href='#path'>Path</a>
+  </li>
+  <li class='level2'>
+    <a href='#sourcable'>Sourcable</a>
+  </li>
+  <li class='level2'>
+    <a href='#spline'>Spline</a>
+  </li>
+  <li class='level2'>
+    <a href='#surface'>Surface</a>
+  </li>
+  <li class='level2'>
+    <a href='#triangulable'>Triangulable</a>
+  </li>
+</ul></p></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h1 id='geomjs'>GeomJS</h1></td>
+          <td class='code'><pre>
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h2 id='geometries'>Geometries</h2></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='circle'>Circle</h3>
+
+<p><a href="./src_geomjs_circle.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Circle<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/circle<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='cubicbezier'>CubicBezier</h3>
+
+<p><a href="./src_geomjs_cubic_bezier.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">CubicBezier<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/cubic_bezier<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='diamond'>Diamond</h3>
+
+<p><a href="./src_geomjs_diamond.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Diamond<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/diamond<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='ellipsis'>Ellipsis</h3>
+
+<p><a href="./src_geomjs_ellipsis.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Ellipsis<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/ellipsis<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='matrix'>Matrix</h3>
+
+<p><a href="./src_geomjs_matrix.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Matrix<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/matrix<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='linearspline'>LinearSpline</h3>
+
+<p><a href="./src_geomjs_linear_spline.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">LinearSpline<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/linear_spline<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='point'>Point</h3>
+
+<p><a href="./src_geomjs_point.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Point<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/point<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='polygon'>Polygon</h3>
+
+<p><a href="./src_geomjs_polygon.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Polygon<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/polygon<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='quadbezier'>QuadBezier</h3>
+
+<p><a href="./src_geomjs_quad_bezier.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">QuadBezier<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/quad_bezier<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='quintbezier'>QuintBezier</h3>
+
+<p><a href="./src_geomjs_quint_bezier.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">QuintBezier<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/quint_bezier<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='rectangle'>Rectangle</h3>
+
+<p><a href="./src_geomjs_rectangle.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Rectangle<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/rectangle<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='spiral'>Spiral</h3>
+
+<p><a href="./src_geomjs_spiral.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Spiral<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/spiral<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='triangle'>Triangle</h3>
+
+<p><a href="./src_geomjs_triangle.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Triangle<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/triangle<span class="string_end">'</span></span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h2 id='mixins'>Mixins</h2></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='cloneable'>Cloneable</h3>
+
+<p><a href="./src_geomjs_mixins_cloneable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Cloneable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/cloneable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='equatable'>Equatable</h3>
+
+<p><a href="./src_geomjs_mixins_equatable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Equatable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/equatable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='formattable'>Formattable</h3>
+
+<p><a href="./src_geomjs_mixins_formattable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Formattable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/formattable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='geometry'>Geometry</h3>
+
+<p><a href="./src_geomjs_mixins_geometry.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Geomtry<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/geometry<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='intersections'>Intersections</h3>
+
+<p><a href="./src_geomjs_mixins_intersections.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Intersections<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/intersections<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='memoizable'>Memoizable</h3>
+
+<p><a href="./src_geomjs_mixins_memoizable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Memoizable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/memoizable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='mixin'>Mixin</h3>
+
+<p><a href="./src_geomjs_mixins_mixin.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Mixin<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/mixin<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='parameterizable'>Parameterizable</h3>
+
+<p><a href="./src_geomjs_mixins_parameterizable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Parameterizable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/parameterizable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='path'>Path</h3>
+
+<p><a href="./src_geomjs_mixins_path.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Path<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/path<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='sourcable'>Sourcable</h3>
+
+<p><a href="./src_geomjs_mixins_sourcable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Sourcable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/sourcable<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='spline'>Spline</h3>
+
+<p><a href="./src_geomjs_mixins_spline.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Spline<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/spline<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='surface'>Surface</h3>
+
+<p><a href="./src_geomjs_mixins_surface.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Surface<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/surface<span class="string_end">'</span></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='triangulable'>Triangulable</h3>
+
+<p><a href="./src_geomjs_mixins_triangulable.html">Go to documentation</a></p></td>
+          <td class='code'><pre>  <span class="property">Triangulable<span class='punctuation'>:</span></span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./geomjs/mixins/triangulable<span class="string_end">'</span></span>
+
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
