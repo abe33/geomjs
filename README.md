@@ -51,11 +51,13 @@ Then require it as follow:
 
 Download ChanceJS and GeomJS packaged version:
 
-[ChanceJS (compressed)](https://raw.github.com/abe33/chancejs/master/packages/chancejs.min.js)
-[ChanceJS (uncompressed)](https://raw.github.com/abe33/chancejs/master/packages/chancejs.js)
+**ChanceJS**:
+ * [uncompressed](https://raw.github.com/abe33/chancejs/master/packages/chancejs.js)
+ * [compressed](https://raw.github.com/abe33/chancejs/master/packages/chancejs.min.js)
 
-[GeomJS (uncompressed)](http://abe33.github.com/geomjs/packages/geomjs.js)
-[GeomJS (compressed)](http://abe33.github.com/geomjs/packages/geomjs.min.js)
+**GeomJS**:
+ * [uncompressed](https://raw.github.com/abe33/geomjs/master/packages/geomjs.js)
+ * [compressed](https://raw.github.com/abe33/geomjs/master/packages/geomjs.min.js)
 
 Adds it your html page:
 
