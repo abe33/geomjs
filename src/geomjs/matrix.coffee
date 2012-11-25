@@ -1,6 +1,7 @@
 # This file define the `Matrix` class used by various class inside geomjs.
 # @toc
 require './math'
+{include} = require './include'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
@@ -29,18 +30,20 @@ class Matrix
   # A list of the proprties to be checked to consider an object as a matrix.
   PROPERTIES = ['a', 'b', 'c', 'd', 'tx', 'ty']
 
-  Equatable.apply(null, PROPERTIES).attachTo Matrix
-  Formattable.apply(null, ['Matrix'].concat PROPERTIES).attachTo Matrix
-  Sourcable.apply(null, ['geomjs.Matrix'].concat PROPERTIES).attachTo Matrix
-  Parameterizable('matrixFrom', {
-    a: 1
-    b: 0
-    c: 0
-    d: 1
-    tx: 0
-    ty: 0
-  }).attachTo Matrix
-  Cloneable.attachTo Matrix
+  include([
+    Equatable.apply(null, PROPERTIES)
+    Formattable.apply(null, ['Matrix'].concat PROPERTIES)
+    Sourcable.apply(null, ['geomjs.Matrix'].concat PROPERTIES)
+    Parameterizable('matrixFrom', {
+      a: 1
+      b: 0
+      c: 0
+      d: 1
+      tx: 0
+      ty: 0
+    })
+    Cloneable
+  ]).in Matrix
 
   #### Class Methods
 

@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Triangle = require './triangle'
 Equatable = require './mixins/equatable'
@@ -14,33 +15,34 @@ Intersections = require './mixins/intersections'
 
 ## Diamond
 class Diamond
-  PROPERTIES = ['x','y','topLength','leftLength','bottomLength','rightLength']
-
-  Formattable.apply(Formattable,['Diamond'].concat PROPERTIES).attachTo Diamond
-  Parameterizable('diamondFrom',{
-    topLength: 1
-    rightLength: 1
-    bottomLength: 1
-    leftLength: 1
-    x: 0
-    y: 0
-    rotation: 0
-  }).attachTo Diamond
-  Sourcable('geomjs.Diamond',
-            'topLength',
-            'rightLength',
-            'bottomLength',
-            'leftLength',
-            'x','y',
-            'rotation'
-  ).attachTo Diamond
-  Equatable.apply(Equatable, PROPERTIES).attachTo Diamond
-  Cloneable.attachTo Diamond
-  Geometry.attachTo Diamond
-  Memoizable.attachTo Diamond
-  Surface.attachTo Diamond
-  Path.attachTo Diamond
-  Intersections.attachTo Diamond
+  PROPERTIES = [
+    'topLength'
+    'rightLength'
+    'bottomLength'
+    'leftLength'
+    'x', 'y'
+    'rotation'
+  ]
+  include([
+    Formattable.apply(Formattable,['Diamond'].concat PROPERTIES)
+    Parameterizable('diamondFrom',{
+      topLength: 1
+      rightLength: 1
+      bottomLength: 1
+      leftLength: 1
+      x: 0
+      y: 0
+      rotation: 0
+    })
+    Sourcable(['geomjs.Diamond'].concat PROPERTIES)
+    Equatable.apply(Equatable, PROPERTIES)
+    Cloneable
+    Geometry
+    Memoizable
+    Surface
+    Path
+    Intersections
+  ]).in Diamond
 
   ##### Diamond::constructor
   #

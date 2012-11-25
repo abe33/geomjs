@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
@@ -12,15 +13,17 @@ Intersections = require './mixins/intersections'
 
 ## Triangle
 class Triangle
-  Equatable('a','b','c').attachTo Triangle
-  Formattable('Triangle','a','b','c').attachTo Triangle
-  Sourcable('geomjs.Triangle','a','b','c').attachTo Triangle
-  Cloneable.attachTo Triangle
-  Memoizable.attachTo Triangle
-  Geometry.attachTo Triangle
-  Surface.attachTo Triangle
-  Path.attachTo Triangle
-  Intersections.attachTo Triangle
+  include([
+    Equatable('a','b','c')
+    Formattable('Triangle','a','b','c')
+    Sourcable('geomjs.Triangle','a','b','c')
+    Cloneable
+    Memoizable
+    Geometry
+    Surface
+    Path
+    Intersections
+  ]).in Triangle
 
   #### Class Methods
 

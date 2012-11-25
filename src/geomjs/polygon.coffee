@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Cloneable = require './mixins/cloneable'
@@ -12,14 +13,16 @@ Intersections = require './mixins/intersections'
 
 ## Polygon
 class Polygon
-  Formattable('Polygon', 'vertices').attachTo Polygon
-  Sourcable('geomjs.Polygon', 'vertices').attachTo Polygon
-  Cloneable.attachTo Polygon
-  Geometry.attachTo Polygon
-  Intersections.attachTo Polygon
-  Triangulable.attachTo Polygon
-  Surface.attachTo Polygon
-  Path.attachTo Polygon
+  include([
+    Formattable('Polygon', 'vertices')
+    Sourcable('geomjs.Polygon', 'vertices')
+    Cloneable
+    Geometry
+    Intersections
+    Triangulable
+    Surface
+    Path
+  ]).in Polygon
 
   #### Class Methods
 

@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
@@ -13,24 +14,25 @@ Parameterizable = require './mixins/parameterizable'
 
 ## Ellipsis
 class Ellipsis
-  Equatable('radius1', 'radius2', 'x', 'y', 'rotation').attachTo Ellipsis
-  Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation')
-    .attachTo Ellipsis
-  Parameterizable('ellipsisFrom', {
-    radius1: 1
-    radius2: 1
-    x: 0
-    y: 0
-    rotation: 0
-    segments: 36
-  }).attachTo Ellipsis
-  Sourcable('geomjs.Ellipsis','radius1','radius2','x','y').attachTo Ellipsis
-  Cloneable.attachTo Ellipsis
-  Memoizable.attachTo Ellipsis
-  Geometry.attachTo Ellipsis
-  Surface.attachTo Ellipsis
-  Path.attachTo Ellipsis
-  Intersections.attachTo Ellipsis
+  include([
+    Equatable('radius1', 'radius2', 'x', 'y', 'rotation')
+    Formattable('Ellipsis', 'radius1', 'radius2', 'x', 'y', 'rotation')
+    Parameterizable('ellipsisFrom', {
+      radius1: 1
+      radius2: 1
+      x: 0
+      y: 0
+      rotation: 0
+      segments: 36
+    })
+    Sourcable('geomjs.Ellipsis','radius1','radius2','x','y')
+    Cloneable
+    Memoizable
+    Geometry
+    Surface
+    Path
+    Intersections
+  ]).in Ellipsis
 
   ##### Ellipsis::constructor
   #

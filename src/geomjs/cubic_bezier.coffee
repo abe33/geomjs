@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Formattable = require './mixins/formattable'
 Sourcable = require './mixins/sourcable'
@@ -9,14 +10,14 @@ Path = require './mixins/path'
 
 ## CubicBezier
 class CubicBezier
-  [
+  include([
     Formattable('CubicBezier')
     Sourcable('geomjs.CubicBezier', 'vertices', 'bias')
     Geometry
     Path
     Intersections
     Spline(3)
-  ].forEach (mixin) -> mixin.attachTo CubicBezier
+  ]).in CubicBezier
 
   ##### CubicBezier::constructor
   #

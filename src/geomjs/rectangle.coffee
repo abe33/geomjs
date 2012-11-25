@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
@@ -16,7 +17,7 @@ chancejs = require 'chancejs'
 class Rectangle
   PROPERTIES = ['x','y','width','height','rotation']
 
-  [
+  include([
     Equatable.apply(null, PROPERTIES)
     Formattable.apply(null, ['Rectangle'].concat PROPERTIES)
     Sourcable.apply(null, ['geomjs.Rectangle'].concat PROPERTIES)
@@ -33,7 +34,7 @@ class Rectangle
     Path
     Triangulable
     Intersections
-  ].forEach (mixin) -> mixin.attachTo Rectangle
+  ]).in Rectangle
 
   ##### Rectangle.eachRectangleRectangleIntersections
   #

@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Formattable = require './mixins/formattable'
 Sourcable = require './mixins/sourcable'
@@ -9,14 +10,14 @@ Path = require './mixins/path'
 
 ## QuadBezier
 class QuadBezier
-  [
+  include([
     Formattable('QuadBezier')
     Sourcable('geomjs.QuadBezier', 'vertices', 'bias')
     Geometry
     Path
     Intersections
     Spline(2)
-  ].forEach (mixin) -> mixin.attachTo QuadBezier
+  ]).in QuadBezier
 
   ##### QuadBezier::constructor
   #

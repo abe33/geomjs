@@ -1,7 +1,7 @@
 # This file define the `Point` primitive used by various entites of geomjs.
 #@toc
 require './math'
-
+{include} = require './include'
 Cloneable = require './mixins/cloneable'
 Equatable = require './mixins/equatable'
 Formattable = require './mixins/formattable'
@@ -22,10 +22,12 @@ Sourcable = require './mixins/sourcable'
 # class. For more details about how to achieve the same behavior in your own
 # functions please refer to the [`Point.pointFrom`](#pointcoordsfrom) method.
 class Point
-  Equatable('x', 'y').attachTo Point
-  Formattable('Point','x', 'y').attachTo Point
-  Sourcable('geomjs.Point', 'x', 'y').attachTo Point
-  Cloneable.attachTo Point
+  include([
+    Equatable('x', 'y')
+    Formattable('Point','x', 'y')
+    Sourcable('geomjs.Point', 'x', 'y')
+    Cloneable
+  ]).in Point
 
   #### Class Methods
 

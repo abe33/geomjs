@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Formattable = require './mixins/formattable'
 Sourcable = require './mixins/sourcable'
@@ -9,14 +10,14 @@ Path = require './mixins/path'
 
 ## LinearSpline
 class LinearSpline
-  [
+  include([
     Formattable('LinearSpline')
     Sourcable('geomjs.LinearSpline', 'vertices', 'bias')
     Geometry
     Path
     Intersections
     Spline(1)
-  ].forEach (mixin) -> mixin.attachTo LinearSpline
+  ]).in LinearSpline
 
   ##### LinearSpline::constructor
   #

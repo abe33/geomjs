@@ -1,4 +1,5 @@
 # @toc
+{include} = require './include'
 Point = require './point'
 Triangle = require './triangle'
 Equatable = require './mixins/equatable'
@@ -14,17 +15,18 @@ Intersections = require './mixins/intersections'
 
 ## Circle
 class Circle
-  Equatable('x','y','radius').attachTo Circle
-  Formattable('Circle','x','y','radius').attachTo Circle
-  Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
-    .attachTo Circle
-  Sourcable('geomjs.Circle', 'radius', 'x', 'y').attachTo Circle
-  Memoizable.attachTo Circle
-  Cloneable.attachTo Circle
-  Geometry.attachTo Circle
-  Surface.attachTo Circle
-  Path.attachTo Circle
-  Intersections.attachTo Circle
+  include([
+    Equatable('x','y','radius')
+    Formattable('Circle','x','y','radius')
+    Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
+    Sourcable('geomjs.Circle', 'radius', 'x', 'y')
+    Memoizable
+    Cloneable
+    Geometry
+    Surface
+    Path
+    Intersections
+  ]).in Circle
 
   ##### Circle.eachIntersections
   #
