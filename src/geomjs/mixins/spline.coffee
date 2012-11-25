@@ -20,6 +20,8 @@ Spline = (segmentSize) ->
       klass::clone = ->
         new klass @vertices.map((pt) -> pt.clone()), @bias
 
+      klass.segmentSize = -> segmentSize
+
     ##### Spline::initSpline
     #
     initSpline: (@vertices, @bias=20) ->

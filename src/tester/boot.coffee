@@ -51,6 +51,14 @@ $(document).ready ->
       new geomjs.Point(100, 240)
       new geomjs.Point(180, 200)
     ])
+
+    new geomjs.QuadBezier([
+      new geomjs.Point(180,350)
+      new geomjs.Point(220,290)
+      new geomjs.Point(260,350)
+      new geomjs.Point(300,410)
+      new geomjs.Point(360,350)
+    ])
   ]
 
   options =
@@ -107,10 +115,12 @@ $(document).ready ->
     polygon
     linearSpline
     cubicBezier
+    quadBezier
   ] = geometries
 
   linearSplinePoints = (pt.clone() for pt in linearSpline.vertices)
   cubicBezierPoints = (pt.clone() for pt in cubicBezier.vertices)
+  quadBezierPoints = (pt.clone() for pt in quadBezier.vertices)
 
   animate = (n) ->
     n = new Date().valueOf() if isNaN n
@@ -150,8 +160,14 @@ $(document).ready ->
     cubicBezier.vertices.forEach (vertex, i) ->
       v = cubicBezierPoints[i]
       i += 1
-      vertex.x = v.x + Math.cos(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
-      vertex.y = v.y + Math.sin(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+      vertex.x = v.x + Math.cos(i+1+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+      vertex.y = v.y + Math.sin(i+1+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+
+    quadBezier.vertices.forEach (vertex, i) ->
+      v = quadBezierPoints[i]
+      i += 1
+      vertex.x = v.x + Math.cos(i+3+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+      vertex.y = v.y + Math.sin(i+3+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
 
     polygon.rotateAroundCenter(d / 80)
     polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120)

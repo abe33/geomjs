@@ -32,7 +32,9 @@ testPropertyLength = (property, source, expected) ->
       expect(this[source][property].length).toBeClose(expected)
 
 global.testIntersectionsMethodsOf = (klass) ->
-  vertices = (point(i,0) for i in [0..3])
+  segmentSize = klass.segmentSize()
+  mid = segmentSize / 2
+  vertices = (point(i,0) for i in [0..segmentSize])
   describe "when instanciated with #{vertices}", ->
     beforeEach ->
       addPointMatchers this
@@ -41,7 +43,7 @@ global.testIntersectionsMethodsOf = (klass) ->
     describe 'its intersects method', ->
       describe 'called with a simple line crossing it in the middle', ->
         it 'should return true', ->
-          expect(@spline.intersects points: -> [point(1.5,-1),point(1.5,1)])
+          expect(@spline.intersects points: -> [point(mid,-1),point(mid,1)])
           .toBeTruthy()
 
       describe 'called with a simple line not crossing it', ->
@@ -52,10 +54,10 @@ global.testIntersectionsMethodsOf = (klass) ->
     describe 'its intersections method', ->
       describe 'called with a simple line crossing it in the middle', ->
         it 'should return true', ->
-          intersections = @spline.intersections points: -> [ point(1.5,-1),
-                                                             point(1.5,1) ]
+          intersections = @spline.intersections points: -> [ point(mid,-1),
+                                                             point(mid,1) ]
           expect(intersections.length).toBe(1)
-          expect(intersections[0]).toBePoint(1.5,0)
+          expect(intersections[0]).toBePoint(mid,0)
 
       describe 'called with a simple line not crossing it', ->
         it 'should return false', ->
@@ -64,8 +66,9 @@ global.testIntersectionsMethodsOf = (klass) ->
           expect(intersections).toBeNull()
 
 global.testPathMethodsOf = (klass) ->
-  hpoints = (point(i,0) for i in [0..3])
-  vpoints = (point(0,i) for i in [0..3])
+  segmentSize = klass.segmentSize()
+  hpoints = (point(i,0) for i in [0..segmentSize])
+  vpoints = (point(0,i) for i in [0..segmentSize])
   [hpoints, vpoints].forEach (vertices) ->
     describe "when instanciated with #{vertices}", ->
       beforeEach ->
@@ -76,17 +79,17 @@ global.testPathMethodsOf = (klass) ->
         describe 'called with 0', ->
           it 'should return the first vertice', ->
             expect(@spline.pathPointAt 0)
-            .toBeSamePoint(vertices[0])
+            .toBeSamePoint(vertices.first())
 
         describe 'called with 0.5', ->
           it 'should return the first vertice', ->
             expect(@spline.pathPointAt 0.5)
-            .toBeSamePoint(vertices[0].add vertices[3].scale(0.5))
+            .toBeSamePoint(vertices.first().add vertices.last().scale(0.5))
 
         describe 'called with 1', ->
           it 'should return the last vertice', ->
             expect(@spline.pathPointAt 1)
-            .toBeSamePoint(vertices[3])
+            .toBeSamePoint(vertices.last())
 
 global.spline = (source) ->
   shouldBe:

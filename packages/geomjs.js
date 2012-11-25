@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, Rectangle, Sourcable, Spline, Surface, Triangle, Triangulable,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -857,10 +857,13 @@
       Memoizable.attachTo(ConcretSpline);
 
       ConcretSpline.included = function(klass) {
-        return klass.prototype.clone = function() {
+        klass.prototype.clone = function() {
           return new klass(this.vertices.map(function(pt) {
             return pt.clone();
           }), this.bias);
+        };
+        return klass.segmentSize = function() {
+          return segmentSize;
         };
       };
 
@@ -3092,6 +3095,46 @@
 
   })();
 
+  /* src/geomjs/quad_bezier.coffee */;
+
+
+  QuadBezier = (function() {
+
+    [Formattable('QuadBezier'), Sourcable('geomjs.QuadBezier', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(2)].forEach(function(mixin) {
+      return mixin.attachTo(QuadBezier);
+    });
+
+    function QuadBezier(vertices, bias) {
+      if (bias == null) {
+        bias = 20;
+      }
+      this.initSpline(vertices, bias);
+    }
+
+    QuadBezier.prototype.pointInSegment = function(t, seg) {
+      var pt;
+      pt = new Point();
+      pt.x = (seg[0].x * this.b1(t)) + (seg[1].x * this.b2(t)) + (seg[2].x * this.b3(t));
+      pt.y = (seg[0].y * this.b1(t)) + (seg[1].y * this.b2(t)) + (seg[2].y * this.b3(t));
+      return pt;
+    };
+
+    QuadBezier.prototype.b1 = function(t) {
+      return (1 - t) * (1 - t);
+    };
+
+    QuadBezier.prototype.b2 = function(t) {
+      return 2 * t * (1 - t);
+    };
+
+    QuadBezier.prototype.b3 = function(t) {
+      return t * t;
+    };
+
+    return QuadBezier;
+
+  })();
+
   this.geomjs.Mixin = Mixin;
 
   this.geomjs.Equatable = Equatable;
@@ -3137,5 +3180,7 @@
   this.geomjs.LinearSpline = LinearSpline;
 
   this.geomjs.CubicBezier = CubicBezier;
+
+  this.geomjs.QuadBezier = QuadBezier;
 
 }).call(this);

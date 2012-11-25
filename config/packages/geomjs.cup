@@ -25,6 +25,7 @@ includes: [
   'src/geomjs/polygon'
   'src/geomjs/linear_spline'
   'src/geomjs/cubic_bezier'
+  'src/geomjs/quad_bezier'
 ]
 operators: [
   'strip:requires'
