@@ -3168,7 +3168,7 @@
       }
       center = this.center();
       ellipsis = this.ellipsis();
-      angle = pos * 360 * this.twirl % 360;
+      angle = this.rotation + pos * 360 * this.twirl % 360;
       pt = (_ref = ellipsis.pointAtAngle(angle)) != null ? _ref.subtract(center).scale(pos) : void 0;
       return center.add(pt);
     };

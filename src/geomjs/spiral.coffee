@@ -36,6 +36,8 @@ class Spiral
     Intersections
   ]).in Spiral
 
+  ##### Spiral::constructor
+  #
   constructor: (r1, r2, twirl, x, y, rot, segments) ->
     {
       @radius1
@@ -47,12 +49,18 @@ class Spiral
       @segments
     } = @spiralFrom r1, r2, twirl, x, y, rot, segments
 
+  ##### Spiral::center
+  #
   center: -> new Point @x, @y
 
+  ##### Spiral::ellipsis
+  #
   ellipsis: ->
     return @memoFor 'ellipsis' if @memoized 'ellipsis'
     @memoize 'ellipsis', new Ellipsis this
 
+  ##### Spiral::points
+  #
   points: ->
     return @memoFor('points').concat() if @memoized 'points'
     points = []
@@ -65,15 +73,19 @@ class Spiral
 
     @memoize 'points', points
 
+  ##### Spiral::pathPointAt
+  #
   pathPointAt: (pos, posBasedOnLength=true) ->
     center = @center()
     ellipsis = @ellipsis()
-    angle = pos * 360 * @twirl % 360
+    angle = @rotation + pos * 360 * @twirl % 360
     pt = ellipsis.pointAtAngle(angle)?.subtract(center).scale(pos)
     center.add pt
 
   fill: ->
 
+  ##### Spiral::drawPath
+  #
   drawPath: (context) ->
     points = @points()
     start = points.shift()
@@ -81,6 +93,8 @@ class Spiral
     context.moveTo(start.x,start.y)
     context.lineTo(p.x,p.y) for p in points
 
+  ##### Spiral::memoizationKey
+  #
   memoizationKey = ->
     "#{@radius1};#{@radius2};#{@twirl};#{@x};#{@y};#{@rotation};#{@segments}"
 
