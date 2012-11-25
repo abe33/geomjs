@@ -16,12 +16,12 @@ Mixin = require './mixin'
 #       constructor: (@p1, @p2) ->
 #         # ...
 #
-#       # no arguments, this is not a cache!
-#       heavyMethod: ->
-#         return @memoFor 'heavyMethod' if @memoized 'heavyMethod'
+#       heavyMethod: (arg) ->
+#         key = "heavyMethod-#{arg}"
+#         return @memoFor key if @memoized key
 #
 #         # do costly computation
-#         @memoize 'heavyMethod', result
+#         @memoize key, result
 #
 #       memoizationKey: -> "#{p1};#{p2}"
 class Memoizable extends Mixin
