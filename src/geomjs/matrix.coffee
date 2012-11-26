@@ -94,7 +94,7 @@ class Matrix
   # Returns a new point corresponding to the transformation
   # of the passed-in point by the current matrix.
   #
-  #     point = new Point, 10, 0
+  #     point = new Point 10, 0
   #
   #     matrix = new Matrix().scale(2,2).rotate(90)
   #
