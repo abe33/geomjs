@@ -38,7 +38,7 @@ class Mixin
   #     class Dummy
   #       DummyMixin.attachTo Dummy
   @attachTo: (klass) ->
-    klass::[k] = v for k,v of this.prototype
+    klass::[k] = v for k,v of this.prototype when k isnt 'constructor'
     @included? klass
 
 module.exports = Mixin
