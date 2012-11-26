@@ -21,6 +21,7 @@ describe 'LinearSpline', ->
       expect(@spline.vertices[2]).toBePoint(3,0)
       expect(@spline.vertices[3]).toBePoint(6,0)
 
+
     spline(source).shouldBe.cloneable()
     spline(source).shouldBe.formattable('LinearSpline')
     spline(source).shouldBe.sourcable('geomjs.LinearSpline')
@@ -35,6 +36,12 @@ describe 'LinearSpline', ->
     spline(source).shouldValidateWith(2).vertices()
 
     lengthOf(source).shouldBe(9)
+
+    # Geometry API
+    geometry(source).shouldBe.openGeometry()
+    geometry(source).shouldBe.translatable()
+    geometry(source).shouldBe.rotatable()
+    geometry(source).shouldBe.scalable()
 
   testPathMethodsOf(LinearSpline)
   testIntersectionsMethodsOf(LinearSpline)

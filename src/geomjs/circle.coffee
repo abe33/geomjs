@@ -113,6 +113,28 @@ class Circle
   # See
   # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
+  #### Circle Manipulation
+
+  ##### Circle::translate
+  #
+  translate: (xOrPt, y) ->
+    {x,y} = Point.pointFrom xOrPt, y
+
+    @x += x
+    @y += y
+    this
+
+  ##### Circle::rotate
+  #
+  # Rotate does not have a rotation, so this method do nothing
+  rotate: -> this
+
+  ##### Circle::scale
+  #
+  scale: (scale) ->
+    @radius *= scale
+    this
+
   #### Geometry API
 
   ##### Circle::points
@@ -133,7 +155,6 @@ class Circle
       triangles.push new Triangle center, points[i-1], points[i]
 
     @memoize 'triangles', triangles
-
 
   ##### Circle::closedGeometry
   #

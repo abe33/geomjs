@@ -59,7 +59,7 @@ Download ChanceJS and GeomJS packaged version:
  * [uncompressed](https://raw.github.com/abe33/geomjs/master/packages/geomjs.js)
  * [compressed](https://raw.github.com/abe33/geomjs/master/packages/geomjs.min.js)
 
-Adds it your html page:
+Adds it in your html page:
 
     <script src='./chancejs.min.js'></script>
     <script src='./geomjs.min.js'></script>

@@ -151,23 +151,31 @@ class Triangle
     @c.x += pt.x; @c.y += pt.y
     this
 
-  ##### Triangle::rotateAroundCenter
+  ##### Triangle::rotate
   #
-  rotateAroundCenter: (rotation) ->
+  rotate: (rotation) ->
     center = @center()
     @a = @a.rotateAround center, rotation
     @b = @b.rotateAround center, rotation
     @c = @c.rotateAround center, rotation
     this
 
-  ##### Triangle::scaleAroundCenter
+  ##### Triangle::scale
   #
-  scaleAroundCenter: (scale) ->
+  scale: (scale) ->
     center = @center()
     @a = center.add @a.subtract(center).scale(scale)
     @b = center.add @b.subtract(center).scale(scale)
     @c = center.add @c.subtract(center).scale(scale)
     this
+
+  ##### Triangle::rotateAroundCenter
+  #
+  rotateAroundCenter: Triangle::rotate
+
+  ##### Triangle::scaleAroundCenter
+  #
+  scaleAroundCenter: Triangle::scale
 
   #### Geometry API
 

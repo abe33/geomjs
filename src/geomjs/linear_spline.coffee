@@ -28,7 +28,7 @@ class LinearSpline
 
   ##### LinearSpline::points
   #
-  points: -> @vertices.concat()
+  points: -> vertex.clone() for vertex in @vertices
 
   #### Spline API
 

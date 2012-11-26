@@ -29,6 +29,12 @@ describe 'QuintBezier', ->
 
     spline(source).shouldValidateWith(5).vertices()
 
+    # Geometry API
+    geometry(source).shouldBe.openGeometry()
+    geometry(source).shouldBe.translatable()
+    geometry(source).shouldBe.rotatable()
+    geometry(source).shouldBe.scalable()
+
   testPathMethodsOf(QuintBezier)
   testIntersectionsMethodsOf(QuintBezier)
 

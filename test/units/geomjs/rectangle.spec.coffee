@@ -267,7 +267,10 @@ describe 'Rectangle', ->
         lengthOf(source).shouldBe(length)
 
         # Geometry API
-        shouldBeClosedGeometry(source)
+        geometry(source).shouldBe.closedGeometry()
+        geometry(source).shouldBe.translatable()
+        geometry(source).shouldBe.rotatable()
+        geometry(source).shouldBe.scalable()
 
         describe 'its bounds method', ->
           it 'should return the bounds of the rectangle', ->

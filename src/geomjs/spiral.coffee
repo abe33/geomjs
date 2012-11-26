@@ -59,6 +59,31 @@ class Spiral
     return @memoFor 'ellipsis' if @memoized 'ellipsis'
     @memoize 'ellipsis', new Ellipsis this
 
+  #### Spiral Manipulation
+
+  ##### Spiral::translate
+  #
+  translate: (x,y) ->
+    {x,y} = Point.pointFrom x, y
+    @x += x
+    @y += y
+    this
+
+  ##### Spiral::rotate
+  #
+  rotate: (rotation) ->
+    @rotation += rotation
+    this
+
+  ##### Spiral::scale
+  #
+  scale: (scale) ->
+    @radius1 *= scale
+    @radius2 *= scale
+    this
+
+  #### Geometry API
+
   ##### Spiral::points
   #
   points: ->
@@ -73,6 +98,8 @@ class Spiral
 
     @memoize 'points', points
 
+  #### Path API
+
   ##### Spiral::pathPointAt
   #
   pathPointAt: (pos, posBasedOnLength=true) ->
@@ -82,6 +109,10 @@ class Spiral
     pt = ellipsis.pointAtAngle(angle)?.subtract(center).scale(pos)
     center.add pt
 
+  #### Drawing API
+
+  ##### Spiral::fill
+  #
   fill: ->
 
   ##### Spiral::drawPath

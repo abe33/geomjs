@@ -72,21 +72,29 @@ class Polygon
       vertex.y += y
     this
 
-  ##### Polygon::rotateAroundCenter
+  ##### Polygon::rotate
   #
-  rotateAroundCenter: (rotation=0) ->
+  rotate: (rotation) ->
     center = @center()
     for vertex,i in @vertices
       @vertices[i] = vertex.rotateAround center, rotation
     this
 
-  ##### Polygon::scaleAroundCenter
+  ##### Polygon::scale
   #
-  scaleAroundCenter: (scale) ->
+  scale: (scale) ->
     center = @center()
     for vertex,i in @vertices
       @vertices[i] = center.add vertex.subtract(center).scale(scale)
     this
+
+  ##### Polygon::rotateAroundCenter
+  #
+  rotateAroundCenter: Polygon::rotate
+
+  ##### Polygon::scaleAroundCenter
+  #
+  scaleAroundCenter: Polygon::scale
 
   #### Bounds
 
@@ -125,7 +133,8 @@ class Polygon
 
   ##### Polygon::points
   #
-  points: -> @vertices.concat @vertices[0]
+  points: ->
+    (vertex.clone() for vertex in @vertices).concat(@vertices[0].clone())
 
   ##### Polygon::triangles
   #

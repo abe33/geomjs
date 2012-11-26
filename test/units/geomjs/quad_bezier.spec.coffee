@@ -27,6 +27,12 @@ describe 'QuadBezier', ->
 
     spline(source).shouldValidateWith(3).vertices()
 
+    # Geometry API
+    geometry(source).shouldBe.openGeometry()
+    geometry(source).shouldBe.translatable()
+    geometry(source).shouldBe.rotatable()
+    geometry(source).shouldBe.scalable()
+
   testPathMethodsOf(QuadBezier)
   testIntersectionsMethodsOf(QuadBezier)
 

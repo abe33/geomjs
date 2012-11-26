@@ -109,7 +109,9 @@ describe 'Circle', ->
         it 'should returns the circle bounds', ->
           expect(@circle.bounds()).toEqual(data.bounds)
 
-      shouldBeClosedGeometry(source)
+      geometry(source).shouldBe.closedGeometry()
+      geometry(source).shouldBe.translatable()
+      geometry(source).shouldBe.scalable()
 
       # Drawing API
       testDrawingOf(source)

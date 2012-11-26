@@ -14,6 +14,7 @@ describe 'Polygon', ->
   polygonFactories.map (k,v) ->
     {args, test} = v
     data = polygonData.call global, test()
+    source = 'polygon'
 
     describe "called #{k}", ->
       beforeEach ->
@@ -51,13 +52,6 @@ describe 'Polygon', ->
           it 'should return false', ->
             expect(@polygon.contains -10, -10).toBeFalsy()
 
-      describe 'its translate method', ->
-        it 'should move the polygon', ->
-          @polygon.translate 2, 2
-          for vertex,i in @polygon.vertices
-            expect(vertex).toBePoint(data.vertices[i].x + 2,
-                                     data.vertices[i].y + 2)
-
       describe 'its rotateAroundCenter method', ->
         it 'should rotate the polygon', ->
           center = @polygon.center()
@@ -74,10 +68,13 @@ describe 'Polygon', ->
             pt = center.add data.vertices[i].subtract(center).scale(2)
             expect(vertex).toBeSamePoint(pt)
 
-      acreageOf('polygon').shouldBe(16)
-      lengthOf('polygon').shouldBe(16)
+      acreageOf(source).shouldBe(16)
+      lengthOf(source).shouldBe(16)
 
-      shouldBeClosedGeometry('polygon')
+      geometry(source).shouldBe.closedGeometry()
+      geometry(source).shouldBe.translatable()
+      geometry(source).shouldBe.rotatable()
+      geometry(source).shouldBe.scalable()
 
       # Drawing API
-      testDrawingOf('polygon')
+      testDrawingOf(source)

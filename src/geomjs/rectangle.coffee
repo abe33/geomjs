@@ -167,22 +167,41 @@ class Rectangle
     @y += pt.y
     this
 
-  ##### Rectangle::rotateAroundCenter
+  ##### Rectangle::translate
   #
-  rotateAroundCenter: (rotation) ->
+  translate: (xOrPt, y) ->
+    pt = Point.pointFrom(xOrPt, y)
+
+    @x += pt.x
+    @y += pt.y
+    this
+
+  ##### Rectangle::rotate
+  #
+  rotate: (rotation) ->
     {@x,@y} = @topLeft().rotateAround(@center(), rotation)
     @rotation += rotation
     this
 
-  ##### Rectangle::scaleAroundCenter
+  ##### Rectangle::scale
   #
-  scaleAroundCenter: (scale) ->
+  scale: (scale) ->
     topLeft = @topLeft()
     dif = topLeft.subtract(@center()).scale(scale)
     {@x,@y} = topLeft.add(dif.scale(1 / 2))
     @width *= scale
     @height *= scale
     this
+
+  ##### Rectangle::rotateAroundCenter
+  #
+  # `Rectangle::rotate` alias.
+  rotateAroundCenter: Rectangle::rotate
+
+  ##### Rectangle::scaleAroundCenter
+  #
+  # `Rectangle::scale` alias.
+  scaleAroundCenter: Rectangle::scale
 
   ##### Rectangle::inflateAroundCenter
   #

@@ -55,4 +55,10 @@ describe 'Spiral', ->
             @spiral.rotation,
             @spiral.segments)
 
+      # Geometry API
+      geometry(source).shouldBe.openGeometry()
+      geometry(source).shouldBe.translatable()
+      geometry(source).shouldBe.rotatable()
+      geometry(source).shouldBe.scalable()
+
 

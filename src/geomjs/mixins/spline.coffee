@@ -28,6 +28,48 @@ Spline = (segmentSize) ->
       unless @validateVertices @vertices
         throw new Error "The number of vertices for #{this} doesn't match"
 
+    ##### Spline::center
+    #
+    center: ->
+      x = y = 0
+
+      for vertex in @vertices
+        x += vertex.x
+        y += vertex.y
+
+      x = x / @vertices.length
+      y = y / @vertices.length
+
+      new Point x, y
+
+    #### Spline Manipulation
+
+    ##### Spline::translate
+    #
+    translate: (x,y) ->
+      {x,y} = Point.pointFrom x,y
+      for vertex,i in @vertices
+        @vertices[i] = vertex.add x, y
+      this
+
+    ##### Spline::rotate
+    #
+    rotate: (rotation) ->
+      center = @center()
+      for vertex,i in @vertices
+        @vertices[i] = vertex.rotateAround center, rotation
+      this
+
+    ##### Spline::scale
+    #
+    scale: (scale) ->
+      center = @center()
+      for vertex,i in @vertices
+        @vertices[i] = center.add vertex.subtract(center).scale(scale)
+      this
+
+    #### Geometry API
+
     ##### Spline::points
     #
     points: ->

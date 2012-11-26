@@ -893,6 +893,53 @@
         }
       };
 
+      ConcretSpline.prototype.center = function() {
+        var vertex, x, y, _i, _len, _ref;
+        x = y = 0;
+        _ref = this.vertices;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          vertex = _ref[_i];
+          x += vertex.x;
+          y += vertex.y;
+        }
+        x = x / this.vertices.length;
+        y = y / this.vertices.length;
+        return new Point(x, y);
+      };
+
+      ConcretSpline.prototype.translate = function(x, y) {
+        var i, vertex, _i, _len, _ref, _ref1;
+        _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
+        _ref1 = this.vertices;
+        for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
+          vertex = _ref1[i];
+          this.vertices[i] = vertex.add(x, y);
+        }
+        return this;
+      };
+
+      ConcretSpline.prototype.rotate = function(rotation) {
+        var center, i, vertex, _i, _len, _ref;
+        center = this.center();
+        _ref = this.vertices;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          vertex = _ref[i];
+          this.vertices[i] = vertex.rotateAround(center, rotation);
+        }
+        return this;
+      };
+
+      ConcretSpline.prototype.scale = function(scale) {
+        var center, i, vertex, _i, _len, _ref;
+        center = this.center();
+        _ref = this.vertices;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          vertex = _ref[i];
+          this.vertices[i] = center.add(vertex.subtract(center).scale(scale));
+        }
+        return this;
+      };
+
       ConcretSpline.prototype.points = function() {
         var i, points, segments;
         if (this.memoized('points')) {
@@ -1668,14 +1715,22 @@
       return this;
     };
 
-    Rectangle.prototype.rotateAroundCenter = function(rotation) {
+    Rectangle.prototype.translate = function(xOrPt, y) {
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.x += pt.x;
+      this.y += pt.y;
+      return this;
+    };
+
+    Rectangle.prototype.rotate = function(rotation) {
       var _ref;
       _ref = this.topLeft().rotateAround(this.center(), rotation), this.x = _ref.x, this.y = _ref.y;
       this.rotation += rotation;
       return this;
     };
 
-    Rectangle.prototype.scaleAroundCenter = function(scale) {
+    Rectangle.prototype.scale = function(scale) {
       var dif, topLeft, _ref;
       topLeft = this.topLeft();
       dif = topLeft.subtract(this.center()).scale(scale);
@@ -1684,6 +1739,10 @@
       this.height *= scale;
       return this;
     };
+
+    Rectangle.prototype.rotateAroundCenter = Rectangle.prototype.rotate;
+
+    Rectangle.prototype.scaleAroundCenter = Rectangle.prototype.scale;
 
     Rectangle.prototype.inflateAroundCenter = function(xOrPt, y) {
       var center;
@@ -1994,7 +2053,7 @@
       return this;
     };
 
-    Triangle.prototype.rotateAroundCenter = function(rotation) {
+    Triangle.prototype.rotate = function(rotation) {
       var center;
       center = this.center();
       this.a = this.a.rotateAround(center, rotation);
@@ -2003,7 +2062,7 @@
       return this;
     };
 
-    Triangle.prototype.scaleAroundCenter = function(scale) {
+    Triangle.prototype.scale = function(scale) {
       var center;
       center = this.center();
       this.a = center.add(this.a.subtract(center).scale(scale));
@@ -2011,6 +2070,10 @@
       this.c = center.add(this.c.subtract(center).scale(scale));
       return this;
     };
+
+    Triangle.prototype.rotateAroundCenter = Triangle.prototype.rotate;
+
+    Triangle.prototype.scaleAroundCenter = Triangle.prototype.scale;
 
     Triangle.prototype.closedGeometry = function() {
       return true;
@@ -2243,6 +2306,23 @@
       return this.x + this.radius;
     };
 
+    Circle.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Circle.prototype.rotate = function() {
+      return this;
+    };
+
+    Circle.prototype.scale = function(scale) {
+      this.radius *= scale;
+      return this;
+    };
+
     Circle.prototype.points = function() {
       var n, step, _i, _ref, _results;
       step = 360 / this.segments;
@@ -2407,6 +2487,25 @@
       });
     };
 
+    Ellipsis.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Ellipsis.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Ellipsis.prototype.scale = function(scale) {
+      this.radius1 *= scale;
+      this.radius2 *= scale;
+      return this;
+    };
+
     Ellipsis.prototype.points = function() {
       var n;
       if (this.memoized('points')) {
@@ -2441,14 +2540,19 @@
     };
 
     Ellipsis.prototype.pointAtAngle = function(angle) {
-      var center, vec, _ref;
-      center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
-      return (_ref = this.intersections({
-        points: function() {
-          return [center, vec];
-        }
-      })) != null ? _ref[0] : void 0;
+      var a, p, ratio, vec;
+      a = Math.degToRad(angle - this.rotation);
+      ratio = this.radius1 / this.radius2;
+      vec = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius1);
+      if (this.radius1 < this.radius2) {
+        vec.x = vec.x / ratio;
+      }
+      if (this.radius1 > this.radius2) {
+        vec.y = vec.y * ratio;
+      }
+      a = Math.degToRad(vec.angle());
+      p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
+      return this.center().add(p.rotate(this.rotation));
     };
 
     Ellipsis.prototype.acreage = function() {
@@ -2648,6 +2752,27 @@
       return Math.max(this.topCorner().x, this.bottomCorner().x, this.leftCorner().x, this.rightCorner().x);
     };
 
+    Diamond.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Diamond.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Diamond.prototype.scale = function(scale) {
+      this.topLength *= scale;
+      this.bottomLength *= scale;
+      this.rightLength *= scale;
+      this.leftLength *= scale;
+      return this;
+    };
+
     Diamond.prototype.points = function() {
       var t;
       return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
@@ -2834,11 +2959,8 @@
       return this;
     };
 
-    Polygon.prototype.rotateAroundCenter = function(rotation) {
+    Polygon.prototype.rotate = function(rotation) {
       var center, i, vertex, _i, _len, _ref;
-      if (rotation == null) {
-        rotation = 0;
-      }
       center = this.center();
       _ref = this.vertices;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
@@ -2848,7 +2970,7 @@
       return this;
     };
 
-    Polygon.prototype.scaleAroundCenter = function(scale) {
+    Polygon.prototype.scale = function(scale) {
       var center, i, vertex, _i, _len, _ref;
       center = this.center();
       _ref = this.vertices;
@@ -2859,8 +2981,22 @@
       return this;
     };
 
+    Polygon.prototype.rotateAroundCenter = Polygon.prototype.rotate;
+
+    Polygon.prototype.scaleAroundCenter = Polygon.prototype.scale;
+
     Polygon.prototype.points = function() {
-      return this.vertices.concat(this.vertices[0]);
+      var vertex;
+      return ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.vertices;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          vertex = _ref[_i];
+          _results.push(vertex.clone());
+        }
+        return _results;
+      }).call(this)).concat(this.vertices[0].clone());
     };
 
     Polygon.prototype.closedGeometry = function() {
@@ -2967,7 +3103,14 @@
     }
 
     LinearSpline.prototype.points = function() {
-      return this.vertices.concat();
+      var vertex, _i, _len, _ref, _results;
+      _ref = this.vertices;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        vertex = _ref[_i];
+        _results.push(vertex.clone());
+      }
+      return _results;
     };
 
     LinearSpline.prototype.segments = function() {
@@ -3144,6 +3287,25 @@
         return this.memoFor('ellipsis');
       }
       return this.memoize('ellipsis', new Ellipsis(this));
+    };
+
+    Spiral.prototype.translate = function(x, y) {
+      var _ref;
+      _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Spiral.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Spiral.prototype.scale = function(scale) {
+      this.radius1 *= scale;
+      this.radius2 *= scale;
+      return this;
     };
 
     Spiral.prototype.points = function() {

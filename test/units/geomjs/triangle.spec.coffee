@@ -195,7 +195,10 @@ describe 'Triangle', ->
           expect(points[2]).toBeSamePoint(data.c)
           expect(points[3]).toBeSamePoint(data.a)
 
-      shouldBeClosedGeometry(source)
+      geometry(source).shouldBe.closedGeometry()
+      geometry(source).shouldBe.translatable()
+      geometry(source).shouldBe.rotatable()
+      geometry(source).shouldBe.scalable()
 
       ['top', 'left', 'bottom', 'right'].forEach (k) ->
         describe "its #{k} method", ->

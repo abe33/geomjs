@@ -225,6 +225,32 @@ class Diamond
   # See
   # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
+  #### Diamond Manipulation
+
+  ##### Diamond::translate
+  #
+  translate: (xOrPt, y) ->
+    {x,y} = Point.pointFrom xOrPt, y
+
+    @x += x
+    @y += y
+    this
+
+  ##### Diamond::rotate
+  #
+  rotate: (rotation) ->
+    @rotation += rotation
+    this
+
+  ##### Diamond::scale
+  #
+  scale: (scale) ->
+    @topLength *= scale
+    @bottomLength *= scale
+    @rightLength *= scale
+    @leftLength *= scale
+    this
+
   #### Geometry API
 
   ##### Diamond::points

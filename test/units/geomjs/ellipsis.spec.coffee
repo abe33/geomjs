@@ -49,7 +49,10 @@ describe 'Ellipsis', ->
           expect(res).toBeFalsy()
 
       # Geometry API
-      shouldBeClosedGeometry(source)
+      geometry(source).shouldBe.closedGeometry()
+      geometry(source).shouldBe.translatable()
+      geometry(source).shouldBe.rotatable()
+      geometry(source).shouldBe.scalable()
 
       describe 'its top method', ->
         it 'should returns the ellipsis top', ->

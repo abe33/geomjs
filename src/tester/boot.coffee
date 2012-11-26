@@ -155,7 +155,8 @@ $(document).ready ->
     ellipsis.radius2 = 60 + Math.cos(Math.degToRad(t / 17)) * 20
     ellipsis.rotation += -d / 60
 
-    # spiral.rotation += -d / 60
+    spiral.rotate -d / 60
+    spiral.scale 1 + Math.cos(Math.degToRad(t / 10)) / 120
 
     diamond.topLength = 50 + Math.sin(Math.degToRad(t / 17)) * 20
     diamond.rightLength = 100 +

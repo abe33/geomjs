@@ -93,6 +93,30 @@ class Ellipsis
   # See
   # [Geometry.boundingbox](src_geomjs_mixins_geometry.html#geometryboundingbox)
 
+  #### Ellipsis Manipulation
+
+  ##### Ellipsis::translate
+  #
+  translate: (xOrPt, y) ->
+    {x,y} = Point.pointFrom xOrPt, y
+
+    @x += x
+    @y += y
+    this
+
+  ##### Ellipsis::rotate
+  #
+  rotate: (rotation) ->
+    @rotation += rotation
+    this
+
+  ##### Ellipsis::scale
+  #
+  scale: (scale) ->
+    @radius1 *= scale
+    @radius2 *= scale
+    this
+
   #### Geometry API
 
   ##### Ellipsis::points
@@ -122,10 +146,15 @@ class Ellipsis
   ##### Ellipsis::pointAtAngle
   #
   pointAtAngle: (angle) ->
-    center = @center()
-    vec = center.add Math.cos(Math.degToRad(angle))*10000,
-                     Math.sin(Math.degToRad(angle))*10000
-    @intersections(points: -> [center, vec])?[0]
+    a = Math.degToRad angle - @rotation
+    ratio = @radius1 / @radius2
+    vec = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius1
+    vec.x = vec.x / ratio if @radius1 < @radius2
+    vec.y = vec.y * ratio if @radius1 > @radius2
+    a = Math.degToRad(vec.angle())
+    p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
+
+    @center().add p.rotate(@rotation)
 
   ##### Ellipsis::intersects
   #
