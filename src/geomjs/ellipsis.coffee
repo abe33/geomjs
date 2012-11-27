@@ -255,7 +255,8 @@ class Ellipsis
 
   ##### Circle::memoizationKey
   #
-  memoizationKey: -> "#{@radius1};#{@radius2};#{@x};#{@y};#{@segments}"
+  memoizationKey: ->
+    "#{@radius1};#{@radius2};#{@x};#{@y};#{@rotation};#{@segments}"
 
   #### Utilities
 

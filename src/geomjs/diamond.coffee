@@ -422,7 +422,8 @@ class Diamond
   ##### Diamond::memoizationKey
   #
   memoizationKey: ->
-    "#{@x};#{@y};#{@topLength};#{@bottomLength};#{@leftLength};#{@rightLength}"
+    "#{@x};#{@y};#{@rotation};
+     #{@topLength};#{@bottomLength};#{@leftLength};#{@rightLength};"
 
   #### Utilities
 

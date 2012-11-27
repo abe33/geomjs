@@ -2646,7 +2646,7 @@
     };
 
     Ellipsis.prototype.memoizationKey = function() {
-      return "" + this.radius1 + ";" + this.radius2 + ";" + this.x + ";" + this.y + ";" + this.segments;
+      return "" + this.radius1 + ";" + this.radius2 + ";" + this.x + ";" + this.y + ";" + this.rotation + ";" + this.segments;
     };
 
     return Ellipsis;
@@ -2934,7 +2934,7 @@
     };
 
     Diamond.prototype.memoizationKey = function() {
-      return "" + this.x + ";" + this.y + ";" + this.topLength + ";" + this.bottomLength + ";" + this.leftLength + ";" + this.rightLength;
+      return "" + this.x + ";" + this.y + ";" + this.rotation + ";     " + this.topLength + ";" + this.bottomLength + ";" + this.leftLength + ";" + this.rightLength + ";";
     };
 
     return Diamond;
