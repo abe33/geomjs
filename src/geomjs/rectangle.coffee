@@ -188,11 +188,10 @@ class Rectangle
   ##### Rectangle::scale
   #
   scale: (scale) ->
-    topLeft = @topLeft()
-    dif = topLeft.subtract(@center()).scale(scale)
-    {@x,@y} = topLeft.add(dif.scale(1 / 2))
+    center = @center()
     @width *= scale
     @height *= scale
+    @setCenter center
     this
 
   ##### Rectangle::rotateAroundCenter

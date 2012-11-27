@@ -1768,12 +1768,11 @@
     };
 
     Rectangle.prototype.scale = function(scale) {
-      var dif, topLeft, _ref;
-      topLeft = this.topLeft();
-      dif = topLeft.subtract(this.center()).scale(scale);
-      _ref = topLeft.add(dif.scale(1 / 2)), this.x = _ref.x, this.y = _ref.y;
+      var center;
+      center = this.center();
       this.width *= scale;
       this.height *= scale;
+      this.setCenter(center);
       return this;
     };
 
