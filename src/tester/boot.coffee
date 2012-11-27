@@ -68,7 +68,7 @@ $(document).ready ->
       new geomjs.Point(560,350)
     ])
 
-    new geomjs.Spiral(120, 60, 3, 470, 420, 10, 120)
+    new geomjs.Spiral(120, 60, 3, 470, 350, 10, 120)
   ]
 
   options =

@@ -25,7 +25,7 @@
       this.random = new chancejs.Random(new chancejs.MathRandom);
       this.name = this.geometry.classname().toLowerCase();
       this.angle = 0;
-      this.angleSpeed = this.random["in"](-2, 2);
+      this.angleSpeed = this.random["in"](1, 3) * this.random.sign();
       this.shate;
       this.fillColor = colorPalette.shapeFill;
       this.strokeColor = colorPalette.shapeStroke;
@@ -48,7 +48,7 @@
       }
       this.angle += t * this.angleSpeed;
       this.geometry.rotate(-(t * this.angleSpeed / 10));
-      this.geometry.translate(Math.sin(this.angle) * 2, Math.cos(this.angle) * 2);
+      this.geometry.translate(Math.sin(this.angle), Math.cos(this.angle));
       return this.geometry.scale(1 + Math.cos(this.angle * 3) / 100);
     };
 
@@ -168,7 +168,7 @@
     canvas = $('canvas');
     context = canvas[0].getContext('2d');
     animated = false;
-    geometries = [new geomjs.Rectangle(250, 40, 180, 100, Math.PI / 7), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)]), new geomjs.QuintBezier([new geomjs.Point(380, 350), new geomjs.Point(420, 290), new geomjs.Point(460, 340), new geomjs.Point(500, 290), new geomjs.Point(560, 350)]), new geomjs.Spiral(120, 60, 3, 470, 420, 10, 120)];
+    geometries = [new geomjs.Rectangle(250, 40, 180, 100, Math.PI / 7), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)]), new geomjs.QuintBezier([new geomjs.Point(380, 350), new geomjs.Point(420, 290), new geomjs.Point(460, 340), new geomjs.Point(500, 290), new geomjs.Point(560, 350)]), new geomjs.Spiral(120, 60, 3, 470, 350, 10, 120)];
     options = {
       bounds: true,
       path: true,

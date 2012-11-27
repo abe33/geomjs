@@ -18,7 +18,7 @@ class Tester
     @random = new chancejs.Random new chancejs.MathRandom
     @name = @geometry.classname().toLowerCase()
     @angle = 0
-    @angleSpeed = @random.in -2, 2
+    @angleSpeed = @random.in(1,3) * @random.sign()
     @shate
     @fillColor = colorPalette.shapeFill
     @strokeColor = colorPalette.shapeStroke
@@ -36,7 +36,7 @@ class Tester
     @pathPosition -= 1 if @pathPosition > 1
     @angle += t * @angleSpeed
     @geometry.rotate -(t * @angleSpeed / 10)
-    @geometry.translate Math.sin(@angle) * 2, Math.cos(@angle) * 2
+    @geometry.translate Math.sin(@angle), Math.cos(@angle)
     @geometry.scale 1 + Math.cos(@angle * 3) / 100
 
   renderShape: (context) ->
