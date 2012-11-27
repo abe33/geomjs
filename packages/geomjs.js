@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, QuintBezier, Rectangle, Sourcable, Spiral, Spline, Surface, Triangle, Triangulable, include,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Proxyable, QuadBezier, QuintBezier, Rectangle, Sourcable, Spiral, Spline, Surface, TransformationProxy, Triangle, Triangulable, include,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -110,7 +110,9 @@
       _ref = this.prototype;
       for (k in _ref) {
         v = _ref[k];
-        klass.prototype[k] = v;
+        if (k !== 'constructor') {
+          klass.prototype[k] = v;
+        }
       }
       return typeof this.included === "function" ? this.included(klass) : void 0;
     };
@@ -859,6 +861,33 @@
 
   })(Mixin);
 
+  /* src/geomjs/mixins/proxyable.coffee */;
+
+
+  Proxyable = (function(_super) {
+
+    __extends(Proxyable, _super);
+
+    function Proxyable() {
+      return Proxyable.__super__.constructor.apply(this, arguments);
+    }
+
+    Proxyable.included = function(klass) {
+      return klass.proxyable = function(type, target) {
+        var k, v;
+        for (k in target) {
+          v = target[k];
+          v.proxyable = type;
+          klass.prototype[k] = v;
+        }
+        return target;
+      };
+    };
+
+    return Proxyable;
+
+  })(Mixin);
+
   /* src/geomjs/mixins/spline.coffee */;
 
 
@@ -1594,7 +1623,7 @@
         width: NaN,
         height: NaN,
         rotation: NaN
-      }), Cloneable, Geometry, Surface, Path, Triangulable, Intersections
+      }), Cloneable, Geometry, Surface, Path, Triangulable, Proxyable, Intersections
     ])["in"](Rectangle);
 
     Rectangle.eachRectangleRectangleIntersections = function(geom1, geom2, block, data) {
@@ -1818,9 +1847,11 @@
       return true;
     };
 
-    Rectangle.prototype.points = function() {
-      return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft(), this.topLeft()];
-    };
+    Rectangle.proxyable('PointList', {
+      points: function() {
+        return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft(), this.topLeft()];
+      }
+    });
 
     Rectangle.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
@@ -1854,40 +1885,44 @@
       return this.width * 2 + this.height * 2;
     };
 
-    Rectangle.prototype.pathPointAt = function(n, pathBasedOnLength) {
-      var p1, p2, p3, _ref;
-      if (pathBasedOnLength == null) {
-        pathBasedOnLength = true;
+    Rectangle.proxyable('Point', {
+      pathPointAt: function(n, pathBasedOnLength) {
+        var p1, p2, p3, _ref;
+        if (pathBasedOnLength == null) {
+          pathBasedOnLength = true;
+        }
+        _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+        if (n < p1) {
+          return this.topLeft().add(this.topEdge().scale(Math.map(n, 0, p1, 0, 1)));
+        } else if (n < p2) {
+          return this.topRight().add(this.rightEdge().scale(Math.map(n, p1, p2, 0, 1)));
+        } else if (n < p3) {
+          return this.bottomRight().add(this.bottomEdge().scale(Math.map(n, p2, p3, 0, 1) * -1));
+        } else {
+          return this.bottomLeft().add(this.leftEdge().scale(Math.map(n, p3, 1, 0, 1) * -1));
+        }
       }
-      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
-      if (n < p1) {
-        return this.topLeft().add(this.topEdge().scale(Math.map(n, 0, p1, 0, 1)));
-      } else if (n < p2) {
-        return this.topRight().add(this.rightEdge().scale(Math.map(n, p1, p2, 0, 1)));
-      } else if (n < p3) {
-        return this.bottomRight().add(this.bottomEdge().scale(Math.map(n, p2, p3, 0, 1) * -1));
-      } else {
-        return this.bottomLeft().add(this.leftEdge().scale(Math.map(n, p3, 1, 0, 1) * -1));
-      }
-    };
+    });
 
-    Rectangle.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
-      var p, p1, p2, p3, _ref;
-      if (pathBasedOnLength == null) {
-        pathBasedOnLength = true;
+    Rectangle.proxyable('Angle', {
+      pathOrientationAt: function(n, pathBasedOnLength) {
+        var p, p1, p2, p3, _ref;
+        if (pathBasedOnLength == null) {
+          pathBasedOnLength = true;
+        }
+        _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+        if (n < p1) {
+          p = this.topEdge();
+        } else if (n < p2) {
+          p = this.rightEdge();
+        } else if (n < p3) {
+          p = this.bottomEdge().scale(-1);
+        } else {
+          p = this.leftEdge().scale(-1);
+        }
+        return p.angle();
       }
-      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
-      if (n < p1) {
-        p = this.topEdge();
-      } else if (n < p2) {
-        p = this.rightEdge();
-      } else if (n < p3) {
-        p = this.bottomEdge().scale(-1);
-      } else {
-        p = this.leftEdge().scale(-1);
-      }
-      return p.angle();
-    };
+    });
 
     Rectangle.prototype.pathSteps = function(pathBasedOnLength) {
       var l, p1, p2, p3;
@@ -3359,6 +3394,85 @@
 
   })();
 
+  /* src/geomjs/transformation_proxy.coffee */;
+
+
+  TransformationProxy = (function() {
+
+    TransformationProxy.defineProxy = function(key, type) {
+      switch (type) {
+        case 'PointList':
+          return this.prototype[key] = function() {
+            var points,
+              _this = this;
+            points = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              return points.map(function(pt) {
+                return _this.matrix.transformPoint(pt);
+              });
+            } else {
+              return points;
+            }
+          };
+        case 'Point':
+          return this.prototype[key] = function() {
+            var point;
+            point = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              return this.matrix.transformPoint(point);
+            } else {
+              return point;
+            }
+          };
+        case 'Angle':
+          return this.prototype[key] = function() {
+            var angle, vec;
+            angle = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              vec = new Point(Math.cos(Math.degToRad(angle)), Math.sin(Math.degToRad(angle)));
+              return this.matrix.transformPoint(vec).angle();
+            } else {
+              return angle;
+            }
+          };
+      }
+    };
+
+    function TransformationProxy(geometry, matrix) {
+      this.geometry = geometry;
+      this.matrix = matrix;
+      this.proxiedMethods = this.detectProxyableMethods(this.geometry);
+    }
+
+    TransformationProxy.prototype.proxied = function() {
+      var k, v, _ref, _results;
+      _ref = this.proxiedMethods;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(k);
+      }
+      return _results;
+    };
+
+    TransformationProxy.prototype.detectProxyableMethods = function(geometry) {
+      var k, proxiedMethods, v, _ref;
+      proxiedMethods = {};
+      _ref = geometry.constructor.prototype;
+      for (k in _ref) {
+        v = _ref[k];
+        if (v.proxyable) {
+          proxiedMethods[k] = v.proxyable;
+          TransformationProxy.defineProxy(k, v.proxyable);
+        }
+      }
+      return proxiedMethods;
+    };
+
+    return TransformationProxy;
+
+  })();
+
   this.geomjs.include = include;
 
   this.geomjs.Mixin = Mixin;
@@ -3384,6 +3498,8 @@
   this.geomjs.Intersections = Intersections;
 
   this.geomjs.Triangulable = Triangulable;
+
+  this.geomjs.Proxyable = Proxyable;
 
   this.geomjs.Spline = Spline;
 
@@ -3412,5 +3528,7 @@
   this.geomjs.QuintBezier = QuintBezier;
 
   this.geomjs.Spiral = Spiral;
+
+  this.geomjs.TransformationProxy = TransformationProxy;
 
 }).call(this);

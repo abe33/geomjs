@@ -15,6 +15,7 @@ includes: [
   'src/geomjs/mixins/path'
   'src/geomjs/mixins/intersections'
   'src/geomjs/mixins/triangulable'
+  'src/geomjs/mixins/proxyable'
   'src/geomjs/mixins/spline'
   'src/geomjs/point'
   'src/geomjs/matrix'
@@ -29,6 +30,7 @@ includes: [
   'src/geomjs/quad_bezier'
   'src/geomjs/quint_bezier'
   'src/geomjs/spiral'
+  'src/geomjs/transformation_proxy'
 ]
 operators: [
   'strip:requires'

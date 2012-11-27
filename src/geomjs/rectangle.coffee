@@ -6,6 +6,7 @@ Formattable = require './mixins/formattable'
 Cloneable = require './mixins/cloneable'
 Sourcable = require './mixins/sourcable'
 Triangulable = require './mixins/triangulable'
+Proxyable = require './mixins/proxyable'
 Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
@@ -33,6 +34,7 @@ class Rectangle
     Surface
     Path
     Triangulable
+    Proxyable
     Intersections
   ]).in Rectangle
 
@@ -283,8 +285,9 @@ class Rectangle
 
   ##### Rectangle::points
   #
-  points: ->
-    [@topLeft(), @topRight(), @bottomRight(), @bottomLeft(), @topLeft()]
+  @proxyable 'PointList',
+    points: ->
+      [@topLeft(), @topRight(), @bottomRight(), @bottomLeft(), @topLeft()]
 
   ##### Rectangle::intersects
   #
@@ -338,33 +341,35 @@ class Rectangle
 
   ##### Rectangle::pathPointAt
   #
-  pathPointAt: (n, pathBasedOnLength=true) ->
-    [p1,p2,p3] = @pathSteps pathBasedOnLength
+  @proxyable 'Point',
+    pathPointAt: (n, pathBasedOnLength=true) ->
+      [p1,p2,p3] = @pathSteps pathBasedOnLength
 
-    if n < p1
-      @topLeft().add @topEdge().scale Math.map n, 0, p1, 0, 1
-    else if n < p2
-      @topRight().add @rightEdge().scale Math.map n, p1, p2, 0, 1
-    else if n < p3
-      @bottomRight().add @bottomEdge().scale Math.map(n, p2, p3, 0, 1) * -1
-    else
-      @bottomLeft().add @leftEdge().scale Math.map(n, p3, 1, 0, 1) * -1
+      if n < p1
+        @topLeft().add @topEdge().scale Math.map n, 0, p1, 0, 1
+      else if n < p2
+        @topRight().add @rightEdge().scale Math.map n, p1, p2, 0, 1
+      else if n < p3
+        @bottomRight().add @bottomEdge().scale Math.map(n, p2, p3, 0, 1) * -1
+      else
+        @bottomLeft().add @leftEdge().scale Math.map(n, p3, 1, 0, 1) * -1
 
   ##### Rectangle::pathOrientationAt
   #
-  pathOrientationAt: (n, pathBasedOnLength=true) ->
-    [p1,p2,p3] = @pathSteps pathBasedOnLength
+  @proxyable 'Angle',
+    pathOrientationAt: (n, pathBasedOnLength=true) ->
+      [p1,p2,p3] = @pathSteps pathBasedOnLength
 
-    if n < p1
-      p = @topEdge()
-    else if n < p2
-      p = @rightEdge()
-    else if n < p3
-      p = @bottomEdge().scale -1
-    else
-      p = @leftEdge().scale -1
+      if n < p1
+        p = @topEdge()
+      else if n < p2
+        p = @rightEdge()
+      else if n < p3
+        p = @bottomEdge().scale -1
+      else
+        p = @leftEdge().scale -1
 
-    p.angle()
+      p.angle()
 
   ##### Rectangle::pathTangentAt
   #
