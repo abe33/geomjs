@@ -18,7 +18,7 @@ class Tester
     @random = new chancejs.Random new chancejs.MathRandom
     @name = @geometry.classname().toLowerCase()
     @angle = 0
-    @angleSpeed = @random.in [4..8]
+    @angleSpeed = @random.in -2, 2
     @shate
     @fillColor = colorPalette.shapeFill
     @strokeColor = colorPalette.shapeStroke
@@ -32,17 +32,20 @@ class Tester
       @strokeColor = colorPalette.shapeStroke
 
   animate: (t) ->
-    @pathPosition += t
-    @pathPosition -= 10000 if @pathPosition > 10000
-    @angle += t / @angleSpeed
+    @pathPosition += t / 5
+    @pathPosition -= 1 if @pathPosition > 1
+    @angle += t * @angleSpeed
+    @geometry.rotate -(t * @angleSpeed / 10)
+    @geometry.translate Math.sin(@angle) * 2, Math.cos(@angle) * 2
+    @geometry.scale 1 + Math.cos(@angle * 3) / 100
 
   renderShape: (context) ->
     @geometry.fill(context, @fillColor)
     @geometry.stroke(context, @strokeColor)
 
   renderPath: (context) ->
-    pt = @geometry.pathPointAt(@pathPosition / 10000, false)
-    tan = @geometry.pathOrientationAt(@pathPosition / 10000, false)
+    pt = @geometry.pathPointAt(@pathPosition, false)
+    tan = @geometry.pathOrientationAt(@pathPosition, false)
 
     if pt? and tan?
       tr = new geomjs.Rectangle(pt.x,pt.y,6,6,tan)
@@ -67,8 +70,8 @@ class Tester
   renderClosedGeometry: (context) ->
     c = @geometry.center()
     pt1 = @geometry.pointAtAngle(@angle)
-    pt2 = @geometry.pointAtAngle(@angle-120)
-    pt3 = @geometry.pointAtAngle(@angle+120)
+    pt2 = @geometry.pointAtAngle(@angle-Math.PI * 2 / 3)
+    pt3 = @geometry.pointAtAngle(@angle+Math.PI * 2 / 3)
 
     if pt1? and pt2? and pt3?
       context.fillStyle = colorPalette.intersections

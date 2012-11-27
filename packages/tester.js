@@ -25,7 +25,7 @@
       this.random = new chancejs.Random(new chancejs.MathRandom);
       this.name = this.geometry.classname().toLowerCase();
       this.angle = 0;
-      this.angleSpeed = this.random["in"]([4, 5, 6, 7, 8]);
+      this.angleSpeed = this.random["in"](-2, 2);
       this.shate;
       this.fillColor = colorPalette.shapeFill;
       this.strokeColor = colorPalette.shapeStroke;
@@ -42,11 +42,14 @@
     };
 
     Tester.prototype.animate = function(t) {
-      this.pathPosition += t;
-      if (this.pathPosition > 10000) {
-        this.pathPosition -= 10000;
+      this.pathPosition += t / 5;
+      if (this.pathPosition > 1) {
+        this.pathPosition -= 1;
       }
-      return this.angle += t / this.angleSpeed;
+      this.angle += t * this.angleSpeed;
+      this.geometry.rotate(-(t * this.angleSpeed / 10));
+      this.geometry.translate(Math.sin(this.angle) * 2, Math.cos(this.angle) * 2);
+      return this.geometry.scale(1 + Math.cos(this.angle * 3) / 100);
     };
 
     Tester.prototype.renderShape = function(context) {
@@ -56,8 +59,8 @@
 
     Tester.prototype.renderPath = function(context) {
       var pt, tan, tr;
-      pt = this.geometry.pathPointAt(this.pathPosition / 10000, false);
-      tan = this.geometry.pathOrientationAt(this.pathPosition / 10000, false);
+      pt = this.geometry.pathPointAt(this.pathPosition, false);
+      tan = this.geometry.pathOrientationAt(this.pathPosition, false);
       if ((pt != null) && (tan != null)) {
         tr = new geomjs.Rectangle(pt.x, pt.y, 6, 6, tan);
         return tr.stroke(context, colorPalette.mobile);
@@ -103,8 +106,8 @@
       var c, pt1, pt2, pt3;
       c = this.geometry.center();
       pt1 = this.geometry.pointAtAngle(this.angle);
-      pt2 = this.geometry.pointAtAngle(this.angle - 120);
-      pt3 = this.geometry.pointAtAngle(this.angle + 120);
+      pt2 = this.geometry.pointAtAngle(this.angle - Math.PI * 2 / 3);
+      pt3 = this.geometry.pointAtAngle(this.angle + Math.PI * 2 / 3);
       if ((pt1 != null) && (pt2 != null) && (pt3 != null)) {
         context.fillStyle = colorPalette.intersections;
         context.strokeStyle = colorPalette.intersections;
@@ -155,7 +158,7 @@
   })();
 
   $(document).ready(function() {
-    var animate, animated, canvas, circle, context, cubicBezier, cubicBezierPoints, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, mouseX, mouseY, options, polygon, pt, quadBezier, quadBezierPoints, quintBezier, rectangle, render, requestAnimationFrame, spiral, stats, t, testers, triangle;
+    var animate, animated, canvas, context, geometries, initUI, mouseX, mouseY, options, render, requestAnimationFrame, stats, t, testers;
     stats = new Stats;
     stats.setMode(0);
     $('#canvas').prepend(stats.domElement);
@@ -229,37 +232,6 @@
         return _results;
       }
     };
-    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], polygon = geometries[5], linearSpline = geometries[6], cubicBezier = geometries[7], quadBezier = geometries[8], quintBezier = geometries[9], spiral = geometries[10];
-    linearSplinePoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = linearSpline.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
-    cubicBezierPoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = cubicBezier.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
-    quadBezierPoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = quadBezier.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
     animate = function(n) {
       var d;
       if (isNaN(n)) {
@@ -268,8 +240,7 @@
       stats.begin();
       d = n - t;
       t = n;
-      t = t / 1000;
-      d = d / 100000;
+      d = d / 1000;
       testers.forEach(function(t) {
         if (options[t.name]) {
           return t.animate(d);
