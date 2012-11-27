@@ -270,8 +270,8 @@ class Diamond
   #
   pointAtAngle: (angle) ->
     center = @center()
-    vec = center.add Math.cos(Math.degToRad(angle))*10000,
-                     Math.sin(Math.degToRad(angle))*10000
+    vec = center.add Math.cos(angle)*10000,
+                     Math.sin(angle)*10000
     @intersections(points: -> [center, vec])?[0]
 
   ##### Diamond::intersects

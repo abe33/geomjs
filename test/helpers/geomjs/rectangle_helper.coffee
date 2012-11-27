@@ -54,11 +54,11 @@ global.testRotatedRectangle = (source, x, y, width, height, rotation) ->
 global.rectangleData = (x=0, y=0, width=0, height=0, rotation=0) ->
   {x,y,width,height,rotation} = x if typeof x is 'object'
 
-  xTopEdge = width * Math.cos Math.degToRad rotation
-  yTopEdge = width * Math.sin Math.degToRad rotation
+  xTopEdge = width * Math.cos rotation
+  yTopEdge = width * Math.sin rotation
 
-  xLeftEdge = height * Math.cos Math.degToRad(rotation) + Math.PI / 2
-  yLeftEdge = height * Math.sin Math.degToRad(rotation) + Math.PI / 2
+  xLeftEdge = height * Math.cos rotation + Math.PI / 2
+  yLeftEdge = height * Math.sin rotation + Math.PI / 2
 
   source = "new geomjs.Rectangle(#{x},#{y},#{width},#{height},#{rotation})"
 

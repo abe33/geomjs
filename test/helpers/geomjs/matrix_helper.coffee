@@ -12,8 +12,8 @@ matrix.scaled = -> new Matrix 0.5, 2, 3, 8, 2.5, 12
 matrix.rotated = ->
   [a,b,c,d,tx,ty] = [1,2,3,4,5,6]
   angle = 72
-  cos = Math.cos angle * DEG_TO_RAD
-  sin = Math.sin angle * DEG_TO_RAD
+  cos = Math.cos angle
+  sin = Math.sin angle
   new Matrix(
     a*cos - b*sin,
     a*sin + b*cos,
@@ -45,10 +45,10 @@ matrix.prepended = ->
 
 matrix.skewed = ->
   [a,b,c,d] = [
-    Math.cos 2 * DEG_TO_RAD
-    Math.sin 2 * DEG_TO_RAD
-    -Math.sin -2 * DEG_TO_RAD
-    Math.cos -2 * DEG_TO_RAD
+    Math.cos 2
+    Math.sin 2
+    -Math.sin -2
+    Math.cos -2
   ]
   new Matrix(
     a*1 + b*3,

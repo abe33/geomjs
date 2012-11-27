@@ -165,7 +165,7 @@ class Point
   # Returns the angle in degrees formed by the vector.
   #
   #     angle = point.angle()
-  angle: -> Math.radToDeg Math.atan2 @y, @x
+  angle: -> Math.atan2 @y, @x
 
   ##### Point::angleWith
   #
@@ -187,7 +187,7 @@ class Point
 
     d = @normalize().dot new Point(x,y).normalize()
 
-    Math.radToDeg Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
+    Math.acos(Math.abs(d)) * (if d < 0 then -1 else 1)
 
   #### Point Manipulation
 
@@ -285,7 +285,7 @@ class Point
   rotate: (n) ->
     @invalidRotation n unless Math.isFloat n
     l = @length()
-    a = Math.atan2(@y, @x) + Math.degToRad(n)
+    a = Math.atan2(@y, @x) + n
     x = Math.cos(a) * l
     y = Math.sin(a) * l
     new Point x, y

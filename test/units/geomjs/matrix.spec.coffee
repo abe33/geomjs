@@ -175,7 +175,7 @@ describe 'Matrix', ->
     beforeEach ->
       @matrix = matrix()
       @matrix.scale(2,2)
-      @matrix.rotate(90)
+      @matrix.rotate(Math.PI / 2)
 
     describe 'with a point', ->
       it 'should return a new point resulting

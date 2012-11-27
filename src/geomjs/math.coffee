@@ -1,4 +1,9 @@
 
+Math.PI2 = Math.PI * 2
+Math.PI_2 = Math.PI / 2
+Math.PI_4 = Math.PI / 4
+Math.PI_8 = Math.PI / 8
+
 Math.degToRad = (n) -> n * Math.PI / 180
 
 Math.radToDeg = (n) -> n * 180 / Math.PI

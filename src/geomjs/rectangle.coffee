@@ -110,14 +110,14 @@ class Rectangle
 
   ##### Rectangle::topEdge
   #
-  topEdge: -> new Point @width * Math.cos(Math.degToRad(@rotation)),
-                        @width * Math.sin(Math.degToRad(@rotation))
+  topEdge: -> new Point @width * Math.cos(@rotation),
+                        @width * Math.sin(@rotation)
 
   ##### Rectangle::leftEdge
   #
   leftEdge: ->
-    new Point @height * Math.cos(Math.degToRad(@rotation) + Math.PI / 2),
-              @height * Math.sin(Math.degToRad(@rotation) + Math.PI / 2)
+    new Point @height * Math.cos(@rotation + Math.PI / 2),
+              @height * Math.sin(@rotation + Math.PI / 2)
 
   ##### Rectangle::bottomEdge
   #
@@ -303,8 +303,8 @@ class Rectangle
   #
   pointAtAngle: (angle) ->
     center = @center()
-    vec = center.add Math.cos(Math.degToRad(angle))*10000,
-                     Math.sin(Math.degToRad(angle))*10000
+    vec = center.add Math.cos(angle)*10000,
+                     Math.sin(angle)*10000
     @intersections(points: -> [center, vec])?[0]
 
   #### Surface API

@@ -56,11 +56,11 @@ describe 'Point', ->
 
     describe 'for a point with coordinates (5,5)', ->
       it 'should return the angle in degrees of the current vector', ->
-        expect(point(5,5).angle()).toBe(45)
+        expect(point(5,5).angle()).toBeClose(Math.PI / 4)
 
     describe 'for a point with coordinates (0,10)', ->
       it 'should return the angle in degrees of the current vector', ->
-        expect(point(0,10).angle()).toBe(90)
+        expect(point(0,10).angle()).toBeClose(Math.PI / 2)
 
   describe '::equals called', ->
     describe 'with a point-like object', ->
@@ -128,7 +128,7 @@ describe 'Point', ->
     nullArgument: 'throws'
     singleNumber: 'throws'
   .should 'return the angle formed by the two points', (result) ->
-    expect(result).toBeClose(90)
+    expect(result).toBeClose(Math.PI / 2)
 
 
   leftUnchanged = (result) ->
@@ -151,15 +151,8 @@ describe 'Point', ->
     describe 'with a number', ->
       it 'should return a new point rotated around the origin', ->
         pt = point 10, 0
-        pt2 = pt.rotate 90
+        pt2 = pt.rotate Math.PI / 2
         expect(pt2).toBePoint(0, 10)
-
-    describe 'with a string', ->
-      describe 'containing a number', ->
-        it 'should return a new point rotated around the origin', ->
-          pt = point 10, 0
-          pt2 = pt.rotate '90'
-          expect(pt2).toBePoint(0, 10)
 
       describe 'not containing a number', ->
         it 'should throw an error', ->
@@ -178,13 +171,13 @@ describe 'Point', ->
       it 'should return a new point rotated around the given point', ->
         pt1 = point 10, 0
         pt2 = point 20, 0
-        pt3 = pt1.rotateAround pt2, 90
+        pt3 = pt1.rotateAround pt2, Math.PI / 2
         expect(pt3).toBePoint(20, -10)
 
     describe 'with three numbers', ->
       it 'should return a new point rotated around the given coordinates', ->
         pt1 = point 10, 0
-        pt2 = pt1.rotateAround 20, 0, 90
+        pt2 = pt1.rotateAround 20, 0, Math.PI / 2
         expect(pt2).toBePoint(20, -10)
 
     describe 'with two numbers', ->

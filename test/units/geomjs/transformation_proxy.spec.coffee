@@ -40,7 +40,7 @@ describe 'TransformationProxy', ->
       describe 'the proxied method pathOrientationAt', ->
         it 'should transform the resulting angle', ->
           m = matrix()
-          m.rotate 10
+          m.rotate Math.PI
           @proxy.matrix = m
           expect(@proxy.pathOrientationAt 0.5)
-          .toBe(@proxy.geometry.pathOrientationAt(0.5) + 10)
+          .toBe(@proxy.geometry.pathOrientationAt(0.5) + Math.PI)

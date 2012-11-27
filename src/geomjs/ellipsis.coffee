@@ -68,7 +68,7 @@ class Ellipsis
   ##### Ellipsis::xBounds
   #
   xBounds: ->
-    phi = Math.degToRad @rotation
+    phi = @rotation
     t = Math.atan(-@radius2 * Math.tan(phi) / @radius1)
     [t, t+Math.PI].map (t) =>
       @x + @radius1*Math.cos(t)*Math.cos(phi) -
@@ -77,7 +77,7 @@ class Ellipsis
   ##### Ellipsis::yBounds
   #
   yBounds: ->
-    phi = Math.degToRad @rotation
+    phi = @rotation
     t = Math.atan(@radius2 * (Math.cos(phi) / Math.sin(phi)) / @radius1)
     [t, t+Math.PI].map (t) =>
       @y + @radius1*Math.cos(t)*Math.sin(phi) +
@@ -146,12 +146,12 @@ class Ellipsis
   ##### Ellipsis::pointAtAngle
   #
   pointAtAngle: (angle) ->
-    a = Math.degToRad angle - @rotation
+    a = angle - @rotation
     ratio = @radius1 / @radius2
     vec = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius1
     vec.x = vec.x / ratio if @radius1 < @radius2
     vec.y = vec.y * ratio if @radius1 > @radius2
-    a = Math.degToRad(vec.angle())
+    a = vec.angle()
     p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
 
     @center().add p.rotate(@rotation)
@@ -244,7 +244,7 @@ class Ellipsis
   drawPath: (context) ->
     context.save()
     context.translate(@x, @y)
-    context.rotate(Math.degToRad @rotation)
+    context.rotate(@rotation)
     context.scale(@radius1, @radius2)
     context.beginPath()
     context.arc(0,0,1,0, Math.PI*2)

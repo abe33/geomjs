@@ -9,6 +9,14 @@
   /* src/geomjs/math.coffee */;
 
 
+  Math.PI2 = Math.PI * 2;
+
+  Math.PI_2 = Math.PI / 2;
+
+  Math.PI_4 = Math.PI / 4;
+
+  Math.PI_8 = Math.PI / 8;
+
   Math.degToRad = function(n) {
     return n * Math.PI / 180;
   };
@@ -1255,7 +1263,7 @@
     };
 
     Point.prototype.angle = function() {
-      return Math.radToDeg(Math.atan2(this.y, this.x));
+      return Math.atan2(this.y, this.x);
     };
 
     Point.prototype.angleWith = function(x, y) {
@@ -1270,7 +1278,7 @@
         Point.notAPoint([x, y]);
       }
       d = this.normalize().dot(new Point(x, y).normalize());
-      return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
+      return Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1);
     };
 
     Point.prototype.normalize = function(length) {
@@ -1358,7 +1366,7 @@
         this.invalidRotation(n);
       }
       l = this.length();
-      a = Math.atan2(this.y, this.x) + Math.degToRad(n);
+      a = Math.atan2(this.y, this.x) + n;
       x = Math.cos(a) * l;
       y = Math.sin(a) * l;
       return new Point(x, y);
@@ -1522,15 +1530,15 @@
       if (angle == null) {
         angle = 0;
       }
-      cos = Math.cos(Math.degToRad(angle));
-      sin = Math.sin(Math.degToRad(angle));
+      cos = Math.cos(angle);
+      sin = Math.sin(angle);
       _ref = [this.a * cos - this.b * sin, this.a * sin + this.b * cos, this.c * cos - this.d * sin, this.c * sin + this.d * cos, this.tx * cos - this.ty * sin, this.tx * sin + this.ty * cos], this.a = _ref[0], this.b = _ref[1], this.c = _ref[2], this.d = _ref[3], this.tx = _ref[4], this.ty = _ref[5];
       return this;
     };
 
     Matrix.prototype.skew = function(xOrPt, y) {
       var pt;
-      pt = Point.pointFrom(xOrPt, y, 0).scale(Math.PI / 180);
+      pt = Point.pointFrom(xOrPt, y, 0);
       return this.append(Math.cos(pt.y), Math.sin(pt.y), -Math.sin(pt.x), Math.cos(pt.x));
     };
 
@@ -1701,11 +1709,11 @@
     };
 
     Rectangle.prototype.topEdge = function() {
-      return new Point(this.width * Math.cos(Math.degToRad(this.rotation)), this.width * Math.sin(Math.degToRad(this.rotation)));
+      return new Point(this.width * Math.cos(this.rotation), this.width * Math.sin(this.rotation));
     };
 
     Rectangle.prototype.leftEdge = function() {
-      return new Point(this.height * Math.cos(Math.degToRad(this.rotation) + Math.PI / 2), this.height * Math.sin(Math.degToRad(this.rotation) + Math.PI / 2));
+      return new Point(this.height * Math.cos(this.rotation + Math.PI / 2), this.height * Math.sin(this.rotation + Math.PI / 2));
     };
 
     Rectangle.prototype.bottomEdge = function() {
@@ -1856,7 +1864,7 @@
     Rectangle.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -2072,7 +2080,7 @@
 
     Triangle.prototype.rectangle = function() {
       var sqr;
-      sqr = 90;
+      sqr = Math.PI / 2;
       return Math.deltaBelowRatio(Math.abs(this.abc()), sqr) || Math.deltaBelowRatio(Math.abs(this.bac()), sqr) || Math.deltaBelowRatio(Math.abs(this.acb()), sqr);
     };
 
@@ -2121,7 +2129,7 @@
     Triangle.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -2133,7 +2141,7 @@
       if (this.memoized('acreage')) {
         return this.memoFor('acreage');
       }
-      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(Math.degToRad(this.abc()))) / 2);
+      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2);
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -2360,7 +2368,7 @@
 
     Circle.prototype.points = function() {
       var n, step, _i, _ref, _results;
-      step = 360 / this.segments;
+      step = Math.PI * 2 / this.segments;
       _results = [];
       for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
         _results.push(this.pointAtAngle(n * step));
@@ -2413,7 +2421,7 @@
     };
 
     Circle.prototype.pointAtAngle = function(angle) {
-      return new Point(this.x + Math.cos(Math.degToRad(angle)) * this.radius, this.y + Math.sin(Math.degToRad(angle)) * this.radius);
+      return new Point(this.x + Math.cos(angle) * this.radius, this.y + Math.sin(angle) * this.radius);
     };
 
     Circle.prototype.acreage = function() {
@@ -2431,7 +2439,7 @@
       if (random == null) {
         random = new chancejs.Random(new chancejs.MathRandom);
       }
-      pt = this.pointAtAngle(random.random(360));
+      pt = this.pointAtAngle(random.random(Math.PI * 2));
       center = this.center();
       dif = pt.subtract(center);
       return center.add(dif.scale(Math.sqrt(random.random())));
@@ -2442,7 +2450,7 @@
     };
 
     Circle.prototype.pathPointAt = function(n) {
-      return this.pointAtAngle(n * 360);
+      return this.pointAtAngle(n * Math.PI * 2);
     };
 
     Circle.prototype.drawPath = function(context) {
@@ -2505,7 +2513,7 @@
     Ellipsis.prototype.xBounds = function() {
       var phi, t,
         _this = this;
-      phi = Math.degToRad(this.rotation);
+      phi = this.rotation;
       t = Math.atan(-this.radius2 * Math.tan(phi) / this.radius1);
       return [t, t + Math.PI].map(function(t) {
         return _this.x + _this.radius1 * Math.cos(t) * Math.cos(phi) - _this.radius2 * Math.sin(t) * Math.sin(phi);
@@ -2515,7 +2523,7 @@
     Ellipsis.prototype.yBounds = function() {
       var phi, t,
         _this = this;
-      phi = Math.degToRad(this.rotation);
+      phi = this.rotation;
       t = Math.atan(this.radius2 * (Math.cos(phi) / Math.sin(phi)) / this.radius1);
       return [t, t + Math.PI].map(function(t) {
         return _this.y + _this.radius1 * Math.cos(t) * Math.sin(phi) + _this.radius2 * Math.sin(t) * Math.cos(phi);
@@ -2576,7 +2584,7 @@
 
     Ellipsis.prototype.pointAtAngle = function(angle) {
       var a, p, ratio, vec;
-      a = Math.degToRad(angle - this.rotation);
+      a = angle - this.rotation;
       ratio = this.radius1 / this.radius2;
       vec = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius1);
       if (this.radius1 < this.radius2) {
@@ -2585,7 +2593,7 @@
       if (this.radius1 > this.radius2) {
         vec.y = vec.y * ratio;
       }
-      a = Math.degToRad(vec.angle());
+      a = vec.angle();
       p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
       return this.center().add(p.rotate(this.rotation));
     };
@@ -2629,7 +2637,7 @@
     Ellipsis.prototype.drawPath = function(context) {
       context.save();
       context.translate(this.x, this.y);
-      context.rotate(Math.degToRad(this.rotation));
+      context.rotate(this.rotation);
       context.scale(this.radius1, this.radius2);
       context.beginPath();
       context.arc(0, 0, 1, 0, Math.PI * 2);
@@ -2824,7 +2832,7 @@
     Diamond.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -3044,7 +3052,7 @@
       distance = function(a, b) {
         return a.distance(center) - b.distance(center);
       };
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -3359,13 +3367,14 @@
     };
 
     Spiral.prototype.pathPointAt = function(pos, posBasedOnLength) {
-      var angle, center, ellipsis, pt, _ref;
+      var PI2, angle, center, ellipsis, pt, _ref;
       if (posBasedOnLength == null) {
         posBasedOnLength = true;
       }
       center = this.center();
       ellipsis = this.ellipsis();
-      angle = this.rotation + pos * 360 * this.twirl % 360;
+      PI2 = Math.PI * 2;
+      angle = this.rotation + pos * PI2 * this.twirl % PI2;
       pt = (_ref = ellipsis.pointAtAngle(angle)) != null ? _ref.subtract(center).scale(pos) : void 0;
       return center.add(pt);
     };
@@ -3429,7 +3438,7 @@
             var angle, vec;
             angle = this.geometry[key].apply(this.geometry, arguments);
             if (this.matrix != null) {
-              vec = new Point(Math.cos(Math.degToRad(angle)), Math.sin(Math.degToRad(angle)));
+              vec = new Point(Math.cos(angle), Math.sin(angle));
               return this.matrix.transformPoint(vec).angle();
             } else {
               return angle;

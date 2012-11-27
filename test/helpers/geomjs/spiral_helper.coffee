@@ -37,7 +37,7 @@ global.spiralData= (radius1, radius2, twirl, x, y, rotation, segments) ->
 
   a = radius1
   b = radius2
-  phi = Math.degToRad rotation
+  phi = rotation
   t1 = Math.atan(-b * Math.tan(phi) / a)
   t2 = Math.atan(b * (Math.cos(phi) / Math.sin(phi)) / a)
   x1 = x + a*Math.cos(t1+Math.PI)*Math.cos(phi) -

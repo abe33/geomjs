@@ -20,8 +20,8 @@ class TransformationProxy
         @::[key] = ->
           angle = @geometry[key].apply(@geometry, arguments)
           if @matrix?
-            vec = new Point Math.cos(Math.degToRad angle),
-                            Math.sin(Math.degToRad angle)
+            vec = new Point Math.cos(angle),
+                            Math.sin(angle)
             @matrix.transformPoint(vec).angle()
           else angle
 

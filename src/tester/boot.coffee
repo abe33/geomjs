@@ -16,7 +16,7 @@ $(document).ready ->
 
   animated = false
   geometries = [
-    new geomjs.Rectangle(250, 40, 180, 100, 16)
+    new geomjs.Rectangle(250, 40, 180, 100, Math.PI / 7)
     new geomjs.Triangle(new geomjs.Point(100,80),
                         new geomjs.Point(320,120),
                         new geomjs.Point(140,200))
@@ -139,53 +139,55 @@ $(document).ready ->
     stats.begin()
     d = n - t
     t = n
+    t = t / 1000
+    d = d / 100000
 
     testers.forEach (t) -> t.animate d if options[t.name]
 
-    rectangle.rotateAroundCenter(d / 70)
-    rectangle.inflateAroundCenter(Math.cos(Math.degToRad(t)) ,
-                                  Math.sin(Math.degToRad(t)) )
+    # rectangle.rotateAroundCenter(d / 70)
+    # rectangle.inflateAroundCenter(Math.cos(t) ,
+    #                               Math.sin(t) )
 
-    triangle.rotateAroundCenter(-d / 60)
-    triangle.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 12)) / 200)
+    # triangle.rotateAroundCenter(-d / 60)
+    # triangle.scaleAroundCenter(1 + Math.cos(t / 12) / 200)
 
-    circle.radius = 40 + Math.sin(Math.degToRad(t / 17)) * 20
+    # circle.radius = 40 + Math.sin(t / 17) * 20
 
-    ellipsis.radius1 = 120 + Math.sin(Math.degToRad(t / 17)) * 20
-    ellipsis.radius2 = 60 + Math.cos(Math.degToRad(t / 17)) * 20
-    ellipsis.rotation += -d / 60
+    # ellipsis.radius1 = 120 + Math.sin(t / 17) * 20
+    # ellipsis.radius2 = 60 + Math.cos(t / 17) * 20
+    # ellipsis.rotation += -d / 60
 
-    spiral.rotate -d / 60
-    spiral.scale 1 + Math.cos(Math.degToRad(t / 10)) / 120
+    # spiral.rotate -d / 60
+    # spiral.scale 1 + Math.cos(t / 10) / 120
 
-    diamond.topLength = 50 + Math.sin(Math.degToRad(t / 17)) * 20
-    diamond.rightLength = 100 +
-                          Math.cos(Math.degToRad(Math.PI / 2 + t / 17)) * 20
-    diamond.bottomLength = 60 + Math.sin(Math.degToRad(Math.PI + t / 17)) * 20
-    diamond.leftLength = 40 +
-                         Math.sin(Math.degToRad(Math.PI * 1.5 + t / 17)) * 20
-    diamond.rotation += -d / 80
+    # diamond.topLength = 50 + Math.sin(t / 17) * 20
+    # diamond.rightLength = 100 +
+    #                       Math.cos(Math.PI / 2 + t / 17) * 20
+    # diamond.bottomLength = 60 + Math.sin(Math.PI + t / 17) * 20
+    # diamond.leftLength = 40 +
+    #                      Math.sin(Math.PI * 1.5 + t / 17) * 20
+    # diamond.rotation += -d / 80
 
-    linearSpline.vertices.forEach (vertex, i) ->
-      v = linearSplinePoints[i]
-      i += 1
-      vertex.x = v.x + Math.cos(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
-      vertex.y = v.y + Math.sin(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+    # linearSpline.vertices.forEach (vertex, i) ->
+    #   v = linearSplinePoints[i]
+    #   i += 1
+    #   vertex.x = v.x + Math.cos(i + Math.PI * 1.5 + t / 5) * 20
+    #   vertex.y = v.y + Math.sin(i + Math.PI * 1.5 + t / 5) * 20
 
-    cubicBezier.vertices.forEach (vertex, i) ->
-      v = cubicBezierPoints[i]
-      i += 1
-      vertex.x = v.x + Math.cos(i+1+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
-      vertex.y = v.y + Math.sin(i+1+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+    # cubicBezier.vertices.forEach (vertex, i) ->
+    #   v = cubicBezierPoints[i]
+    #   i += 1
+    #   vertex.x = v.x + Math.cos(i+1+Math.PI * 1.5 + t / 5) * 20
+    #   vertex.y = v.y + Math.sin(i+1+Math.PI * 1.5 + t / 5) * 20
 
-    quadBezier.vertices.forEach (vertex, i) ->
-      v = quadBezierPoints[i]
-      i += 1
-      vertex.x = v.x + Math.cos(i+3+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
-      vertex.y = v.y + Math.sin(i+3+Math.degToRad(Math.PI * 1.5 + t / 5)) * 20
+    # quadBezier.vertices.forEach (vertex, i) ->
+    #   v = quadBezierPoints[i]
+    #   i += 1
+    #   vertex.x = v.x + Math.cos(i+3+Math.PI * 1.5 + t / 5) * 20
+    #   vertex.y = v.y + Math.sin(i+3+Math.PI * 1.5 + t / 5) * 20
 
-    polygon.rotateAroundCenter(d / 80)
-    polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120)
+    # polygon.rotateAroundCenter(d / 80)
+    # polygon.scaleAroundCenter(1 + Math.cos(t / 10) / 120)
 
     render()
     requestAnimationFrame(animate) if animated

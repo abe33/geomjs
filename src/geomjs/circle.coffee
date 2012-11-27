@@ -140,7 +140,7 @@ class Circle
   ##### Circle::points
   #
   points: ->
-    step = 360 / @segments
+    step = Math.PI * 2 / @segments
     @pointAtAngle n * step for n in [0..@segments]
 
   ##### Circle::triangles
@@ -202,8 +202,8 @@ class Circle
   ##### Circle::pointAtAngle
   #
   pointAtAngle: (angle) ->
-    new Point @x + Math.cos(Math.degToRad(angle)) * @radius,
-              @y + Math.sin(Math.degToRad(angle)) * @radius
+    new Point @x + Math.cos(angle) * @radius,
+              @y + Math.sin(angle) * @radius
 
   #### Surface API
 
@@ -230,7 +230,7 @@ class Circle
     unless random?
       random = new chancejs.Random new chancejs.MathRandom
 
-    pt = @pointAtAngle random.random(360)
+    pt = @pointAtAngle random.random(Math.PI * 2)
     center = @center()
     dif = pt.subtract center
     center.add dif.scale Math.sqrt random.random()
@@ -243,7 +243,7 @@ class Circle
 
   ##### Circle::pathPointAt
   #
-  pathPointAt: (n) -> @pointAtAngle n * 360
+  pathPointAt: (n) -> @pointAtAngle n * Math.PI * 2
 
   ##### Circle::pathOrientationAt
   #

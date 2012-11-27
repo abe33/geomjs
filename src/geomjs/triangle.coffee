@@ -135,7 +135,7 @@ class Triangle
   ##### Triangle::rectangle
   #
   rectangle: ->
-    sqr = 90
+    sqr = Math.PI / 2
     Math.deltaBelowRatio(Math.abs(@abc()), sqr) or
     Math.deltaBelowRatio(Math.abs(@bac()), sqr) or
     Math.deltaBelowRatio(Math.abs(@acb()), sqr)
@@ -203,8 +203,8 @@ class Triangle
   #
   pointAtAngle: (angle) ->
     center = @center()
-    vec = center.add Math.cos(Math.degToRad(angle))*10000,
-                     Math.sin(Math.degToRad(angle))*10000
+    vec = center.add Math.cos(angle)*10000,
+                     Math.sin(angle)*10000
     @intersections(points: -> [center, vec])?[0]
 
   #### Surface API
@@ -215,7 +215,7 @@ class Triangle
     return @memoFor 'acreage' if @memoized 'acreage'
     @memoize 'acreage', @ab().length() *
                         @bc().length() *
-                        Math.abs(Math.sin(Math.degToRad(@abc()))) / 2
+                        Math.abs(Math.sin(@abc())) / 2
 
   ##### Triangle::contains
   #

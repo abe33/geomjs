@@ -4,7 +4,7 @@ Triangle = require '../../../lib/geomjs/triangle'
 
 pt = point(1,0)
 v = point(4,0)
-v2 = v.rotate(60)
+v2 = v.rotate(Math.PI * 2 / 6)
 
 factories =
   default: ->
@@ -85,7 +85,7 @@ global.triangleData = (a,b,c) ->
     length: data.ab.length() + data.bc.length() + data.ca.length()
     acreage: data.ab.length() *
              data.bc.length() *
-             Math.abs(Math.sin(Math.degToRad(data.abc))) / 2
+             Math.abs(Math.sin(data.abc)) / 2
 
   data
 

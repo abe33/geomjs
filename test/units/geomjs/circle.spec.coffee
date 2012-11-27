@@ -51,20 +51,20 @@ describe 'Circle', ->
 
       describe 'its pathOrientationAt method', ->
         describe 'called with 0', ->
-          it 'should return 90', ->
-            expect(@circle.pathOrientationAt 0).toBe(90)
+          it 'should return Math.PI / 2', ->
+            expect(@circle.pathOrientationAt 0).toBeClose(Math.PI / 2)
 
         describe 'called with 1', ->
-          it 'should return 90', ->
-            expect(@circle.pathOrientationAt 1).toBe(90)
+          it 'should return Math.PI / 2', ->
+            expect(@circle.pathOrientationAt 1).toBeClose(Math.PI / 2)
 
         describe 'called with 0.25', ->
-          it 'should return 180', ->
-            expect(@circle.pathOrientationAt 0.25).toBe(180)
+          it 'should return Math.PI', ->
+            expect(@circle.pathOrientationAt 0.25).toBeClose(Math.PI)
 
         describe 'called with 0.5', ->
-          it 'should return -90', ->
-            expect(@circle.pathOrientationAt 0.5).toBe(-90)
+          it 'should return -Math.PI / 2', ->
+            expect(@circle.pathOrientationAt 0.5).toBeClose(-Math.PI / 2)
 
         describe 'called with 0.75', ->
           it 'should return 0', ->

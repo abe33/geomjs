@@ -105,7 +105,8 @@ class Spiral
   pathPointAt: (pos, posBasedOnLength=true) ->
     center = @center()
     ellipsis = @ellipsis()
-    angle = @rotation + pos * 360 * @twirl % 360
+    PI2 = Math.PI * 2
+    angle = @rotation + pos * PI2 * @twirl % PI2
     pt = ellipsis.pointAtAngle(angle)?.subtract(center).scale(pos)
     center.add pt
 

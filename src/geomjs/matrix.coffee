@@ -134,8 +134,8 @@ class Matrix
   #
   # Rotates the matrix by the amount of the passed-in angle in degrees.
   rotate: (angle=0) ->
-    cos = Math.cos Math.degToRad angle
-    sin = Math.sin Math.degToRad angle
+    cos = Math.cos angle
+    sin = Math.sin angle
     [@a, @b, @c, @d, @tx, @ty] = [
        @a*cos - @b*sin
        @a*sin + @b*cos
@@ -150,7 +150,7 @@ class Matrix
   #
   # Skews the matrix by the amount of the passed-in point.
   skew: (xOrPt, y) ->
-    pt = Point.pointFrom(xOrPt, y, 0).scale(Math.PI / 180)
+    pt = Point.pointFrom(xOrPt, y, 0)
     @append Math.cos(pt.y),
             Math.sin(pt.y),
             -Math.sin(pt.x),

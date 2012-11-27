@@ -163,8 +163,8 @@ class Polygon
   pointAtAngle: (angle) ->
     center = @center()
     distance = (a,b) -> a.distance(center) - b.distance(center)
-    vec = center.add Math.cos(Math.degToRad(angle))*10000,
-                     Math.sin(Math.degToRad(angle))*10000
+    vec = center.add Math.cos(angle)*10000,
+                     Math.sin(angle)*10000
     @intersections(points: -> [center, vec])?.sort(distance)[0]
 
   #### Surface API
