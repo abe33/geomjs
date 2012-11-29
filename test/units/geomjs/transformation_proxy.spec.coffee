@@ -11,10 +11,11 @@ describe 'TransformationProxy', ->
         'points'
         'pathPointAt'
         'pathOrientationAt'
-      ].sort()
+      ]
 
     it 'should have detected the proxyable methods', ->
-      expect(@proxy.proxied().sort()).toEqual(@proxyableMethods)
+      for proxied in @proxyableMethods
+        expect(@proxy.proxied().indexOf proxied).not.toBe(-1)
 
     it 'should be able to proxy the found methods', ->
       expect(@proxy.points()).toEqual(@proxy.geometry.points())

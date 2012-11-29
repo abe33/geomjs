@@ -62,74 +62,79 @@ class Rectangle
 
   ##### Rectangle::corners
   #
-  corners: -> [@topLeft(), @topRight(), @bottomRight(), @bottomLeft()]
+  @proxyable 'PointList'
+    corners: -> [@topLeft(), @topRight(), @bottomRight(), @bottomLeft()]
 
-  ##### Rectangle::topLeft
-  #
-  topLeft: -> new Point(@x, @y)
+  @proxyable 'Point'
+    ##### Rectangle::topLeft
+    #
+    topLeft: -> new Point(@x, @y)
 
-  ##### Rectangle::topRight
-  #
-  topRight: -> @topLeft().add(@topEdge())
+    ##### Rectangle::topRight
+    #
+    topRight: -> @topLeft().add(@topEdge())
 
-  ##### Rectangle::bottomLeft
-  #
-  bottomLeft: -> @topLeft().add(@leftEdge())
+    ##### Rectangle::bottomLeft
+    #
+    bottomLeft: -> @topLeft().add(@leftEdge())
 
-  ##### Rectangle::bottomRight
-  #
-  bottomRight: -> @topLeft().add(@topEdge()).add(@leftEdge())
+    ##### Rectangle::bottomRight
+    #
+    bottomRight: -> @topLeft().add(@topEdge()).add(@leftEdge())
 
   #### Centers
+  @proxyable 'Point'
 
-  ##### Rectangle::center
-  #
-  center: -> @topLeft().add(@diagonal().scale(0.5))
+    ##### Rectangle::center
+    #
+    center: -> @topLeft().add(@diagonal().scale(0.5))
 
-  ##### Rectangle::topEdgeCenter
-  #
-  topEdgeCenter: -> @topLeft().add(@topEdge().scale(0.5))
+    ##### Rectangle::topEdgeCenter
+    #
+    topEdgeCenter: -> @topLeft().add(@topEdge().scale(0.5))
 
-  ##### Rectangle::bottomEdgeCenter
-  #
-  bottomEdgeCenter: -> @bottomLeft().add(@topEdge().scale(0.5))
+    ##### Rectangle::bottomEdgeCenter
+    #
+    bottomEdgeCenter: -> @bottomLeft().add(@topEdge().scale(0.5))
 
-  ##### Rectangle::leftEdgeCenter
-  #
-  leftEdgeCenter: -> @topLeft().add(@leftEdge().scale(0.5))
+    ##### Rectangle::leftEdgeCenter
+    #
+    leftEdgeCenter: -> @topLeft().add(@leftEdge().scale(0.5))
 
-  ##### Rectangle::rightEdgeCenter
-  #
-  rightEdgeCenter: -> @topRight().add(@leftEdge().scale(0.5))
+    ##### Rectangle::rightEdgeCenter
+    #
+    rightEdgeCenter: -> @topRight().add(@leftEdge().scale(0.5))
 
   #### Edges
 
   ##### Rectangle::edges
   #
-  edges: -> [@topEdge(), @topRight(), @bottomRight(), @bottomLeft()]
+  @proxyable 'PointList'
+    edges: -> [@topEdge(), @topRight(), @bottomRight(), @bottomLeft()]
 
-  ##### Rectangle::topEdge
-  #
-  topEdge: -> new Point @width * Math.cos(@rotation),
-                        @width * Math.sin(@rotation)
+  @proxyable 'Point'
+    ##### Rectangle::topEdge
+    #
+    topEdge: -> new Point @width * Math.cos(@rotation),
+                          @width * Math.sin(@rotation)
 
-  ##### Rectangle::leftEdge
-  #
-  leftEdge: ->
-    new Point @height * Math.cos(@rotation + Math.PI / 2),
-              @height * Math.sin(@rotation + Math.PI / 2)
+    ##### Rectangle::leftEdge
+    #
+    leftEdge: ->
+      new Point @height * Math.cos(@rotation + Math.PI / 2),
+                @height * Math.sin(@rotation + Math.PI / 2)
 
-  ##### Rectangle::bottomEdge
-  #
-  bottomEdge: -> @topEdge()
+    ##### Rectangle::bottomEdge
+    #
+    bottomEdge: -> @topEdge()
 
-  ##### Rectangle::rightEdge
-  #
-  rightEdge: -> @leftEdge()
+    ##### Rectangle::rightEdge
+    #
+    rightEdge: -> @leftEdge()
 
-  ##### Rectangle::diagonal
-  #
-  diagonal: -> @leftEdge().add(@topEdge())
+    ##### Rectangle::diagonal
+    #
+    diagonal: -> @leftEdge().add(@topEdge())
 
   #### Bounds
 

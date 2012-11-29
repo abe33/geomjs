@@ -56,6 +56,34 @@ describe 'Rectangle', ->
         # Rectangle API
         testRotatedRectangle source, x, y, width, height, rotation
 
+        proxyable(source)
+        .shouldDefine
+          corners: 'PointList'
+          topLeft: 'Point'
+          topRight: 'Point'
+          bottomLeft: 'Point'
+          bottomRight: 'Point'
+
+          center: 'Point'
+          topEdgeCenter: 'Point'
+          bottomEdgeCenter: 'Point'
+          leftEdgeCenter: 'Point'
+          rightEdgeCenter: 'Point'
+
+          edges: 'PointList'
+          topEdge: 'Point'
+          leftEdge: 'Point'
+          bottomEdge: 'Point'
+          rightEdge: 'Point'
+
+          diagonal: 'Point'
+
+          points: 'PointList'
+
+          pathPointAt: 'Point'
+          pathOrientationAt: 'Angle'
+        .asProxyable()
+
         describe 'its setCenter method', ->
           calledWithPoints(1,3,-5,2,5,-8,0,0)
           .where
