@@ -71,23 +71,36 @@ class Intersections extends Mixin
     for i in [0..length1-2]
       sv1 = points1[i]
       ev1 = points1[i+1]
-      dif1 = ev1.subtract sv1
+      dif1x = ev1.x - sv1.x
+      dif1y = ev1.y - sv1.y
+      dif1l = dif1x * dif1x + dif1y * dif1y
 
       for j in [0..length2-2]
         sv2 = points2[j]
         ev2 = points2[j+1]
-        dif2 = ev2.subtract sv2
+        dif2x = ev2.x - sv2.x
+        dif2y = ev2.y - sv2.y
+        dif2l = dif2x * dif2x + dif2y * dif2y
 
-        cross = @perCrossing sv1, dif1, sv2, dif2
-        d1 = cross.subtract ev1
-        d2 = cross.subtract sv1
-        d3 = cross.subtract ev2
-        d4 = cross.subtract sv2
+        cross = @perCrossing sv1, {x:dif1x,y:dif1y}, sv2, {x:dif2x,y:dif2y}
+        d1x = cross.x - ev1.x
+        d1y = cross.y - ev1.y
+        d2x = cross.x - sv1.x
+        d2y = cross.y - sv1.y
+        d3x = cross.x - ev2.x
+        d3y = cross.y - ev2.y
+        d4x = cross.x - sv2.x
+        d4y = cross.y - sv2.y
 
-        if d1.length() <= dif1.length() and
-           d2.length() <= dif1.length() and
-           d3.length() <= dif2.length() and
-           d4.length() <= dif2.length()
+        d1l = d1x * d1x + d1y * d1y
+        d2l = d2x * d2x + d2y * d2y
+        d3l = d3x * d3x + d3y * d3y
+        d4l = d4x * d4x + d4y * d4y
+
+        if d1l <= dif1l and
+           d2l <= dif1l and
+           d3l <= dif2l and
+           d4l <= dif2l
 
           if cross.equals lastIntersection
             lastIntersection = cross
@@ -95,11 +108,11 @@ class Intersections extends Mixin
 
           if providesDataInCallback
             context =
-              segment1: dif1
+              segment1: new Point dif1x, dif1y
               segmentIndex1: i
               segmentStart1: sv1
               segmentEnd1: ev1
-              segment2: dif2
+              segment2: new Point dif2x, dif2y
               segmentIndex2: j
               segmentStart2: sv2
               segmentEnd2: ev2
