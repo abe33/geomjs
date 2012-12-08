@@ -1,18 +1,24 @@
 # @toc
-{include} = require './include'
+chancejs = require 'chancejs'
+mixinsjs = require 'mixinsjs'
+
+{
+  Equatable,
+  Cloneable,
+  Sourcable,
+  Formattable,
+  Memoizable,
+  Parameterizable,
+  include
+} = mixinsjs
+
 Point = require './point'
-Equatable = require './mixins/equatable'
-Formattable = require './mixins/formattable'
-Cloneable = require './mixins/cloneable'
-Sourcable = require './mixins/sourcable'
 Triangulable = require './mixins/triangulable'
 Proxyable = require './mixins/proxyable'
-Parameterizable = require './mixins/parameterizable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
-chancejs = require 'chancejs'
 
 ## Rectangle
 class Rectangle

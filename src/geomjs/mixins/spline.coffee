@@ -1,6 +1,7 @@
 # @toc
-Mixin = require './mixin'
-Memoizable = require './memoizable'
+mixinsjs = require 'mixinsjs'
+
+{Mixin, Memoizable} = mixinsjs
 Point = require '../point'
 
 ## Spline

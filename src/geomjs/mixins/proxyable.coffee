@@ -1,4 +1,6 @@
-Mixin = require './mixin'
+mixinsjs = require 'mixinsjs'
+
+{Mixin} = mixinsjs
 
 class Proxyable extends Mixin
   @included: (klass) ->

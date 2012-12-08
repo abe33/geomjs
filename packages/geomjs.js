@@ -88,308 +88,10 @@
     return ints;
   };
 
-  /* src/geomjs/include.coffee */;
-
-
-  include = function() {
-    var mixins;
-    mixins = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    if (Object.prototype.toString.call(mixins[0]).indexOf('Array') >= 0) {
-      mixins = mixins[0];
-    }
-    return {
-      "in": function(klass) {
-        return mixins.forEach(function(mixin) {
-          return mixin.attachTo(klass);
-        });
-      }
-    };
-  };
-
-  /* src/geomjs/mixins/mixin.coffee */;
-
-
-  Mixin = (function() {
-
-    function Mixin() {}
-
-    Mixin.attachTo = function(klass) {
-      var k, v, _ref;
-      _ref = this.prototype;
-      for (k in _ref) {
-        v = _ref[k];
-        if (k !== 'constructor') {
-          klass.prototype[k] = v;
-        }
-      }
-      return typeof this.included === "function" ? this.included(klass) : void 0;
-    };
-
-    return Mixin;
-
-  })();
-
-  /* src/geomjs/mixins/equatable.coffee */;
-
-
-  Equatable = function() {
-    var ConcretEquatable, properties;
-    properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    return ConcretEquatable = (function(_super) {
-
-      __extends(ConcretEquatable, _super);
-
-      function ConcretEquatable() {
-        return ConcretEquatable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretEquatable.prototype.equals = function(o) {
-        var _this = this;
-        return (o != null) && properties.every(function(p) {
-          if (_this[p].equals != null) {
-            return _this[p].equals(o[p]);
-          } else {
-            return o[p] === _this[p];
-          }
-        });
-      };
-
-      return ConcretEquatable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/formattable.coffee */;
-
-
-  Formattable = function() {
-    var ConcretFormattable, classname, properties;
-    classname = arguments[0], properties = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return ConcretFormattable = (function(_super) {
-
-      __extends(ConcretFormattable, _super);
-
-      function ConcretFormattable() {
-        return ConcretFormattable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretFormattable.prototype.toString = function() {
-        var formattedProperties, p;
-        if (properties.length === 0) {
-          return "[" + classname + "]";
-        } else {
-          formattedProperties = (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = properties.length; _i < _len; _i++) {
-              p = properties[_i];
-              _results.push("" + p + "=" + this[p]);
-            }
-            return _results;
-          }).call(this);
-          return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
-        }
-      };
-
-      ConcretFormattable.prototype.classname = function() {
-        return classname;
-      };
-
-      return ConcretFormattable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/cloneable.coffee */;
-
-
-  Cloneable = (function(_super) {
-
-    __extends(Cloneable, _super);
-
-    function Cloneable() {
-      return Cloneable.__super__.constructor.apply(this, arguments);
-    }
-
-    Cloneable.included = function(klass) {
-      return klass.prototype.clone = function() {
-        return new klass(this);
-      };
-    };
-
-    return Cloneable;
-
-  })(Mixin);
-
-  /* src/geomjs/mixins/sourcable.coffee */;
-
-
-  Sourcable = function() {
-    var ConcretSourcable, name, signature;
-    name = arguments[0], signature = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return ConcretSourcable = (function(_super) {
-
-      __extends(ConcretSourcable, _super);
-
-      function ConcretSourcable() {
-        return ConcretSourcable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretSourcable.prototype.toSource = function() {
-        var arg, args;
-        args = ((function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = signature.length; _i < _len; _i++) {
-            arg = signature[_i];
-            _results.push(this[arg]);
-          }
-          return _results;
-        }).call(this)).map(function(o) {
-          var isArray;
-          switch (typeof o) {
-            case 'object':
-              isArray = Object.prototype.toString.call(o).indexOf('Array') !== -1;
-              if (o.toSource != null) {
-                return o.toSource();
-              } else {
-                if (isArray) {
-                  return "[" + (o.map(function(el) {
-                    if (el.toSource != null) {
-                      return el.toSource();
-                    } else {
-                      return el;
-                    }
-                  })) + "]";
-                } else {
-                  return o;
-                }
-              }
-              break;
-            case 'string':
-              if (o.toSource != null) {
-                return o.toSource();
-              } else {
-                return "'" + (o.replace("'", "\\'")) + "'";
-              }
-              break;
-            default:
-              return o;
-          }
-        });
-        return "new " + name + "(" + (args.join(',')) + ")";
-      };
-
-      return ConcretSourcable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/memoizable.coffee */;
-
-
-  Memoizable = (function(_super) {
-
-    __extends(Memoizable, _super);
-
-    function Memoizable() {
-      return Memoizable.__super__.constructor.apply(this, arguments);
-    }
-
-    Memoizable.prototype.memoized = function(prop) {
-      var _ref;
-      if (this.memoizationKey() === this.__memoizationKey__) {
-        return ((_ref = this.__memo__) != null ? _ref[prop] : void 0) != null;
-      } else {
-        this.__memo__ = {};
-        return false;
-      }
-    };
-
-    Memoizable.prototype.memoFor = function(prop) {
-      return this.__memo__[prop];
-    };
-
-    Memoizable.prototype.memoize = function(prop, value) {
-      this.__memo__ || (this.__memo__ = {});
-      this.__memoizationKey__ = this.memoizationKey();
-      return this.__memo__[prop] = value;
-    };
-
-    Memoizable.prototype.memoizationKey = function() {
-      return this.toString();
-    };
-
-    return Memoizable;
-
-  })(Mixin);
-
-  /* src/geomjs/mixins/parameterizable.coffee */;
-
-
-  Parameterizable = function(method, parameters, allowPartial) {
-    var ConcretParameterizable;
-    if (allowPartial == null) {
-      allowPartial = false;
-    }
-    return ConcretParameterizable = (function(_super) {
-
-      __extends(ConcretParameterizable, _super);
-
-      function ConcretParameterizable() {
-        return ConcretParameterizable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretParameterizable.included = function(klass) {
-        var f;
-        f = function() {
-          var args, firstArgumentIsObject, k, keys, n, o, output, strict, v, value, _i;
-          args = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), strict = arguments[_i++];
-          if (typeof strict === 'number') {
-            args.push(strict);
-            strict = false;
-          }
-          output = {};
-          o = arguments[0];
-          n = 0;
-          firstArgumentIsObject = (o != null) && typeof o === 'object';
-          for (k in parameters) {
-            v = parameters[k];
-            value = firstArgumentIsObject ? o[k] : arguments[n++];
-            output[k] = parseFloat(value);
-            if (isNaN(output[k])) {
-              if (strict) {
-                keys = ((function() {
-                  var _j, _len, _results;
-                  _results = [];
-                  for (_j = 0, _len = parameters.length; _j < _len; _j++) {
-                    k = parameters[_j];
-                    _results.push(k);
-                  }
-                  return _results;
-                })()).join(', ');
-                throw new Error("" + output + " doesn't match pattern {" + keys + "}");
-              }
-              if (allowPartial) {
-                delete output[k];
-              } else {
-                output[k] = v;
-              }
-            }
-          }
-          return output;
-        };
-        klass[method] = f;
-        return klass.prototype[method] = f;
-      };
-
-      return ConcretParameterizable;
-
-    })(Mixin);
-  };
-
   /* src/geomjs/mixins/geometry.coffee */;
 
+
+  Mixin = mixinsjs.Mixin;
 
   Geometry = (function(_super) {
     var pointsBounds;
@@ -485,6 +187,8 @@
   /* src/geomjs/mixins/surface.coffee */;
 
 
+  Mixin = mixinsjs.Mixin;
+
   Surface = (function(_super) {
 
     __extends(Surface, _super);
@@ -518,6 +222,8 @@
 
   /* src/geomjs/mixins/path.coffee */;
 
+
+  Mixin = mixinsjs.Mixin;
 
   Path = (function(_super) {
 
@@ -614,6 +320,8 @@
 
   /* src/geomjs/mixins/intersections.coffee */;
 
+
+  Mixin = mixinsjs.Mixin;
 
   Intersections = (function(_super) {
 
@@ -760,6 +468,8 @@
   /* src/geomjs/mixins/triangulable.coffee */;
 
 
+  Mixin = mixinsjs.Mixin, Memoizable = mixinsjs.Memoizable;
+
   Triangulable = (function(_super) {
     var arrayCopy, pointInTriangle, polyArea, triangulate;
 
@@ -890,6 +600,8 @@
   /* src/geomjs/mixins/proxyable.coffee */;
 
 
+  Mixin = mixinsjs.Mixin;
+
   Proxyable = (function(_super) {
 
     __extends(Proxyable, _super);
@@ -916,6 +628,8 @@
 
   /* src/geomjs/mixins/spline.coffee */;
 
+
+  Mixin = mixinsjs.Mixin, Memoizable = mixinsjs.Memoizable;
 
   Spline = function(segmentSize) {
     var ConcretSpline;
@@ -1184,6 +898,8 @@
   /* src/geomjs/point.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   Point = (function() {
 
     include([Equatable('x', 'y'), Formattable('Point', 'x', 'y'), Sourcable('geomjs.Point', 'x', 'y'), Cloneable])["in"](Point);
@@ -1451,6 +1167,8 @@
   /* src/geomjs/matrix.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Matrix = (function() {
     var PROPERTIES;
 
@@ -1636,6 +1354,8 @@
 
   /* src/geomjs/rectangle.coffee */;
 
+
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
 
   Rectangle = (function() {
     var PROPERTIES, iterators, k;
@@ -2007,6 +1727,8 @@
   /* src/geomjs/triangle.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Triangle = (function() {
 
     include([Equatable('a', 'b', 'c'), Formattable('Triangle', 'a', 'b', 'c'), Sourcable('geomjs.Triangle', 'a', 'b', 'c'), Cloneable, Memoizable, Geometry, Surface, Path, Intersections])["in"](Triangle);
@@ -2265,6 +1987,8 @@
   /* src/geomjs/circle.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Circle = (function() {
     var iterators;
 
@@ -2485,6 +2209,8 @@
   /* src/geomjs/ellipsis.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Ellipsis = (function() {
     var PROPERTIES;
 
@@ -2671,6 +2397,8 @@
 
   /* src/geomjs/diamond.coffee */;
 
+
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
 
   Diamond = (function() {
     var PROPERTIES;
@@ -2960,6 +2688,8 @@
   /* src/geomjs/polygon.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Polygon = (function() {
 
     include([Formattable('Polygon', 'vertices'), Sourcable('geomjs.Polygon', 'vertices'), Cloneable, Geometry, Intersections, Triangulable, Surface, Path])["in"](Polygon);
@@ -3153,6 +2883,8 @@
   /* src/geomjs/linear_spline.coffee */;
 
 
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   LinearSpline = (function() {
 
     include([Formattable('LinearSpline'), Sourcable('geomjs.LinearSpline', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(1)])["in"](LinearSpline);
@@ -3188,6 +2920,8 @@
 
   /* src/geomjs/cubic_bezier.coffee */;
 
+
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
 
   CubicBezier = (function() {
 
@@ -3231,6 +2965,8 @@
   /* src/geomjs/quad_bezier.coffee */;
 
 
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   QuadBezier = (function() {
 
     include([Formattable('QuadBezier'), Sourcable('geomjs.QuadBezier', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(2)])["in"](QuadBezier);
@@ -3268,6 +3004,8 @@
 
   /* src/geomjs/quint_bezier.coffee */;
 
+
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
 
   QuintBezier = (function() {
 
@@ -3314,6 +3052,8 @@
 
   /* src/geomjs/spiral.coffee */;
 
+
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
 
   Spiral = (function() {
     var PROPERTIES, memoizationKey;
@@ -3497,22 +3237,6 @@
     return TransformationProxy;
 
   })();
-
-  this.geomjs.include = include;
-
-  this.geomjs.Mixin = Mixin;
-
-  this.geomjs.Equatable = Equatable;
-
-  this.geomjs.Formattable = Formattable;
-
-  this.geomjs.Cloneable = Cloneable;
-
-  this.geomjs.Sourcable = Sourcable;
-
-  this.geomjs.Memoizable = Memoizable;
-
-  this.geomjs.Parameterizable = Parameterizable;
 
   this.geomjs.Geometry = Geometry;
 

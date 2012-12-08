@@ -1,13 +1,18 @@
 # This file define the `Matrix` class used by various class inside geomjs.
 # @toc
+mixinsjs = require 'mixinsjs'
+
+{
+  Equatable,
+  Cloneable,
+  Sourcable,
+  Formattable,
+  Parameterizable,
+  include
+} = mixinsjs
+
 require './math'
-{include} = require './include'
 Point = require './point'
-Equatable = require './mixins/equatable'
-Formattable = require './mixins/formattable'
-Cloneable = require './mixins/cloneable'
-Sourcable = require './mixins/sourcable'
-Parameterizable = require './mixins/parameterizable'
 
 ## Matrix
 

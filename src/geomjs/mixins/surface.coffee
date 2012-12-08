@@ -1,5 +1,7 @@
 # @toc
-Mixin = require './mixin'
+mixinsjs = require 'mixinsjs'
+
+{Mixin} = mixinsjs
 
 ## Surface
 class Surface extends Mixin

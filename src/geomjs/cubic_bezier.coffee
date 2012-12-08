@@ -1,8 +1,12 @@
 # @toc
-{include} = require './include'
+mixinsjs = require 'mixinsjs'
+{
+  Sourcable,
+  Formattable,
+  include
+} = mixinsjs
+
 Point = require './point'
-Formattable = require './mixins/formattable'
-Sourcable = require './mixins/sourcable'
 Intersections = require './mixins/intersections'
 Geometry = require './mixins/geometry'
 Spline = require './mixins/spline'

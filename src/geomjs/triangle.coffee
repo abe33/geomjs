@@ -1,11 +1,17 @@
 # @toc
-{include} = require './include'
+mixinsjs = require 'mixinsjs'
+
+{
+  Equatable,
+  Cloneable,
+  Sourcable,
+  Formattable,
+  Memoizable,
+  Parameterizable,
+  include
+} = mixinsjs
+
 Point = require './point'
-Equatable = require './mixins/equatable'
-Formattable = require './mixins/formattable'
-Cloneable = require './mixins/cloneable'
-Sourcable = require './mixins/sourcable'
-Memoizable = require './mixins/memoizable'
 Path = require './mixins/path'
 Surface = require './mixins/surface'
 Geometry = require './mixins/geometry'

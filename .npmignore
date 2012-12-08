@@ -2,6 +2,9 @@ src
 node_modules
 spec
 test
+docs
+vendor
+demos
 fixtures
 Cakefile
 Nemfile

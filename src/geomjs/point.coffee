@@ -1,11 +1,15 @@
 # This file define the `Point` primitive used by various entites of geomjs.
 #@toc
 require './math'
-{include} = require './include'
-Cloneable = require './mixins/cloneable'
-Equatable = require './mixins/equatable'
-Formattable = require './mixins/formattable'
-Sourcable = require './mixins/sourcable'
+mixinsjs = require 'mixinsjs'
+
+{
+  Equatable,
+  Cloneable,
+  Sourcable,
+  Formattable,
+  include
+} = mixinsjs
 
 ## Point
 

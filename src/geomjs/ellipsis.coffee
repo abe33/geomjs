@@ -1,16 +1,21 @@
 # @toc
-{include} = require './include'
+mixinsjs = require 'mixinsjs'
+
+{
+  Equatable,
+  Cloneable,
+  Sourcable,
+  Formattable,
+  Memoizable,
+  Parameterizable,
+  include
+} = mixinsjs
+
 Point = require './point'
-Equatable = require './mixins/equatable'
-Formattable = require './mixins/formattable'
 Geometry = require './mixins/geometry'
 Surface = require './mixins/surface'
-Cloneable = require './mixins/cloneable'
-Memoizable = require './mixins/memoizable'
-Sourcable = require './mixins/sourcable'
 Path = require './mixins/path'
 Intersections = require './mixins/intersections'
-Parameterizable = require './mixins/parameterizable'
 
 ## Ellipsis
 class Ellipsis
