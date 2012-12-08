@@ -25,7 +25,7 @@
       this.random = new chancejs.Random(new chancejs.MathRandom);
       this.name = this.geometry.classname().toLowerCase();
       this.angle = 0;
-      this.angleSpeed = this.random["in"]([4, 5, 6, 7, 8]);
+      this.angleSpeed = this.random["in"](1, 3) * this.random.sign();
       this.shate;
       this.fillColor = colorPalette.shapeFill;
       this.strokeColor = colorPalette.shapeStroke;
@@ -42,11 +42,14 @@
     };
 
     Tester.prototype.animate = function(t) {
-      this.pathPosition += t;
-      if (this.pathPosition > 10000) {
-        this.pathPosition -= 10000;
+      this.pathPosition += t / 5;
+      if (this.pathPosition > 1) {
+        this.pathPosition -= 1;
       }
-      return this.angle += t / this.angleSpeed;
+      this.angle += t * this.angleSpeed;
+      this.geometry.rotate(-(t * this.angleSpeed / 10));
+      this.geometry.translate(Math.sin(this.angle), Math.cos(this.angle));
+      return this.geometry.scale(1 + Math.cos(this.angle * 3) / 100);
     };
 
     Tester.prototype.renderShape = function(context) {
@@ -56,8 +59,8 @@
 
     Tester.prototype.renderPath = function(context) {
       var pt, tan, tr;
-      pt = this.geometry.pathPointAt(this.pathPosition / 10000, false);
-      tan = this.geometry.pathOrientationAt(this.pathPosition / 10000, false);
+      pt = this.geometry.pathPointAt(this.pathPosition, false);
+      tan = this.geometry.pathOrientationAt(this.pathPosition, false);
       if ((pt != null) && (tan != null)) {
         tr = new geomjs.Rectangle(pt.x, pt.y, 6, 6, tan);
         return tr.stroke(context, colorPalette.mobile);
@@ -103,8 +106,8 @@
       var c, pt1, pt2, pt3;
       c = this.geometry.center();
       pt1 = this.geometry.pointAtAngle(this.angle);
-      pt2 = this.geometry.pointAtAngle(this.angle - 120);
-      pt3 = this.geometry.pointAtAngle(this.angle + 120);
+      pt2 = this.geometry.pointAtAngle(this.angle - Math.PI * 2 / 3);
+      pt3 = this.geometry.pointAtAngle(this.angle + Math.PI * 2 / 3);
       if ((pt1 != null) && (pt2 != null) && (pt3 != null)) {
         context.fillStyle = colorPalette.intersections;
         context.strokeStyle = colorPalette.intersections;
@@ -155,7 +158,7 @@
   })();
 
   $(document).ready(function() {
-    var animate, animated, canvas, circle, context, cubicBezier, cubicBezierPoints, diamond, ellipsis, geometries, initUI, linearSpline, linearSplinePoints, mouseX, mouseY, options, polygon, pt, quadBezier, quadBezierPoints, quintBezier, rectangle, render, requestAnimationFrame, spiral, stats, t, testers, triangle;
+    var animate, animated, canvas, context, geometries, initUI, mouseX, mouseY, options, render, requestAnimationFrame, stats, t, testers;
     stats = new Stats;
     stats.setMode(0);
     $('#canvas').prepend(stats.domElement);
@@ -165,7 +168,7 @@
     canvas = $('canvas');
     context = canvas[0].getContext('2d');
     animated = false;
-    geometries = [new geomjs.Rectangle(250, 40, 180, 100, 16), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)]), new geomjs.QuintBezier([new geomjs.Point(380, 350), new geomjs.Point(420, 290), new geomjs.Point(460, 340), new geomjs.Point(500, 290), new geomjs.Point(560, 350)]), new geomjs.Spiral(120, 60, 3, 470, 420, 10, 120)];
+    geometries = [new geomjs.Rectangle(250, 40, 180, 100, Math.PI / 7), new geomjs.Triangle(new geomjs.Point(100, 80), new geomjs.Point(320, 120), new geomjs.Point(140, 200)), new geomjs.Circle(60, 80, 160), new geomjs.Ellipsis(120, 60, 470, 180, 10), new geomjs.Diamond(50, 100, 60, 40, 420, 250), new geomjs.Polygon([new geomjs.Point(160, 190), new geomjs.Point(200, 280), new geomjs.Point(260, 260), new geomjs.Point(280, 280), new geomjs.Point(380, 190), new geomjs.Point(180, 160), new geomjs.Point(260, 220)]), new geomjs.LinearSpline([new geomjs.Point(260, 290), new geomjs.Point(300, 380), new geomjs.Point(320, 300), new geomjs.Point(340, 380), new geomjs.Point(380, 290)]), new geomjs.CubicBezier([new geomjs.Point(120, 300), new geomjs.Point(100, 350), new geomjs.Point(280, 420), new geomjs.Point(120, 420), new geomjs.Point(40, 420), new geomjs.Point(100, 240), new geomjs.Point(180, 200)]), new geomjs.QuadBezier([new geomjs.Point(180, 350), new geomjs.Point(220, 290), new geomjs.Point(260, 350), new geomjs.Point(300, 410), new geomjs.Point(360, 350)]), new geomjs.QuintBezier([new geomjs.Point(380, 350), new geomjs.Point(420, 290), new geomjs.Point(460, 340), new geomjs.Point(500, 290), new geomjs.Point(560, 350)]), new geomjs.Spiral(120, 60, 3, 470, 350, 10, 120)];
     options = {
       bounds: true,
       path: true,
@@ -229,37 +232,6 @@
         return _results;
       }
     };
-    rectangle = geometries[0], triangle = geometries[1], circle = geometries[2], ellipsis = geometries[3], diamond = geometries[4], polygon = geometries[5], linearSpline = geometries[6], cubicBezier = geometries[7], quadBezier = geometries[8], quintBezier = geometries[9], spiral = geometries[10];
-    linearSplinePoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = linearSpline.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
-    cubicBezierPoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = cubicBezier.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
-    quadBezierPoints = (function() {
-      var _i, _len, _ref, _results;
-      _ref = quadBezier.vertices;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pt = _ref[_i];
-        _results.push(pt.clone());
-      }
-      return _results;
-    })();
     animate = function(n) {
       var d;
       if (isNaN(n)) {
@@ -268,47 +240,12 @@
       stats.begin();
       d = n - t;
       t = n;
+      d = d / 1000;
       testers.forEach(function(t) {
         if (options[t.name]) {
           return t.animate(d);
         }
       });
-      rectangle.rotateAroundCenter(d / 70);
-      rectangle.inflateAroundCenter(Math.cos(Math.degToRad(t)), Math.sin(Math.degToRad(t)));
-      triangle.rotateAroundCenter(-d / 60);
-      triangle.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 12)) / 200);
-      circle.radius = 40 + Math.sin(Math.degToRad(t / 17)) * 20;
-      ellipsis.radius1 = 120 + Math.sin(Math.degToRad(t / 17)) * 20;
-      ellipsis.radius2 = 60 + Math.cos(Math.degToRad(t / 17)) * 20;
-      ellipsis.rotation += -d / 60;
-      diamond.topLength = 50 + Math.sin(Math.degToRad(t / 17)) * 20;
-      diamond.rightLength = 100 + Math.cos(Math.degToRad(Math.PI / 2 + t / 17)) * 20;
-      diamond.bottomLength = 60 + Math.sin(Math.degToRad(Math.PI + t / 17)) * 20;
-      diamond.leftLength = 40 + Math.sin(Math.degToRad(Math.PI * 1.5 + t / 17)) * 20;
-      diamond.rotation += -d / 80;
-      linearSpline.vertices.forEach(function(vertex, i) {
-        var v;
-        v = linearSplinePoints[i];
-        i += 1;
-        vertex.x = v.x + Math.cos(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-        return vertex.y = v.y + Math.sin(i + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-      });
-      cubicBezier.vertices.forEach(function(vertex, i) {
-        var v;
-        v = cubicBezierPoints[i];
-        i += 1;
-        vertex.x = v.x + Math.cos(i + 1 + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-        return vertex.y = v.y + Math.sin(i + 1 + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-      });
-      quadBezier.vertices.forEach(function(vertex, i) {
-        var v;
-        v = quadBezierPoints[i];
-        i += 1;
-        vertex.x = v.x + Math.cos(i + 3 + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-        return vertex.y = v.y + Math.sin(i + 3 + Math.degToRad(Math.PI * 1.5 + t / 5)) * 20;
-      });
-      polygon.rotateAroundCenter(d / 80);
-      polygon.scaleAroundCenter(1 + Math.cos(Math.degToRad(t / 10)) / 120);
       render();
       if (animated) {
         requestAnimationFrame(animate);

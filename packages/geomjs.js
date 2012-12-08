@@ -1,5 +1,5 @@
 (function() {
-  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, QuadBezier, QuintBezier, Rectangle, Sourcable, Spiral, Spline, Surface, Triangle, Triangulable, include,
+  var Circle, Cloneable, CubicBezier, Diamond, Ellipsis, Equatable, Formattable, Geometry, Intersections, LinearSpline, Matrix, Memoizable, Mixin, Parameterizable, Path, Point, Polygon, Proxyable, QuadBezier, QuintBezier, Rectangle, Sourcable, Spiral, Spline, Surface, TransformationProxy, Triangle, Triangulable, include,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -8,6 +8,14 @@
 
   /* src/geomjs/math.coffee */;
 
+
+  Math.PI2 = Math.PI * 2;
+
+  Math.PI_2 = Math.PI / 2;
+
+  Math.PI_4 = Math.PI / 4;
+
+  Math.PI_8 = Math.PI / 8;
 
   Math.degToRad = function(n) {
     return n * Math.PI / 180;
@@ -80,306 +88,10 @@
     return ints;
   };
 
-  /* src/geomjs/include.coffee */;
-
-
-  include = function() {
-    var mixins;
-    mixins = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    if (Object.prototype.toString.call(mixins[0]).indexOf('Array') >= 0) {
-      mixins = mixins[0];
-    }
-    return {
-      "in": function(klass) {
-        return mixins.forEach(function(mixin) {
-          return mixin.attachTo(klass);
-        });
-      }
-    };
-  };
-
-  /* src/geomjs/mixins/mixin.coffee */;
-
-
-  Mixin = (function() {
-
-    function Mixin() {}
-
-    Mixin.attachTo = function(klass) {
-      var k, v, _ref;
-      _ref = this.prototype;
-      for (k in _ref) {
-        v = _ref[k];
-        klass.prototype[k] = v;
-      }
-      return typeof this.included === "function" ? this.included(klass) : void 0;
-    };
-
-    return Mixin;
-
-  })();
-
-  /* src/geomjs/mixins/equatable.coffee */;
-
-
-  Equatable = function() {
-    var ConcretEquatable, properties;
-    properties = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    return ConcretEquatable = (function(_super) {
-
-      __extends(ConcretEquatable, _super);
-
-      function ConcretEquatable() {
-        return ConcretEquatable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretEquatable.prototype.equals = function(o) {
-        var _this = this;
-        return (o != null) && properties.every(function(p) {
-          if (_this[p].equals != null) {
-            return _this[p].equals(o[p]);
-          } else {
-            return o[p] === _this[p];
-          }
-        });
-      };
-
-      return ConcretEquatable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/formattable.coffee */;
-
-
-  Formattable = function() {
-    var ConcretFormattable, classname, properties;
-    classname = arguments[0], properties = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return ConcretFormattable = (function(_super) {
-
-      __extends(ConcretFormattable, _super);
-
-      function ConcretFormattable() {
-        return ConcretFormattable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretFormattable.prototype.toString = function() {
-        var formattedProperties, p;
-        if (properties.length === 0) {
-          return "[" + classname + "]";
-        } else {
-          formattedProperties = (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = properties.length; _i < _len; _i++) {
-              p = properties[_i];
-              _results.push("" + p + "=" + this[p]);
-            }
-            return _results;
-          }).call(this);
-          return "[" + classname + "(" + (formattedProperties.join(', ')) + ")]";
-        }
-      };
-
-      ConcretFormattable.prototype.classname = function() {
-        return classname;
-      };
-
-      return ConcretFormattable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/cloneable.coffee */;
-
-
-  Cloneable = (function(_super) {
-
-    __extends(Cloneable, _super);
-
-    function Cloneable() {
-      return Cloneable.__super__.constructor.apply(this, arguments);
-    }
-
-    Cloneable.included = function(klass) {
-      return klass.prototype.clone = function() {
-        return new klass(this);
-      };
-    };
-
-    return Cloneable;
-
-  })(Mixin);
-
-  /* src/geomjs/mixins/sourcable.coffee */;
-
-
-  Sourcable = function() {
-    var ConcretSourcable, name, signature;
-    name = arguments[0], signature = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return ConcretSourcable = (function(_super) {
-
-      __extends(ConcretSourcable, _super);
-
-      function ConcretSourcable() {
-        return ConcretSourcable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretSourcable.prototype.toSource = function() {
-        var arg, args;
-        args = ((function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = signature.length; _i < _len; _i++) {
-            arg = signature[_i];
-            _results.push(this[arg]);
-          }
-          return _results;
-        }).call(this)).map(function(o) {
-          var isArray;
-          switch (typeof o) {
-            case 'object':
-              isArray = Object.prototype.toString.call(o).indexOf('Array') !== -1;
-              if (o.toSource != null) {
-                return o.toSource();
-              } else {
-                if (isArray) {
-                  return "[" + (o.map(function(el) {
-                    if (el.toSource != null) {
-                      return el.toSource();
-                    } else {
-                      return el;
-                    }
-                  })) + "]";
-                } else {
-                  return o;
-                }
-              }
-              break;
-            case 'string':
-              if (o.toSource != null) {
-                return o.toSource();
-              } else {
-                return "'" + (o.replace("'", "\\'")) + "'";
-              }
-              break;
-            default:
-              return o;
-          }
-        });
-        return "new " + name + "(" + (args.join(',')) + ")";
-      };
-
-      return ConcretSourcable;
-
-    })(Mixin);
-  };
-
-  /* src/geomjs/mixins/memoizable.coffee */;
-
-
-  Memoizable = (function(_super) {
-
-    __extends(Memoizable, _super);
-
-    function Memoizable() {
-      return Memoizable.__super__.constructor.apply(this, arguments);
-    }
-
-    Memoizable.prototype.memoized = function(prop) {
-      var _ref;
-      if (this.memoizationKey() === this.__memoizationKey__) {
-        return ((_ref = this.__memo__) != null ? _ref[prop] : void 0) != null;
-      } else {
-        this.__memo__ = {};
-        return false;
-      }
-    };
-
-    Memoizable.prototype.memoFor = function(prop) {
-      return this.__memo__[prop];
-    };
-
-    Memoizable.prototype.memoize = function(prop, value) {
-      this.__memo__ || (this.__memo__ = {});
-      this.__memoizationKey__ = this.memoizationKey();
-      return this.__memo__[prop] = value;
-    };
-
-    Memoizable.prototype.memoizationKey = function() {
-      return this.toString();
-    };
-
-    return Memoizable;
-
-  })(Mixin);
-
-  /* src/geomjs/mixins/parameterizable.coffee */;
-
-
-  Parameterizable = function(method, parameters, allowPartial) {
-    var ConcretParameterizable;
-    if (allowPartial == null) {
-      allowPartial = false;
-    }
-    return ConcretParameterizable = (function(_super) {
-
-      __extends(ConcretParameterizable, _super);
-
-      function ConcretParameterizable() {
-        return ConcretParameterizable.__super__.constructor.apply(this, arguments);
-      }
-
-      ConcretParameterizable.included = function(klass) {
-        var f;
-        f = function() {
-          var args, firstArgumentIsObject, k, keys, n, o, output, strict, v, value, _i;
-          args = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), strict = arguments[_i++];
-          if (typeof strict === 'number') {
-            args.push(strict);
-            strict = false;
-          }
-          output = {};
-          o = arguments[0];
-          n = 0;
-          firstArgumentIsObject = (o != null) && typeof o === 'object';
-          for (k in parameters) {
-            v = parameters[k];
-            value = firstArgumentIsObject ? o[k] : arguments[n++];
-            output[k] = parseFloat(value);
-            if (isNaN(output[k])) {
-              if (strict) {
-                keys = ((function() {
-                  var _j, _len, _results;
-                  _results = [];
-                  for (_j = 0, _len = parameters.length; _j < _len; _j++) {
-                    k = parameters[_j];
-                    _results.push(k);
-                  }
-                  return _results;
-                })()).join(', ');
-                throw new Error("" + output + " doesn't match pattern {" + keys + "}");
-              }
-              if (allowPartial) {
-                delete output[k];
-              } else {
-                output[k] = v;
-              }
-            }
-          }
-          return output;
-        };
-        klass[method] = f;
-        return klass.prototype[method] = f;
-      };
-
-      return ConcretParameterizable;
-
-    })(Mixin);
-  };
-
   /* src/geomjs/mixins/geometry.coffee */;
 
+
+  Mixin = mixinsjs.Mixin;
 
   Geometry = (function(_super) {
     var pointsBounds;
@@ -475,6 +187,8 @@
   /* src/geomjs/mixins/surface.coffee */;
 
 
+  Mixin = mixinsjs.Mixin;
+
   Surface = (function(_super) {
 
     __extends(Surface, _super);
@@ -508,6 +222,8 @@
 
   /* src/geomjs/mixins/path.coffee */;
 
+
+  Mixin = mixinsjs.Mixin;
 
   Path = (function(_super) {
 
@@ -605,6 +321,8 @@
   /* src/geomjs/mixins/intersections.coffee */;
 
 
+  Mixin = mixinsjs.Mixin;
+
   Intersections = (function(_super) {
 
     __extends(Intersections, _super);
@@ -665,7 +383,7 @@
     };
 
     Intersections.prototype.eachIntersections = function(geom1, geom2, block, providesDataInCallback) {
-      var context, cross, d1, d2, d3, d4, dif1, dif2, ev1, ev2, i, j, lastIntersection, length1, length2, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
+      var context, cross, d1l, d1x, d1y, d2l, d2x, d2y, d3l, d3x, d3y, d4l, d4x, d4y, dif1l, dif1x, dif1y, dif2l, dif2x, dif2y, ev1, ev2, i, j, lastIntersection, length1, length2, points1, points2, sv1, sv2, _i, _j, _ref, _ref1;
       if (providesDataInCallback == null) {
         providesDataInCallback = false;
       }
@@ -677,28 +395,46 @@
       for (i = _i = 0, _ref = length1 - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         sv1 = points1[i];
         ev1 = points1[i + 1];
-        dif1 = ev1.subtract(sv1);
+        dif1x = ev1.x - sv1.x;
+        dif1y = ev1.y - sv1.y;
+        dif1l = dif1x * dif1x + dif1y * dif1y;
         for (j = _j = 0, _ref1 = length2 - 2; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
           sv2 = points2[j];
           ev2 = points2[j + 1];
-          dif2 = ev2.subtract(sv2);
-          cross = this.perCrossing(sv1, dif1, sv2, dif2);
-          d1 = cross.subtract(ev1);
-          d2 = cross.subtract(sv1);
-          d3 = cross.subtract(ev2);
-          d4 = cross.subtract(sv2);
-          if (d1.length() <= dif1.length() && d2.length() <= dif1.length() && d3.length() <= dif2.length() && d4.length() <= dif2.length()) {
+          dif2x = ev2.x - sv2.x;
+          dif2y = ev2.y - sv2.y;
+          dif2l = dif2x * dif2x + dif2y * dif2y;
+          cross = this.perCrossing(sv1, {
+            x: dif1x,
+            y: dif1y
+          }, sv2, {
+            x: dif2x,
+            y: dif2y
+          });
+          d1x = cross.x - ev1.x;
+          d1y = cross.y - ev1.y;
+          d2x = cross.x - sv1.x;
+          d2y = cross.y - sv1.y;
+          d3x = cross.x - ev2.x;
+          d3y = cross.y - ev2.y;
+          d4x = cross.x - sv2.x;
+          d4y = cross.y - sv2.y;
+          d1l = d1x * d1x + d1y * d1y;
+          d2l = d2x * d2x + d2y * d2y;
+          d3l = d3x * d3x + d3y * d3y;
+          d4l = d4x * d4x + d4y * d4y;
+          if (d1l <= dif1l && d2l <= dif1l && d3l <= dif2l && d4l <= dif2l) {
             if (cross.equals(lastIntersection)) {
               lastIntersection = cross;
               continue;
             }
             if (providesDataInCallback) {
               context = {
-                segment1: dif1,
+                segment1: new Point(dif1x, dif1y),
                 segmentIndex1: i,
                 segmentStart1: sv1,
                 segmentEnd1: ev1,
-                segment2: dif2,
+                segment2: new Point(dif2x, dif2y),
                 segmentIndex2: j,
                 segmentStart2: sv2,
                 segmentEnd2: ev2
@@ -731,6 +467,8 @@
 
   /* src/geomjs/mixins/triangulable.coffee */;
 
+
+  Mixin = mixinsjs.Mixin, Memoizable = mixinsjs.Memoizable;
 
   Triangulable = (function(_super) {
     var arrayCopy, pointInTriangle, polyArea, triangulate;
@@ -859,8 +597,39 @@
 
   })(Mixin);
 
+  /* src/geomjs/mixins/proxyable.coffee */;
+
+
+  Mixin = mixinsjs.Mixin;
+
+  Proxyable = (function(_super) {
+
+    __extends(Proxyable, _super);
+
+    function Proxyable() {
+      return Proxyable.__super__.constructor.apply(this, arguments);
+    }
+
+    Proxyable.included = function(klass) {
+      return klass.proxyable = function(type, target) {
+        var k, v;
+        for (k in target) {
+          v = target[k];
+          v.proxyable = type;
+          klass.prototype[k] = v;
+        }
+        return target;
+      };
+    };
+
+    return Proxyable;
+
+  })(Mixin);
+
   /* src/geomjs/mixins/spline.coffee */;
 
+
+  Mixin = mixinsjs.Mixin, Memoizable = mixinsjs.Memoizable;
 
   Spline = function(segmentSize) {
     var ConcretSpline;
@@ -891,6 +660,53 @@
         if (!this.validateVertices(this.vertices)) {
           throw new Error("The number of vertices for " + this + " doesn't match");
         }
+      };
+
+      ConcretSpline.prototype.center = function() {
+        var vertex, x, y, _i, _len, _ref;
+        x = y = 0;
+        _ref = this.vertices;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          vertex = _ref[_i];
+          x += vertex.x;
+          y += vertex.y;
+        }
+        x = x / this.vertices.length;
+        y = y / this.vertices.length;
+        return new Point(x, y);
+      };
+
+      ConcretSpline.prototype.translate = function(x, y) {
+        var i, vertex, _i, _len, _ref, _ref1;
+        _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
+        _ref1 = this.vertices;
+        for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
+          vertex = _ref1[i];
+          this.vertices[i] = vertex.add(x, y);
+        }
+        return this;
+      };
+
+      ConcretSpline.prototype.rotate = function(rotation) {
+        var center, i, vertex, _i, _len, _ref;
+        center = this.center();
+        _ref = this.vertices;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          vertex = _ref[i];
+          this.vertices[i] = vertex.rotateAround(center, rotation);
+        }
+        return this;
+      };
+
+      ConcretSpline.prototype.scale = function(scale) {
+        var center, i, vertex, _i, _len, _ref;
+        center = this.center();
+        _ref = this.vertices;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          vertex = _ref[i];
+          this.vertices[i] = center.add(vertex.subtract(center).scale(scale));
+        }
+        return this;
       };
 
       ConcretSpline.prototype.points = function() {
@@ -1082,9 +898,11 @@
   /* src/geomjs/point.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   Point = (function() {
 
-    include([Equatable('x', 'y'), Formattable('Point', 'x', 'y'), Sourcable('geomjs.Point', 'x', 'y'), Cloneable])["in"](Point);
+    include([Equatable('x', 'y'), Formattable('Point', 'x', 'y'), Sourcable('geomjs.Point', 'x', 'y'), Cloneable()])["in"](Point);
 
     Point.isPoint = function(pt) {
       return (pt != null) && (pt.x != null) && (pt.y != null);
@@ -1179,7 +997,7 @@
     };
 
     Point.prototype.angle = function() {
-      return Math.radToDeg(Math.atan2(this.y, this.x));
+      return Math.atan2(this.y, this.x);
     };
 
     Point.prototype.angleWith = function(x, y) {
@@ -1194,7 +1012,7 @@
         Point.notAPoint([x, y]);
       }
       d = this.normalize().dot(new Point(x, y).normalize());
-      return Math.radToDeg(Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1));
+      return Math.acos(Math.abs(d)) * (d < 0 ? -1 : 1);
     };
 
     Point.prototype.normalize = function(length) {
@@ -1282,7 +1100,7 @@
         this.invalidRotation(n);
       }
       l = this.length();
-      a = Math.atan2(this.y, this.x) + Math.degToRad(n);
+      a = Math.atan2(this.y, this.x) + n;
       x = Math.cos(a) * l;
       y = Math.sin(a) * l;
       return new Point(x, y);
@@ -1349,6 +1167,8 @@
   /* src/geomjs/matrix.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Matrix = (function() {
     var PROPERTIES;
 
@@ -1362,7 +1182,7 @@
         d: 1,
         tx: 0,
         ty: 0
-      }), Cloneable
+      }), Cloneable()
     ])["in"](Matrix);
 
     Matrix.isMatrix = function(m) {
@@ -1446,15 +1266,15 @@
       if (angle == null) {
         angle = 0;
       }
-      cos = Math.cos(Math.degToRad(angle));
-      sin = Math.sin(Math.degToRad(angle));
+      cos = Math.cos(angle);
+      sin = Math.sin(angle);
       _ref = [this.a * cos - this.b * sin, this.a * sin + this.b * cos, this.c * cos - this.d * sin, this.c * sin + this.d * cos, this.tx * cos - this.ty * sin, this.tx * sin + this.ty * cos], this.a = _ref[0], this.b = _ref[1], this.c = _ref[2], this.d = _ref[3], this.tx = _ref[4], this.ty = _ref[5];
       return this;
     };
 
     Matrix.prototype.skew = function(xOrPt, y) {
       var pt;
-      pt = Point.pointFrom(xOrPt, y, 0).scale(Math.PI / 180);
+      pt = Point.pointFrom(xOrPt, y, 0);
       return this.append(Math.cos(pt.y), Math.sin(pt.y), -Math.sin(pt.x), Math.cos(pt.x));
     };
 
@@ -1535,6 +1355,8 @@
   /* src/geomjs/rectangle.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Rectangle = (function() {
     var PROPERTIES, iterators, k;
 
@@ -1547,7 +1369,7 @@
         width: NaN,
         height: NaN,
         rotation: NaN
-      }), Cloneable, Geometry, Surface, Path, Triangulable, Intersections
+      }), Cloneable(), Geometry, Surface, Path, Triangulable, Proxyable, Intersections
     ])["in"](Rectangle);
 
     Rectangle.eachRectangleRectangleIntersections = function(geom1, geom2, block, data) {
@@ -1580,69 +1402,68 @@
       this.x = args.x, this.y = args.y, this.width = args.width, this.height = args.height, this.rotation = args.rotation;
     }
 
-    Rectangle.prototype.corners = function() {
-      return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft()];
-    };
+    Rectangle.proxyable('PointList', {
+      corners: function() {
+        return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft()];
+      }
+    });
 
-    Rectangle.prototype.topLeft = function() {
-      return new Point(this.x, this.y);
-    };
+    Rectangle.proxyable('Point', {
+      topLeft: function() {
+        return new Point(this.x, this.y);
+      },
+      topRight: function() {
+        return this.topLeft().add(this.topEdge());
+      },
+      bottomLeft: function() {
+        return this.topLeft().add(this.leftEdge());
+      },
+      bottomRight: function() {
+        return this.topLeft().add(this.topEdge()).add(this.leftEdge());
+      }
+    });
 
-    Rectangle.prototype.topRight = function() {
-      return this.topLeft().add(this.topEdge());
-    };
+    Rectangle.proxyable('Point', {
+      center: function() {
+        return this.topLeft().add(this.diagonal().scale(0.5));
+      },
+      topEdgeCenter: function() {
+        return this.topLeft().add(this.topEdge().scale(0.5));
+      },
+      bottomEdgeCenter: function() {
+        return this.bottomLeft().add(this.topEdge().scale(0.5));
+      },
+      leftEdgeCenter: function() {
+        return this.topLeft().add(this.leftEdge().scale(0.5));
+      },
+      rightEdgeCenter: function() {
+        return this.topRight().add(this.leftEdge().scale(0.5));
+      }
+    });
 
-    Rectangle.prototype.bottomLeft = function() {
-      return this.topLeft().add(this.leftEdge());
-    };
+    Rectangle.proxyable('PointList', {
+      edges: function() {
+        return [this.topEdge(), this.topRight(), this.bottomRight(), this.bottomLeft()];
+      }
+    });
 
-    Rectangle.prototype.bottomRight = function() {
-      return this.topLeft().add(this.topEdge()).add(this.leftEdge());
-    };
-
-    Rectangle.prototype.center = function() {
-      return this.topLeft().add(this.diagonal().scale(0.5));
-    };
-
-    Rectangle.prototype.topEdgeCenter = function() {
-      return this.topLeft().add(this.topEdge().scale(0.5));
-    };
-
-    Rectangle.prototype.bottomEdgeCenter = function() {
-      return this.bottomLeft().add(this.topEdge().scale(0.5));
-    };
-
-    Rectangle.prototype.leftEdgeCenter = function() {
-      return this.topLeft().add(this.leftEdge().scale(0.5));
-    };
-
-    Rectangle.prototype.rightEdgeCenter = function() {
-      return this.topRight().add(this.leftEdge().scale(0.5));
-    };
-
-    Rectangle.prototype.edges = function() {
-      return [this.topEdge(), this.topRight(), this.bottomRight(), this.bottomLeft()];
-    };
-
-    Rectangle.prototype.topEdge = function() {
-      return new Point(this.width * Math.cos(Math.degToRad(this.rotation)), this.width * Math.sin(Math.degToRad(this.rotation)));
-    };
-
-    Rectangle.prototype.leftEdge = function() {
-      return new Point(this.height * Math.cos(Math.degToRad(this.rotation) + Math.PI / 2), this.height * Math.sin(Math.degToRad(this.rotation) + Math.PI / 2));
-    };
-
-    Rectangle.prototype.bottomEdge = function() {
-      return this.topEdge();
-    };
-
-    Rectangle.prototype.rightEdge = function() {
-      return this.leftEdge();
-    };
-
-    Rectangle.prototype.diagonal = function() {
-      return this.leftEdge().add(this.topEdge());
-    };
+    Rectangle.proxyable('Point', {
+      topEdge: function() {
+        return new Point(this.width * Math.cos(this.rotation), this.width * Math.sin(this.rotation));
+      },
+      leftEdge: function() {
+        return new Point(this.height * Math.cos(this.rotation + Math.PI / 2), this.height * Math.sin(this.rotation + Math.PI / 2));
+      },
+      bottomEdge: function() {
+        return this.topEdge();
+      },
+      rightEdge: function() {
+        return this.leftEdge();
+      },
+      diagonal: function() {
+        return this.leftEdge().add(this.topEdge());
+      }
+    });
 
     Rectangle.prototype.top = function() {
       return Math.min(this.y, this.topRight().y, this.bottomRight().y, this.bottomLeft().y);
@@ -1668,22 +1489,33 @@
       return this;
     };
 
-    Rectangle.prototype.rotateAroundCenter = function(rotation) {
+    Rectangle.prototype.translate = function(xOrPt, y) {
+      var pt;
+      pt = Point.pointFrom(xOrPt, y);
+      this.x += pt.x;
+      this.y += pt.y;
+      return this;
+    };
+
+    Rectangle.prototype.rotate = function(rotation) {
       var _ref;
       _ref = this.topLeft().rotateAround(this.center(), rotation), this.x = _ref.x, this.y = _ref.y;
       this.rotation += rotation;
       return this;
     };
 
-    Rectangle.prototype.scaleAroundCenter = function(scale) {
-      var dif, topLeft, _ref;
-      topLeft = this.topLeft();
-      dif = topLeft.subtract(this.center()).scale(scale);
-      _ref = topLeft.add(dif.scale(1 / 2)), this.x = _ref.x, this.y = _ref.y;
+    Rectangle.prototype.scale = function(scale) {
+      var center;
+      center = this.center();
       this.width *= scale;
       this.height *= scale;
+      this.setCenter(center);
       return this;
     };
+
+    Rectangle.prototype.rotateAroundCenter = Rectangle.prototype.rotate;
+
+    Rectangle.prototype.scaleAroundCenter = Rectangle.prototype.scale;
 
     Rectangle.prototype.inflateAroundCenter = function(xOrPt, y) {
       var center;
@@ -1759,14 +1591,16 @@
       return true;
     };
 
-    Rectangle.prototype.points = function() {
-      return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft(), this.topLeft()];
-    };
+    Rectangle.proxyable('PointList', {
+      points: function() {
+        return [this.topLeft(), this.topRight(), this.bottomRight(), this.bottomLeft(), this.topLeft()];
+      }
+    });
 
     Rectangle.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -1795,40 +1629,44 @@
       return this.width * 2 + this.height * 2;
     };
 
-    Rectangle.prototype.pathPointAt = function(n, pathBasedOnLength) {
-      var p1, p2, p3, _ref;
-      if (pathBasedOnLength == null) {
-        pathBasedOnLength = true;
+    Rectangle.proxyable('Point', {
+      pathPointAt: function(n, pathBasedOnLength) {
+        var p1, p2, p3, _ref;
+        if (pathBasedOnLength == null) {
+          pathBasedOnLength = true;
+        }
+        _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+        if (n < p1) {
+          return this.topLeft().add(this.topEdge().scale(Math.map(n, 0, p1, 0, 1)));
+        } else if (n < p2) {
+          return this.topRight().add(this.rightEdge().scale(Math.map(n, p1, p2, 0, 1)));
+        } else if (n < p3) {
+          return this.bottomRight().add(this.bottomEdge().scale(Math.map(n, p2, p3, 0, 1) * -1));
+        } else {
+          return this.bottomLeft().add(this.leftEdge().scale(Math.map(n, p3, 1, 0, 1) * -1));
+        }
       }
-      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
-      if (n < p1) {
-        return this.topLeft().add(this.topEdge().scale(Math.map(n, 0, p1, 0, 1)));
-      } else if (n < p2) {
-        return this.topRight().add(this.rightEdge().scale(Math.map(n, p1, p2, 0, 1)));
-      } else if (n < p3) {
-        return this.bottomRight().add(this.bottomEdge().scale(Math.map(n, p2, p3, 0, 1) * -1));
-      } else {
-        return this.bottomLeft().add(this.leftEdge().scale(Math.map(n, p3, 1, 0, 1) * -1));
-      }
-    };
+    });
 
-    Rectangle.prototype.pathOrientationAt = function(n, pathBasedOnLength) {
-      var p, p1, p2, p3, _ref;
-      if (pathBasedOnLength == null) {
-        pathBasedOnLength = true;
+    Rectangle.proxyable('Angle', {
+      pathOrientationAt: function(n, pathBasedOnLength) {
+        var p, p1, p2, p3, _ref;
+        if (pathBasedOnLength == null) {
+          pathBasedOnLength = true;
+        }
+        _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
+        if (n < p1) {
+          p = this.topEdge();
+        } else if (n < p2) {
+          p = this.rightEdge();
+        } else if (n < p3) {
+          p = this.bottomEdge().scale(-1);
+        } else {
+          p = this.leftEdge().scale(-1);
+        }
+        return p.angle();
       }
-      _ref = this.pathSteps(pathBasedOnLength), p1 = _ref[0], p2 = _ref[1], p3 = _ref[2];
-      if (n < p1) {
-        p = this.topEdge();
-      } else if (n < p2) {
-        p = this.rightEdge();
-      } else if (n < p3) {
-        p = this.bottomEdge().scale(-1);
-      } else {
-        p = this.leftEdge().scale(-1);
-      }
-      return p.angle();
-    };
+    });
 
     Rectangle.prototype.pathSteps = function(pathBasedOnLength) {
       var l, p1, p2, p3;
@@ -1889,9 +1727,11 @@
   /* src/geomjs/triangle.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Triangle = (function() {
 
-    include([Equatable('a', 'b', 'c'), Formattable('Triangle', 'a', 'b', 'c'), Sourcable('geomjs.Triangle', 'a', 'b', 'c'), Cloneable, Memoizable, Geometry, Surface, Path, Intersections])["in"](Triangle);
+    include([Equatable('a', 'b', 'c'), Formattable('Triangle', 'a', 'b', 'c'), Sourcable('geomjs.Triangle', 'a', 'b', 'c'), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections])["in"](Triangle);
 
     Triangle.triangleFrom = function(a, b, c) {
       var _ref;
@@ -1978,7 +1818,7 @@
 
     Triangle.prototype.rectangle = function() {
       var sqr;
-      sqr = 90;
+      sqr = Math.PI / 2;
       return Math.deltaBelowRatio(Math.abs(this.abc()), sqr) || Math.deltaBelowRatio(Math.abs(this.bac()), sqr) || Math.deltaBelowRatio(Math.abs(this.acb()), sqr);
     };
 
@@ -1994,7 +1834,7 @@
       return this;
     };
 
-    Triangle.prototype.rotateAroundCenter = function(rotation) {
+    Triangle.prototype.rotate = function(rotation) {
       var center;
       center = this.center();
       this.a = this.a.rotateAround(center, rotation);
@@ -2003,7 +1843,7 @@
       return this;
     };
 
-    Triangle.prototype.scaleAroundCenter = function(scale) {
+    Triangle.prototype.scale = function(scale) {
       var center;
       center = this.center();
       this.a = center.add(this.a.subtract(center).scale(scale));
@@ -2011,6 +1851,10 @@
       this.c = center.add(this.c.subtract(center).scale(scale));
       return this;
     };
+
+    Triangle.prototype.rotateAroundCenter = Triangle.prototype.rotate;
+
+    Triangle.prototype.scaleAroundCenter = Triangle.prototype.scale;
 
     Triangle.prototype.closedGeometry = function() {
       return true;
@@ -2023,7 +1867,7 @@
     Triangle.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -2035,7 +1879,7 @@
       if (this.memoized('acreage')) {
         return this.memoFor('acreage');
       }
-      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(Math.degToRad(this.abc()))) / 2);
+      return this.memoize('acreage', this.ab().length() * this.bc().length() * Math.abs(Math.sin(this.abc())) / 2);
     };
 
     Triangle.prototype.contains = function(xOrPt, y) {
@@ -2143,6 +1987,8 @@
   /* src/geomjs/circle.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Circle = (function() {
     var iterators;
 
@@ -2152,7 +1998,7 @@
         x: 0,
         y: 0,
         segments: 36
-      }), Sourcable('geomjs.Circle', 'radius', 'x', 'y'), Memoizable, Cloneable, Geometry, Surface, Path, Intersections
+      }), Sourcable('geomjs.Circle', 'radius', 'x', 'y'), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections
     ])["in"](Circle);
 
     Circle.eachIntersections = function(geom1, geom2, block, data) {
@@ -2243,9 +2089,26 @@
       return this.x + this.radius;
     };
 
+    Circle.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Circle.prototype.rotate = function() {
+      return this;
+    };
+
+    Circle.prototype.scale = function(scale) {
+      this.radius *= scale;
+      return this;
+    };
+
     Circle.prototype.points = function() {
       var n, step, _i, _ref, _results;
-      step = 360 / this.segments;
+      step = Math.PI * 2 / this.segments;
       _results = [];
       for (n = _i = 0, _ref = this.segments; 0 <= _ref ? _i <= _ref : _i >= _ref; n = 0 <= _ref ? ++_i : --_i) {
         _results.push(this.pointAtAngle(n * step));
@@ -2298,7 +2161,7 @@
     };
 
     Circle.prototype.pointAtAngle = function(angle) {
-      return new Point(this.x + Math.cos(Math.degToRad(angle)) * this.radius, this.y + Math.sin(Math.degToRad(angle)) * this.radius);
+      return new Point(this.x + Math.cos(angle) * this.radius, this.y + Math.sin(angle) * this.radius);
     };
 
     Circle.prototype.acreage = function() {
@@ -2316,7 +2179,7 @@
       if (random == null) {
         random = new chancejs.Random(new chancejs.MathRandom);
       }
-      pt = this.pointAtAngle(random.random(360));
+      pt = this.pointAtAngle(random.random(Math.PI * 2));
       center = this.center();
       dif = pt.subtract(center);
       return center.add(dif.scale(Math.sqrt(random.random())));
@@ -2327,7 +2190,7 @@
     };
 
     Circle.prototype.pathPointAt = function(n) {
-      return this.pointAtAngle(n * 360);
+      return this.pointAtAngle(n * Math.PI * 2);
     };
 
     Circle.prototype.drawPath = function(context) {
@@ -2346,6 +2209,8 @@
   /* src/geomjs/ellipsis.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Ellipsis = (function() {
     var PROPERTIES;
 
@@ -2359,7 +2224,7 @@
         y: 0,
         rotation: 0,
         segments: 36
-      }), Sourcable.apply(null, ['geomjs.Ellipsis'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Surface, Path, Intersections
+      }), Sourcable.apply(null, ['geomjs.Ellipsis'].concat(PROPERTIES)), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections
     ])["in"](Ellipsis);
 
     function Ellipsis(r1, r2, x, y, rot, segments) {
@@ -2390,7 +2255,7 @@
     Ellipsis.prototype.xBounds = function() {
       var phi, t,
         _this = this;
-      phi = Math.degToRad(this.rotation);
+      phi = this.rotation;
       t = Math.atan(-this.radius2 * Math.tan(phi) / this.radius1);
       return [t, t + Math.PI].map(function(t) {
         return _this.x + _this.radius1 * Math.cos(t) * Math.cos(phi) - _this.radius2 * Math.sin(t) * Math.sin(phi);
@@ -2400,11 +2265,30 @@
     Ellipsis.prototype.yBounds = function() {
       var phi, t,
         _this = this;
-      phi = Math.degToRad(this.rotation);
+      phi = this.rotation;
       t = Math.atan(this.radius2 * (Math.cos(phi) / Math.sin(phi)) / this.radius1);
       return [t, t + Math.PI].map(function(t) {
         return _this.y + _this.radius1 * Math.cos(t) * Math.sin(phi) + _this.radius2 * Math.sin(t) * Math.cos(phi);
       });
+    };
+
+    Ellipsis.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Ellipsis.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Ellipsis.prototype.scale = function(scale) {
+      this.radius1 *= scale;
+      this.radius2 *= scale;
+      return this;
     };
 
     Ellipsis.prototype.points = function() {
@@ -2441,14 +2325,19 @@
     };
 
     Ellipsis.prototype.pointAtAngle = function(angle) {
-      var center, vec, _ref;
-      center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
-      return (_ref = this.intersections({
-        points: function() {
-          return [center, vec];
-        }
-      })) != null ? _ref[0] : void 0;
+      var a, p, ratio, vec;
+      a = angle - this.rotation;
+      ratio = this.radius1 / this.radius2;
+      vec = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius1);
+      if (this.radius1 < this.radius2) {
+        vec.x = vec.x / ratio;
+      }
+      if (this.radius1 > this.radius2) {
+        vec.y = vec.y * ratio;
+      }
+      a = vec.angle();
+      p = new Point(Math.cos(a) * this.radius1, Math.sin(a) * this.radius2);
+      return this.center().add(p.rotate(this.rotation));
     };
 
     Ellipsis.prototype.acreage = function() {
@@ -2490,7 +2379,7 @@
     Ellipsis.prototype.drawPath = function(context) {
       context.save();
       context.translate(this.x, this.y);
-      context.rotate(Math.degToRad(this.rotation));
+      context.rotate(this.rotation);
       context.scale(this.radius1, this.radius2);
       context.beginPath();
       context.arc(0, 0, 1, 0, Math.PI * 2);
@@ -2499,7 +2388,7 @@
     };
 
     Ellipsis.prototype.memoizationKey = function() {
-      return "" + this.radius1 + ";" + this.radius2 + ";" + this.x + ";" + this.y + ";" + this.segments;
+      return "" + this.radius1 + ";" + this.radius2 + ";" + this.x + ";" + this.y + ";" + this.rotation + ";" + this.segments;
     };
 
     return Ellipsis;
@@ -2508,6 +2397,8 @@
 
   /* src/geomjs/diamond.coffee */;
 
+
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
 
   Diamond = (function() {
     var PROPERTIES;
@@ -2523,7 +2414,7 @@
         x: 0,
         y: 0,
         rotation: 0
-      }), Sourcable(['geomjs.Diamond'].concat(PROPERTIES)), Equatable.apply(Equatable, PROPERTIES), Cloneable, Geometry, Memoizable, Surface, Path, Intersections
+      }), Sourcable(['geomjs.Diamond'].concat(PROPERTIES)), Equatable.apply(Equatable, PROPERTIES), Cloneable(), Geometry, Memoizable, Surface, Path, Intersections
     ])["in"](Diamond);
 
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
@@ -2648,6 +2539,27 @@
       return Math.max(this.topCorner().x, this.bottomCorner().x, this.leftCorner().x, this.rightCorner().x);
     };
 
+    Diamond.prototype.translate = function(xOrPt, y) {
+      var x, _ref;
+      _ref = Point.pointFrom(xOrPt, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Diamond.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Diamond.prototype.scale = function(scale) {
+      this.topLength *= scale;
+      this.bottomLength *= scale;
+      this.rightLength *= scale;
+      this.leftLength *= scale;
+      return this;
+    };
+
     Diamond.prototype.points = function() {
       var t;
       return [t = this.topCorner(), this.rightCorner(), this.bottomCorner(), this.leftCorner(), t];
@@ -2664,7 +2576,7 @@
     Diamond.prototype.pointAtAngle = function(angle) {
       var center, vec, _ref;
       center = this.center();
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -2766,7 +2678,7 @@
     };
 
     Diamond.prototype.memoizationKey = function() {
-      return "" + this.x + ";" + this.y + ";" + this.topLength + ";" + this.bottomLength + ";" + this.leftLength + ";" + this.rightLength;
+      return "" + this.x + ";" + this.y + ";" + this.rotation + ";     " + this.topLength + ";" + this.bottomLength + ";" + this.leftLength + ";" + this.rightLength + ";";
     };
 
     return Diamond;
@@ -2776,9 +2688,11 @@
   /* src/geomjs/polygon.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Polygon = (function() {
 
-    include([Formattable('Polygon', 'vertices'), Sourcable('geomjs.Polygon', 'vertices'), Cloneable, Geometry, Intersections, Triangulable, Surface, Path])["in"](Polygon);
+    include([Formattable('Polygon', 'vertices'), Sourcable('geomjs.Polygon', 'vertices'), Cloneable(), Geometry, Intersections, Triangulable, Surface, Path])["in"](Polygon);
 
     Polygon.polygonFrom = function(vertices) {
       var isArray;
@@ -2834,11 +2748,8 @@
       return this;
     };
 
-    Polygon.prototype.rotateAroundCenter = function(rotation) {
+    Polygon.prototype.rotate = function(rotation) {
       var center, i, vertex, _i, _len, _ref;
-      if (rotation == null) {
-        rotation = 0;
-      }
       center = this.center();
       _ref = this.vertices;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
@@ -2848,7 +2759,7 @@
       return this;
     };
 
-    Polygon.prototype.scaleAroundCenter = function(scale) {
+    Polygon.prototype.scale = function(scale) {
       var center, i, vertex, _i, _len, _ref;
       center = this.center();
       _ref = this.vertices;
@@ -2859,8 +2770,22 @@
       return this;
     };
 
+    Polygon.prototype.rotateAroundCenter = Polygon.prototype.rotate;
+
+    Polygon.prototype.scaleAroundCenter = Polygon.prototype.scale;
+
     Polygon.prototype.points = function() {
-      return this.vertices.concat(this.vertices[0]);
+      var vertex;
+      return ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.vertices;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          vertex = _ref[_i];
+          _results.push(vertex.clone());
+        }
+        return _results;
+      }).call(this)).concat(this.vertices[0].clone());
     };
 
     Polygon.prototype.closedGeometry = function() {
@@ -2873,7 +2798,7 @@
       distance = function(a, b) {
         return a.distance(center) - b.distance(center);
       };
-      vec = center.add(Math.cos(Math.degToRad(angle)) * 10000, Math.sin(Math.degToRad(angle)) * 10000);
+      vec = center.add(Math.cos(angle) * 10000, Math.sin(angle) * 10000);
       return (_ref = this.intersections({
         points: function() {
           return [center, vec];
@@ -2958,6 +2883,8 @@
   /* src/geomjs/linear_spline.coffee */;
 
 
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   LinearSpline = (function() {
 
     include([Formattable('LinearSpline'), Sourcable('geomjs.LinearSpline', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(1)])["in"](LinearSpline);
@@ -2967,7 +2894,14 @@
     }
 
     LinearSpline.prototype.points = function() {
-      return this.vertices.concat();
+      var vertex, _i, _len, _ref, _results;
+      _ref = this.vertices;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        vertex = _ref[_i];
+        _results.push(vertex.clone());
+      }
+      return _results;
     };
 
     LinearSpline.prototype.segments = function() {
@@ -2986,6 +2920,8 @@
 
   /* src/geomjs/cubic_bezier.coffee */;
 
+
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
 
   CubicBezier = (function() {
 
@@ -3029,6 +2965,8 @@
   /* src/geomjs/quad_bezier.coffee */;
 
 
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
+
   QuadBezier = (function() {
 
     include([Formattable('QuadBezier'), Sourcable('geomjs.QuadBezier', 'vertices', 'bias'), Geometry, Path, Intersections, Spline(2)])["in"](QuadBezier);
@@ -3066,6 +3004,8 @@
 
   /* src/geomjs/quint_bezier.coffee */;
 
+
+  Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, include = mixinsjs.include;
 
   QuintBezier = (function() {
 
@@ -3113,6 +3053,8 @@
   /* src/geomjs/spiral.coffee */;
 
 
+  Equatable = mixinsjs.Equatable, Cloneable = mixinsjs.Cloneable, Sourcable = mixinsjs.Sourcable, Formattable = mixinsjs.Formattable, Memoizable = mixinsjs.Memoizable, Parameterizable = mixinsjs.Parameterizable, include = mixinsjs.include;
+
   Spiral = (function() {
     var PROPERTIES, memoizationKey;
 
@@ -3127,7 +3069,7 @@
         y: 0,
         rotation: 0,
         segments: 36
-      }), Sourcable.apply(null, ['geomjs.Spiral'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Path, Intersections
+      }), Sourcable.apply(null, ['geomjs.Spiral'].concat(PROPERTIES)), Cloneable(), Memoizable, Geometry, Path, Intersections
     ])["in"](Spiral);
 
     function Spiral(r1, r2, twirl, x, y, rot, segments) {
@@ -3146,6 +3088,25 @@
       return this.memoize('ellipsis', new Ellipsis(this));
     };
 
+    Spiral.prototype.translate = function(x, y) {
+      var _ref;
+      _ref = Point.pointFrom(x, y), x = _ref.x, y = _ref.y;
+      this.x += x;
+      this.y += y;
+      return this;
+    };
+
+    Spiral.prototype.rotate = function(rotation) {
+      this.rotation += rotation;
+      return this;
+    };
+
+    Spiral.prototype.scale = function(scale) {
+      this.radius1 *= scale;
+      this.radius2 *= scale;
+      return this;
+    };
+
     Spiral.prototype.points = function() {
       var center, ellipsis, i, p, points, _i, _ref;
       if (this.memoized('points')) {
@@ -3162,13 +3123,14 @@
     };
 
     Spiral.prototype.pathPointAt = function(pos, posBasedOnLength) {
-      var angle, center, ellipsis, pt, _ref;
+      var PI2, angle, center, ellipsis, pt, _ref;
       if (posBasedOnLength == null) {
         posBasedOnLength = true;
       }
       center = this.center();
       ellipsis = this.ellipsis();
-      angle = this.rotation + pos * 360 * this.twirl % 360;
+      PI2 = Math.PI * 2;
+      angle = this.rotation + pos * PI2 * this.twirl % PI2;
       pt = (_ref = ellipsis.pointAtAngle(angle)) != null ? _ref.subtract(center).scale(pos) : void 0;
       return center.add(pt);
     };
@@ -3197,21 +3159,84 @@
 
   })();
 
-  this.geomjs.include = include;
+  /* src/geomjs/transformation_proxy.coffee */;
 
-  this.geomjs.Mixin = Mixin;
 
-  this.geomjs.Equatable = Equatable;
+  TransformationProxy = (function() {
 
-  this.geomjs.Formattable = Formattable;
+    TransformationProxy.defineProxy = function(key, type) {
+      switch (type) {
+        case 'PointList':
+          return this.prototype[key] = function() {
+            var points,
+              _this = this;
+            points = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              return points.map(function(pt) {
+                return _this.matrix.transformPoint(pt);
+              });
+            } else {
+              return points;
+            }
+          };
+        case 'Point':
+          return this.prototype[key] = function() {
+            var point;
+            point = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              return this.matrix.transformPoint(point);
+            } else {
+              return point;
+            }
+          };
+        case 'Angle':
+          return this.prototype[key] = function() {
+            var angle, vec;
+            angle = this.geometry[key].apply(this.geometry, arguments);
+            if (this.matrix != null) {
+              vec = new Point(Math.cos(angle), Math.sin(angle));
+              return this.matrix.transformPoint(vec).angle();
+            } else {
+              return angle;
+            }
+          };
+      }
+    };
 
-  this.geomjs.Cloneable = Cloneable;
+    function TransformationProxy(geometry, matrix) {
+      this.geometry = geometry;
+      this.matrix = matrix;
+      this.proxiedMethods = this.detectProxyableMethods(this.geometry);
+    }
 
-  this.geomjs.Sourcable = Sourcable;
+    TransformationProxy.prototype.proxied = function() {
+      var k, v, _ref, _results;
+      _ref = this.proxiedMethods;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(k);
+      }
+      return _results;
+    };
 
-  this.geomjs.Memoizable = Memoizable;
+    TransformationProxy.prototype.detectProxyableMethods = function(geometry) {
+      var k, proxiedMethods, v, _ref;
+      proxiedMethods = {};
+      _ref = geometry.constructor.prototype;
+      for (k in _ref) {
+        v = _ref[k];
+        if (v.proxyable) {
+          proxiedMethods[k] = v.proxyable;
+          TransformationProxy.defineProxy(k, v.proxyable);
+        }
+      }
+      return proxiedMethods;
+    };
 
-  this.geomjs.Parameterizable = Parameterizable;
+    return TransformationProxy;
+
+  })();
 
   this.geomjs.Geometry = Geometry;
 
@@ -3222,6 +3247,8 @@
   this.geomjs.Intersections = Intersections;
 
   this.geomjs.Triangulable = Triangulable;
+
+  this.geomjs.Proxyable = Proxyable;
 
   this.geomjs.Spline = Spline;
 
@@ -3250,5 +3277,7 @@
   this.geomjs.QuintBezier = QuintBezier;
 
   this.geomjs.Spiral = Spiral;
+
+  this.geomjs.TransformationProxy = TransformationProxy;
 
 }).call(this);
