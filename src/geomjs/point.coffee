@@ -30,7 +30,7 @@ class Point
     Equatable('x', 'y')
     Formattable('Point','x', 'y')
     Sourcable('geomjs.Point', 'x', 'y')
-    Cloneable
+    Cloneable()
   ]).in Point
 
   #### Class Methods

@@ -35,7 +35,7 @@ class Rectangle
       height: NaN
       rotation: NaN
     })
-    Cloneable
+    Cloneable()
     Geometry
     Surface
     Path

@@ -41,7 +41,7 @@ class Diamond
     })
     Sourcable(['geomjs.Diamond'].concat PROPERTIES)
     Equatable.apply(Equatable, PROPERTIES)
-    Cloneable
+    Cloneable()
     Geometry
     Memoizable
     Surface

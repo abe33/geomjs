@@ -25,8 +25,8 @@ class Circle
     Formattable('Circle','x','y','radius')
     Parameterizable('circleFrom', radius: 1, x: 0, y: 0, segments: 36)
     Sourcable('geomjs.Circle', 'radius', 'x', 'y')
+    Cloneable()
     Memoizable
-    Cloneable
     Geometry
     Surface
     Path

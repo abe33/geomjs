@@ -902,7 +902,7 @@
 
   Point = (function() {
 
-    include([Equatable('x', 'y'), Formattable('Point', 'x', 'y'), Sourcable('geomjs.Point', 'x', 'y'), Cloneable])["in"](Point);
+    include([Equatable('x', 'y'), Formattable('Point', 'x', 'y'), Sourcable('geomjs.Point', 'x', 'y'), Cloneable()])["in"](Point);
 
     Point.isPoint = function(pt) {
       return (pt != null) && (pt.x != null) && (pt.y != null);
@@ -1182,7 +1182,7 @@
         d: 1,
         tx: 0,
         ty: 0
-      }), Cloneable
+      }), Cloneable()
     ])["in"](Matrix);
 
     Matrix.isMatrix = function(m) {
@@ -1369,7 +1369,7 @@
         width: NaN,
         height: NaN,
         rotation: NaN
-      }), Cloneable, Geometry, Surface, Path, Triangulable, Proxyable, Intersections
+      }), Cloneable(), Geometry, Surface, Path, Triangulable, Proxyable, Intersections
     ])["in"](Rectangle);
 
     Rectangle.eachRectangleRectangleIntersections = function(geom1, geom2, block, data) {
@@ -1731,7 +1731,7 @@
 
   Triangle = (function() {
 
-    include([Equatable('a', 'b', 'c'), Formattable('Triangle', 'a', 'b', 'c'), Sourcable('geomjs.Triangle', 'a', 'b', 'c'), Cloneable, Memoizable, Geometry, Surface, Path, Intersections])["in"](Triangle);
+    include([Equatable('a', 'b', 'c'), Formattable('Triangle', 'a', 'b', 'c'), Sourcable('geomjs.Triangle', 'a', 'b', 'c'), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections])["in"](Triangle);
 
     Triangle.triangleFrom = function(a, b, c) {
       var _ref;
@@ -1998,7 +1998,7 @@
         x: 0,
         y: 0,
         segments: 36
-      }), Sourcable('geomjs.Circle', 'radius', 'x', 'y'), Memoizable, Cloneable, Geometry, Surface, Path, Intersections
+      }), Sourcable('geomjs.Circle', 'radius', 'x', 'y'), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections
     ])["in"](Circle);
 
     Circle.eachIntersections = function(geom1, geom2, block, data) {
@@ -2224,7 +2224,7 @@
         y: 0,
         rotation: 0,
         segments: 36
-      }), Sourcable.apply(null, ['geomjs.Ellipsis'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Surface, Path, Intersections
+      }), Sourcable.apply(null, ['geomjs.Ellipsis'].concat(PROPERTIES)), Cloneable(), Memoizable, Geometry, Surface, Path, Intersections
     ])["in"](Ellipsis);
 
     function Ellipsis(r1, r2, x, y, rot, segments) {
@@ -2414,7 +2414,7 @@
         x: 0,
         y: 0,
         rotation: 0
-      }), Sourcable(['geomjs.Diamond'].concat(PROPERTIES)), Equatable.apply(Equatable, PROPERTIES), Cloneable, Geometry, Memoizable, Surface, Path, Intersections
+      }), Sourcable(['geomjs.Diamond'].concat(PROPERTIES)), Equatable.apply(Equatable, PROPERTIES), Cloneable(), Geometry, Memoizable, Surface, Path, Intersections
     ])["in"](Diamond);
 
     function Diamond(topLength, rightLength, bottomLength, leftLength, x, y, rotation) {
@@ -2692,7 +2692,7 @@
 
   Polygon = (function() {
 
-    include([Formattable('Polygon', 'vertices'), Sourcable('geomjs.Polygon', 'vertices'), Cloneable, Geometry, Intersections, Triangulable, Surface, Path])["in"](Polygon);
+    include([Formattable('Polygon', 'vertices'), Sourcable('geomjs.Polygon', 'vertices'), Cloneable(), Geometry, Intersections, Triangulable, Surface, Path])["in"](Polygon);
 
     Polygon.polygonFrom = function(vertices) {
       var isArray;
@@ -3069,7 +3069,7 @@
         y: 0,
         rotation: 0,
         segments: 36
-      }), Sourcable.apply(null, ['geomjs.Spiral'].concat(PROPERTIES)), Cloneable, Memoizable, Geometry, Path, Intersections
+      }), Sourcable.apply(null, ['geomjs.Spiral'].concat(PROPERTIES)), Cloneable(), Memoizable, Geometry, Path, Intersections
     ])["in"](Spiral);
 
     function Spiral(r1, r2, twirl, x, y, rot, segments) {

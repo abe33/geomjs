@@ -33,7 +33,7 @@ class Ellipsis
       segments: 36
     })
     Sourcable.apply(null, ['geomjs.Ellipsis'].concat PROPERTIES)
-    Cloneable
+    Cloneable()
     Memoizable
     Geometry
     Surface

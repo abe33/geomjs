@@ -23,7 +23,7 @@ class Polygon
   include([
     Formattable('Polygon', 'vertices')
     Sourcable('geomjs.Polygon', 'vertices')
-    Cloneable
+    Cloneable()
     Geometry
     Intersections
     Triangulable

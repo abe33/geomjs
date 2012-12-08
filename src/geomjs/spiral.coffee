@@ -34,7 +34,7 @@ class Spiral
       segments: 36
     })
     Sourcable.apply(null, ['geomjs.Spiral'].concat PROPERTIES)
-    Cloneable
+    Cloneable()
     Memoizable
     Geometry
     Path

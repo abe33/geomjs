@@ -23,7 +23,7 @@ class Triangle
     Equatable('a','b','c')
     Formattable('Triangle','a','b','c')
     Sourcable('geomjs.Triangle','a','b','c')
-    Cloneable
+    Cloneable()
     Memoizable
     Geometry
     Surface

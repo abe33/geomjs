@@ -74,36 +74,15 @@ module.exports =
 
   # ## Mixins
 
-  #### Cloneable
-  # [Go to documentation](./src_geomjs_mixins_cloneable.html)
-  Cloneable: require './geomjs/mixins/cloneable'
-  #### Equatable
-  # [Go to documentation](./src_geomjs_mixins_equatable.html)
-  Equatable: require './geomjs/mixins/equatable'
-  #### Formattable
-  # [Go to documentation](./src_geomjs_mixins_formattable.html)
-  Formattable: require './geomjs/mixins/formattable'
   #### Geometry
   # [Go to documentation](./src_geomjs_mixins_geometry.html)
   Geometry: require './geomjs/mixins/geometry'
   #### Intersections
   # [Go to documentation](./src_geomjs_mixins_intersections.html)
   Intersections: require './geomjs/mixins/intersections'
-  #### Memoizable
-  # [Go to documentation](./src_geomjs_mixins_memoizable.html)
-  Memoizable: require './geomjs/mixins/memoizable'
-  #### Mixin
-  # [Go to documentation](./src_geomjs_mixins_mixin.html)
-  Mixin: require './geomjs/mixins/mixin'
-  #### Parameterizable
-  # [Go to documentation](./src_geomjs_mixins_parameterizable.html)
-  Parameterizable: require './geomjs/mixins/parameterizable'
   #### Path
   # [Go to documentation](./src_geomjs_mixins_path.html)
   Path: require './geomjs/mixins/path'
-  #### Sourcable
-  # [Go to documentation](./src_geomjs_mixins_sourcable.html)
-  Sourcable: require './geomjs/mixins/sourcable'
   #### Spline
   # [Go to documentation](./src_geomjs_mixins_spline.html)
   Spline: require './geomjs/mixins/spline'
