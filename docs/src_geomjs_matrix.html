@@ -32,7 +32,7 @@
     <div id='container'>
       <div id='jump_to'><div id='jump_page'>
   <ul class='menu' id='menu'>
-    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_proxyable.html'>proxyable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_transformation_proxy.html'>transformation_proxy.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
   </ul>
 </div>
 <div id='jump_show'>
@@ -107,14 +107,19 @@
     <a href='#matrixclone'>Matrix::clone</a>
   </li>
 </ul></p></td>
-          <td class='code'><pre><span class="global">require</span> <span class="string"><span class="string_begin">'</span>./math<span class="string_end">'</span></span>
-<span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+          <td class='code'><pre>mixinsjs <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>mixinsjs<span class="string_end">'</span></span>
+
+<span class="hash"><span class="hash_begin">{</span>
+  <span class="constant">Equatable</span><span class="punctuation">,</span>
+  <span class="constant">Cloneable</span><span class="punctuation">,</span>
+  <span class="constant">Sourcable</span><span class="punctuation">,</span>
+  <span class="constant">Formattable</span><span class="punctuation">,</span>
+  <span class="constant">Parameterizable</span><span class="punctuation">,</span>
+  include
+<span class="hash_end">}</span></span> <span class="operators">=</span> mixinsjs
+
+<span class="global">require</span> <span class="string"><span class="string_begin">'</span>./math<span class="string_end">'</span></span>
 <span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
-<span class="constant">Equatable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/equatable<span class="string_end">'</span></span>
-<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
-<span class="constant">Cloneable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/cloneable<span class="string_end">'</span></span>
-<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
-<span class="constant">Parameterizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/parameterizable<span class="string_end">'</span></span>
 
 </pre></td>
         </tr>
@@ -158,7 +163,7 @@ matrix <span class="operators">=</span> <span class="keyword">new</span> <span c
       <span class="property">tx<span class='punctuation'>:</span></span> <span class="number">0</span>
       <span class="property">ty<span class='punctuation'>:</span></span> <span class="number">0</span>
     <span class="hash_end">}</span></span><span class="group_end">)</span></span>
-    <span class="constant">Cloneable</span>
+    <span class="constant">Cloneable</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
   <span class="punctuation">]</span><span class="group_end">)</span></span><span class="punctuation">.</span><span class="keyword">in</span> <span class="constant">Matrix</span>
 
 </pre></td>
@@ -225,7 +230,7 @@ matrix <span class="operators">=</span> <span class="keyword">new</span> <span c
 <p>Returns a new point corresponding to the transformation
 of the passed-in point by the current matrix.</p>
 
-<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span><span class="punctuation">,</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span>
+<pre><code>point <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span>
 
 matrix <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Matrix</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="number">2</span><span class="punctuation">,</span><span class="number">2</span><span class="group_end">)</span></span><span class="punctuation">.</span>rotate<span class="group"><span class="group_begin">(</span><span class="number">90</span><span class="group_end">)</span></span>
 
@@ -274,8 +279,8 @@ projected <span class="operators">=</span> matrix<span class="punctuation">.</sp
 
 <p>Rotates the matrix by the amount of the passed-in angle in degrees.</p></td>
           <td class='code'><pre>  <span class="property">rotate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>angle<span class="operators">=</span><span class="number">0</span><span class="group_end">)</span></span> <span class="function">-></span>
-    cos <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>cos <span class="constant">Math</span><span class="punctuation">.</span>degToRad angle
-    sin <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>sin <span class="constant">Math</span><span class="punctuation">.</span>degToRad angle
+    cos <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>cos angle
+    sin <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span>sin angle
     <span class="punctuation">[</span><span class="property">@a</span><span class="punctuation">,</span> <span class="property">@b</span><span class="punctuation">,</span> <span class="property">@c</span><span class="punctuation">,</span> <span class="property">@d</span><span class="punctuation">,</span> <span class="property">@tx</span><span class="punctuation">,</span> <span class="property">@ty</span><span class="punctuation">]</span> <span class="operators">=</span> <span class="punctuation">[</span>
        <span class="property">@a</span><span class="operators">*</span>cos <span class="operators">-</span> <span class="property">@b</span><span class="operators">*</span>sin
        <span class="property">@a</span><span class="operators">*</span>sin <span class="operators">+</span> <span class="property">@b</span><span class="operators">*</span>cos
@@ -293,7 +298,7 @@ projected <span class="operators">=</span> matrix<span class="punctuation">.</sp
 
 <p>Skews the matrix by the amount of the passed-in point.</p></td>
           <td class='code'><pre>  <span class="property">skew<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="group_end">)</span></span> <span class="function">-></span>
-    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom<span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="punctuation">,</span> <span class="number">0</span><span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span><span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span> <span class="operators">/</span> <span class="number">180</span><span class="group_end">)</span></span>
+    pt <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom<span class="group"><span class="group_begin">(</span>xOrPt<span class="punctuation">,</span> y<span class="punctuation">,</span> <span class="number">0</span><span class="group_end">)</span></span>
     <span class="property">@append</span> <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>y<span class="group_end">)</span></span><span class="punctuation">,</span>
             <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>y<span class="group_end">)</span></span><span class="punctuation">,</span>
             <span class="operators">-</span><span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span>pt<span class="punctuation">.</span>x<span class="group_end">)</span></span><span class="punctuation">,</span>

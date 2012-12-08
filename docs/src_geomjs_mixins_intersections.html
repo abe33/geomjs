@@ -32,7 +32,7 @@
     <div id='container'>
       <div id='jump_to'><div id='jump_page'>
   <ul class='menu' id='menu'>
-    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_proxyable.html'>proxyable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_transformation_proxy.html'>transformation_proxy.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
   </ul>
 </div>
 <div id='jump_show'>
@@ -79,7 +79,9 @@
     <a href='#intersectionspercrossing'>Intersections::perCrossing</a>
   </li>
 </ul></p></td>
-          <td class='code'><pre><span class="constant">Mixin</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixin<span class="string_end">'</span></span>
+          <td class='code'><pre>mixinsjs <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>mixinsjs<span class="string_end">'</span></span>
+
+<span class="hash"><span class="hash_begin">{</span><span class="constant">Mixin</span><span class="hash_end">}</span></span> <span class="operators">=</span> mixinsjs
 <span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>../point<span class="string_end">'</span></span>
 
 </pre></td>
@@ -169,23 +171,36 @@
     <span class="keyword">for</span> i <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>length1<span class="operators">-</span><span class="number">2</span><span class="punctuation">]</span>
       sv1 <span class="operators">=</span> points1<span class="punctuation">[</span>i<span class="punctuation">]</span>
       ev1 <span class="operators">=</span> points1<span class="punctuation">[</span>i<span class="operators">+</span><span class="number">1</span><span class="punctuation">]</span>
-      dif1 <span class="operators">=</span> ev1<span class="punctuation">.</span>subtract sv1
+      dif1x <span class="operators">=</span> ev1<span class="punctuation">.</span>x <span class="operators">-</span> sv1<span class="punctuation">.</span>x
+      dif1y <span class="operators">=</span> ev1<span class="punctuation">.</span>y <span class="operators">-</span> sv1<span class="punctuation">.</span>y
+      dif1l <span class="operators">=</span> dif1x <span class="operators">*</span> dif1x <span class="operators">+</span> dif1y <span class="operators">*</span> dif1y
 
       <span class="keyword">for</span> j <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">0.</span><span class="punctuation">.</span>length2<span class="operators">-</span><span class="number">2</span><span class="punctuation">]</span>
         sv2 <span class="operators">=</span> points2<span class="punctuation">[</span>j<span class="punctuation">]</span>
         ev2 <span class="operators">=</span> points2<span class="punctuation">[</span>j<span class="operators">+</span><span class="number">1</span><span class="punctuation">]</span>
-        dif2 <span class="operators">=</span> ev2<span class="punctuation">.</span>subtract sv2
+        dif2x <span class="operators">=</span> ev2<span class="punctuation">.</span>x <span class="operators">-</span> sv2<span class="punctuation">.</span>x
+        dif2y <span class="operators">=</span> ev2<span class="punctuation">.</span>y <span class="operators">-</span> sv2<span class="punctuation">.</span>y
+        dif2l <span class="operators">=</span> dif2x <span class="operators">*</span> dif2x <span class="operators">+</span> dif2y <span class="operators">*</span> dif2y
 
-        cross <span class="operators">=</span> <span class="property">@perCrossing</span> sv1<span class="punctuation">,</span> dif1<span class="punctuation">,</span> sv2<span class="punctuation">,</span> dif2
-        d1 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract ev1
-        d2 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract sv1
-        d3 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract ev2
-        d4 <span class="operators">=</span> cross<span class="punctuation">.</span>subtract sv2
+        cross <span class="operators">=</span> <span class="property">@perCrossing</span> sv1<span class="punctuation">,</span> <span class="hash"><span class="hash_begin">{</span><span class="property">x<span class='punctuation'>:</span></span>dif1x<span class="punctuation">,</span><span class="property">y<span class='punctuation'>:</span></span>dif1y<span class="hash_end">}</span></span><span class="punctuation">,</span> sv2<span class="punctuation">,</span> <span class="hash"><span class="hash_begin">{</span><span class="property">x<span class='punctuation'>:</span></span>dif2x<span class="punctuation">,</span><span class="property">y<span class='punctuation'>:</span></span>dif2y<span class="hash_end">}</span></span>
+        d1x <span class="operators">=</span> cross<span class="punctuation">.</span>x <span class="operators">-</span> ev1<span class="punctuation">.</span>x
+        d1y <span class="operators">=</span> cross<span class="punctuation">.</span>y <span class="operators">-</span> ev1<span class="punctuation">.</span>y
+        d2x <span class="operators">=</span> cross<span class="punctuation">.</span>x <span class="operators">-</span> sv1<span class="punctuation">.</span>x
+        d2y <span class="operators">=</span> cross<span class="punctuation">.</span>y <span class="operators">-</span> sv1<span class="punctuation">.</span>y
+        d3x <span class="operators">=</span> cross<span class="punctuation">.</span>x <span class="operators">-</span> ev2<span class="punctuation">.</span>x
+        d3y <span class="operators">=</span> cross<span class="punctuation">.</span>y <span class="operators">-</span> ev2<span class="punctuation">.</span>y
+        d4x <span class="operators">=</span> cross<span class="punctuation">.</span>x <span class="operators">-</span> sv2<span class="punctuation">.</span>x
+        d4y <span class="operators">=</span> cross<span class="punctuation">.</span>y <span class="operators">-</span> sv2<span class="punctuation">.</span>y
 
-        <span class="keyword">if</span> d1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
-           d2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif1<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
-           d3<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">and</span>
-           d4<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> &lt;<span class="operators">=</span> dif2<span class="punctuation">.</span>length<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+        d1l <span class="operators">=</span> d1x <span class="operators">*</span> d1x <span class="operators">+</span> d1y <span class="operators">*</span> d1y
+        d2l <span class="operators">=</span> d2x <span class="operators">*</span> d2x <span class="operators">+</span> d2y <span class="operators">*</span> d2y
+        d3l <span class="operators">=</span> d3x <span class="operators">*</span> d3x <span class="operators">+</span> d3y <span class="operators">*</span> d3y
+        d4l <span class="operators">=</span> d4x <span class="operators">*</span> d4x <span class="operators">+</span> d4y <span class="operators">*</span> d4y
+
+        <span class="keyword">if</span> d1l &lt;<span class="operators">=</span> dif1l <span class="keyword">and</span>
+           d2l &lt;<span class="operators">=</span> dif1l <span class="keyword">and</span>
+           d3l &lt;<span class="operators">=</span> dif2l <span class="keyword">and</span>
+           d4l &lt;<span class="operators">=</span> dif2l
 
           <span class="keyword">if</span> cross<span class="punctuation">.</span>equals lastIntersection
             lastIntersection <span class="operators">=</span> cross
@@ -193,11 +208,11 @@
 
           <span class="keyword">if</span> providesDataInCallback
             context <span class="operators">=</span>
-              <span class="property">segment1<span class='punctuation'>:</span></span> dif1
+              <span class="property">segment1<span class='punctuation'>:</span></span> <span class="keyword">new</span> <span class="constant">Point</span> dif1x<span class="punctuation">,</span> dif1y
               <span class="property">segmentIndex1<span class='punctuation'>:</span></span> i
               <span class="property">segmentStart1<span class='punctuation'>:</span></span> sv1
               <span class="property">segmentEnd1<span class='punctuation'>:</span></span> ev1
-              <span class="property">segment2<span class='punctuation'>:</span></span> dif2
+              <span class="property">segment2<span class='punctuation'>:</span></span> <span class="keyword">new</span> <span class="constant">Point</span> dif2x<span class="punctuation">,</span> dif2y
               <span class="property">segmentIndex2<span class='punctuation'>:</span></span> j
               <span class="property">segmentStart2<span class='punctuation'>:</span></span> sv2
               <span class="property">segmentEnd2<span class='punctuation'>:</span></span> ev2

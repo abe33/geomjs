@@ -1,0 +1,101 @@
+
+<html>
+  <meta charset='utf-8'>
+  <title>src/geomjs/transformation_proxy.coffee</title>
+  <head>
+    <link rel='stylesheet' media='all' href='docco.css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<script src='http://code.jquery.com/jquery-1.6.2.min.js' type='text/javascript' charset='utf-8'></script>
+<script src='docco.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      $(document).ready(function(){
+        $('#menu').columnview();
+        $('#jump_show').click(function(){
+          $('#jump_to').toggleClass('visible')
+        })
+        var p = "src/geomjs/transformation_proxy.coffee".split('/')
+        var f = p.pop()
+        for(var i=0;i<p.length;i++){
+          var s = p[i] + "/"
+          $("#jump_page div a span.label").filter(function(){
+            return $(this).text() == s
+          }).parent().click()
+        }
+    
+        $("#jump_page div a span.label").filter(function(){
+          return $(this).text() == f
+        }).last().parent().toggleClass('active')
+      })
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='jump_to'><div id='jump_page'>
+  <ul class='menu' id='menu'>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_proxyable.html'>proxyable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_transformation_proxy.html'>transformation_proxy.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+  </ul>
+</div>
+<div id='jump_show'>
+  Jump To &hellip;
+</div></div>
+      <table cellpadding='0' cellspacing='0'>
+        <tr>
+          <th class='docs'>
+            <h3>src/geomjs/</h3>
+            <h1>transformation_proxy.coffee</h1>
+          </th>
+          <th class='code'>
+            <pre></pre>
+          </th>
+        </tr>
+        <tr>
+          <td class='docs'></td>
+          <td class='code'><pre>
+<span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
+
+<span class="class"><span class="keyword">class</span> <span class='title'>TransformationProxy</span></span>
+  <span class="property">@defineProxy<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>key<span class="punctuation">,</span> type<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="keyword">switch</span> type
+      <span class="keyword">when</span> <span class="string"><span class="string_begin">'</span>PointList<span class="string_end">'</span></span>
+        <span class="property">@</span><span class="punctuation">:</span><span class="punctuation">:</span><span class="punctuation">[</span>key<span class="punctuation">]</span> <span class="operators">=</span> <span class="function">-></span>
+          points <span class="operators">=</span> <span class="property">@geometry</span><span class="punctuation">[</span>key<span class="punctuation">]</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="property">@geometry</span><span class="punctuation">,</span> arguments<span class="group_end">)</span></span>
+          <span class="keyword">if</span> <span class="property">@matrix</span><span class="operators">?</span>
+            points<span class="punctuation">.</span>map <span class="group"><span class="group_begin">(</span>pt<span class="group_end">)</span></span> <span class="function">=></span> <span class="property">@matrix</span><span class="punctuation">.</span>transformPoint pt
+          <span class="keyword">else</span> points
+
+      <span class="keyword">when</span> <span class="string"><span class="string_begin">'</span>Point<span class="string_end">'</span></span>
+        <span class="property">@</span><span class="punctuation">:</span><span class="punctuation">:</span><span class="punctuation">[</span>key<span class="punctuation">]</span> <span class="operators">=</span> <span class="function">-></span>
+          point <span class="operators">=</span> <span class="property">@geometry</span><span class="punctuation">[</span>key<span class="punctuation">]</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="property">@geometry</span><span class="punctuation">,</span> arguments<span class="group_end">)</span></span>
+          <span class="keyword">if</span> <span class="property">@matrix</span><span class="operators">?</span> <span class="keyword">then</span> <span class="property">@matrix</span><span class="punctuation">.</span>transformPoint point <span class="keyword">else</span> point
+
+      <span class="keyword">when</span> <span class="string"><span class="string_begin">'</span>Angle<span class="string_end">'</span></span>
+        <span class="property">@</span><span class="punctuation">:</span><span class="punctuation">:</span><span class="punctuation">[</span>key<span class="punctuation">]</span> <span class="operators">=</span> <span class="function">-></span>
+          angle <span class="operators">=</span> <span class="property">@geometry</span><span class="punctuation">[</span>key<span class="punctuation">]</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="property">@geometry</span><span class="punctuation">,</span> arguments<span class="group_end">)</span></span>
+          <span class="keyword">if</span> <span class="property">@matrix</span><span class="operators">?</span>
+            vec <span class="operators">=</span> <span class="keyword">new</span> <span class="constant">Point</span> <span class="constant">Math</span><span class="punctuation">.</span>cos<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="punctuation">,</span>
+                            <span class="constant">Math</span><span class="punctuation">.</span>sin<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span>
+            <span class="property">@matrix</span><span class="punctuation">.</span>transformPoint<span class="group"><span class="group_begin">(</span>vec<span class="group_end">)</span></span><span class="punctuation">.</span>angle<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
+          <span class="keyword">else</span> angle
+
+
+  <span class="property">constructor<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span><span class="property">@geometry</span><span class="punctuation">,</span> <span class="property">@matrix</span><span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@proxiedMethods</span> <span class="operators">=</span> <span class="property">@detectProxyableMethods</span> <span class="property">@geometry</span>
+
+  <span class="property">proxied<span class='punctuation'>:</span></span> <span class="function">-></span> k <span class="keyword">for</span> k<span class="punctuation">,</span>v <span class="keyword">of</span> <span class="property">@proxiedMethods</span>
+
+  <span class="property">detectProxyableMethods<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>geometry<span class="group_end">)</span></span> <span class="function">-></span>
+    proxiedMethods <span class="operators">=</span> <span class="hash"><span class="hash_begin">{</span><span class="hash_end">}</span></span>
+    <span class="keyword">for</span> k<span class="punctuation">,</span>v <span class="keyword">of</span> geometry<span class="punctuation">.</span>constructor<span class="punctuation">.</span>prototype
+      <span class="keyword">if</span> v<span class="punctuation">.</span>proxyable
+        proxiedMethods<span class="punctuation">[</span>k<span class="punctuation">]</span> <span class="operators">=</span> v<span class="punctuation">.</span>proxyable
+        <span class="constant">TransformationProxy</span><span class="punctuation">.</span>defineProxy k<span class="punctuation">,</span> v<span class="punctuation">.</span>proxyable
+    proxiedMethods
+
+<span class="global">module</span><span class="punctuation">.</span><span class="global">exports</span> <span class="operators">=</span> <span class="constant">TransformationProxy</span>
+
+</pre></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

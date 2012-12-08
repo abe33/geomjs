@@ -32,7 +32,7 @@
     <div id='container'>
       <div id='jump_to'><div id='jump_page'>
   <ul class='menu' id='menu'>
-    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_include.html'>include.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_cloneable.html'>cloneable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_equatable.html'>equatable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_formattable.html'>formattable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_memoizable.html'>memoizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_mixin.html'>mixin.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_parameterizable.html'>parameterizable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_sourcable.html'>sourcable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
+    <li class='leaf'><a href='#'>src/</a><ul class='menu'><li class='leaf'><a href='src_index.html'>index.coffee</a></li><li class='leaf'><a href='#'>geomjs/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_circle.html'>circle.coffee</a></li><li class='leaf'><a href='src_geomjs_cubic_bezier.html'>cubic_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_diamond.html'>diamond.coffee</a></li><li class='leaf'><a href='src_geomjs_ellipsis.html'>ellipsis.coffee</a></li><li class='leaf'><a href='src_geomjs_linear_spline.html'>linear_spline.coffee</a></li><li class='leaf'><a href='src_geomjs_math.html'>math.coffee</a></li><li class='leaf'><a href='src_geomjs_matrix.html'>matrix.coffee</a></li><li class='leaf'><a href='#'>mixins/</a><ul class='menu'><li class='leaf'><a href='src_geomjs_mixins_geometry.html'>geometry.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_intersections.html'>intersections.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_path.html'>path.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_proxyable.html'>proxyable.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_spline.html'>spline.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_surface.html'>surface.coffee</a></li><li class='leaf'><a href='src_geomjs_mixins_triangulable.html'>triangulable.coffee</a></li></ul></li><li class='leaf'><a href='src_geomjs_point.html'>point.coffee</a></li><li class='leaf'><a href='src_geomjs_polygon.html'>polygon.coffee</a></li><li class='leaf'><a href='src_geomjs_quad_bezier.html'>quad_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_quint_bezier.html'>quint_bezier.coffee</a></li><li class='leaf'><a href='src_geomjs_rectangle.html'>rectangle.coffee</a></li><li class='leaf'><a href='src_geomjs_spiral.html'>spiral.coffee</a></li><li class='leaf'><a href='src_geomjs_transformation_proxy.html'>transformation_proxy.coffee</a></li><li class='leaf'><a href='src_geomjs_triangle.html'>triangle.coffee</a></li></ul></li></ul></li>
   </ul>
 </div>
 <div id='jump_show'>
@@ -54,40 +54,69 @@
   <li class='level0'>
     <a href='#spiral'>Spiral</a>
   </li>
-  <li class='level1'>
+  <li class='level2'>
     <a href='#spiralconstructor'>Spiral::constructor</a>
   </li>
-  <li class='level1'>
+  <li class='level2'>
     <a href='#spiralcenter'>Spiral::center</a>
   </li>
-  <li class='level1'>
+  <li class='level2'>
     <a href='#spiralellipsis'>Spiral::ellipsis</a>
   </li>
   <li class='level1'>
+    <a href='#spiral-manipulation'>Spiral Manipulation</a>
+  </li>
+  <li class='level2'>
+    <a href='#spiraltranslate'>Spiral::translate</a>
+  </li>
+  <li class='level2'>
+    <a href='#spiralrotate'>Spiral::rotate</a>
+  </li>
+  <li class='level2'>
+    <a href='#spiralscale'>Spiral::scale</a>
+  </li>
+  <li class='level1'>
+    <a href='#geometry-api'>Geometry API</a>
+  </li>
+  <li class='level2'>
     <a href='#spiralpoints'>Spiral::points</a>
   </li>
   <li class='level1'>
+    <a href='#path-api'>Path API</a>
+  </li>
+  <li class='level2'>
     <a href='#spiralpathpointat'>Spiral::pathPointAt</a>
   </li>
   <li class='level1'>
+    <a href='#drawing-api'>Drawing API</a>
+  </li>
+  <li class='level2'>
+    <a href='#spiralfill'>Spiral::fill</a>
+  </li>
+  <li class='level2'>
     <a href='#spiraldrawpath'>Spiral::drawPath</a>
   </li>
-  <li class='level1'>
+  <li class='level2'>
     <a href='#spiralmemoizationkey'>Spiral::memoizationKey</a>
   </li>
 </ul></p></td>
-          <td class='code'><pre><span class="hash"><span class="hash_begin">{</span>include<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./include<span class="string_end">'</span></span>
+          <td class='code'><pre>mixinsjs <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>mixinsjs<span class="string_end">'</span></span>
+
+<span class="hash"><span class="hash_begin">{</span>
+  <span class="constant">Equatable</span><span class="punctuation">,</span>
+  <span class="constant">Cloneable</span><span class="punctuation">,</span>
+  <span class="constant">Sourcable</span><span class="punctuation">,</span>
+  <span class="constant">Formattable</span><span class="punctuation">,</span>
+  <span class="constant">Memoizable</span><span class="punctuation">,</span>
+  <span class="constant">Parameterizable</span><span class="punctuation">,</span>
+  include
+<span class="hash_end">}</span></span> <span class="operators">=</span> mixinsjs
+
 <span class="constant">Point</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./point<span class="string_end">'</span></span>
 <span class="constant">Ellipsis</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./ellipsis<span class="string_end">'</span></span>
-<span class="constant">Equatable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/equatable<span class="string_end">'</span></span>
-<span class="constant">Formattable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/formattable<span class="string_end">'</span></span>
 <span class="constant">Geometry</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/geometry<span class="string_end">'</span></span>
-<span class="constant">Cloneable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/cloneable<span class="string_end">'</span></span>
-<span class="constant">Memoizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/memoizable<span class="string_end">'</span></span>
-<span class="constant">Sourcable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/sourcable<span class="string_end">'</span></span>
 <span class="constant">Path</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/path<span class="string_end">'</span></span>
 <span class="constant">Intersections</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/intersections<span class="string_end">'</span></span>
-<span class="constant">Parameterizable</span> <span class="operators">=</span> <span class="global">require</span> <span class="string"><span class="string_begin">'</span>./mixins/parameterizable<span class="string_end">'</span></span>
 
 </pre></td>
         </tr>
@@ -109,7 +138,7 @@
       <span class="property">segments<span class='punctuation'>:</span></span> <span class="number">36</span>
     <span class="hash_end">}</span></span><span class="group_end">)</span></span>
     <span class="constant">Sourcable</span><span class="punctuation">.</span>apply<span class="group"><span class="group_begin">(</span><span class="literal">null</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="string"><span class="string_begin">'</span>geomjs.Spiral<span class="string_end">'</span></span><span class="punctuation">]</span><span class="punctuation">.</span>concat <span class="constant">PROPERTIES</span><span class="group_end">)</span></span>
-    <span class="constant">Cloneable</span>
+    <span class="constant">Cloneable</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
     <span class="constant">Memoizable</span>
     <span class="constant">Geometry</span>
     <span class="constant">Path</span>
@@ -148,6 +177,43 @@
 </pre></td>
         </tr>
         <tr>
+          <td class='docs'><h3 id='spiral-manipulation'>Spiral Manipulation</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='spiraltranslate'>Spiral::translate</h4></td>
+          <td class='code'><pre>  <span class="property">translate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>x<span class="punctuation">,</span>y<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="hash"><span class="hash_begin">{</span>x<span class="punctuation">,</span>y<span class="hash_end">}</span></span> <span class="operators">=</span> <span class="constant">Point</span><span class="punctuation">.</span>pointFrom x<span class="punctuation">,</span> y
+    <span class="property">@x</span> <span class="operators">+</span><span class="operators">=</span> x
+    <span class="property">@y</span> <span class="operators">+</span><span class="operators">=</span> y
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='spiralrotate'>Spiral::rotate</h4></td>
+          <td class='code'><pre>  <span class="property">rotate<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>rotation<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@rotation</span> <span class="operators">+</span><span class="operators">=</span> rotation
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='spiralscale'>Spiral::scale</h4></td>
+          <td class='code'><pre>  <span class="property">scale<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>scale<span class="group_end">)</span></span> <span class="function">-></span>
+    <span class="property">@radius1</span> <span class="operators">*</span><span class="operators">=</span> scale
+    <span class="property">@radius2</span> <span class="operators">*</span><span class="operators">=</span> scale
+    <span class="keyword">this</span>
+
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='geometry-api'>Geometry API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
           <td class='docs'><h4 id='spiralpoints'>Spiral::points</h4></td>
           <td class='code'><pre>  <span class="property">points<span class='punctuation'>:</span></span> <span class="function">-></span>
     <span class="keyword">return</span> <span class="property">@memoFor</span><span class="group"><span class="group_begin">(</span><span class="string"><span class="string_begin">'</span>points<span class="string_end">'</span></span><span class="group_end">)</span></span><span class="punctuation">.</span>concat<span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span> <span class="keyword">if</span> <span class="property">@memoized</span> <span class="string"><span class="string_begin">'</span>points<span class="string_end">'</span></span>
@@ -164,15 +230,30 @@
 </pre></td>
         </tr>
         <tr>
+          <td class='docs'><h3 id='path-api'>Path API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
           <td class='docs'><h4 id='spiralpathpointat'>Spiral::pathPointAt</h4></td>
           <td class='code'><pre>  <span class="property">pathPointAt<span class='punctuation'>:</span></span> <span class="group"><span class="group_begin">(</span>pos<span class="punctuation">,</span> posBasedOnLength<span class="operators">=</span><span class="literal">true</span><span class="group_end">)</span></span> <span class="function">-></span>
     center <span class="operators">=</span> <span class="property">@center</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
     ellipsis <span class="operators">=</span> <span class="property">@ellipsis</span><span class="group"><span class="group_begin">(</span><span class="group_end">)</span></span>
-    angle <span class="operators">=</span> <span class="property">@rotation</span> <span class="operators">+</span> pos <span class="operators">*</span> <span class="number">360</span> <span class="operators">*</span> <span class="property">@twirl</span> % <span class="number">360</span>
+    <span class="constant">PI2</span> <span class="operators">=</span> <span class="constant">Math</span><span class="punctuation">.</span><span class="constant">PI</span> <span class="operators">*</span> <span class="number">2</span>
+    angle <span class="operators">=</span> <span class="property">@rotation</span> <span class="operators">+</span> pos <span class="operators">*</span> <span class="constant">PI2</span> <span class="operators">*</span> <span class="property">@twirl</span> % <span class="constant">PI2</span>
     pt <span class="operators">=</span> ellipsis<span class="punctuation">.</span>pointAtAngle<span class="group"><span class="group_begin">(</span>angle<span class="group_end">)</span></span><span class="operators">?</span><span class="punctuation">.</span>subtract<span class="group"><span class="group_begin">(</span>center<span class="group_end">)</span></span><span class="punctuation">.</span>scale<span class="group"><span class="group_begin">(</span>pos<span class="group_end">)</span></span>
     center<span class="punctuation">.</span>add pt
 
-  <span class="property">fill<span class='punctuation'>:</span></span> <span class="function">-></span>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h3 id='drawing-api'>Drawing API</h3></td>
+          <td class='code'><pre>
+</pre></td>
+        </tr>
+        <tr>
+          <td class='docs'><h4 id='spiralfill'>Spiral::fill</h4></td>
+          <td class='code'><pre>  <span class="property">fill<span class='punctuation'>:</span></span> <span class="function">-></span>
 
 </pre></td>
         </tr>
