@@ -49,7 +49,11 @@ Then require it as follow:
 
 #### Browser
 
-Download ChanceJS and GeomJS packaged version:
+Download MixinsJS, ChanceJS and GeomJS packaged version:
+
+**MixinsJS**:
+ * [uncompressed](https://raw.github.com/abe33/mixinsjs/master/packages/mixinsjs.js)
+ * [compressed](https://raw.github.com/abe33/mixinsjs/master/packages/mixinsjs.min.js)
 
 **ChanceJS**:
  * [uncompressed](https://raw.github.com/abe33/chancejs/master/packages/chancejs.js)
@@ -61,6 +65,7 @@ Download ChanceJS and GeomJS packaged version:
 
 Adds it in your html page:
 
+    <script src='./mixinsjs.min.js'></script>
     <script src='./chancejs.min.js'></script>
     <script src='./geomjs.min.js'></script>
 
