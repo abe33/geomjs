@@ -6,6 +6,7 @@
   "keywords": [
     "TODO: Module keywords goes here"
   ],
+  "license": "MIT",
   "engine": {
     "node": "~0.8.0"
   },
